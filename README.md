@@ -62,9 +62,9 @@ HtmlFetcher fetcher = new HtmlFetcher();
 //    expireAfterWrite(minutes, TimeUnit.MINUTES).makeMap();
 
 JResult res = fetcher.fetchAndExtract(articleUrl, resolveTimeout, true);
-String text = res.getText(); 
-String title = res.getTitle(); 
-String imageUrl = res.getImageUrl();
+String text = res.text; 
+String title = res.title; 
+String imageUrl = res.imageUrl;
 ```
 
 # License

@@ -17,12 +17,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
 
-/**
- * This class is thread safe.
- *
- * @author Alex P (ifesdjeen from jreadability)
- * @author Peter Karich
- */
 public class ArticleTextExtractor {
   private static final Logger logger = Logger.getInstance();
   // Interesting nodes
@@ -99,23 +93,23 @@ public class ArticleTextExtractor {
    *            with improper HTML, although jSoup should be able to handle minor stuff.
    * @returns extracted article, all HTML tags stripped
    */
-  public JResult extractContent(Document doc) throws Exception {
-    return extractContent(new JResult(), doc, formatter);
+  public ParsedResult extractContent(Document doc) throws Exception {
+    return extractContent(new ParsedResult(), doc, formatter);
   }
 
-  public JResult extractContent(Document doc, OutputFormatter formatter) throws Exception {
-    return extractContent(new JResult(), doc, formatter);
+  public ParsedResult extractContent(Document doc, OutputFormatter formatter) throws Exception {
+    return extractContent(new ParsedResult(), doc, formatter);
   }
 
-  public JResult extractContent(String html) throws Exception {
-    return extractContent(new JResult(), html);
+  public ParsedResult extractContent(String html) throws Exception {
+    return extractContent(new ParsedResult(), html);
   }
 
-  public JResult extractContent(JResult res, String html) throws Exception {
+  public ParsedResult extractContent(ParsedResult res, String html) throws Exception {
     return extractContent(res, html, formatter);
   }
 
-  private JResult extractContent(JResult res, String html, OutputFormatter formatter) throws Exception {
+  private ParsedResult extractContent(ParsedResult res, String html, OutputFormatter formatter) throws Exception {
     if (html.isEmpty())
       throw new IllegalArgumentException("html string is empty!?");
 
@@ -123,7 +117,7 @@ public class ArticleTextExtractor {
     return extractContent(res, Jsoup.parse(html), formatter);
   }
 
-  private JResult extractContent(JResult res, Document doc, OutputFormatter formatter) {
+  private ParsedResult extractContent(ParsedResult res, Document doc, OutputFormatter formatter) {
     if (doc == null)
       throw new NullPointerException("missing document");
 
@@ -161,15 +155,15 @@ public class ArticleTextExtractor {
 
       // clean before grabbing text
       String text = formatter.getFormattedText(bestMatchElement);
-      // this fails for short facebook post and probably tweets: text.length() > res.getDescription().length()
-      if (text.length() > res.getTitle().length()) {
+      // this fails for short facebook post and probably tweets: text.length() > res.description.length()
+      if (text.length() > res.title.length()) {
         res.setText(text);
         // print("best element:", bestMatchElement);
       }
       res.setTextList(formatter.getTextList(bestMatchElement));
     }
 
-    if (res.getImageUrl().isEmpty()) {
+    if (res.imageUrl.isEmpty()) {
       res.setImageUrl(extractImageUrl(doc));
     }
 
@@ -547,10 +541,6 @@ public class ArticleTextExtractor {
   /**
    * based on a delimeter in the title take the longest piece or do some
    * custom logic based on the site
-   *
-   * @param title
-   * @param delimeter
-   * @return
    */
   private String doTitleSplits(String title, String delimeter) {
     String largeText = "";
@@ -613,8 +603,6 @@ public class ArticleTextExtractor {
 
   /**
    * Comparator for Image by weight
-   *
-   * @author Chris Alexander, chris@chris-alexander.co.uk
    */
   private class ImageComparator implements Comparator<ImageResult> {
 

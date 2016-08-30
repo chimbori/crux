@@ -5,10 +5,7 @@ import java.net.SocketTimeoutException;
 import java.nio.charset.Charset;
 
 /**
- * This class is not thread safe. Use one new instance every time due to
- * encoding variable.
- *
- * @author Peter Karich
+ * This class is not thread safe. Use one new instance every time due to encoding variable.
  */
 public class Converter {
   private static final Logger logger = Logger.getInstance();

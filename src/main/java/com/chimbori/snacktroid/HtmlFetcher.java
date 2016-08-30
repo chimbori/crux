@@ -18,8 +18,6 @@ import java.util.zip.InflaterInputStream;
 
 /**
  * Class to fetch articles. This class is thread safe.
- *
- * @author Peter Karich
  */
 public class HtmlFetcher {
 
@@ -109,7 +107,7 @@ public class HtmlFetcher {
     return (proxy != null ? proxy : Proxy.NO_PROXY);
   }
 
-  public JResult fetchAndExtract(String url, int timeout, boolean resolve) throws Exception {
+  public ParsedResult fetchAndExtract(String url, int timeout, boolean resolve) throws Exception {
     String originalUrl = url;
     url = SHelper.removeHashbang(url);
     String gUrl = SHelper.getUrlFromUglyGoogleRedirect(url);
@@ -123,7 +121,7 @@ public class HtmlFetcher {
 
     if (resolve) {
       // check if we can avoid resolving the URL (which hits the website!)
-      JResult res = getFromCache(url, originalUrl);
+      ParsedResult res = getFromCache(url, originalUrl);
       if (res != null)
         return res;
 
@@ -132,7 +130,7 @@ public class HtmlFetcher {
         if (logger.isDebugEnabled())
           logger.warn("resolved url is empty. Url is: " + url);
 
-        JResult result = new JResult();
+        ParsedResult result = new ParsedResult();
         if (cache != null)
           cache.put(url, result);
         return result.setUrl(url);
@@ -147,11 +145,11 @@ public class HtmlFetcher {
     }
 
     // check if we have the (resolved) URL in cache
-    JResult res = getFromCache(url, originalUrl);
+    ParsedResult res = getFromCache(url, originalUrl);
     if (res != null)
       return res;
 
-    JResult result = new JResult();
+    ParsedResult result = new ParsedResult();
     // or should we use? <link rel="canonical" href="http://www.N24.de/news/newsitem_6797232.html"/>
     result.setUrl(url);
     result.setOriginalUrl(originalUrl);
@@ -172,16 +170,17 @@ public class HtmlFetcher {
       result.setImageUrl(url);
     } else {
       extractor.extractContent(result, fetchAsString(url, timeout));
-      if (result.getFaviconUrl().isEmpty())
+      if (result.faviconUrl.isEmpty()) {
         result.setFaviconUrl(SHelper.getDefaultFavicon(url));
+      }
 
       // some links are relative to root and do not include the domain of the url :(
-      result.setFaviconUrl(fixUrl(url, result.getFaviconUrl()));
-      result.setImageUrl(fixUrl(url, result.getImageUrl()));
-      result.setVideoUrl(fixUrl(url, result.getVideoUrl()));
-      result.setRssUrl(fixUrl(url, result.getRssUrl()));
+      result.setFaviconUrl(fixUrl(url, result.faviconUrl));
+      result.setImageUrl(fixUrl(url, result.imageUrl));
+      result.setVideoUrl(fixUrl(url, result.videoUrl));
+      result.setRssUrl(fixUrl(url, result.rssUrl));
     }
-    result.setText(lessText(result.getText()));
+    result.setText(lessText(result.text));
     synchronized (result) {
       result.notifyAll();
     }
@@ -325,12 +324,12 @@ public class HtmlFetcher {
     return hConn;
   }
 
-  private JResult getFromCache(String url, String originalUrl) {
+  private ParsedResult getFromCache(String url, String originalUrl) {
     if (cache != null) {
-      JResult res = cache.get(url);
+      ParsedResult res = cache.get(url);
       if (res != null) {
         // e.g. the cache returned a shortened url as original url now we want to store the
-        // current original url! Also it can be that the cache response to url but the JResult
+        // current original url! Also it can be that the cache response to url but the ParsedResult
         // does not contain it so overwrite it:
         res.setUrl(url);
         res.setOriginalUrl(originalUrl);

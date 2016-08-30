@@ -5,8 +5,6 @@ import java.util.Map;
 
 /**
  * Simple impl of Map.Entry. So that we can have ordered maps.
- *
- * @author Peter Karich, peat_hal ‘at’ users ‘dot’ sourceforge ‘dot’ net
  */
 public class MapEntry<K, V> implements Map.Entry<K, V>, Serializable {
 

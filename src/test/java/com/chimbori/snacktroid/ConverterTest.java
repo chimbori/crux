@@ -4,9 +4,6 @@ import junit.framework.TestCase;
 
 import org.jsoup.Jsoup;
 
-/**
- * @author Peter Karich
- */
 public class ConverterTest extends TestCase {
 
   public ConverterTest(String testName) {

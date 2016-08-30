@@ -20,9 +20,6 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
-/**
- * @author Peter Karich
- */
 class SHelper {
 
   private static final String UTF8 = "UTF-8";
@@ -244,11 +241,11 @@ class SHelper {
   /**
    * @see http://stackoverflow.com/questions/2529682/setting-user-agent-of-a-java-urlconnection
    */
-  public static void enableUserAgentOverwrite() {
+  static void enableUserAgentOverwrite() {
     System.setProperty("http.agent", "");
   }
 
-  public static String getUrlFromUglyGoogleRedirect(String url) {
+  static String getUrlFromUglyGoogleRedirect(String url) {
     if (url.startsWith("http://www.google.com/url?")) {
       url = url.substring("http://www.google.com/url?".length());
       String arr[] = urlDecode(url).split("\\&");

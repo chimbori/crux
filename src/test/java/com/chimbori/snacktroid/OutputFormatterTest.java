@@ -8,9 +8,6 @@ import java.util.Arrays;
 
 import static org.junit.Assert.assertEquals;
 
-/**
- * @author Peter Karich
- */
 public class OutputFormatterTest {
 
   @Test

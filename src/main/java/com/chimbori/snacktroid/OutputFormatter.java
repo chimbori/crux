@@ -12,10 +12,7 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 /**
- * @author goose | jim
- * @author karussell
- *         this class will be responsible for taking our top node and stripping out junk
- *         we don't want and getting it ready for how we want it presented to the user
+ * Takes the top node and strips out junk for presentation to the user.
  */
 public class OutputFormatter {
 
