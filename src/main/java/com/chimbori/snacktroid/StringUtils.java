@@ -18,12 +18,15 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
-class SHelper {
-
+class StringUtils {
   private static final String UTF8 = "UTF-8";
   private static final Pattern SPACE = Pattern.compile(" ");
 
-  public static String replaceSpaces(String url) {
+  private StringUtils() {
+    // Prevent instantiation.
+  }
+
+  static String replaceSpaces(String url) {
     if (!url.isEmpty()) {
       url = url.trim();
       if (url.contains(" ")) {
@@ -34,7 +37,7 @@ class SHelper {
     return url;
   }
 
-  public static int count(String str, String substring) {
+  static int count(String str, String substring) {
     int c = 0;
     int index1 = str.indexOf(substring);
     if (index1 >= 0) {
@@ -47,7 +50,7 @@ class SHelper {
   /**
    * remove more than two spaces or newlines
    */
-  public static String innerTrim(String str) {
+  static String innerTrim(String str) {
     if (str.isEmpty())
       return "";
 
@@ -73,7 +76,7 @@ class SHelper {
    * Starts reading the encoding from the first valid character until an
    * invalid encoding character occurs.
    */
-  public static String encodingCleanup(String str) {
+  static String encodingCleanup(String str) {
     StringBuilder sb = new StringBuilder();
     boolean startedWithCorrectString = false;
     for (int i = 0; i < str.length(); i++) {
@@ -93,7 +96,7 @@ class SHelper {
   /**
    * @return the longest substring as str1.substring(result[0], result[1]);
    */
-  public static String getLongestSubstring(String str1, String str2) {
+  static String getLongestSubstring(String str1, String str2) {
     int res[] = longestSubstring(str1, str2);
     if (res == null || res[0] >= res[1])
       return "";
@@ -133,16 +136,15 @@ class SHelper {
     return new int[]{lastSubstrBegin, endIndex};
   }
 
-  public static String getDefaultFavicon(String url) {
+  static String getDefaultFavicon(String url) {
     return useDomainOfFirstArg4Second(url, "/favicon.ico");
   }
 
   /**
    * @param urlForDomain extract the domain from this url
    * @param path         this url does not have a domain
-   * @return
    */
-  public static String useDomainOfFirstArg4Second(String urlForDomain, String path) {
+  static String useDomainOfFirstArg4Second(String urlForDomain, String path) {
     if (path.startsWith("http"))
       return path;
 
@@ -167,11 +169,11 @@ class SHelper {
     return path;
   }
 
-  public static String extractHost(String url) {
+  static String extractHost(String url) {
     return extractDomain(url, false);
   }
 
-  public static String extractDomain(String url, boolean aggressive) {
+  static String extractDomain(String url, boolean aggressive) {
     if (url.startsWith("http://"))
       url = url.substring("http://".length());
     else if (url.startsWith("https://"))
@@ -193,36 +195,36 @@ class SHelper {
     return url;
   }
 
-  public static boolean isVideoLink(String url) {
+  static boolean isVideoLink(String url) {
     url = extractDomain(url, true);
     return url.startsWith("youtube.com") || url.startsWith("video.yahoo.com")
         || url.startsWith("vimeo.com") || url.startsWith("blip.tv");
   }
 
-  public static boolean isVideo(String url) {
+  static boolean isVideo(String url) {
     return url.endsWith(".mpeg") || url.endsWith(".mpg") || url.endsWith(".avi") || url.endsWith(".mov")
         || url.endsWith(".mpg4") || url.endsWith(".mp4") || url.endsWith(".flv") || url.endsWith(".wmv");
   }
 
-  public static boolean isAudio(String url) {
+  static boolean isAudio(String url) {
     return url.endsWith(".mp3") || url.endsWith(".ogg") || url.endsWith(".m3u") || url.endsWith(".wav");
   }
 
-  public static boolean isDoc(String url) {
+  static boolean isDoc(String url) {
     return url.endsWith(".pdf") || url.endsWith(".ppt") || url.endsWith(".doc")
         || url.endsWith(".swf") || url.endsWith(".rtf") || url.endsWith(".xls");
   }
 
-  public static boolean isPackage(String url) {
+  static boolean isPackage(String url) {
     return url.endsWith(".gz") || url.endsWith(".tgz") || url.endsWith(".zip")
         || url.endsWith(".rar") || url.endsWith(".deb") || url.endsWith(".rpm") || url.endsWith(".7z");
   }
 
-  public static boolean isApp(String url) {
+  static boolean isApp(String url) {
     return url.endsWith(".exe") || url.endsWith(".bin") || url.endsWith(".bat") || url.endsWith(".dmg");
   }
 
-  public static boolean isImage(String url) {
+  static boolean isImage(String url) {
     return url.endsWith(".png") || url.endsWith(".jpeg") || url.endsWith(".gif")
         || url.endsWith(".jpg") || url.endsWith(".bmp") || url.endsWith(".ico") || url.endsWith(".eps");
   }
@@ -230,7 +232,7 @@ class SHelper {
   /**
    * @link http://blogs.sun.com/CoreJavaTechTips/entry/cookie_handling_in_java_se
    */
-  public static void enableCookieMgmt() {
+  static void enableCookieMgmt() {
     CookieManager manager = new CookieManager();
     manager.setCookiePolicy(CookiePolicy.ACCEPT_ALL);
     CookieHandler.setDefault(manager);
@@ -247,17 +249,16 @@ class SHelper {
     if (url.startsWith("http://www.google.com/url?")) {
       url = url.substring("http://www.google.com/url?".length());
       String arr[] = urlDecode(url).split("\\&");
-      if (arr != null)
-        for (String str : arr) {
-          if (str.startsWith("q="))
-            return str.substring("q=".length());
+      for (String str : arr) {
+        if (str.startsWith("q=")) {
+          return str.substring("q=".length());
         }
+      }
     }
-
     return null;
   }
 
-  public static String getUrlFromUglyFacebookRedirect(String url) {
+  static String getUrlFromUglyFacebookRedirect(String url) {
     if (url.startsWith("http://www.facebook.com/l.php?u=")) {
       url = url.substring("http://www.facebook.com/l.php?u=".length());
       return urlDecode(url);
@@ -278,11 +279,11 @@ class SHelper {
    * Popular sites uses the #! to indicate the importance of the following
    * chars. Ugly but true. Such as: facebook, twitter, gizmodo, ...
    */
-  public static String removeHashbang(String url) {
+  static String removeHashbang(String url) {
     return url.replaceFirst("#!", "");
   }
 
-  public static String printNode(Element root) {
+  static String printNode(Element root) {
     return printNode(root, 0);
   }
 
@@ -302,7 +303,7 @@ class SHelper {
     return sb.toString();
   }
 
-  public static String estimateDate(String url) {
+  static String estimateDate(String url) {
     int index = url.indexOf("://");
     if (index > 0)
       url = url.substring(index + 3);
@@ -375,7 +376,7 @@ class SHelper {
     return str.toString();
   }
 
-  public static String completeDate(String dateStr) {
+  static String completeDate(String dateStr) {
     if (dateStr == null)
       return null;
 
@@ -391,7 +392,7 @@ class SHelper {
   }
 
   // with the help of http://stackoverflow.com/questions/1828775/httpclient-and-ssl
-  public static void enableAnySSL() {
+  static void enableAnySSL() {
     try {
       SSLContext ctx = SSLContext.getInstance("TLS");
       ctx.init(new KeyManager[0], new TrustManager[]{new DefaultTrustManager()}, new SecureRandom());
@@ -402,7 +403,6 @@ class SHelper {
   }
 
   private static class DefaultTrustManager implements X509TrustManager {
-
     @Override
     public void checkClientTrusted(X509Certificate[] arg0, String arg1) throws CertificateException {
     }
@@ -417,7 +417,7 @@ class SHelper {
     }
   }
 
-  public static int countLetters(String str) {
+  static int countLetters(String str) {
     int len = str.length();
     int chars = 0;
     for (int i = 0; i < len; i++) {

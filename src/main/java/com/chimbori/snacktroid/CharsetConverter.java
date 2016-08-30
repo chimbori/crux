@@ -11,7 +11,7 @@ import java.nio.charset.Charset;
 /**
  * This class is not thread safe. Use one new instance every time due to encoding variable.
  */
-public class Converter {
+public class CharsetConverter {
   private static final Logger logger = Logger.getInstance();
 
   private final static String UTF8 = "UTF-8";
@@ -21,14 +21,14 @@ public class Converter {
   private String encoding;
   private String url;
 
-  public Converter(String urlOnlyHint) {
+  public CharsetConverter(String urlOnlyHint) {
     url = urlOnlyHint;
   }
 
-  public Converter() {
+  public CharsetConverter() {
   }
 
-  public Converter setMaxBytes(int maxBytes) {
+  public CharsetConverter setMaxBytes(int maxBytes) {
     this.maxBytes = maxBytes;
     return this;
   }
@@ -203,7 +203,7 @@ public class Converter {
       // re-read byte array with different encoding
       // assume that the encoding string cannot be greater than 40 chars
       if (lastEncIndex > encIndex + clength && lastEncIndex < encIndex + clength + 40) {
-        String tmpEnc = SHelper.encodingCleanup(str.substring(encIndex + clength, lastEncIndex));
+        String tmpEnc = StringUtils.encodingCleanup(str.substring(encIndex + clength, lastEncIndex));
         try {
           in.reset();
           bos.reset();

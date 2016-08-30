@@ -15,15 +15,15 @@ import static org.junit.Assert.assertTrue;
  * @author Alex P, (ifesdjeen from jreadability)
  * @author Peter Karich
  */
-public class ArticleTextExtractorTest {
+public class ExtractorTest {
 
-  private ArticleTextExtractor extractor;
-  private Converter c;
+  private Extractor extractor;
+  private CharsetConverter c;
 
   @Before
   public void setup() {
-    c = new Converter();
-    extractor = new ArticleTextExtractor();
+    c = new CharsetConverter();
+    extractor = new Extractor();
   }
 
   @Test
@@ -733,7 +733,7 @@ public class ArticleTextExtractorTest {
     ParsedResult article = extractor.extractContent(c.streamToString(getClass().getResourceAsStream("i4online.html")));
     assertTrue(article.text, article.text.startsWith("Just one week to go and everything is set for the summer Forum 2013"));
 
-    ArticleTextExtractor extractor2 = new ArticleTextExtractor();
+    Extractor extractor2 = new Extractor();
     OutputFormatter outputFormater = new OutputFormatter(10);
     outputFormater.setNodesToKeepCssSelector("p,h1,h2,h3,h4,h5,h6");
     extractor2.setOutputFormatter(outputFormater);

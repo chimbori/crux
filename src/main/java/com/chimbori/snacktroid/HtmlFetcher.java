@@ -22,9 +22,9 @@ import java.util.zip.InflaterInputStream;
 public class HtmlFetcher {
 
   static {
-    SHelper.enableCookieMgmt();
-    SHelper.enableUserAgentOverwrite();
-    SHelper.enableAnySSL();
+    StringUtils.enableCookieMgmt();
+    StringUtils.enableUserAgentOverwrite();
+    StringUtils.enableAnySSL();
   }
 
   private static final Logger logger = Logger.getInstance();
@@ -37,7 +37,7 @@ public class HtmlFetcher {
       int index1 = line.indexOf("\"");
       int index2 = line.indexOf("\"", index1 + 1);
       String url = line.substring(index1 + 1, index2);
-      String domainStr = SHelper.extractDomain(url, true);
+      String domainStr = StringUtils.extractDomain(url, true);
       String counterStr = "";
       // TODO more similarities
       if (existing.contains(domainStr))
@@ -60,11 +60,11 @@ public class HtmlFetcher {
   private String language = "en-us";
   private String accept = "application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5";
   private String charset = "UTF-8";
-  private SCache cache;
+  private Cache cache;
   private Proxy proxy = null;
   private final AtomicInteger cacheCounter = new AtomicInteger(0);
   private int maxTextLength = -1;
-  private ArticleTextExtractor extractor = new ArticleTextExtractor();
+  private Extractor extractor = new Extractor();
   private final Set<String> furtherResolveNecessary = new LinkedHashSet<String>() {
     {
       add("bit.ly");
@@ -109,12 +109,12 @@ public class HtmlFetcher {
 
   public ParsedResult fetchAndExtract(String url, int timeout, boolean resolve) throws Exception {
     String originalUrl = url;
-    url = SHelper.removeHashbang(url);
-    String gUrl = SHelper.getUrlFromUglyGoogleRedirect(url);
+    url = StringUtils.removeHashbang(url);
+    String gUrl = StringUtils.getUrlFromUglyGoogleRedirect(url);
     if (gUrl != null)
       url = gUrl;
     else {
-      gUrl = SHelper.getUrlFromUglyFacebookRedirect(url);
+      gUrl = StringUtils.getUrlFromUglyFacebookRedirect(url);
       if (gUrl != null)
         url = gUrl;
     }
@@ -141,7 +141,7 @@ public class HtmlFetcher {
       if (resUrl != null && resUrl.trim().length() > url.length()) {
         // this is necessary e.g. for some homebaken url resolvers which return
         // the resolved url relative to url!
-        url = SHelper.useDomainOfFirstArg4Second(url, resUrl);
+        url = StringUtils.useDomainOfFirstArg4Second(url, resUrl);
       }
     }
 
@@ -154,7 +154,7 @@ public class HtmlFetcher {
     // or should we use? <link rel="canonical" href="http://www.N24.de/news/newsitem_6797232.html"/>
     result.url = url;
     result.originalUrl = originalUrl;
-    result.dateString = SHelper.estimateDate(url);
+    result.dateString = StringUtils.estimateDate(url);
 
     // Immediately put the url into the cache as extracting content takes time.
     if (cache != null) {
@@ -163,16 +163,16 @@ public class HtmlFetcher {
     }
 
     String lowerUrl = url.toLowerCase();
-    if (SHelper.isDoc(lowerUrl) || SHelper.isApp(lowerUrl) || SHelper.isPackage(lowerUrl)) {
+    if (StringUtils.isDoc(lowerUrl) || StringUtils.isApp(lowerUrl) || StringUtils.isPackage(lowerUrl)) {
       // skip
-    } else if (SHelper.isVideo(lowerUrl) || SHelper.isAudio(lowerUrl)) {
+    } else if (StringUtils.isVideo(lowerUrl) || StringUtils.isAudio(lowerUrl)) {
       result.videoUrl = url;
-    } else if (SHelper.isImage(lowerUrl)) {
+    } else if (StringUtils.isImage(lowerUrl)) {
       result.imageUrl = url;
     } else {
       extractor.extractContent(result, fetchAsString(url, timeout));
       if (result.faviconUrl.isEmpty()) {
-        result.faviconUrl = SHelper.getDefaultFavicon(url);
+        result.faviconUrl = StringUtils.getDefaultFavicon(url);
       }
 
       // some links are relative to root and do not include the domain of the url :(
@@ -199,7 +199,7 @@ public class HtmlFetcher {
   }
 
   private static String fixUrl(String url, String urlOrPath) {
-    return SHelper.useDomainOfFirstArg4Second(url, urlOrPath);
+    return StringUtils.useDomainOfFirstArg4Second(url, urlOrPath);
   }
 
   public String fetchAsString(String urlAsString, int timeout)
@@ -221,15 +221,15 @@ public class HtmlFetcher {
       is = hConn.getInputStream();
     }
 
-    String enc = Converter.extractEncoding(hConn.getContentType());
+    String enc = CharsetConverter.extractEncoding(hConn.getContentType());
     String res = createConverter(urlAsString).streamToString(is, enc);
     if (logger.isDebugEnabled())
       logger.debug(res.length() + " FetchAsString:" + urlAsString);
     return res;
   }
 
-  private Converter createConverter(String url) {
-    return new Converter(url);
+  private CharsetConverter createConverter(String url) {
+    return new CharsetConverter(url);
   }
 
   /**
@@ -264,7 +264,7 @@ public class HtmlFetcher {
           newUrl = encodeUriFromHeader(newUrl);
 
         // fix problems if shortened twice. as it is often the case after twitters' t.co bullshit
-        if (furtherResolveNecessary.contains(SHelper.extractDomain(newUrl, true)))
+        if (furtherResolveNecessary.contains(StringUtils.extractDomain(newUrl, true)))
           newUrl = getResolvedUrl(newUrl, timeout);
 
         return newUrl;

@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
 
-public class ArticleTextExtractor {
+public class Extractor {
   private static final Logger logger = Logger.getInstance();
   // Interesting nodes
   private static final Pattern NODES = Pattern.compile("p|div|td|h1|h2|article|section");
@@ -41,7 +41,7 @@ public class ArticleTextExtractor {
   private static final OutputFormatter DEFAULT_FORMATTER = new OutputFormatter();
   private OutputFormatter formatter = DEFAULT_FORMATTER;
 
-  public ArticleTextExtractor() {
+  public Extractor() {
     setUnlikely("com(bx|ment|munity)|dis(qus|cuss)|e(xtra|[-]?mail)|foot|"
         + "header|menu|re(mark|ply)|rss|sh(are|outbox)|sponsor"
         + "a(d|ll|gegate|rchive|ttachment)|(pag(er|ination))|popup|print|"
@@ -53,33 +53,33 @@ public class ArticleTextExtractor {
         + "sidebar|sponsor|tags|tool|widget|player|disclaimer|toc|infobox|vcard|post-ratings");
   }
 
-  private ArticleTextExtractor setUnlikely(String unlikelyStr) {
+  private Extractor setUnlikely(String unlikelyStr) {
     this.unlikelyStr = unlikelyStr;
     UNLIKELY = Pattern.compile(unlikelyStr);
     return this;
   }
 
-  public ArticleTextExtractor addUnlikely(String unlikelyMatches) {
+  public Extractor addUnlikely(String unlikelyMatches) {
     return setUnlikely(unlikelyStr + "|" + unlikelyMatches);
   }
 
-  private ArticleTextExtractor setPositive(String positiveStr) {
+  private Extractor setPositive(String positiveStr) {
     this.positiveStr = positiveStr;
     POSITIVE = Pattern.compile(positiveStr);
     return this;
   }
 
-  public ArticleTextExtractor addPositive(String pos) {
+  public Extractor addPositive(String pos) {
     return setPositive(positiveStr + "|" + pos);
   }
 
-  private ArticleTextExtractor setNegative(String negativeStr) {
+  private Extractor setNegative(String negativeStr) {
     this.negativeStr = negativeStr;
     NEGATIVE = Pattern.compile(negativeStr);
     return this;
   }
 
-  public ArticleTextExtractor addNegative(String neg) {
+  public Extractor addNegative(String neg) {
     setNegative(negativeStr + "|" + neg);
     return this;
   }
@@ -143,10 +143,10 @@ public class ArticleTextExtractor {
     }
 
     if (bestMatchElement != null) {
-      List<ImageResult> images = new ArrayList<>();
+      List<ParsedResult.ImageResult> images = new ArrayList<>();
       Element imgEl = determineImageSource(bestMatchElement, images);
       if (imgEl != null) {
-        res.imageUrl = SHelper.replaceSpaces(imgEl.attr("src"));
+        res.imageUrl = StringUtils.replaceSpaces(imgEl.attr("src"));
         // TODO remove parent container of image if it is contained in bestMatchElement
         // to avoid image subtitles flooding in
 
@@ -177,13 +177,13 @@ public class ArticleTextExtractor {
   private String extractTitle(Document doc) {
     String title = cleanTitle(doc.title());
     if (title.isEmpty()) {
-      title = SHelper.innerTrim(doc.select("head title").text());
+      title = StringUtils.innerTrim(doc.select("head title").text());
       if (title.isEmpty()) {
-        title = SHelper.innerTrim(doc.select("head meta[name=title]").attr("content"));
+        title = StringUtils.innerTrim(doc.select("head meta[name=title]").attr("content"));
         if (title.isEmpty()) {
-          title = SHelper.innerTrim(doc.select("head meta[property=og:title]").attr("content"));
+          title = StringUtils.innerTrim(doc.select("head meta[property=og:title]").attr("content"));
           if (title.isEmpty()) {
-            title = SHelper.innerTrim(doc.select("head meta[name=twitter:title]").attr("content"));
+            title = StringUtils.innerTrim(doc.select("head meta[name=twitter:title]").attr("content"));
           }
         }
       }
@@ -192,29 +192,29 @@ public class ArticleTextExtractor {
   }
 
   private String extractCanonicalUrl(Document doc) {
-    String url = SHelper.replaceSpaces(doc.select("head link[rel=canonical]").attr("href"));
+    String url = StringUtils.replaceSpaces(doc.select("head link[rel=canonical]").attr("href"));
     if (url.isEmpty()) {
-      url = SHelper.replaceSpaces(doc.select("head meta[property=og:url]").attr("content"));
+      url = StringUtils.replaceSpaces(doc.select("head meta[property=og:url]").attr("content"));
       if (url.isEmpty()) {
-        url = SHelper.replaceSpaces(doc.select("head meta[name=twitter:url]").attr("content"));
+        url = StringUtils.replaceSpaces(doc.select("head meta[name=twitter:url]").attr("content"));
       }
     }
     return url;
   }
 
   private String extractDescription(Document doc) {
-    String description = SHelper.innerTrim(doc.select("head meta[name=description]").attr("content"));
+    String description = StringUtils.innerTrim(doc.select("head meta[name=description]").attr("content"));
     if (description.isEmpty()) {
-      description = SHelper.innerTrim(doc.select("head meta[property=og:description]").attr("content"));
+      description = StringUtils.innerTrim(doc.select("head meta[property=og:description]").attr("content"));
       if (description.isEmpty()) {
-        description = SHelper.innerTrim(doc.select("head meta[name=twitter:description]").attr("content"));
+        description = StringUtils.innerTrim(doc.select("head meta[name=twitter:description]").attr("content"));
       }
     }
     return description;
   }
 
   private Collection<String> extractKeywords(Document doc) {
-    String content = SHelper.innerTrim(doc.select("head meta[name=keywords]").attr("content"));
+    String content = StringUtils.innerTrim(doc.select("head meta[name=keywords]").attr("content"));
 
     if (content != null) {
       if (content.startsWith("[") && content.endsWith("]"))
@@ -235,14 +235,14 @@ public class ArticleTextExtractor {
    */
   private String extractImageUrl(Document doc) {
     // use open graph tag to get image
-    String imageUrl = SHelper.replaceSpaces(doc.select("head meta[property=og:image]").attr("content"));
+    String imageUrl = StringUtils.replaceSpaces(doc.select("head meta[property=og:image]").attr("content"));
     if (imageUrl.isEmpty()) {
-      imageUrl = SHelper.replaceSpaces(doc.select("head meta[name=twitter:image]").attr("content"));
+      imageUrl = StringUtils.replaceSpaces(doc.select("head meta[name=twitter:image]").attr("content"));
       if (imageUrl.isEmpty()) {
         // prefer link over thumbnail-meta if empty
-        imageUrl = SHelper.replaceSpaces(doc.select("link[rel=image_src]").attr("href"));
+        imageUrl = StringUtils.replaceSpaces(doc.select("link[rel=image_src]").attr("href"));
         if (imageUrl.isEmpty()) {
-          imageUrl = SHelper.replaceSpaces(doc.select("head meta[name=thumbnail]").attr("content"));
+          imageUrl = StringUtils.replaceSpaces(doc.select("head meta[name=thumbnail]").attr("content"));
         }
       }
     }
@@ -250,17 +250,17 @@ public class ArticleTextExtractor {
   }
 
   private String extractRssUrl(Document doc) {
-    return SHelper.replaceSpaces(doc.select("link[rel=alternate]").select("link[type=application/rss+xml]").attr("href"));
+    return StringUtils.replaceSpaces(doc.select("link[rel=alternate]").select("link[type=application/rss+xml]").attr("href"));
   }
 
   private String extractVideoUrl(Document doc) {
-    return SHelper.replaceSpaces(doc.select("head meta[property=og:video]").attr("content"));
+    return StringUtils.replaceSpaces(doc.select("head meta[property=og:video]").attr("content"));
   }
 
   private String extractFaviconUrl(Document doc) {
-    String faviconUrl = SHelper.replaceSpaces(doc.select("head link[rel=icon]").attr("href"));
+    String faviconUrl = StringUtils.replaceSpaces(doc.select("head link[rel=icon]").attr("href"));
     if (faviconUrl.isEmpty()) {
-      faviconUrl = SHelper.replaceSpaces(doc.select("head link[rel^=shortcut],link[rel$=icon]").attr("href"));
+      faviconUrl = StringUtils.replaceSpaces(doc.select("head link[rel^=shortcut],link[rel$=icon]").attr("href"));
     }
     return faviconUrl;
   }
@@ -362,10 +362,10 @@ public class ArticleTextExtractor {
   }
 
   private int calcWeightForChild(Element child, String ownText) {
-    int c = SHelper.count(ownText, "&quot;");
-    c += SHelper.count(ownText, "&lt;");
-    c += SHelper.count(ownText, "&gt;");
-    c += SHelper.count(ownText, "px");
+    int c = StringUtils.count(ownText, "&quot;");
+    c += StringUtils.count(ownText, "&lt;");
+    c += StringUtils.count(ownText, "&gt;");
+    c += StringUtils.count(ownText, "px");
     int val;
     if (c > 5)
       val = -30;
@@ -402,7 +402,7 @@ public class ArticleTextExtractor {
     return weight;
   }
 
-  private Element determineImageSource(Element el, List<ImageResult> images) {
+  private Element determineImageSource(Element el, List<ParsedResult.ImageResult> images) {
     int maxWeight = 0;
     Element maxNode = null;
     Elements els = el.select("img");
@@ -462,7 +462,7 @@ public class ArticleTextExtractor {
         score = score / 2;
       }
 
-      ImageResult image = new ImageResult(sourceUrl, weight, title, height, width, alt, noFollow);
+      ParsedResult.ImageResult image = new ParsedResult.ImageResult(sourceUrl, weight, title, height, width, alt, noFollow);
       images.add(image);
     }
 
@@ -535,7 +535,7 @@ public class ArticleTextExtractor {
   }
 
   private boolean isAdImage(String imageUrl) {
-    return SHelper.count(imageUrl, "ad") >= 2;
+    return StringUtils.count(imageUrl, "ad") >= 2;
   }
 
   /**
@@ -598,16 +598,16 @@ public class ArticleTextExtractor {
       counter++;
     }
 
-    return SHelper.innerTrim(res.toString());
+    return StringUtils.innerTrim(res.toString());
   }
 
   /**
    * Comparator for Image by weight
    */
-  private class ImageComparator implements Comparator<ImageResult> {
+  private class ImageComparator implements Comparator<ParsedResult.ImageResult> {
 
     @Override
-    public int compare(ImageResult o1, ImageResult o2) {
+    public int compare(ParsedResult.ImageResult o1, ParsedResult.ImageResult o2) {
       // Returns the highest weight first
       return o2.weight.compareTo(o1.weight);
     }

@@ -9,15 +9,15 @@ import java.io.FileReader;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-public class ArticleTextExtractorTodoTester {
+public class ExtractorTodoTest {
 
-  private ArticleTextExtractor extractor;
-  private Converter c;
+  private Extractor extractor;
+  private CharsetConverter c;
 
   @Before
   public void setup() {
-    c = new Converter();
-    extractor = new ArticleTextExtractor();
+    c = new CharsetConverter();
+    extractor = new Extractor();
   }
 
   //    @Test

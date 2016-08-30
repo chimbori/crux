@@ -48,7 +48,7 @@ public class OutputFormatter {
     removeNodesWithNegativeScores(topNode);
     StringBuilder sb = new StringBuilder();
     append(topNode, sb, nodesToKeepCssSelector);
-    String str = SHelper.innerTrim(sb.toString());
+    String str = StringUtils.innerTrim(sb.toString());
     if (str.length() > 100)
       return str;
 
@@ -100,7 +100,7 @@ public class OutputFormatter {
       }
 
       String text = node2Text(e);
-      if (text.isEmpty() || text.length() < minParagraphText || text.length() > SHelper.countLetters(text) * 2)
+      if (text.isEmpty() || text.length() < minParagraphText || text.length() > StringUtils.countLetters(text) * 2)
         continue;
 
       sb.append(text);
