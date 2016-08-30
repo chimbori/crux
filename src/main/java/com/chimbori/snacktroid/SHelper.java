@@ -7,11 +7,9 @@ import java.net.CookieHandler;
 import java.net.CookieManager;
 import java.net.CookiePolicy;
 import java.net.URLDecoder;
-import java.net.URLEncoder;
 import java.security.SecureRandom;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
-import java.text.SimpleDateFormat;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -230,7 +228,7 @@ class SHelper {
   }
 
   /**
-   * @see http://blogs.sun.com/CoreJavaTechTips/entry/cookie_handling_in_java_se
+   * @link http://blogs.sun.com/CoreJavaTechTips/entry/cookie_handling_in_java_se
    */
   public static void enableCookieMgmt() {
     CookieManager manager = new CookieManager();
@@ -239,7 +237,7 @@ class SHelper {
   }
 
   /**
-   * @see http://stackoverflow.com/questions/2529682/setting-user-agent-of-a-java-urlconnection
+   * @link http://stackoverflow.com/questions/2529682/setting-user-agent-of-a-java-urlconnection
    */
   static void enableUserAgentOverwrite() {
     System.setProperty("http.agent", "");
