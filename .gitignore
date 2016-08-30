@@ -1,5 +1,5 @@
-target/
-nb-configuration.xml
-nbactions.xml
-*~
-deploy-*.sh
+*.iml
+.gradle/
+.idea/
+build/
+local.properties

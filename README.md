@@ -11,7 +11,7 @@ and [JReadability](https://github.com/ifesdjeen/jReadability).
 
 Snacktroid is a work in progress. Not all goals have been met yet, but here’s a list of what we want to achieve with Snacktroid.
 
-- Fewer dependencies: JSoup is the only required dependency. log4j and slf4j-api are not required.
+- Fewer dependencies: JSoup is the only required dependency.
 - Fewer setters/getters, to keep the method count low.
 - The ability to use HTTP libraries besides the default HttpUrlConnection, such as OkHttp, under the hood.
 - First-class support for importing via Gradle.
