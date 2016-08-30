@@ -133,7 +133,8 @@ public class HtmlFetcher {
         ParsedResult result = new ParsedResult();
         if (cache != null)
           cache.put(url, result);
-        return result.setUrl(url);
+        result.url = url;
+        return result;
       }
 
       // if resolved url is longer then use it!
@@ -151,9 +152,9 @@ public class HtmlFetcher {
 
     ParsedResult result = new ParsedResult();
     // or should we use? <link rel="canonical" href="http://www.N24.de/news/newsitem_6797232.html"/>
-    result.setUrl(url);
-    result.setOriginalUrl(originalUrl);
-    result.setDate(SHelper.estimateDate(url));
+    result.url = url;
+    result.originalUrl = originalUrl;
+    result.dateString = SHelper.estimateDate(url);
 
     // Immediately put the url into the cache as extracting content takes time.
     if (cache != null) {
@@ -165,22 +166,22 @@ public class HtmlFetcher {
     if (SHelper.isDoc(lowerUrl) || SHelper.isApp(lowerUrl) || SHelper.isPackage(lowerUrl)) {
       // skip
     } else if (SHelper.isVideo(lowerUrl) || SHelper.isAudio(lowerUrl)) {
-      result.setVideoUrl(url);
+      result.videoUrl = url;
     } else if (SHelper.isImage(lowerUrl)) {
-      result.setImageUrl(url);
+      result.imageUrl = url;
     } else {
       extractor.extractContent(result, fetchAsString(url, timeout));
       if (result.faviconUrl.isEmpty()) {
-        result.setFaviconUrl(SHelper.getDefaultFavicon(url));
+        result.faviconUrl = SHelper.getDefaultFavicon(url);
       }
 
       // some links are relative to root and do not include the domain of the url :(
-      result.setFaviconUrl(fixUrl(url, result.faviconUrl));
-      result.setImageUrl(fixUrl(url, result.imageUrl));
-      result.setVideoUrl(fixUrl(url, result.videoUrl));
-      result.setRssUrl(fixUrl(url, result.rssUrl));
+      result.faviconUrl = fixUrl(url, result.faviconUrl);
+      result.imageUrl = fixUrl(url, result.imageUrl);
+      result.videoUrl = fixUrl(url, result.videoUrl);
+      result.rssUrl = fixUrl(url, result.rssUrl);
     }
-    result.setText(lessText(result.text));
+    result.text = lessText(result.text);
     synchronized (result) {
       result.notifyAll();
     }
@@ -331,8 +332,8 @@ public class HtmlFetcher {
         // e.g. the cache returned a shortened url as original url now we want to store the
         // current original url! Also it can be that the cache response to url but the ParsedResult
         // does not contain it so overwrite it:
-        res.setUrl(url);
-        res.setOriginalUrl(originalUrl);
+        res.url = url;
+        res.originalUrl = originalUrl;
         cacheCounter.addAndGet(1);
         return res;
       }

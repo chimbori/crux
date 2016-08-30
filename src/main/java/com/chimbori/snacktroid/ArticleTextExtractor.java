@@ -121,9 +121,9 @@ public class ArticleTextExtractor {
     if (doc == null)
       throw new NullPointerException("missing document");
 
-    res.setTitle(extractTitle(doc));
-    res.setDescription(extractDescription(doc));
-    res.setCanonicalUrl(extractCanonicalUrl(doc));
+    res.title = extractTitle(doc);
+    res.description = extractDescription(doc);
+    res.canonicalUrl = extractCanonicalUrl(doc);
 
     // now remove the clutter
     prepareDocument(doc);
@@ -146,31 +146,31 @@ public class ArticleTextExtractor {
       List<ImageResult> images = new ArrayList<>();
       Element imgEl = determineImageSource(bestMatchElement, images);
       if (imgEl != null) {
-        res.setImageUrl(SHelper.replaceSpaces(imgEl.attr("src")));
+        res.imageUrl = SHelper.replaceSpaces(imgEl.attr("src"));
         // TODO remove parent container of image if it is contained in bestMatchElement
         // to avoid image subtitles flooding in
 
-        res.setImages(images);
+        res.images = images;
       }
 
       // clean before grabbing text
       String text = formatter.getFormattedText(bestMatchElement);
       // this fails for short facebook post and probably tweets: text.length() > res.description.length()
       if (text.length() > res.title.length()) {
-        res.setText(text);
+        res.text = text;
         // print("best element:", bestMatchElement);
       }
-      res.setTextList(formatter.getTextList(bestMatchElement));
+      res.textList = formatter.getTextList(bestMatchElement);
     }
 
     if (res.imageUrl.isEmpty()) {
-      res.setImageUrl(extractImageUrl(doc));
+      res.imageUrl = extractImageUrl(doc);
     }
 
-    res.setRssUrl(extractRssUrl(doc));
-    res.setVideoUrl(extractVideoUrl(doc));
-    res.setFaviconUrl(extractFaviconUrl(doc));
-    res.setKeywords(extractKeywords(doc));
+    res.rssUrl = extractRssUrl(doc);
+    res.videoUrl = extractVideoUrl(doc);
+    res.faviconUrl = extractFaviconUrl(doc);
+    res.keywords = extractKeywords(doc);
     return res;
   }
 
