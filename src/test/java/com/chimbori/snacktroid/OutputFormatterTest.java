@@ -13,10 +13,9 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package de.jetwick.snacktory;
+package com.chimbori.snacktroid;
 
 import java.util.Arrays;
-import java.util.List;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;

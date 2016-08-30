@@ -1,4 +1,4 @@
-package de.jetwick.snacktory;
+package com.chimbori.snacktroid;
 
 import org.junit.Before;
 import org.junit.Test;

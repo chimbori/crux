@@ -1,4 +1,4 @@
-package de.jetwick.snacktory;
+package com.chimbori.snacktroid;
 
 import java.util.ArrayList;
 import java.util.Arrays;
