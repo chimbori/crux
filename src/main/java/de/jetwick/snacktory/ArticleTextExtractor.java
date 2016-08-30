@@ -15,8 +15,6 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * This class is thread safe.
@@ -25,8 +23,7 @@ import org.slf4j.LoggerFactory;
  * @author Peter Karich
  */
 public class ArticleTextExtractor {
-
-    private static final Logger logger = LoggerFactory.getLogger(ArticleTextExtractor.class);
+    private static final Logger logger = Logger.getInstance();
     // Interessting nodes
     private static final Pattern NODES = Pattern.compile("p|div|td|h1|h2|article|section");
     // Unlikely candidates
@@ -97,7 +94,7 @@ public class ArticleTextExtractor {
     }
 
     /**
-     * @param html extracts article text from given html string. wasn't tested
+     * @param doc extracts article text from given html string. wasn't tested
      * with improper HTML, although jSoup should be able to handle minor stuff.
      * @returns extracted article, all HTML tags stripped
      */

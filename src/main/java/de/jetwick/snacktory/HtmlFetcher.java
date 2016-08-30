@@ -32,9 +32,6 @@ import java.util.zip.GZIPInputStream;
 import java.util.zip.Inflater;
 import java.util.zip.InflaterInputStream;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 /**
  * Class to fetch articles. This class is thread safe.
  *
@@ -47,7 +44,7 @@ public class HtmlFetcher {
         SHelper.enableUserAgentOverwrite();
         SHelper.enableAnySSL();
     }
-    private static final Logger logger = LoggerFactory.getLogger(HtmlFetcher.class);
+    private static final Logger logger = Logger.getInstance();
 
     public static void main(String[] args) throws Exception {
         BufferedReader reader = new BufferedReader(new FileReader("urls.txt"));

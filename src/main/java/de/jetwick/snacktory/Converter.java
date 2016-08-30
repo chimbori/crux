@@ -18,8 +18,6 @@ package de.jetwick.snacktory;
 import java.io.*;
 import java.net.SocketTimeoutException;
 import java.nio.charset.Charset;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * This class is not thread safe. Use one new instance every time due to
@@ -28,8 +26,8 @@ import org.slf4j.LoggerFactory;
  * @author Peter Karich
  */
 public class Converter {
+    private static final Logger logger = Logger.getInstance();
 
-    private static final Logger logger = LoggerFactory.getLogger(Converter.class);
     public final static String UTF8 = "UTF-8";
     public final static String ISO = "ISO-8859-1";
     public final static int K2 = 2048;
@@ -151,7 +149,7 @@ public class Converter {
         } catch (SocketTimeoutException e) {
             logger.info(e.toString() + " url:" + url);
         } catch (IOException e) {
-            logger.warn(e.toString() + " url:" + url);
+            logger.warn(e.toString() + " url:" + url, e);
         } finally {
             if (in != null) {
                 try {
@@ -225,7 +223,7 @@ public class Converter {
                     return tmpEnc;
                 } catch (IOException ex) {
                     logger.warn("Couldn't reset stream to re-read with new encoding " + tmpEnc + " "
-                            + ex.toString());
+                            + ex.toString(), ex);
                 }
             }
         }
