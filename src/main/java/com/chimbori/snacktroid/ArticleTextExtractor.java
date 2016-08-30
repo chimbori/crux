@@ -161,11 +161,10 @@ public class ArticleTextExtractor {
 
       // clean before grabbing text
       String text = formatter.getFormattedText(bestMatchElement);
-      text = removeTitleFromText(text, res.getTitle());
       // this fails for short facebook post and probably tweets: text.length() > res.getDescription().length()
       if (text.length() > res.getTitle().length()) {
         res.setText(text);
-//                print("best element:", bestMatchElement);
+        // print("best element:", bestMatchElement);
       }
       res.setTextList(formatter.getTextList(bestMatchElement));
     }
