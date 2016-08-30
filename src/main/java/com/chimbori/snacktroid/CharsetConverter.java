@@ -19,13 +19,14 @@ public class CharsetConverter {
   private final static int K2 = 2048;
   private int maxBytes = 1000000 / 2;
   private String encoding;
-  private String url;
-
-  public CharsetConverter(String urlOnlyHint) {
-    url = urlOnlyHint;
-  }
+  private String tag;
 
   public CharsetConverter() {
+    tag = "DEBUG";
+  }
+
+  public CharsetConverter(String tagForLogging) {
+    tag = tagForLogging;
   }
 
   public CharsetConverter setMaxBytes(int maxBytes) {
@@ -109,7 +110,7 @@ public class CharsetConverter {
           throw new UnsupportedEncodingException(encoding);
       } catch (UnsupportedEncodingException e) {
         logger.warn("Using default encoding:" + UTF8
-            + " problem:" + e.getMessage() + " encoding:" + encoding + " " + url);
+            + " problem:" + e.getMessage() + " encoding:" + encoding + " " + tag);
         encoding = UTF8;
       }
 
@@ -120,7 +121,7 @@ public class CharsetConverter {
       byte[] arr = new byte[K2];
       while (true) {
         if (bytesRead >= maxBytes) {
-          logger.warn("Maxbyte of " + maxBytes + " exceeded! Maybe html is now broken but try it nevertheless. Url: " + url);
+          logger.warn("Maxbyte of " + maxBytes + " exceeded! Maybe html is now broken but try it nevertheless. Url: " + tag);
           break;
         }
 
@@ -133,9 +134,9 @@ public class CharsetConverter {
 
       return output.toString(encoding);
     } catch (SocketTimeoutException e) {
-      logger.info(e.toString() + " url:" + url);
+      logger.info(e.toString() + " tag:" + tag);
     } catch (IOException e) {
-      logger.warn(e.toString() + " url:" + url, e);
+      logger.warn(e.toString() + " tag:" + tag, e);
     } finally {
       if (in != null) {
         try {

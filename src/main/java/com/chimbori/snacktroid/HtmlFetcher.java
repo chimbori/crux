@@ -222,14 +222,10 @@ public class HtmlFetcher {
     }
 
     String enc = CharsetConverter.extractEncoding(hConn.getContentType());
-    String res = createConverter(urlAsString).streamToString(is, enc);
+    String res = new CharsetConverter(urlAsString).streamToString(is, enc);
     if (logger.isDebugEnabled())
       logger.debug(res.length() + " FetchAsString:" + urlAsString);
     return res;
-  }
-
-  private CharsetConverter createConverter(String url) {
-    return new CharsetConverter(url);
   }
 
   /**
