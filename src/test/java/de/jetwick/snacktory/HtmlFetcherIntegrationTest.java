@@ -69,7 +69,7 @@ public class HtmlFetcherIntegrationTest {
         assertEquals("科学・ＩＴニュース：読売新聞(YOMIURI ONLINE)", res.getTitle());
     }
 
-    @Test
+//    @Test
     public void testHashbang() throws Exception {
         JResult res = new HtmlFetcher().fetchAndExtract("http://www.facebook.com/democracynow", 10000, true);
         assertTrue(res.getTitle(), res.getTitle().startsWith("Democracy Now!"));
@@ -86,7 +86,7 @@ public class HtmlFetcherIntegrationTest {
         assertTrue(res.getText().isEmpty());
     }
 
-    @Test
+//    @Test
     public void testFurther() throws Exception {
         JResult res = new HtmlFetcher().fetchAndExtract("https://linksunten.indymedia.org/de/node/41619?utm_source=twitterfeed&utm_medium=twitter", 10000, true);
         assertTrue(res.getText(), res.getText().startsWith("Es gibt kein ruhiges Hinterland! Schon wieder den "));
