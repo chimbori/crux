@@ -5,7 +5,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
-import java.net.SocketTimeoutException;
 import java.nio.charset.Charset;
 
 /**
@@ -17,21 +16,19 @@ public class CharsetConverter {
   private final static String UTF8 = "UTF-8";
   private final static String ISO = "ISO-8859-1";
   private final static int K2 = 2048;
-  private int maxBytes = 1000000 / 2;
-  private String encoding;
-  private String tag;
+  private static final int DEFAULT_MAX_BYTES = 500 * 1024;
 
-  public CharsetConverter() {
-    tag = "DEBUG";
+  public static class StringWithEncoding {
+    public String content;
+    public String encoding;
+
+    public StringWithEncoding(String content, String encoding) {
+      this.content = content;
+      this.encoding = encoding;
+    }
   }
 
-  public CharsetConverter(String tagForLogging) {
-    tag = tagForLogging;
-  }
-
-  public CharsetConverter setMaxBytes(int maxBytes) {
-    this.maxBytes = maxBytes;
-    return this;
+  private CharsetConverter() {
   }
 
   public static String extractEncoding(String contentType) {
@@ -57,49 +54,29 @@ public class CharsetConverter {
     return charset;
   }
 
-  public String getEncoding() {
-    if (encoding == null)
-      return "";
-    return encoding.toLowerCase();
+  static StringWithEncoding readStream(InputStream inputStream, String encoding) {
+    return readStream(inputStream, encoding, DEFAULT_MAX_BYTES);
   }
 
-  public String streamToString(InputStream is) {
-    return streamToString(is, maxBytes, encoding);
-  }
-
-  public String streamToString(InputStream is, String enc) {
-    return streamToString(is, maxBytes, enc);
-  }
-
-  /**
-   * reads bytes off the string and returns a string
-   *
-   * @param is
-   * @param maxBytes The max bytes that we want to read from the input stream
-   * @return String
-   */
-  private String streamToString(InputStream is, int maxBytes, String enc) {
-    encoding = enc;
-    // Http 1.1. standard is iso-8859-1 not utf8 :(
-    // but we force utf-8 as youtube assumes it ;)
-    if (encoding == null || encoding.isEmpty())
-      encoding = UTF8;
+  static StringWithEncoding readStream(InputStream inputStream, String encoding, int maxBytes) {
+    // HTTP 1.1 standard is iso-8859-1 not utf8 but we force utf-8 as YouTube assumes it.
+    encoding = encoding == null || encoding.isEmpty() ? UTF8 : encoding.toLowerCase();
 
     BufferedInputStream in = null;
     try {
-      in = new BufferedInputStream(is, K2);
-      ByteArrayOutputStream output = new ByteArrayOutputStream();
+      in = new BufferedInputStream(inputStream, K2);
+      ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
       // detect encoding with the help of meta tag
       try {
         in.mark(K2 * 2);
-        String tmpEnc = detectCharset("charset=", output, in, encoding);
+        String tmpEnc = detectCharset("charset=", outputStream, in, encoding);
         if (tmpEnc != null)
           encoding = tmpEnc;
         else {
           logger.debug("no charset found in first stage");
           // detect with the help of xml beginning ala encoding="charset"
-          tmpEnc = detectCharset("encoding=", output, in, encoding);
+          tmpEnc = detectCharset("encoding=", outputStream, in, encoding);
           if (tmpEnc != null)
             encoding = tmpEnc;
           else
@@ -110,18 +87,18 @@ public class CharsetConverter {
           throw new UnsupportedEncodingException(encoding);
       } catch (UnsupportedEncodingException e) {
         logger.warn("Using default encoding:" + UTF8
-            + " problem:" + e.getMessage() + " encoding:" + encoding + " " + tag);
+            + " problem:" + e.getMessage() + " encoding:" + encoding);
         encoding = UTF8;
       }
 
       // SocketException: Connection reset
       // IOException: missing CR    => problem on server (probably some xml character thing?)
       // IOException: Premature EOF => socket unexpectedly closed from server
-      int bytesRead = output.size();
+      int bytesRead = outputStream.size();
       byte[] arr = new byte[K2];
       while (true) {
         if (bytesRead >= maxBytes) {
-          logger.warn("Maxbyte of " + maxBytes + " exceeded! Maybe html is now broken but try it nevertheless. Url: " + tag);
+          logger.warn("maxBytes " + maxBytes + " exceeded. HTML may be broken.");
           break;
         }
 
@@ -129,14 +106,13 @@ public class CharsetConverter {
         if (n < 0)
           break;
         bytesRead += n;
-        output.write(arr, 0, n);
+        outputStream.write(arr, 0, n);
       }
 
-      return output.toString(encoding);
-    } catch (SocketTimeoutException e) {
-      logger.info(e.toString() + " tag:" + tag);
+      return new StringWithEncoding(outputStream.toString(encoding), encoding.toLowerCase());
+
     } catch (IOException e) {
-      logger.warn(e.toString() + " tag:" + tag, e);
+      e.printStackTrace();
     } finally {
       if (in != null) {
         try {
@@ -146,7 +122,7 @@ public class CharsetConverter {
         }
       }
     }
-    return "";
+    return null;
   }
 
   /**
@@ -156,7 +132,7 @@ public class CharsetConverter {
    *
    * @throws IOException
    */
-  private String detectCharset(String key, ByteArrayOutputStream bos, BufferedInputStream in,
+  private static String detectCharset(String key, ByteArrayOutputStream bos, BufferedInputStream in,
                                String enc) throws IOException {
 
     // Grab better encoding from stream

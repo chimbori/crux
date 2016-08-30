@@ -101,15 +101,15 @@ public class Extractor {
     return extractContent(new ParsedResult(), doc, formatter);
   }
 
-  public ParsedResult extractContent(String html) throws Exception {
+  public ParsedResult extractContent(String html) {
     return extractContent(new ParsedResult(), html);
   }
 
-  public ParsedResult extractContent(ParsedResult res, String html) throws Exception {
+  public ParsedResult extractContent(ParsedResult res, String html) {
     return extractContent(res, html, formatter);
   }
 
-  private ParsedResult extractContent(ParsedResult res, String html, OutputFormatter formatter) throws Exception {
+  private ParsedResult extractContent(ParsedResult res, String html, OutputFormatter formatter) {
     if (html.isEmpty())
       throw new IllegalArgumentException("html string is empty!?");
 

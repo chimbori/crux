@@ -212,17 +212,17 @@ public class HtmlFetcher {
     HttpURLConnection hConn = createUrlConnection(urlAsString, timeout, includeSomeGooseOptions);
     hConn.setInstanceFollowRedirects(true);
     String encoding = hConn.getContentEncoding();
-    InputStream is;
+    InputStream inputStream;
     if (encoding != null && encoding.equalsIgnoreCase("gzip")) {
-      is = new GZIPInputStream(hConn.getInputStream());
+      inputStream = new GZIPInputStream(hConn.getInputStream());
     } else if (encoding != null && encoding.equalsIgnoreCase("deflate")) {
-      is = new InflaterInputStream(hConn.getInputStream(), new Inflater(true));
+      inputStream = new InflaterInputStream(hConn.getInputStream(), new Inflater(true));
     } else {
-      is = hConn.getInputStream();
+      inputStream = hConn.getInputStream();
     }
 
-    String enc = CharsetConverter.extractEncoding(hConn.getContentType());
-    String res = new CharsetConverter(urlAsString).streamToString(is, enc);
+    String res = CharsetConverter.readStream(inputStream,
+        CharsetConverter.extractEncoding(hConn.getContentType())).content;
     if (logger.isDebugEnabled())
       logger.debug(res.length() + " FetchAsString:" + urlAsString);
     return res;

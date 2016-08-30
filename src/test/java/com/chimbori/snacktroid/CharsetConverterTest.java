@@ -11,54 +11,27 @@ public class CharsetConverterTest extends TestCase {
   }
 
   public void testDetermineEncoding() throws Exception {
-    CharsetConverter d = new CharsetConverter();
-    d.streamToString(getClass().getResourceAsStream("faz.html"));
-    assertEquals("utf-8", d.getEncoding());
+    assertEncodingEquals("utf-8", "faz.html");
+    assertEncodingEquals("shift_jis", "yomiuri.html");
+    assertEncodingEquals("shift_jis", "yomiuri2.html");
+    assertEncodingEquals("iso-8859-1", "spiegel.html");
+    assertEncodingEquals("utf-8", "itunes.html");
+    assertEncodingEquals("utf-8", "twitter.html");
+    assertEncodingEquals("utf-8", "youtube.html");
+    assertEncodingEquals("utf-8", "nyt.html");
+    assertEncodingEquals("utf-8", "badenc.html");
+    assertEncodingEquals("iso-8859-15", "br-online.html");
+  }
 
-    d = new CharsetConverter();
-    d.streamToString(getClass().getResourceAsStream("yomiuri.html"));
-    assertEquals("shift_jis", d.getEncoding());
-
-    d = new CharsetConverter();
-    d.streamToString(getClass().getResourceAsStream("yomiuri2.html"));
-    assertEquals("shift_jis", d.getEncoding());
-
-    d = new CharsetConverter();
-    d.streamToString(getClass().getResourceAsStream("spiegel.html"));
-    assertEquals("iso-8859-1", d.getEncoding());
-
-    d = new CharsetConverter();
-    d.streamToString(getClass().getResourceAsStream("itunes.html"));
-    assertEquals("utf-8", d.getEncoding());
-
-    d = new CharsetConverter();
-    d.streamToString(getClass().getResourceAsStream("twitter.html"));
-    assertEquals("utf-8", d.getEncoding());
-
-    // youtube DOES not specify the encoding AND assumes utf-8 !?
-    d = new CharsetConverter();
-    d.streamToString(getClass().getResourceAsStream("youtube.html"));
-    assertEquals("utf-8", d.getEncoding());
-
-    d = new CharsetConverter();
-    d.streamToString(getClass().getResourceAsStream("nyt.html"));
-    assertEquals("utf-8", d.getEncoding());
-
-    d = new CharsetConverter();
-    d.streamToString(getClass().getResourceAsStream("badenc.html"));
-    assertEquals("utf-8", d.getEncoding());
-
-    d = new CharsetConverter();
-    d.streamToString(getClass().getResourceAsStream("br-online.html"));
-    assertEquals("iso-8859-15", d.getEncoding());
+  private void assertEncodingEquals(String encoding, String testFile) {
+    assertEquals(encoding, CharsetConverter.readStream(getClass().getResourceAsStream(testFile), null).encoding);
   }
 
   public void testMaxBytesExceedingButGetTitleNevertheless() throws Exception {
-    CharsetConverter d = new CharsetConverter();
-    d.setMaxBytes(10000);
-    String str = d.streamToString(getClass().getResourceAsStream("faz.html"));
-    assertEquals("utf-8", d.getEncoding());
+    CharsetConverter.StringWithEncoding parsed = CharsetConverter.readStream(
+        getClass().getResourceAsStream("faz.html"), null, 10000);
+    assertEquals("utf-8", parsed.encoding);
     assertEquals("Im Gespräch: Umweltaktivist Stewart Brand: Ihr Deutschen steht allein da "
-        + "- Atomdebatte - FAZ.NET", Jsoup.parse(str).select("title").text());
+        + "- Atomdebatte - FAZ.NET", Jsoup.parse(parsed.content).select("title").text());
   }
 }
