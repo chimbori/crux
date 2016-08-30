@@ -1,14 +1,15 @@
 package com.chimbori.snacktroid;
 
+import org.junit.Before;
+import org.junit.Test;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.Assert.*;
-
-import org.junit.Before;
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Alex P, (ifesdjeen from jreadability)
@@ -16,11 +17,11 @@ import org.junit.Test;
  */
 public class ArticleTextExtractorTest {
 
-  ArticleTextExtractor extractor;
-  Converter c;
+  private ArticleTextExtractor extractor;
+  private Converter c;
 
   @Before
-  public void setup() throws Exception {
+  public void setup() {
     c = new Converter();
     extractor = new ArticleTextExtractor();
   }
@@ -775,7 +776,7 @@ public class ArticleTextExtractorTest {
    *                 URLs or just filenames. Path handling could be better, and buffer sizes
    *                 are hardcoded
    */
-  public static String readFileAsString(String filePath)
+  private static String readFileAsString(String filePath)
       throws java.io.IOException {
     StringBuilder fileData = new StringBuilder(1000);
     BufferedReader reader = new BufferedReader(new FileReader(filePath));

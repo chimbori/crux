@@ -9,9 +9,6 @@ import static org.junit.Assert.*;
  */
 public class SHelperTest {
 
-  public SHelperTest() {
-  }
-
   @Test
   public void testInnerTrim() {
     assertEquals("", SHelper.innerTrim("   "));

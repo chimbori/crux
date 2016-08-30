@@ -7,7 +7,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.Proxy;
 import java.net.URL;
 import java.util.LinkedHashSet;
@@ -34,8 +33,8 @@ public class HtmlFetcher {
 
   public static void main(String[] args) throws Exception {
     BufferedReader reader = new BufferedReader(new FileReader("urls.txt"));
-    String line = null;
-    Set<String> existing = new LinkedHashSet<String>();
+    String line;
+    Set<String> existing = new LinkedHashSet<>();
     while ((line = reader.readLine()) != null) {
       int index1 = line.indexOf("\"");
       int index2 = line.indexOf("\"", index1 + 1);
@@ -65,10 +64,10 @@ public class HtmlFetcher {
   private String charset = "UTF-8";
   private SCache cache;
   private Proxy proxy = null;
-  private AtomicInteger cacheCounter = new AtomicInteger(0);
+  private final AtomicInteger cacheCounter = new AtomicInteger(0);
   private int maxTextLength = -1;
   private ArticleTextExtractor extractor = new ArticleTextExtractor();
-  private Set<String> furtherResolveNecessary = new LinkedHashSet<String>() {
+  private final Set<String> furtherResolveNecessary = new LinkedHashSet<String>() {
     {
       add("bit.ly");
       add("cli.gs");
@@ -102,100 +101,12 @@ public class HtmlFetcher {
   public HtmlFetcher() {
   }
 
-  public void setExtractor(ArticleTextExtractor extractor) {
-    this.extractor = extractor;
-  }
-
-  public ArticleTextExtractor getExtractor() {
-    return extractor;
-  }
-
-  public HtmlFetcher setCache(SCache cache) {
-    this.cache = cache;
-    return this;
-  }
-
-  public SCache getCache() {
-    return cache;
-  }
-
-  public int getCacheCounter() {
-    return cacheCounter.get();
-  }
-
-  public HtmlFetcher clearCacheCounter() {
-    cacheCounter.set(0);
-    return this;
-  }
-
-  public HtmlFetcher setMaxTextLength(int maxTextLength) {
-    this.maxTextLength = maxTextLength;
-    return this;
-  }
-
-  public int getMaxTextLength() {
-    return maxTextLength;
-  }
-
-  public void setAccept(String accept) {
-    this.accept = accept;
-  }
-
-  public void setCharset(String charset) {
-    this.charset = charset;
-  }
-
-  public void setCacheControl(String cacheControl) {
-    this.cacheControl = cacheControl;
-  }
-
-  public String getLanguage() {
-    return language;
-  }
-
-  public void setLanguage(String language) {
-    this.language = language;
-  }
-
-  public String getReferrer() {
-    return referrer;
-  }
-
-  public HtmlFetcher setReferrer(String referrer) {
-    this.referrer = referrer;
-    return this;
-  }
-
-  public String getUserAgent() {
-    return userAgent;
-  }
-
-  public void setUserAgent(String userAgent) {
-    this.userAgent = userAgent;
-  }
-
-  public String getAccept() {
-    return accept;
-  }
-
-  public String getCacheControl() {
-    return cacheControl;
-  }
-
-  public String getCharset() {
-    return charset;
-  }
-
   public void setProxy(Proxy proxy) {
     this.proxy = proxy;
   }
 
   public Proxy getProxy() {
     return (proxy != null ? proxy : Proxy.NO_PROXY);
-  }
-
-  public boolean isProxySet() {
-    return getProxy() != null;
   }
 
   public JResult fetchAndExtract(String url, int timeout, boolean resolve) throws Exception {
@@ -277,7 +188,7 @@ public class HtmlFetcher {
     return result;
   }
 
-  public String lessText(String text) {
+  private String lessText(String text) {
     if (text == null)
       return "";
 
@@ -292,12 +203,12 @@ public class HtmlFetcher {
   }
 
   public String fetchAsString(String urlAsString, int timeout)
-      throws MalformedURLException, IOException {
+      throws IOException {
     return fetchAsString(urlAsString, timeout, true);
   }
 
-  public String fetchAsString(String urlAsString, int timeout, boolean includeSomeGooseOptions)
-      throws MalformedURLException, IOException {
+  private String fetchAsString(String urlAsString, int timeout, boolean includeSomeGooseOptions)
+      throws IOException {
     HttpURLConnection hConn = createUrlConnection(urlAsString, timeout, includeSomeGooseOptions);
     hConn.setInstanceFollowRedirects(true);
     String encoding = hConn.getContentEncoding();
@@ -317,7 +228,7 @@ public class HtmlFetcher {
     return res;
   }
 
-  public Converter createConverter(String url) {
+  private Converter createConverter(String url) {
     return new Converter(url);
   }
 
@@ -329,7 +240,7 @@ public class HtmlFetcher {
    * @return the resolved url if any. Or null if it couldn't resolve the url
    * (within the specified time) or the same url if response code is OK
    */
-  public String getResolvedUrl(String urlAsString, int timeout) {
+  private String getResolvedUrl(String urlAsString, int timeout) {
     String newUrl = null;
     int responseCode = -1;
     try {
@@ -374,7 +285,7 @@ public class HtmlFetcher {
    * to non-ASCII characters. Workaround for broken origin servers that send
    * UTF-8 in the Location: header.
    */
-  static String encodeUriFromHeader(String badLocation) {
+  private static String encodeUriFromHeader(String badLocation) {
     StringBuilder sb = new StringBuilder();
 
     for (char ch : badLocation.toCharArray()) {
@@ -389,8 +300,8 @@ public class HtmlFetcher {
     return sb.toString();
   }
 
-  protected HttpURLConnection createUrlConnection(String urlAsStr, int timeout,
-                                                  boolean includeSomeGooseOptions) throws MalformedURLException, IOException {
+  private HttpURLConnection createUrlConnection(String urlAsStr, int timeout,
+                                                boolean includeSomeGooseOptions) throws IOException {
     URL url = new URL(urlAsStr);
     //using proxy may increase latency
     Proxy proxy = getProxy();
@@ -414,7 +325,7 @@ public class HtmlFetcher {
     return hConn;
   }
 
-  private JResult getFromCache(String url, String originalUrl) throws Exception {
+  private JResult getFromCache(String url, String originalUrl) {
     if (cache != null) {
       JResult res = cache.get(url);
       if (res != null) {

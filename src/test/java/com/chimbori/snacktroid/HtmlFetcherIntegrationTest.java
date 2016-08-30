@@ -9,9 +9,6 @@ import static org.junit.Assert.*;
  */
 public class HtmlFetcherIntegrationTest {
 
-  public HtmlFetcherIntegrationTest() {
-  }
-
   @Test
   public void testNoException() throws Exception {
     JResult res = new HtmlFetcher().fetchAndExtract("http://www.tumblr.com/xeb22gs619", 10000, true);

@@ -11,7 +11,7 @@ import java.util.Map;
 public class MapEntry<K, V> implements Map.Entry<K, V>, Serializable {
 
   private static final long serialVersionUID = 1L;
-  private K key;
+  private final K key;
   private V value;
 
   public MapEntry(K key, V value) {
@@ -46,12 +46,10 @@ public class MapEntry<K, V> implements Map.Entry<K, V>, Serializable {
       return false;
     if (getClass() != obj.getClass())
       return false;
-    final MapEntry<K, V> other = (MapEntry<K, V>) obj;
+    @SuppressWarnings("unchecked") final MapEntry<K, V> other = (MapEntry<K, V>) obj;
     if (this.key != other.key && (this.key == null || !this.key.equals(other.key)))
       return false;
-    if (this.value != other.value && (this.value == null || !this.value.equals(other.value)))
-      return false;
-    return true;
+    return !(this.value != other.value && (this.value == null || !this.value.equals(other.value)));
   }
 
   @Override

@@ -13,9 +13,9 @@ import java.nio.charset.Charset;
 public class Converter {
   private static final Logger logger = Logger.getInstance();
 
-  public final static String UTF8 = "UTF-8";
-  public final static String ISO = "ISO-8859-1";
-  public final static int K2 = 2048;
+  private final static String UTF8 = "UTF-8";
+  private final static String ISO = "ISO-8859-1";
+  private final static int K2 = 2048;
   private int maxBytes = 1000000 / 2;
   private String encoding;
   private String url;
@@ -76,7 +76,7 @@ public class Converter {
    * @param maxBytes The max bytes that we want to read from the input stream
    * @return String
    */
-  public String streamToString(InputStream is, int maxBytes, String enc) {
+  private String streamToString(InputStream is, int maxBytes, String enc) {
     encoding = enc;
     // Http 1.1. standard is iso-8859-1 not utf8 :(
     // but we force utf-8 as youtube assumes it ;)
@@ -114,7 +114,7 @@ public class Converter {
 
       // SocketException: Connection reset
       // IOException: missing CR    => problem on server (probably some xml character thing?)
-      // IOException: Premature EOF => socket unexpectly closed from server
+      // IOException: Premature EOF => socket unexpectedly closed from server
       int bytesRead = output.size();
       byte[] arr = new byte[K2];
       while (true) {
@@ -139,7 +139,8 @@ public class Converter {
       if (in != null) {
         try {
           in.close();
-        } catch (Exception e) {
+        } catch (IOException e) {
+          // Ignore.
         }
       }
     }
@@ -153,8 +154,8 @@ public class Converter {
    *
    * @throws IOException
    */
-  protected String detectCharset(String key, ByteArrayOutputStream bos, BufferedInputStream in,
-                                 String enc) throws IOException {
+  private String detectCharset(String key, ByteArrayOutputStream bos, BufferedInputStream in,
+                               String enc) throws IOException {
 
     // Grab better encoding from stream
     byte[] arr = new byte[K2];

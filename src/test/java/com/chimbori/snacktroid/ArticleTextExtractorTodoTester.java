@@ -11,11 +11,11 @@ import static org.junit.Assert.assertTrue;
 
 public class ArticleTextExtractorTodoTester {
 
-  ArticleTextExtractor extractor;
-  Converter c;
+  private ArticleTextExtractor extractor;
+  private Converter c;
 
   @Before
-  public void setup() throws Exception {
+  public void setup() {
     c = new Converter();
     extractor = new ArticleTextExtractor();
   }
@@ -265,7 +265,7 @@ public class ArticleTextExtractorTodoTester {
     StringBuilder fileData = new StringBuilder(1000);
     BufferedReader reader = new BufferedReader(new FileReader(filePath));
     char[] buf = new char[1024];
-    int numRead = 0;
+    @SuppressWarnings("UnusedAssignment") int numRead = 0;
     while ((numRead = reader.read(buf)) != -1) {
       String readData = String.valueOf(buf, 0, numRead);
       fileData.append(readData);

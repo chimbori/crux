@@ -7,15 +7,15 @@ import org.jsoup.nodes.Element;
  *
  * @author Chris Alexander, chris@chris-alexander.co.uk
  */
-public class ImageResult {
+class ImageResult {
 
-  public String src;
-  public Integer weight;
-  public String title;
-  public int height;
-  public int width;
-  public String alt;
-  public boolean noFollow;
+  public final String src;
+  public final Integer weight;
+  private final String title;
+  private final int height;
+  private final int width;
+  private final String alt;
+  private final boolean noFollow;
   public Element element;
 
   public ImageResult(String src, Integer weight, String title, int height, int width, String alt, boolean noFollow) {

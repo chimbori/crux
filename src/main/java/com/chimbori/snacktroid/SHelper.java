@@ -23,9 +23,9 @@ import javax.net.ssl.X509TrustManager;
 /**
  * @author Peter Karich
  */
-public class SHelper {
+class SHelper {
 
-  public static final String UTF8 = "UTF-8";
+  private static final String UTF8 = "UTF-8";
   private static final Pattern SPACE = Pattern.compile(" ");
 
   public static String replaceSpaces(String url) {
@@ -106,7 +106,7 @@ public class SHelper {
     return str1.substring(res[0], res[1]);
   }
 
-  public static int[] longestSubstring(String str1, String str2) {
+  private static int[] longestSubstring(String str1, String str2) {
     if (str1 == null || str1.isEmpty() || str2 == null || str2.isEmpty())
       return null;
 
@@ -271,15 +271,7 @@ public class SHelper {
     return null;
   }
 
-  public static String urlEncode(String str) {
-    try {
-      return URLEncoder.encode(str, UTF8);
-    } catch (UnsupportedEncodingException ex) {
-      return str;
-    }
-  }
-
-  public static String urlDecode(String str) {
+  private static String urlDecode(String str) {
     try {
       return URLDecoder.decode(str, UTF8);
     } catch (UnsupportedEncodingException ex) {
@@ -299,7 +291,7 @@ public class SHelper {
     return printNode(root, 0);
   }
 
-  public static String printNode(Element root, int indentation) {
+  private static String printNode(Element root, int indentation) {
     StringBuilder sb = new StringBuilder();
     for (int i = 0; i < indentation; i++) {
       sb.append(' ');
@@ -354,7 +346,8 @@ public class SHelper {
         } else if (counter == monthCounter + 1) {
           try {
             day = Integer.parseInt(str);
-          } catch (Exception ex) {
+          } catch (NumberFormatException ex) {
+            // Ignore
           }
           if (day < 1 || day > 31) {
             day = -1;
@@ -400,14 +393,6 @@ public class SHelper {
         return dateStr + "/01";
     }
     return dateStr + "/01/01";
-  }
-
-  /**
-   * keep in mind: simpleDateFormatter is not thread safe! call completeDate
-   * before applying this formatter.
-   */
-  public static SimpleDateFormat createDateFormatter() {
-    return new SimpleDateFormat("yyyy/MM/dd");
   }
 
   // with the help of http://stackoverflow.com/questions/1828775/httpclient-and-ssl

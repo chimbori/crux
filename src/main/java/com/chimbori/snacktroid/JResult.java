@@ -28,9 +28,6 @@ public class JResult implements Serializable {
   private Collection<String> keywords;
   private List<ImageResult> images = null;
 
-  public JResult() {
-  }
-
   public String getUrl() {
     if (url == null)
       return "";
@@ -118,7 +115,7 @@ public class JResult implements Serializable {
 
   public List<String> getTextList() {
     if (this.textList == null)
-      return new ArrayList<String>();
+      return new ArrayList<>();
     return this.textList;
   }
 

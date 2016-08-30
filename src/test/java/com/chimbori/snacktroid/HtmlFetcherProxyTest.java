@@ -13,9 +13,6 @@ import static org.junit.Assert.assertEquals;
  */
 public class HtmlFetcherProxyTest {
 
-  public HtmlFetcherProxyTest() {
-  }
-
   @Test
   public void testSocksProxy() {
     HtmlFetcher fetcher = new HtmlFetcher();

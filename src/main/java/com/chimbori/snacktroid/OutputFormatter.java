@@ -19,12 +19,11 @@ import java.util.regex.Pattern;
  */
 public class OutputFormatter {
 
-  public static final int MIN_PARAGRAPH_TEXT = 50;
+  private static final int MIN_PARAGRAPH_TEXT = 50;
   private static final List<String> NODES_TO_REPLACE = Arrays.asList("strong", "b", "i");
   private Pattern unlikelyPattern = Pattern.compile("display\\:none|visibility\\:hidden");
-  protected final int minParagraphText;
-  protected final List<String> nodesToReplace;
-  protected String nodesToKeepCssSelector = "p";
+  private final int minParagraphText;
+  private String nodesToKeepCssSelector = "p";
 
   public OutputFormatter() {
     this(MIN_PARAGRAPH_TEXT, NODES_TO_REPLACE);
@@ -34,9 +33,8 @@ public class OutputFormatter {
     this(minParagraphText, NODES_TO_REPLACE);
   }
 
-  public OutputFormatter(int minParagraphText, List<String> nodesToReplace) {
+  private OutputFormatter(int minParagraphText, List<String> nodesToReplace) {
     this.minParagraphText = minParagraphText;
-    this.nodesToReplace = nodesToReplace;
   }
 
   /**
@@ -70,7 +68,7 @@ public class OutputFormatter {
    * Takes an element and returns a list of texts extracted from the P tags
    */
   public List<String> getTextList(Element topNode) {
-    List<String> texts = new ArrayList<String>();
+    List<String> texts = new ArrayList<>();
     for (Element element : topNode.select(this.nodesToKeepCssSelector)) {
       if (element.hasText()) {
         texts.add(element.text());
@@ -83,7 +81,7 @@ public class OutputFormatter {
    * If there are elements inside our top node that have a negative gravity
    * score remove them
    */
-  protected void removeNodesWithNegativeScores(Element topNode) {
+  private void removeNodesWithNegativeScores(Element topNode) {
     Elements gravityItems = topNode.select("*[gravityScore]");
     for (Element item : gravityItems) {
       int score = Integer.parseInt(item.attr("gravityScore"));
@@ -92,7 +90,7 @@ public class OutputFormatter {
     }
   }
 
-  protected void append(Element node, StringBuilder sb, String tagName) {
+  private void append(Element node, StringBuilder sb, String tagName) {
     // is select more costly then getElementsByTag?
     MAIN:
     for (Element e : node.select(tagName)) {
@@ -113,15 +111,13 @@ public class OutputFormatter {
     }
   }
 
-  boolean unlikely(Node e) {
+  private boolean unlikely(Node e) {
     if (e.attr("class") != null && e.attr("class").toLowerCase().contains("caption"))
       return true;
 
     String style = e.attr("style");
     String clazz = e.attr("class");
-    if (unlikelyPattern.matcher(style).find() || unlikelyPattern.matcher(clazz).find())
-      return true;
-    return false;
+    return unlikelyPattern.matcher(style).find() || unlikelyPattern.matcher(clazz).find();
   }
 
   void appendTextSkipHidden(Element e, StringBuilder accum) {
@@ -143,28 +139,14 @@ public class OutputFormatter {
     }
   }
 
-  boolean lastCharIsWhitespace(StringBuilder accum) {
-    if (accum.length() == 0)
-      return false;
-    return Character.isWhitespace(accum.charAt(accum.length() - 1));
+  private boolean lastCharIsWhitespace(StringBuilder accum) {
+    return accum.length() != 0 && Character.isWhitespace(accum.charAt(accum.length() - 1));
   }
 
-  protected String node2TextOld(Element el) {
-    return el.text();
-  }
-
-  protected String node2Text(Element el) {
+  private String node2Text(Element el) {
     StringBuilder sb = new StringBuilder(200);
     appendTextSkipHidden(el, sb);
     return sb.toString();
   }
 
-  public OutputFormatter setUnlikelyPattern(String unlikelyPattern) {
-    this.unlikelyPattern = Pattern.compile(unlikelyPattern);
-    return this;
-  }
-
-  public OutputFormatter appendUnlikelyPattern(String str) {
-    return setUnlikelyPattern(unlikelyPattern.toString() + "|" + str);
-  }
 }
