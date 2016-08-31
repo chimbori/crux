@@ -11,7 +11,6 @@ import java.net.Proxy;
 import java.net.URL;
 import java.util.LinkedHashSet;
 import java.util.Set;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.Inflater;
 import java.util.zip.InflaterInputStream;
@@ -60,9 +59,7 @@ public class HtmlFetcher {
   private String language = "en-us";
   private String accept = "application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5";
   private String charset = "UTF-8";
-  private Cache cache;
   private Proxy proxy = null;
-  private final AtomicInteger cacheCounter = new AtomicInteger(0);
   private int maxTextLength = -1;
   private Extractor extractor = new Extractor();
   private final Set<String> furtherResolveNecessary = new LinkedHashSet<String>() {
@@ -120,19 +117,12 @@ public class HtmlFetcher {
     }
 
     if (resolve) {
-      // check if we can avoid resolving the URL (which hits the website!)
-      ParsedResult res = getFromCache(url, originalUrl);
-      if (res != null)
-        return res;
-
       String resUrl = getResolvedUrl(url, timeout);
       if (resUrl.isEmpty()) {
         if (logger.isDebugEnabled())
           logger.warn("resolved url is empty. Url is: " + url);
 
         ParsedResult result = new ParsedResult();
-        if (cache != null)
-          cache.put(url, result);
         result.url = url;
         return result;
       }
@@ -145,23 +135,12 @@ public class HtmlFetcher {
       }
     }
 
-    // check if we have the (resolved) URL in cache
-    ParsedResult res = getFromCache(url, originalUrl);
-    if (res != null)
-      return res;
-
     ParsedResult result = new ParsedResult();
     // or should we use? <link rel="canonical" href="http://www.N24.de/news/newsitem_6797232.html"/>
     result.url = url;
     result.originalUrl = originalUrl;
     result.dateString = StringUtils.estimateDate(url);
-
-    // Immediately put the url into the cache as extracting content takes time.
-    if (cache != null) {
-      cache.put(originalUrl, result);
-      cache.put(url, result);
-    }
-
+    
     String lowerUrl = url.toLowerCase();
     if (StringUtils.isDoc(lowerUrl) || StringUtils.isApp(lowerUrl) || StringUtils.isPackage(lowerUrl)) {
       // skip
@@ -310,21 +289,5 @@ public class HtmlFetcher {
     hConn.setConnectTimeout(timeout);
     hConn.setReadTimeout(timeout);
     return hConn;
-  }
-
-  private ParsedResult getFromCache(String url, String originalUrl) {
-    if (cache != null) {
-      ParsedResult res = cache.get(url);
-      if (res != null) {
-        // e.g. the cache returned a shortened url as original url now we want to store the
-        // current original url! Also it can be that the cache response to url but the ParsedResult
-        // does not contain it so overwrite it:
-        res.url = url;
-        res.originalUrl = originalUrl;
-        cacheCounter.addAndGet(1);
-        return res;
-      }
-    }
-    return null;
   }
 }
