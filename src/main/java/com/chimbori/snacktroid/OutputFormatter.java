@@ -14,7 +14,7 @@ import java.util.regex.Pattern;
 /**
  * Takes the top node and strips out junk for presentation to the user.
  */
-class OutputFormatter {
+class OutputFormatter implements Extractor.Formatter {
   private static final int MIN_PARAGRAPH_TEXT = 50;
   private static final List<String> NODES_TO_REPLACE = Arrays.asList("strong", "b", "i");
   private final Pattern unlikelyPattern = Pattern.compile("display\\:none|visibility\\:hidden");
@@ -36,9 +36,6 @@ class OutputFormatter {
     this.nodesToKeepCssSelector = nodesToKeepCssSelector;
   }
 
-  /**
-   * takes an element and turns the P tags into \n\n
-   */
   public String getFormattedText(Element topNode) {
     removeNodesWithNegativeScores(topNode);
     StringBuilder sb = new StringBuilder();
@@ -56,9 +53,6 @@ class OutputFormatter {
     return Jsoup.parse(str).text();
   }
 
-  /**
-   * Takes an element and returns a list of texts extracted from the P tags
-   */
   public List<String> getTextList(Element topNode) {
     List<String> texts = new ArrayList<>();
     for (Element element : topNode.select(this.nodesToKeepCssSelector)) {

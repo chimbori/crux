@@ -10,9 +10,9 @@ import java.util.List;
 
 public class Extractor {
   private static final OutputFormatter DEFAULT_FORMATTER = new OutputFormatter();
-  private OutputFormatter formatter = DEFAULT_FORMATTER;
+  private Formatter formatter = DEFAULT_FORMATTER;
 
-  public Extractor setOutputFormatter(OutputFormatter formatter) {
+  public Extractor setFormatter(Formatter formatter) {
     this.formatter = formatter;
     return this;
   }
@@ -24,7 +24,7 @@ public class Extractor {
     return extractContent(Jsoup.parse(html), formatter);
   }
 
-  private ParsedResult extractContent(Document doc, OutputFormatter formatter) {
+  private ParsedResult extractContent(Document doc, Formatter formatter) {
     if (doc == null) {
       throw new IllegalArgumentException();
     }
@@ -81,5 +81,17 @@ public class Extractor {
     res.faviconUrl = ExtractionHelpers.extractFaviconUrl(doc);
     res.keywords = ExtractionHelpers.extractKeywords(doc);
     return res;
+  }
+
+  public interface Formatter {
+    /**
+     * takes an element and turns the P tags into \n\n
+     */
+    String getFormattedText(Element topNode);
+
+    /**
+     * Takes an element and returns a list of texts extracted from the P tags.
+     */
+    List<String> getTextList(Element topNode);
   }
 }
