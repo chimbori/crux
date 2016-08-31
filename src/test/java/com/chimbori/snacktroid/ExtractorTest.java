@@ -3,12 +3,9 @@ package com.chimbori.snacktroid;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -16,10 +13,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-/**
- * @author Alex P, (ifesdjeen from jreadability)
- * @author Peter Karich
- */
 public class ExtractorTest {
   private Extractor extractor;
 
@@ -31,7 +24,7 @@ public class ExtractorTest {
   @Test
   public void testNPR() {
     // ? http://www.npr.org/blogs/money/2010/10/04/130329523/how-fake-money-saved-brazil
-    ParsedResult res = extractor.extractContent(readFileAsString("test_data/npr.html"));
+    ParsedResult res = getContentFromTestFile("npr.html");
     assertEquals("How Fake Money Saved Brazil : Planet Money : NPR", res.title);
     assertTrue(res.text, res.text.startsWith("This is a story about how an economist and his buddies tricked the people of Brazil into saving the country from rampant inflation. They had a crazy, unlikely plan, and it worked. Twenty years ago, Brazil's"));
     assertTrue(res.text, res.text.endsWith("\"How Four Drinking Buddies Saved Brazil.\""));
@@ -42,7 +35,7 @@ public class ExtractorTest {
   @Test
   public void testBenjaminStein() {
     // http://benjaminste.in/post/1223476561/hey-guys-whatcha-doing
-    ParsedResult res = extractor.extractContent(readFileAsString("test_data/benjaminstein.html"));
+    ParsedResult res = getContentFromTestFile("benjaminstein.html");
     assertEquals("BenjaminSte.in - Hey guys, whatcha doing?", res.title);
     assertTrue(res.text, res.text.startsWith("This month is the 15th anniversary of my last CD."));
     assertTrue(res.keywords.isEmpty());
@@ -50,7 +43,7 @@ public class ExtractorTest {
 
   @Test
   public void testYCombinator() {
-    ParsedResult res = extractor.extractContent(readFileAsString("test_data/ycombinator.html"));
+    ParsedResult res = getContentFromTestFile("ycombinator.html");
     assertTrue(res.text.startsWith("October 2010 Silicon Valley proper is mostly suburban sprawl. At first glance it "));
     assertTrue(res.text.endsWith(" and Jessica Livingston for reading drafts of this."));
     assertTrue(res.keywords.isEmpty());
@@ -59,7 +52,7 @@ public class ExtractorTest {
   @Test
   public void testTraindom() {
     // http://blog.traindom.com/places-where-to-submit-your-startup-for-coverage/
-    ParsedResult res = extractor.extractContent(readFileAsString("test_data/traindom.html"));
+    ParsedResult res = getContentFromTestFile("traindom.html");
     assertEquals("36 places where you can submit your startup for some coverage", res.title);
     assertEquals(Arrays.asList("blog coverage", "get coverage", "startup review", "startups", "submit startup"), res.keywords);
     assertTrue(res.text.startsWith("So you have a new startup company and want some coverage"));
@@ -67,20 +60,20 @@ public class ExtractorTest {
 
   @Test
   public void testAirBnB() {
-    ParsedResult res = extractor.extractContent(readFileAsString("test_data/airbnb.html"));
+    ParsedResult res = getContentFromTestFile("airbnb.html");
     assertTrue(res.text.startsWith("Hackers unite in Stanford"));
     assertTrue(res.keywords.isEmpty());
   }
 
   @Test
   public void testToloNews() {
-    ParsedResult res = extractor.extractContent(readFileAsString("test_data/tolonews.html"));
+    ParsedResult res = getContentFromTestFile("tolonews.html");
     assertEquals("Acting Governor of Balkh province, Atta Mohammad Noor, said that differences between leaders of the National Unity Government (NUG) – namely President Ashraf Ghani and CEO Abdullah Abdullah— have paved the ground for mounting insecurity. Hundreds of worried relatives gathered outside Kabul hospitals on Tuesday desperate for news of loved ones following the deadly suicide bombing earlier in the day.", res.text);
   }
 
   @Test
   public void testKhaamaPress() {
-    ParsedResult res = extractor.extractContent(readFileAsString("test_data/khaama.html"));
+    ParsedResult res = getContentFromTestFile("khaama.html");
     assertTrue(res.text.startsWith("Over 100 school girls have been poisoned in western Farah province of Afghanistan during the school hours."));
   }
 
@@ -730,15 +723,6 @@ public class ExtractorTest {
     assertTrue(article.text, article.text.startsWith("Just one week to go and everything is set for the summer Forum 2013"));
   }
 
-  private ParsedResult getContentFromTestFile(String testFile) {
-    try {
-      return extractor.extractContent(CharsetConverter.readStream(new FileInputStream(new File("test_data/" + testFile)), null).content);
-    } catch (FileNotFoundException e) {
-      fail(e.getMessage());
-    }
-    return null;
-  }
-
   @Test
   public void testHideHiddenText() {
     ParsedResult res = getContentFromTestFile("no-hidden.html");
@@ -772,7 +756,7 @@ public class ExtractorTest {
 
   @Test
   public void testTextList() {
-    ParsedResult res = extractor.extractContent(readFileAsString("test_data/npr.html"));
+    ParsedResult res = getContentFromTestFile("npr.html");
     String text = res.text;
     List<String> textList = res.textList;
     assertEquals(23, textList.size());
@@ -780,26 +764,10 @@ public class ExtractorTest {
     assertTrue(textList.get(22).endsWith(text.substring(text.length() - 15, text.length())));
   }
 
-  /**
-   * @param filePath the name of the file to open. Not sure if it can accept
-   *                 URLs or just filenames. Path handling could be better, and buffer sizes
-   *                 are hardcoded
-   */
-  private static String readFileAsString(String filePath) {
+  private ParsedResult getContentFromTestFile(String testFile) {
     try {
-      StringBuilder fileData = new StringBuilder(1000);
-      BufferedReader reader = new BufferedReader(new FileReader(filePath));
-      char[] buf = new char[1024];
-      int numRead = 0;
-      while ((numRead = reader.read(buf)) != -1) {
-        String readData = String.valueOf(buf, 0, numRead);
-        fileData.append(readData);
-        buf = new char[1024];
-      }
-      reader.close();
-      return fileData.toString();
-
-    } catch (IOException e) {
+      return extractor.extractContent(CharsetConverter.readStream(new FileInputStream(new File("test_data/" + testFile)), null).content);
+    } catch (FileNotFoundException e) {
       fail(e.getMessage());
     }
     return null;
