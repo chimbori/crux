@@ -2,6 +2,8 @@ package com.chimbori.snacktroid;
 
 import org.jsoup.nodes.Element;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -45,6 +47,21 @@ public class ParsedResult {
   public Collection<String> keywords;
   public List<ImageResult> images = new ArrayList<>();
 
+
+  ParsedResult() {
+    // Package private constructor to disallow outside the library.
+  }
+
+  public ParsedResult ensureAbsoluteUrls() throws MalformedURLException {
+    URL absoluteArticleUrl = new URL(url);
+    canonicalUrl = new URL(absoluteArticleUrl, canonicalUrl).toString();
+    imageUrl = new URL(absoluteArticleUrl, imageUrl).toString();
+    videoUrl = new URL(absoluteArticleUrl, videoUrl).toString();
+    rssUrl = new URL(absoluteArticleUrl, rssUrl).toString();
+    faviconUrl = new URL(absoluteArticleUrl, faviconUrl).toString();
+    return this;
+  }
+
   @Override
   public String toString() {
     return "ParsedResult{" +
@@ -63,6 +80,16 @@ public class ParsedResult {
         ", keywords=" + keywords +
         ", images=" + images +
         '}';
+  }
+
+  public ParsedResult withVideoUrl(String videoUrl) {
+    this.videoUrl = videoUrl;
+    return this;
+  }
+
+  public ParsedResult withImageUrl(String imageUrl) {
+    this.imageUrl = imageUrl;
+    return this;
   }
 
   /**
