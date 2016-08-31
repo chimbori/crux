@@ -21,11 +21,11 @@ public class StringUtilsTest {
 
   @Test
   public void testCount() {
-    assertEquals(1, StringUtils.count("hi wie &test; gehts", "&test;"));
-    assertEquals(1, StringUtils.count("&test;", "&test;"));
-    assertEquals(2, StringUtils.count("&test;&test;", "&test;"));
-    assertEquals(2, StringUtils.count("&test; &test;", "&test;"));
-    assertEquals(3, StringUtils.count("&test; test; &test; plu &test;", "&test;"));
+    assertEquals(1, StringUtils.countMatches("hi wie &test; gehts", "&test;"));
+    assertEquals(1, StringUtils.countMatches("&test;", "&test;"));
+    assertEquals(2, StringUtils.countMatches("&test;&test;", "&test;"));
+    assertEquals(2, StringUtils.countMatches("&test; &test;", "&test;"));
+    assertEquals(3, StringUtils.countMatches("&test; test; &test; plu &test;", "&test;"));
   }
 
   @Test

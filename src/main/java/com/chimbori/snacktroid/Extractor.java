@@ -300,10 +300,10 @@ public class Extractor {
   }
 
   private static int calcWeightForChild(Element child, String ownText) {
-    int c = StringUtils.count(ownText, "&quot;");
-    c += StringUtils.count(ownText, "&lt;");
-    c += StringUtils.count(ownText, "&gt;");
-    c += StringUtils.count(ownText, "px");
+    int c = StringUtils.countMatches(ownText, "&quot;");
+    c += StringUtils.countMatches(ownText, "&lt;");
+    c += StringUtils.countMatches(ownText, "&gt;");
+    c += StringUtils.countMatches(ownText, "px");
     int val;
     if (c > 5)
       val = -30;

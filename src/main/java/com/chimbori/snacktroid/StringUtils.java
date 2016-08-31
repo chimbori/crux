@@ -21,14 +21,14 @@ class StringUtils {
     return url;
   }
 
-  static int count(String str, String substring) {
-    int c = 0;
-    int index1 = str.indexOf(substring);
-    if (index1 >= 0) {
-      c++;
-      c += count(str.substring(index1 + substring.length()), substring);
+  static int countMatches(String str, String substring) {
+    int count = 0;
+    int indexOf = str.indexOf(substring);
+    if (indexOf >= 0) {
+      count++;
+      count += countMatches(str.substring(indexOf + substring.length()), substring);
     }
-    return c;
+    return count;
   }
 
   /**
@@ -209,7 +209,7 @@ class StringUtils {
   }
 
   static boolean isAdImage(String imageUrl) {
-    return count(imageUrl, "ad") >= 2;
+    return countMatches(imageUrl, "ad") >= 2;
   }
 
   static int countLetters(String str) {
