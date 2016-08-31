@@ -71,10 +71,6 @@ public class ExtractorTest {
     assertTrue("data7:" + res.text, res.text.startsWith("Over 100 school girls have been poisoned in western Farah province of Afghanistan during the school hours."));
   }
 
-  private ParsedResult getContentFromTestFile(String testFile) {
-    return extractor.extractContent(CharsetConverter.readStream(getClass().getResourceAsStream(testFile), null).content);
-  }
-
   @Test
   public void testCNN() throws Exception {
     // http://edition.cnn.com/2011/WORLD/africa/04/06/libya.war/index.html?on.cnn=1
@@ -689,12 +685,12 @@ public class ExtractorTest {
   @Test
   public void cleanTitle() {
     String title = "Hacker News | Ask HN: Apart from Hacker News, what else you read?";
-    assertEquals("Ask HN: Apart from Hacker News, what else you read?", extractor.cleanTitle(title));
-    assertEquals("mytitle irgendwas", extractor.cleanTitle("mytitle irgendwas | Facebook"));
-    assertEquals("mytitle irgendwas", extractor.cleanTitle("mytitle irgendwas | Irgendwas"));
+    assertEquals("Ask HN: Apart from Hacker News, what else you read?", ExtractionHelpers.cleanTitle(title));
+    assertEquals("mytitle irgendwas", ExtractionHelpers.cleanTitle("mytitle irgendwas | Facebook"));
+    assertEquals("mytitle irgendwas", ExtractionHelpers.cleanTitle("mytitle irgendwas | Irgendwas"));
 
     // this should fail as most sites do store their name after the post
-    assertEquals("Irgendwas | mytitle irgendwas", extractor.cleanTitle("Irgendwas | mytitle irgendwas"));
+    assertEquals("Irgendwas | mytitle irgendwas", ExtractionHelpers.cleanTitle("Irgendwas | mytitle irgendwas"));
   }
 
   @Test
@@ -705,19 +701,7 @@ public class ExtractorTest {
   }
 
   @Test
-  public void testIssue8() throws Exception {
-    ParsedResult res = getContentFromTestFile("no-hidden.html");
-    assertEquals("This is the text which is shorter but visible", res.text);
-  }
-
-  @Test
-  public void testIssue8False() throws Exception {
-    ParsedResult res = getContentFromTestFile("no-hidden2.html");
-    assertEquals("This is the NONE-HIDDEN text which shouldn't be shown and it is a bit longer so normally prefered", res.text);
-  }
-
-  @Test
-  public void testIssue4() throws Exception {
+  public void testRetainSpaceInsideTags() throws Exception {
     ParsedResult res = extractor.extractContent("<html><body><div> aaa<a> bbb </a>ccc</div></body></html>");
     assertEquals("aaa bbb ccc", res.text);
 
@@ -740,6 +724,22 @@ public class ExtractorTest {
     extractor2.setOutputFormatter(outputFormater);
     article = extractor2.extractContent(CharsetConverter.readStream(getClass().getResourceAsStream("i4online.html"), null).content);
     assertTrue(article.text, article.text.startsWith("Upcoming events: Forum 79 Just one week to go and everything is set for the summer Forum 2013"));
+  }
+
+  private ParsedResult getContentFromTestFile(String testFile) {
+    return extractor.extractContent(CharsetConverter.readStream(getClass().getResourceAsStream(testFile), null).content);
+  }
+
+  @Test
+  public void testHideHiddenText() throws Exception {
+    ParsedResult res = getContentFromTestFile("no-hidden.html");
+    assertEquals("This is the text which is shorter but visible", res.text);
+  }
+
+  @Test
+  public void testShowOnlyNonHiddenText() throws Exception {
+    ParsedResult res = getContentFromTestFile("no-hidden2.html");
+    assertEquals("This is the NONE-HIDDEN text which shouldn't be shown and it is a bit longer so normally prefered", res.text);
   }
 
   @Test

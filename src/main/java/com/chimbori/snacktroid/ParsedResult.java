@@ -82,16 +82,6 @@ public class ParsedResult {
         '}';
   }
 
-  public ParsedResult withVideoUrl(String videoUrl) {
-    this.videoUrl = videoUrl;
-    return this;
-  }
-
-  public ParsedResult withImageUrl(String imageUrl) {
-    this.imageUrl = imageUrl;
-    return this;
-  }
-
   /**
    * Class which encapsulates the data from an image found under an element
    */

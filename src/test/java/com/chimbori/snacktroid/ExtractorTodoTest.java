@@ -54,7 +54,7 @@ public class ExtractorTodoTest {
   }
 
   //    @Test
-  public void testYahooNewsEvenThoughTheyFuckedUpDeliciousWeWillTestThemAnyway() {
+  public void testYahooNews() {
     //String url = "http://news.yahoo.com/s/ap/20110305/ap_on_re_af/af_libya";
     ParsedResult article = getContentFromTestFile("yahoo.html");
     assertTrue(article.text, article.text.startsWith("TRIPOLI, Libya – Government forces in tanks rolled into the opposition-held city closest "));
