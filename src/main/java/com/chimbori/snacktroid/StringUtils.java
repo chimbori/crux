@@ -35,25 +35,7 @@ class StringUtils {
    * remove more than two spaces or newlines
    */
   static String innerTrim(String str) {
-    if (str.isEmpty())
-      return "";
-
-    StringBuilder sb = new StringBuilder();
-    boolean previousSpace = false;
-    for (int i = 0; i < str.length(); i++) {
-      char c = str.charAt(i);
-      if (c == ' ' || (int) c == 9 || c == '\n') {
-        previousSpace = true;
-        continue;
-      }
-
-      if (previousSpace)
-        sb.append(' ');
-
-      previousSpace = false;
-      sb.append(c);
-    }
-    return sb.toString().trim();
+    return str.replaceAll("[ \n\t\r]+", " ").trim();
   }
 
   /**
