@@ -49,42 +49,40 @@ class ExtractionHelpers {
   };
 
   static String extractTitle(Document doc) {
-    String title = cleanTitle(doc.title());
-    if (title.isEmpty()) {
-      title = StringUtils.innerTrim(doc.select("head title").text());
-      if (title.isEmpty()) {
-        title = StringUtils.innerTrim(doc.select("head meta[name=title]").attr("content"));
-        if (title.isEmpty()) {
-          title = StringUtils.innerTrim(doc.select("head meta[property=og:title]").attr("content"));
-          if (title.isEmpty()) {
-            title = StringUtils.innerTrim(doc.select("head meta[name=twitter:title]").attr("content"));
-          }
-        }
-      }
+    try {
+      return cleanTitle(new HeuristicString(doc.title())
+          .or(StringUtils.innerTrim(doc.select("head title").text()))
+          .or(StringUtils.innerTrim(doc.select("head meta[name=title]").attr("content")))
+          .or(StringUtils.innerTrim(doc.select("head meta[property=og:title]").attr("content")))
+          .or(StringUtils.innerTrim(doc.select("head meta[name=twitter:title]").attr("content")))
+          .toString());
+    } catch (HeuristicString.CandidateFound candidateFound) {
+      return cleanTitle(candidateFound.candidate);
     }
-    return title;
   }
 
   static String extractCanonicalUrl(Document doc) {
-    String url = StringUtils.urlEncodeSpaceCharacter(doc.select("head link[rel=canonical]").attr("href"));
-    if (url.isEmpty()) {
-      url = StringUtils.urlEncodeSpaceCharacter(doc.select("head meta[property=og:url]").attr("content"));
-      if (url.isEmpty()) {
-        url = StringUtils.urlEncodeSpaceCharacter(doc.select("head meta[name=twitter:url]").attr("content"));
-      }
+    try {
+      return new HeuristicString("")
+          .or(StringUtils.urlEncodeSpaceCharacter(doc.select("head link[rel=canonical]").attr("href")))
+          .or(StringUtils.urlEncodeSpaceCharacter(doc.select("head meta[property=og:url]").attr("content")))
+          .or(StringUtils.urlEncodeSpaceCharacter(doc.select("head meta[name=twitter:url]").attr("content")))
+          .toString();
+    } catch (HeuristicString.CandidateFound candidateFound) {
+      return candidateFound.candidate;
     }
-    return url;
   }
 
   static String extractDescription(Document doc) {
-    String description = StringUtils.innerTrim(doc.select("head meta[name=description]").attr("content"));
-    if (description.isEmpty()) {
-      description = StringUtils.innerTrim(doc.select("head meta[property=og:description]").attr("content"));
-      if (description.isEmpty()) {
-        description = StringUtils.innerTrim(doc.select("head meta[name=twitter:description]").attr("content"));
-      }
+    try {
+      return new HeuristicString("")
+          .or(StringUtils.innerTrim(doc.select("head meta[name=description]").attr("content")))
+          .or(StringUtils.innerTrim(doc.select("head meta[property=og:description]").attr("content")))
+          .or(StringUtils.innerTrim(doc.select("head meta[name=twitter:description]").attr("content")))
+          .toString();
+    } catch (HeuristicString.CandidateFound candidateFound) {
+      return candidateFound.candidate;
     }
-    return description;
   }
 
   static Collection<String> extractKeywords(Document doc) {
@@ -102,19 +100,16 @@ class ExtractionHelpers {
   }
 
   static String extractImageUrl(Document doc) {
-    // use open graph tag to get image
-    String imageUrl = StringUtils.urlEncodeSpaceCharacter(doc.select("head meta[property=og:image]").attr("content"));
-    if (imageUrl.isEmpty()) {
-      imageUrl = StringUtils.urlEncodeSpaceCharacter(doc.select("head meta[name=twitter:image]").attr("content"));
-      if (imageUrl.isEmpty()) {
-        // prefer link over thumbnail-meta if empty
-        imageUrl = StringUtils.urlEncodeSpaceCharacter(doc.select("link[rel=image_src]").attr("href"));
-        if (imageUrl.isEmpty()) {
-          imageUrl = StringUtils.urlEncodeSpaceCharacter(doc.select("head meta[name=thumbnail]").attr("content"));
-        }
-      }
+    try {
+      return new HeuristicString("")
+          .or(StringUtils.urlEncodeSpaceCharacter(doc.select("head meta[property=og:image]").attr("content")))
+          .or(StringUtils.urlEncodeSpaceCharacter(doc.select("head meta[name=twitter:image]").attr("content")))
+          .or(StringUtils.urlEncodeSpaceCharacter(doc.select("link[rel=image_src]").attr("href")))
+          .or(StringUtils.urlEncodeSpaceCharacter(doc.select("head meta[name=thumbnail]").attr("content")))
+          .toString();
+    } catch (HeuristicString.CandidateFound candidateFound) {
+      return candidateFound.candidate;
     }
-    return imageUrl;
   }
 
   static String extractRssUrl(Document doc) {
@@ -126,11 +121,14 @@ class ExtractionHelpers {
   }
 
   static String extractFaviconUrl(Document doc) {
-    String faviconUrl = StringUtils.urlEncodeSpaceCharacter(doc.select("head link[rel=icon]").attr("href"));
-    if (faviconUrl.isEmpty()) {
-      faviconUrl = StringUtils.urlEncodeSpaceCharacter(doc.select("head link[rel^=shortcut],link[rel$=icon]").attr("href"));
+    try {
+      return new HeuristicString("")
+          .or(StringUtils.urlEncodeSpaceCharacter(doc.select("head link[rel=icon]").attr("href")))
+          .or(StringUtils.urlEncodeSpaceCharacter(doc.select("head link[rel^=shortcut],link[rel$=icon]").attr("href")))
+          .toString();
+    } catch (HeuristicString.CandidateFound candidateFound) {
+      return candidateFound.candidate;
     }
-    return faviconUrl;
   }
 
   /**
@@ -355,7 +353,7 @@ class ExtractionHelpers {
    * Removes unlikely candidates from HTML. It often ends up removing more than just the unlikely
    * candidates, so exercise caution when enabling this.
    */
-  protected static void stripUnlikelyCandidates(Document doc) {
+  static void stripUnlikelyCandidates(Document doc) {
     if (true) {
       return;  // Temporarily disabled; see comment above.
     }
@@ -404,7 +402,7 @@ class ExtractionHelpers {
     return nodes.keySet();
   }
 
-  public static String cleanTitle(String title) {
+  static String cleanTitle(String title) {
     StringBuilder res = new StringBuilder();
 //        int index = title.lastIndexOf("|");
 //        if (index > 0 && title.length() / 2 < index)
