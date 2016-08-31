@@ -85,20 +85,6 @@ class ExtractionHelpers {
     }
   }
 
-  static Collection<String> extractKeywords(Document doc) {
-    String content = StringUtils.innerTrim(doc.select("head meta[name=keywords]").attr("content"));
-
-    if (content.startsWith("[") && content.endsWith("]")) {
-      content = content.substring(1, content.length() - 1);
-    }
-
-    String[] split = content.split("\\s*,\\s*");
-    if (split.length > 1 || (split.length > 0 && !"".equals(split[0]))) {
-      return Arrays.asList(split);
-    }
-    return Collections.emptyList();
-  }
-
   static String extractImageUrl(Document doc) {
     try {
       return new HeuristicString("")
@@ -112,8 +98,15 @@ class ExtractionHelpers {
     }
   }
 
-  static String extractRssUrl(Document doc) {
-    return StringUtils.urlEncodeSpaceCharacter(doc.select("link[rel=alternate]").select("link[type=application/rss+xml]").attr("href"));
+  static String extractFeedUrl(Document doc) {
+    try {
+      return new HeuristicString("")
+          .or(doc.select("link[rel=alternate]").select("link[type=application/rss+xml]").attr("href"))
+          .or(doc.select("link[rel=alternate]").select("link[type=application/atom+xml]").attr("href"))
+          .toString();
+    } catch (HeuristicString.CandidateFound candidateFound) {
+      return candidateFound.candidate;
+    }
   }
 
   static String extractVideoUrl(Document doc) {
@@ -129,6 +122,20 @@ class ExtractionHelpers {
     } catch (HeuristicString.CandidateFound candidateFound) {
       return candidateFound.candidate;
     }
+  }
+
+  static Collection<String> extractKeywords(Document doc) {
+    String content = StringUtils.innerTrim(doc.select("head meta[name=keywords]").attr("content"));
+
+    if (content.startsWith("[") && content.endsWith("]")) {
+      content = content.substring(1, content.length() - 1);
+    }
+
+    String[] split = content.split("\\s*,\\s*");
+    if (split.length > 1 || (split.length > 0 && !"".equals(split[0]))) {
+      return Arrays.asList(split);
+    }
+    return Collections.emptyList();
   }
 
   /**

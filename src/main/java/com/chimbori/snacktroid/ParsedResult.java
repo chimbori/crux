@@ -38,7 +38,7 @@ public class ParsedResult {
   public String canonicalUrl = "";
   public String imageUrl = "";
   public String videoUrl = "";
-  public String rssUrl = "";
+  public String feedUrl = "";
   public String text = "";
   public String faviconUrl = "";
   public String description = "";
@@ -57,7 +57,7 @@ public class ParsedResult {
     canonicalUrl = new URL(absoluteArticleUrl, canonicalUrl).toString();
     imageUrl = new URL(absoluteArticleUrl, imageUrl).toString();
     videoUrl = new URL(absoluteArticleUrl, videoUrl).toString();
-    rssUrl = new URL(absoluteArticleUrl, rssUrl).toString();
+    feedUrl = new URL(absoluteArticleUrl, feedUrl).toString();
     faviconUrl = new URL(absoluteArticleUrl, faviconUrl).toString();
     return this;
   }
@@ -71,7 +71,7 @@ public class ParsedResult {
         ", canonicalUrl='" + canonicalUrl + '\'' +
         ", imageUrl='" + imageUrl + '\'' +
         ", videoUrl='" + videoUrl + '\'' +
-        ", rssUrl='" + rssUrl + '\'' +
+        ", feedUrl='" + feedUrl + '\'' +
         ", text='" + text + '\'' +
         ", faviconUrl='" + faviconUrl + '\'' +
         ", description='" + description + '\'' +

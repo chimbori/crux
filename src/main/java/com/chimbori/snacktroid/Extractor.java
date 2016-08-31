@@ -76,7 +76,7 @@ public class Extractor {
       res.imageUrl = ExtractionHelpers.extractImageUrl(doc);
     }
 
-    res.rssUrl = ExtractionHelpers.extractRssUrl(doc);
+    res.feedUrl = ExtractionHelpers.extractFeedUrl(doc);
     res.videoUrl = ExtractionHelpers.extractVideoUrl(doc);
     res.faviconUrl = ExtractionHelpers.extractFaviconUrl(doc);
     res.keywords = ExtractionHelpers.extractKeywords(doc);
