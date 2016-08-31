@@ -107,7 +107,7 @@ public class HtmlFetcher {
     return (proxy != null ? proxy : Proxy.NO_PROXY);
   }
 
-  public ParsedResult fetchAndExtract(String url, int timeout, boolean resolve) throws Exception {
+  public ParsedResult fetchAndExtract(String url, int timeout, boolean resolve) throws IOException {
     String originalUrl = url;
     url = StringUtils.removeHashbang(url);
     String gUrl = StringUtils.getUrlFromUglyGoogleRedirect(url);
@@ -202,14 +202,8 @@ public class HtmlFetcher {
     return StringUtils.useDomainOfFirstArg4Second(url, urlOrPath);
   }
 
-  public String fetchAsString(String urlAsString, int timeout)
-      throws IOException {
-    return fetchAsString(urlAsString, timeout, true);
-  }
-
-  private String fetchAsString(String urlAsString, int timeout, boolean includeSomeGooseOptions)
-      throws IOException {
-    HttpURLConnection hConn = createUrlConnection(urlAsString, timeout, includeSomeGooseOptions);
+  public String fetchAsString(String urlAsString, int timeout) throws IOException {
+    HttpURLConnection hConn = createUrlConnection(urlAsString, timeout);
     hConn.setInstanceFollowRedirects(true);
     String encoding = hConn.getContentEncoding();
     InputStream inputStream;
@@ -240,7 +234,7 @@ public class HtmlFetcher {
     String newUrl = null;
     int responseCode = -1;
     try {
-      HttpURLConnection hConn = createUrlConnection(urlAsString, timeout, true);
+      HttpURLConnection hConn = createUrlConnection(urlAsString, timeout);
       // force no follow
       hConn.setInstanceFollowRedirects(false);
       // the program doesn't care what the content actually is !!
@@ -296,8 +290,7 @@ public class HtmlFetcher {
     return sb.toString();
   }
 
-  private HttpURLConnection createUrlConnection(String urlAsStr, int timeout,
-                                                boolean includeSomeGooseOptions) throws IOException {
+  private HttpURLConnection createUrlConnection(String urlAsStr, int timeout) throws IOException {
     URL url = new URL(urlAsStr);
     //using proxy may increase latency
     Proxy proxy = getProxy();
@@ -305,13 +298,11 @@ public class HtmlFetcher {
     hConn.setRequestProperty("User-Agent", userAgent);
     hConn.setRequestProperty("Accept", accept);
 
-    if (includeSomeGooseOptions) {
-      hConn.setRequestProperty("Accept-Language", language);
-      hConn.setRequestProperty("content-charset", charset);
-      hConn.addRequestProperty("Referer", referrer);
-      // avoid the cache for testing purposes only?
-      hConn.setRequestProperty("Cache-Control", cacheControl);
-    }
+    hConn.setRequestProperty("Accept-Language", language);
+    hConn.setRequestProperty("content-charset", charset);
+    hConn.addRequestProperty("Referer", referrer);
+    // avoid the cache for testing purposes only?
+    hConn.setRequestProperty("Cache-Control", cacheControl);
 
     // suggest respond to be gzipped or deflated (which is just another compression)
     // http://stackoverflow.com/q/3932117
