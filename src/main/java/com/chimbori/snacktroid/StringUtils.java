@@ -1,24 +1,14 @@
 package com.chimbori.snacktroid;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 class StringUtils {
-  private static final Pattern SPACE = Pattern.compile(" ");
+  private static final String WHITESPACE = "[ \r\t\n]+";
 
   private StringUtils() {
     // Prevent instantiation.
   }
 
-  static String replaceSpaces(String url) {
-    if (!url.isEmpty()) {
-      url = url.trim();
-      if (url.contains(" ")) {
-        Matcher spaces = SPACE.matcher(url);
-        url = spaces.replaceAll("%20");
-      }
-    }
-    return url;
+  static String urlEncodeSpaceCharacter(String url) {
+    return url.isEmpty() ? url : url.trim().replaceAll(WHITESPACE, "%20");
   }
 
   static int countMatches(String str, String substring) {
@@ -35,7 +25,7 @@ class StringUtils {
    * remove more than two spaces or newlines
    */
   static String innerTrim(String str) {
-    return str.replaceAll("[ \n\t\r]+", " ").trim();
+    return str.replaceAll(WHITESPACE, " ").trim();
   }
 
   /**

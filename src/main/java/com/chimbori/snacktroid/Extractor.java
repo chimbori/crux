@@ -55,7 +55,7 @@ public class Extractor {
       List<ParsedResult.ImageResult> images = new ArrayList<>();
       Element imgEl = ExtractionHelpers.determineImageSource(bestMatchElement, images);
       if (imgEl != null) {
-        res.imageUrl = StringUtils.replaceSpaces(imgEl.attr("src"));
+        res.imageUrl = StringUtils.urlEncodeSpaceCharacter(imgEl.attr("src"));
         // TODO remove parent container of image if it is contained in bestMatchElement
         // to avoid image subtitles flooding in
 

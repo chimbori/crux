@@ -66,11 +66,11 @@ class ExtractionHelpers {
   }
 
   static String extractCanonicalUrl(Document doc) {
-    String url = StringUtils.replaceSpaces(doc.select("head link[rel=canonical]").attr("href"));
+    String url = StringUtils.urlEncodeSpaceCharacter(doc.select("head link[rel=canonical]").attr("href"));
     if (url.isEmpty()) {
-      url = StringUtils.replaceSpaces(doc.select("head meta[property=og:url]").attr("content"));
+      url = StringUtils.urlEncodeSpaceCharacter(doc.select("head meta[property=og:url]").attr("content"));
       if (url.isEmpty()) {
-        url = StringUtils.replaceSpaces(doc.select("head meta[name=twitter:url]").attr("content"));
+        url = StringUtils.urlEncodeSpaceCharacter(doc.select("head meta[name=twitter:url]").attr("content"));
       }
     }
     return url;
@@ -103,14 +103,14 @@ class ExtractionHelpers {
 
   static String extractImageUrl(Document doc) {
     // use open graph tag to get image
-    String imageUrl = StringUtils.replaceSpaces(doc.select("head meta[property=og:image]").attr("content"));
+    String imageUrl = StringUtils.urlEncodeSpaceCharacter(doc.select("head meta[property=og:image]").attr("content"));
     if (imageUrl.isEmpty()) {
-      imageUrl = StringUtils.replaceSpaces(doc.select("head meta[name=twitter:image]").attr("content"));
+      imageUrl = StringUtils.urlEncodeSpaceCharacter(doc.select("head meta[name=twitter:image]").attr("content"));
       if (imageUrl.isEmpty()) {
         // prefer link over thumbnail-meta if empty
-        imageUrl = StringUtils.replaceSpaces(doc.select("link[rel=image_src]").attr("href"));
+        imageUrl = StringUtils.urlEncodeSpaceCharacter(doc.select("link[rel=image_src]").attr("href"));
         if (imageUrl.isEmpty()) {
-          imageUrl = StringUtils.replaceSpaces(doc.select("head meta[name=thumbnail]").attr("content"));
+          imageUrl = StringUtils.urlEncodeSpaceCharacter(doc.select("head meta[name=thumbnail]").attr("content"));
         }
       }
     }
@@ -118,17 +118,17 @@ class ExtractionHelpers {
   }
 
   static String extractRssUrl(Document doc) {
-    return StringUtils.replaceSpaces(doc.select("link[rel=alternate]").select("link[type=application/rss+xml]").attr("href"));
+    return StringUtils.urlEncodeSpaceCharacter(doc.select("link[rel=alternate]").select("link[type=application/rss+xml]").attr("href"));
   }
 
   static String extractVideoUrl(Document doc) {
-    return StringUtils.replaceSpaces(doc.select("head meta[property=og:video]").attr("content"));
+    return StringUtils.urlEncodeSpaceCharacter(doc.select("head meta[property=og:video]").attr("content"));
   }
 
   static String extractFaviconUrl(Document doc) {
-    String faviconUrl = StringUtils.replaceSpaces(doc.select("head link[rel=icon]").attr("href"));
+    String faviconUrl = StringUtils.urlEncodeSpaceCharacter(doc.select("head link[rel=icon]").attr("href"));
     if (faviconUrl.isEmpty()) {
-      faviconUrl = StringUtils.replaceSpaces(doc.select("head link[rel^=shortcut],link[rel$=icon]").attr("href"));
+      faviconUrl = StringUtils.urlEncodeSpaceCharacter(doc.select("head link[rel^=shortcut],link[rel$=icon]").attr("href"));
     }
     return faviconUrl;
   }
