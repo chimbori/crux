@@ -29,7 +29,7 @@ import java.util.List;
  * JIT (where direct field access is as cheap as accessing a local), direct field access is about
  * 7x faster than invoking a trivial getter.
  */
-class ParsedResult {
+public class ParsedResult {
   public String title = "";
   public String url = "";
   public String originalUrl = "";
