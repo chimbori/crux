@@ -26,9 +26,9 @@ public class ExtractorTest {
   }
 
   @Test
-  public void testData1() {
+  public void testNPR() {
     // ? http://www.npr.org/blogs/money/2010/10/04/130329523/how-fake-money-saved-brazil
-    ParsedResult res = extractor.extractContent(readFileAsString("test_data/1.html"));
+    ParsedResult res = extractor.extractContent(readFileAsString("test_data/npr.html"));
     assertEquals("How Fake Money Saved Brazil : Planet Money : NPR", res.title);
     assertTrue(res.text, res.text.startsWith("This is a story about how an economist and his buddies tricked the people of Brazil into saving the country from rampant inflation. They had a crazy, unlikely plan, and it worked. Twenty years ago, Brazil's"));
     assertTrue(res.text, res.text.endsWith("\"How Four Drinking Buddies Saved Brazil.\""));
@@ -37,49 +37,48 @@ public class ExtractorTest {
   }
 
   @Test
-  public void testData2() {
+  public void testBenjaminStein() {
     // http://benjaminste.in/post/1223476561/hey-guys-whatcha-doing
-    ParsedResult res = extractor.extractContent(readFileAsString("test_data/2.html"));
+    ParsedResult res = extractor.extractContent(readFileAsString("test_data/benjaminstein.html"));
     assertEquals("BenjaminSte.in - Hey guys, whatcha doing?", res.title);
     assertTrue(res.text, res.text.startsWith("This month is the 15th anniversary of my last CD."));
     assertTrue(res.keywords.isEmpty());
   }
 
   @Test
-  public void testData3() {
-    ParsedResult res = extractor.extractContent(readFileAsString("test_data/3.html"));
-    assertTrue("data3:" + res.text, res.text.startsWith("October 2010 Silicon Valley proper is mostly suburban sprawl. At first glance it "));
+  public void testYCombinator() {
+    ParsedResult res = extractor.extractContent(readFileAsString("test_data/ycombinator.html"));
+    assertTrue(res.text.startsWith("October 2010 Silicon Valley proper is mostly suburban sprawl. At first glance it "));
     assertTrue(res.text.endsWith(" and Jessica Livingston for reading drafts of this."));
     assertTrue(res.keywords.isEmpty());
   }
 
   @Test
-  public void testData4() {
+  public void testTraindom() {
     // http://blog.traindom.com/places-where-to-submit-your-startup-for-coverage/
-    ParsedResult res = extractor.extractContent(readFileAsString("test_data/4.html"));
+    ParsedResult res = extractor.extractContent(readFileAsString("test_data/traindom.html"));
     assertEquals("36 places where you can submit your startup for some coverage", res.title);
     assertEquals(Arrays.asList("blog coverage", "get coverage", "startup review", "startups", "submit startup"), res.keywords);
-    assertTrue("data4:" + res.text, res.text.startsWith("So you have a new startup company and want some coverage"));
+    assertTrue(res.text.startsWith("So you have a new startup company and want some coverage"));
   }
 
   @Test
-  public void testData5() {
-    ParsedResult res = extractor.extractContent(readFileAsString("test_data/5.html"));
-    assertTrue("data5:" + res.text, res.text.startsWith("Hackers unite in Stanford"));
-//        assertTrue(res.text.endsWith("have beats and bevvies a-plenty. RSVP here.    "));
+  public void testAirBnB() {
+    ParsedResult res = extractor.extractContent(readFileAsString("test_data/airbnb.html"));
+    assertTrue(res.text.startsWith("Hackers unite in Stanford"));
     assertTrue(res.keywords.isEmpty());
   }
 
   @Test
-  public void testData6() {
-    ParsedResult res = extractor.extractContent(readFileAsString("test_data/6.html"));
-    assertTrue("data6:" + res.text, res.text.equals("Acting Governor of Balkh province, Atta Mohammad Noor, said that differences between leaders of the National Unity Government (NUG) – namely President Ashraf Ghani and CEO Abdullah Abdullah— have paved the ground for mounting insecurity. Hundreds of worried relatives gathered outside Kabul hospitals on Tuesday desperate for news of loved ones following the deadly suicide bombing earlier in the day."));
+  public void testToloNews() {
+    ParsedResult res = extractor.extractContent(readFileAsString("test_data/tolonews.html"));
+    assertEquals("Acting Governor of Balkh province, Atta Mohammad Noor, said that differences between leaders of the National Unity Government (NUG) – namely President Ashraf Ghani and CEO Abdullah Abdullah— have paved the ground for mounting insecurity. Hundreds of worried relatives gathered outside Kabul hospitals on Tuesday desperate for news of loved ones following the deadly suicide bombing earlier in the day.", res.text);
   }
 
   @Test
-  public void testData7() {
-    ParsedResult res = extractor.extractContent(readFileAsString("test_data/7.html"));
-    assertTrue("data7:" + res.text, res.text.startsWith("Over 100 school girls have been poisoned in western Farah province of Afghanistan during the school hours."));
+  public void testKhaamaPress() {
+    ParsedResult res = extractor.extractContent(readFileAsString("test_data/khaama.html"));
+    assertTrue(res.text.startsWith("Over 100 school girls have been poisoned in western Farah province of Afghanistan during the school hours."));
   }
 
   @Test
@@ -765,7 +764,7 @@ public class ExtractorTest {
 
   @Test
   public void testTextList() {
-    ParsedResult res = extractor.extractContent(readFileAsString("test_data/1.html"));
+    ParsedResult res = extractor.extractContent(readFileAsString("test_data/npr.html"));
     String text = res.text;
     List<String> textList = res.textList;
     assertEquals(23, textList.size());
