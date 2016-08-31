@@ -275,7 +275,7 @@ class ExtractionHelpers {
     return weight;
   }
 
-  static Element determineImageSource(Element el, List<ParsedResult.ImageResult> images) {
+  static Element determineImageSource(Element el, List<Article.Image> images) {
     int maxWeight = 0;
     Element maxNode = null;
     Elements els = el.select("img");
@@ -335,7 +335,7 @@ class ExtractionHelpers {
         score = score / 2;
       }
 
-      ParsedResult.ImageResult image = new ParsedResult.ImageResult(sourceUrl, weight, title, height, width, alt, noFollow);
+      Article.Image image = new Article.Image(sourceUrl, weight, title, height, width, alt, noFollow);
       images.add(image);
     }
 
@@ -434,9 +434,9 @@ class ExtractionHelpers {
     return StringUtils.innerTrim(res.toString());
   }
 
-  private static class ImageWeightComparator implements Comparator<ParsedResult.ImageResult> {
+  private static class ImageWeightComparator implements Comparator<Article.Image> {
     @Override
-    public int compare(ParsedResult.ImageResult o1, ParsedResult.ImageResult o2) {
+    public int compare(Article.Image o1, Article.Image o2) {
       // Returns the highest weight first
       return o2.weight.compareTo(o1.weight);
     }

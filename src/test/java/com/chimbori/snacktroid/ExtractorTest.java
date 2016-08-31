@@ -34,13 +34,13 @@ public class ExtractorTest {
   @Test
   public void testGaltimeWhereUrlContainsSpaces() {
     //String url = "http://galtime.com/article/entertainment/37/22938/kris-humphries-avoids-kim-talk-gma";
-    ParsedResult article = getContentFromTestFile("galtime.com.html");
+    Article article = parseFromTestFile("galtime.com.html");
     assertEquals("http://vnetcdn.dtsph.com/files/vnet3/imagecache/opengraph_ogimage/story-images/Kris%20Humphries%20Top%20Bar.JPG", article.imageUrl);
   }
 
   @Test
   public void testRetainSpaceInsideTags() {
-    ParsedResult res = extractor.extractContent("<html><body><div> aaa<a> bbb </a>ccc</div></body></html>");
+    Article res = extractor.extractContent("<html><body><div> aaa<a> bbb </a>ccc</div></body></html>");
     assertEquals("aaa bbb ccc", res.text);
 
     res = extractor.extractContent("<html><body><div> aaa <strong>bbb </strong>ccc</div></body></html>");
@@ -52,27 +52,27 @@ public class ExtractorTest {
 
   @Test
   public void testHideHiddenText() {
-    ParsedResult res = getContentFromTestFile("no-hidden.html");
+    Article res = parseFromTestFile("no-hidden.html");
     assertEquals("This is the text which is shorter but visible", res.text);
   }
 
   @Test
   public void testShowOnlyNonHiddenText() {
-    ParsedResult res = getContentFromTestFile("no-hidden2.html");
+    Article res = parseFromTestFile("no-hidden2.html");
     assertEquals("This is the NONE-HIDDEN text which shouldn't be shown and it is a bit longer so normally prefered", res.text);
   }
 
   @Test
   public void testImagesList() {
     // http://www.reuters.com/article/2012/08/03/us-knightcapital-trading-technology-idUSBRE87203X20120803
-    ParsedResult res = getContentFromTestFile("reuters.html");
+    Article res = parseFromTestFile("reuters.html");
     assertEquals(1, res.images.size());
     assertEquals(res.imageUrl, res.images.get(0).src);
     assertEquals("http://s1.reutersmedia.net/resources/r/?m=02&d=20120803&t=2&i=637797752&w=460&fh=&fw=&ll=&pl=&r=CBRE872074Y00",
         res.images.get(0).src);
 
     // http://thevacationgals.com/vacation-rental-homes-are-a-family-reunion-necessity/
-    res = getContentFromTestFile("thevacationgals.html");
+    res = parseFromTestFile("thevacationgals.html");
     assertEquals(3, res.images.size());
     assertEquals("http://thevacationgals.com/wp-content/uploads/2010/11/Gemmel-Family-Reunion-at-a-Vacation-Rental-Home1-300x225.jpg",
         res.images.get(0).src);
@@ -83,7 +83,7 @@ public class ExtractorTest {
 
   @Test
   public void testTextList() {
-    ParsedResult res = getContentFromTestFile("npr.html");
+    Article res = parseFromTestFile("npr.html");
     String text = res.text;
     List<String> textList = res.textList;
     assertEquals(23, textList.size());
@@ -91,7 +91,7 @@ public class ExtractorTest {
     assertTrue(textList.get(22).endsWith(text.substring(text.length() - 15, text.length())));
   }
 
-  private ParsedResult getContentFromTestFile(String testFile) {
+  private Article parseFromTestFile(String testFile) {
     try {
       return extractor.extractContent(CharsetConverter.readStream(new FileInputStream(new File("test_data/" + testFile)), null).content);
     } catch (FileNotFoundException e) {

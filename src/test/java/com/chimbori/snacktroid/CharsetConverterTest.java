@@ -1,15 +1,12 @@
 package com.chimbori.snacktroid;
 
-import junit.framework.TestCase;
-
 import org.jsoup.Jsoup;
+import org.junit.Test;
 
-public class CharsetConverterTest extends TestCase {
+import static org.junit.Assert.assertEquals;
 
-  public CharsetConverterTest(String testName) {
-    super(testName);
-  }
-
+public class CharsetConverterTest {
+  @Test
   public void testDetermineEncoding() throws Exception {
     assertEncodingEquals("utf-8", "faz.html");
     assertEncodingEquals("shift_jis", "yomiuri.html");
@@ -23,15 +20,16 @@ public class CharsetConverterTest extends TestCase {
     assertEncodingEquals("iso-8859-15", "br-online.html");
   }
 
-  private void assertEncodingEquals(String encoding, String testFile) {
-    assertEquals(encoding, CharsetConverter.readStream(getClass().getResourceAsStream(testFile), null).encoding);
-  }
-
+  @Test
   public void testMaxBytesExceedingButGetTitleNevertheless() throws Exception {
     CharsetConverter.StringWithEncoding parsed = CharsetConverter.readStream(
         getClass().getResourceAsStream("faz.html"), null);
     assertEquals("utf-8", parsed.encoding);
     assertEquals("Im Gespräch: Umweltaktivist Stewart Brand: Ihr Deutschen steht allein da "
         + "- Atomdebatte - FAZ.NET", Jsoup.parse(parsed.content).select("title").text());
+  }
+
+  private void assertEncodingEquals(String encoding, String testFile) {
+    assertEquals(encoding, CharsetConverter.readStream(getClass().getResourceAsStream(testFile), null).encoding);
   }
 }

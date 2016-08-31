@@ -9,7 +9,6 @@ import java.util.Arrays;
 import static org.junit.Assert.assertEquals;
 
 public class OutputFormatterTest {
-
   @Test
   public void testSkipHidden() {
     OutputFormatter formatter = new OutputFormatter();

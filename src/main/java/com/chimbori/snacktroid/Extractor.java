@@ -17,19 +17,19 @@ public class Extractor {
     return this;
   }
 
-  public ParsedResult extractContent(String html) {
+  public Article extractContent(String html) {
     if (html.isEmpty()) {
       throw new IllegalArgumentException();
     }
     return extractContent(Jsoup.parse(html), formatter);
   }
 
-  private ParsedResult extractContent(Document doc, Formatter formatter) {
+  private Article extractContent(Document doc, Formatter formatter) {
     if (doc == null) {
       throw new IllegalArgumentException();
     }
 
-    ParsedResult res = new ParsedResult();
+    Article res = new Article();
     res.title = ExtractionHelpers.extractTitle(doc);
     res.description = ExtractionHelpers.extractDescription(doc);
     res.canonicalUrl = ExtractionHelpers.extractCanonicalUrl(doc);
@@ -52,7 +52,7 @@ public class Extractor {
     }
 
     if (bestMatchElement != null) {
-      List<ParsedResult.ImageResult> images = new ArrayList<>();
+      List<Article.Image> images = new ArrayList<>();
       Element imgEl = ExtractionHelpers.determineImageSource(bestMatchElement, images);
       if (imgEl != null) {
         res.imageUrl = StringUtils.urlEncodeSpaceCharacter(imgEl.attr("src"));

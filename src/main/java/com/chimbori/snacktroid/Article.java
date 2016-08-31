@@ -31,7 +31,7 @@ import java.util.List;
  * JIT (where direct field access is as cheap as accessing a local), direct field access is about
  * 7x faster than invoking a trivial getter.
  */
-public class ParsedResult {
+public class Article {
   public String title = "";
   public String url = "";
   public String originalUrl = "";
@@ -45,14 +45,14 @@ public class ParsedResult {
   public String dateString = "";
   public List<String> textList = new ArrayList<>();
   public Collection<String> keywords;
-  public List<ImageResult> images = new ArrayList<>();
+  public List<Image> images = new ArrayList<>();
 
 
-  ParsedResult() {
+  Article() {
     // Package private constructor to disallow outside the library.
   }
 
-  public ParsedResult ensureAbsoluteUrls() throws MalformedURLException {
+  public Article ensureAbsoluteUrls() throws MalformedURLException {
     URL absoluteArticleUrl = new URL(url);
     canonicalUrl = new URL(absoluteArticleUrl, canonicalUrl).toString();
     imageUrl = new URL(absoluteArticleUrl, imageUrl).toString();
@@ -64,7 +64,7 @@ public class ParsedResult {
 
   @Override
   public String toString() {
-    return "ParsedResult{" +
+    return "Article{" +
         "title='" + title + '\'' +
         ", url='" + url + '\'' +
         ", originalUrl='" + originalUrl + '\'' +
@@ -85,7 +85,7 @@ public class ParsedResult {
   /**
    * Class which encapsulates the data from an image found under an element
    */
-  static class ImageResult {
+  static class Image {
     public final String src;
     public final Integer weight;
     private final String title;
@@ -95,7 +95,7 @@ public class ParsedResult {
     private final boolean noFollow;
     public Element element;
 
-    ImageResult(String src, Integer weight, String title, int height, int width, String alt, boolean noFollow) {
+    Image(String src, Integer weight, String title, int height, int width, String alt, boolean noFollow) {
       this.src = src;
       this.weight = weight;
       this.title = title;
