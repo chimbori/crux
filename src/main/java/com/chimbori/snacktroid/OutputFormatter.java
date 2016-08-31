@@ -15,7 +15,6 @@ import java.util.regex.Pattern;
  * Takes the top node and strips out junk for presentation to the user.
  */
 class OutputFormatter {
-
   private static final int MIN_PARAGRAPH_TEXT = 50;
   private static final List<String> NODES_TO_REPLACE = Arrays.asList("strong", "b", "i");
   private final Pattern unlikelyPattern = Pattern.compile("display\\:none|visibility\\:hidden");
@@ -141,5 +140,4 @@ class OutputFormatter {
     appendTextSkipHidden(el, sb);
     return sb.toString();
   }
-
 }

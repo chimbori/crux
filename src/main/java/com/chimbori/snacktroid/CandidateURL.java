@@ -1,20 +1,35 @@
 package com.chimbori.snacktroid;
 
 import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.net.URLDecoder;
 
 @SuppressWarnings("WeakerAccess")
 public class CandidateURL {
   private static final String UTF8 = "UTF-8";
-  public String url;
+  private final String fileName;
+  public URL url;
 
   @SuppressWarnings("unused")
   public CandidateURL(String url) {
-    this.url = url;
+    try {
+      this.url = new URL(url);
+    } catch (MalformedURLException e) {
+      if (e.getMessage().startsWith("no protocol")) {
+        try {
+          this.url = new URL("http://" + url);
+        } catch (MalformedURLException e1) {
+          // Uninitialized!
+          e1.printStackTrace();
+        }
+      }
+    }
+    this.fileName = this.url.getFile();
   }
 
   CandidateURL resolveRedirects() {
-    return removeHashbang().resolveGoogleRedirect().resolveFacebookRedirect();
+    return resolveGoogleRedirect().resolveFacebookRedirect();
   }
 
   public boolean isLikelyArticle() {
@@ -28,51 +43,57 @@ public class CandidateURL {
 
   @SuppressWarnings("WeakerAccess")
   public boolean isLikelyVideo() {
-    return url.endsWith(".mpeg") || url.endsWith(".mpg") || url.endsWith(".avi") || url.endsWith(".mov")
-        || url.endsWith(".mpg4") || url.endsWith(".mp4") || url.endsWith(".flv") || url.endsWith(".wmv");
+    return fileName.endsWith(".mpeg") || fileName.endsWith(".mpg") || fileName.endsWith(".avi") || fileName.endsWith(".mov")
+        || fileName.endsWith(".mpg4") || fileName.endsWith(".mp4") || fileName.endsWith(".flv") || fileName.endsWith(".wmv");
   }
 
   public boolean isVideoHost() {
-    url = StringUtils.extractDomain(url, true);
-    return url.startsWith("youtube.com") || url.startsWith("video.yahoo.com")
-        || url.startsWith("vimeo.com") || url.startsWith("blip.tv");
+    String host = url.getHost();
+    return host.endsWith("youtube.com") ||
+        host.endsWith("video.yahoo.com") ||
+        host.endsWith("vimeo.com") ||
+        host.endsWith(".blip.tv");
   }
+
 
   @SuppressWarnings("WeakerAccess")
   public boolean isLikelyAudio() {
-    return url.endsWith(".mp3") || url.endsWith(".ogg") || url.endsWith(".m3u") || url.endsWith(".wav");
+    return fileName.endsWith(".mp3") || fileName.endsWith(".ogg") || fileName.endsWith(".m3u") || fileName.endsWith(".wav");
   }
 
   @SuppressWarnings("WeakerAccess")
   public boolean isLikelyBinaryDocument() {
-    return url.endsWith(".pdf") || url.endsWith(".ppt") || url.endsWith(".doc")
-        || url.endsWith(".swf") || url.endsWith(".rtf") || url.endsWith(".xls");
+    return fileName.endsWith(".pdf") || fileName.endsWith(".ppt") || fileName.endsWith(".doc")
+        || fileName.endsWith(".swf") || fileName.endsWith(".rtf") || fileName.endsWith(".xls");
   }
 
   @SuppressWarnings("WeakerAccess")
   public boolean isLikelyArchive() {
-    return url.endsWith(".gz") || url.endsWith(".tgz") || url.endsWith(".zip")
-        || url.endsWith(".rar") || url.endsWith(".deb") || url.endsWith(".rpm") || url.endsWith(".7z");
+    return fileName.endsWith(".gz") || fileName.endsWith(".tgz") || fileName.endsWith(".zip")
+        || fileName.endsWith(".rar") || fileName.endsWith(".deb") || fileName.endsWith(".rpm") || fileName.endsWith(".7z");
   }
 
   @SuppressWarnings("WeakerAccess")
   public boolean isLikelyExecutable() {
-    return url.endsWith(".exe") || url.endsWith(".bin") || url.endsWith(".bat") || url.endsWith(".dmg");
+    return fileName.endsWith(".exe") || fileName.endsWith(".bin") || fileName.endsWith(".bat") || fileName.endsWith(".dmg");
   }
 
   @SuppressWarnings("WeakerAccess")
   public boolean isLikelyImage() {
-    return url.endsWith(".png") || url.endsWith(".jpeg") || url.endsWith(".gif")
-        || url.endsWith(".jpg") || url.endsWith(".bmp") || url.endsWith(".ico") || url.endsWith(".eps");
+    return fileName.endsWith(".png") || fileName.endsWith(".jpeg") || fileName.endsWith(".gif")
+        || fileName.endsWith(".jpg") || fileName.endsWith(".bmp") || fileName.endsWith(".ico") || fileName.endsWith(".eps");
   }
 
   private CandidateURL resolveGoogleRedirect() {
-    if (url.startsWith("http://www.google.com/url?")) {
-      url = url.substring("http://www.google.com/url?".length());
-      String arr[] = decodeUrl(url).split("\\&");
+    if (url.getHost().endsWith(".google.com") && url.getPath().equals("/url")) {
+      String arr[] = decodeUrl(url.getPath()).split("\\&");
       for (String str : arr) {
         if (str.startsWith("q=")) {
-          url = str.substring("q=".length());
+          try {
+            url = new URL(str.substring("q=".length()));
+          } catch (MalformedURLException e) {
+            // Keep URL as is.
+          }
         }
       }
     }
@@ -80,8 +101,12 @@ public class CandidateURL {
   }
 
   private CandidateURL resolveFacebookRedirect() {
-    if (url.startsWith("http://www.facebook.com/l.php?u=")) {
-      url = decodeUrl(url.substring("http://www.facebook.com/l.php?u=".length()));
+    if (url.getHost().endsWith(".facebook.com") && url.getPath().equals("/l.php")) {
+      try {
+        url = new URL(decodeUrl(url.getQuery().substring("u=".length())));
+      } catch (MalformedURLException e) {
+        // Keep URL as is.
+      }
     }
     return this;
   }
@@ -94,17 +119,8 @@ public class CandidateURL {
     }
   }
 
-  /**
-   * Popular sites uses the #! to indicate the importance of the following
-   * chars. Ugly but true. Such as: facebook, twitter, gizmodo, ...
-   */
-  CandidateURL removeHashbang() {
-    url = url.replaceFirst("#!", "");
-    return this;
-  }
-
   @Override
   public String toString() {
-    return url;
+    return url.toString();
   }
 }

@@ -2,6 +2,9 @@ package com.chimbori.snacktroid;
 
 import org.junit.Test;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
@@ -35,29 +38,15 @@ public class StringUtilsTest {
   }
 
   @Test
-  public void testExctractHost() {
-    assertEquals("techcrunch.com",
-        StringUtils.extractHost("http://techcrunch.com/2010/08/13/gantto-takes-on-microsoft-project-with-web-based-project-management-application/"));
-  }
-
-  @Test
-  public void testFavicon() {
-    assertEquals("http://www.n24.de/news/../../../media/imageimport/images/content/favicon.ico",
-        StringUtils.useDomainOfFirstArg4Second("http://www.n24.de/news/newsitem_6797232.html", "../../../media/imageimport/images/content/favicon.ico"));
-    StringUtils.useDomainOfFirstArg4Second("http://www.n24.de/favicon.ico", "/favicon.ico");
-    StringUtils.useDomainOfFirstArg4Second("http://www.n24.de/favicon.ico", "favicon.ico");
-  }
-
-  @Test
-  public void testFaviconProtocolRelative() throws Exception {
-    assertEquals("http://de.wikipedia.org/apple-touch-icon.png",
-        StringUtils.useDomainOfFirstArg4Second("http://de.wikipedia.org/favicon", "//de.wikipedia.org/apple-touch-icon.png"));
-  }
-
-  @Test
   public void testImageProtocolRelative() throws Exception {
+    String result;
+    try {
+      result = new URL(new URL("http://de.wikipedia.org/wiki/Griechenland"), "//upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Flag_of_Greece.svg/150px-Flag_of_Greece.svg.png").toString();
+    } catch (MalformedURLException e) {
+      result = "//upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Flag_of_Greece.svg/150px-Flag_of_Greece.svg.png";
+    }
     assertEquals("http://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Flag_of_Greece.svg/150px-Flag_of_Greece.svg.png",
-        StringUtils.useDomainOfFirstArg4Second("http://de.wikipedia.org/wiki/Griechenland", "//upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Flag_of_Greece.svg/150px-Flag_of_Greece.svg.png"));
+        result);
   }
 
   @Test

@@ -1,20 +1,7 @@
 package com.chimbori.snacktroid;
 
-import org.jsoup.nodes.Element;
-
-import java.net.CookieHandler;
-import java.net.CookieManager;
-import java.net.CookiePolicy;
-import java.security.SecureRandom;
-import java.security.cert.CertificateException;
-import java.security.cert.X509Certificate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import javax.net.ssl.KeyManager;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
 
 class StringUtils {
   private static final Pattern SPACE = Pattern.compile(" ");
@@ -133,101 +120,6 @@ class StringUtils {
     return new int[]{lastSubstrBegin, endIndex};
   }
 
-  static String getDefaultFavicon(String url) {
-    return useDomainOfFirstArg4Second(url, "/favicon.ico");
-  }
-
-  /**
-   * @param urlForDomain extract the domain from this url
-   * @param path         this url does not have a domain
-   */
-  static String useDomainOfFirstArg4Second(String urlForDomain, String path) {
-    if (path.startsWith("http"))
-      return path;
-
-    if ("favicon.ico".equals(path))
-      path = "/favicon.ico";
-
-    if (path.startsWith("//")) {
-      // wikipedia special case, see tests
-      if (urlForDomain.startsWith("https:"))
-        return "https:" + path;
-
-      return "http:" + path;
-    } else if (path.startsWith("/"))
-      return "http://" + extractHost(urlForDomain) + path;
-    else if (path.startsWith("../")) {
-      int slashIndex = urlForDomain.lastIndexOf("/");
-      if (slashIndex > 0 && slashIndex + 1 < urlForDomain.length())
-        urlForDomain = urlForDomain.substring(0, slashIndex + 1);
-
-      return urlForDomain + path;
-    }
-    return path;
-  }
-
-  static String extractHost(String url) {
-    return extractDomain(url, false);
-  }
-
-  static String extractDomain(String url, boolean aggressive) {
-    if (url.startsWith("http://"))
-      url = url.substring("http://".length());
-    else if (url.startsWith("https://"))
-      url = url.substring("https://".length());
-
-    if (aggressive) {
-      if (url.startsWith("www."))
-        url = url.substring("www.".length());
-
-      // strip mobile from start
-      if (url.startsWith("m."))
-        url = url.substring("m.".length());
-    }
-
-    int slashIndex = url.indexOf("/");
-    if (slashIndex > 0)
-      url = url.substring(0, slashIndex);
-
-    return url;
-  }
-
-  /**
-   * @link http://blogs.sun.com/CoreJavaTechTips/entry/cookie_handling_in_java_se
-   */
-  static void enableCookieMgmt() {
-    CookieManager manager = new CookieManager();
-    manager.setCookiePolicy(CookiePolicy.ACCEPT_ALL);
-    CookieHandler.setDefault(manager);
-  }
-
-  /**
-   * @link http://stackoverflow.com/questions/2529682/setting-user-agent-of-a-java-urlconnection
-   */
-  static void enableUserAgentOverwrite() {
-    System.setProperty("http.agent", "");
-  }
-
-  static String printNode(Element root) {
-    return printNode(root, 0);
-  }
-
-  private static String printNode(Element root, int indentation) {
-    StringBuilder sb = new StringBuilder();
-    for (int i = 0; i < indentation; i++) {
-      sb.append(' ');
-    }
-    sb.append(root.tagName());
-    sb.append(":");
-    sb.append(root.ownText());
-    sb.append("\n");
-    for (Element el : root.children()) {
-      sb.append(printNode(el, indentation + 1));
-      sb.append("\n");
-    }
-    return sb.toString();
-  }
-
   static String estimateDate(String url) {
     int index = url.indexOf("://");
     if (index > 0)
@@ -316,30 +208,8 @@ class StringUtils {
     return dateStr + "/01/01";
   }
 
-  // with the help of http://stackoverflow.com/questions/1828775/httpclient-and-ssl
-  static void enableAnySSL() {
-    try {
-      SSLContext ctx = SSLContext.getInstance("TLS");
-      ctx.init(new KeyManager[0], new TrustManager[]{new DefaultTrustManager()}, new SecureRandom());
-      SSLContext.setDefault(ctx);
-    } catch (Exception ex) {
-      ex.printStackTrace();
-    }
-  }
-
-  private static class DefaultTrustManager implements X509TrustManager {
-    @Override
-    public void checkClientTrusted(X509Certificate[] arg0, String arg1) throws CertificateException {
-    }
-
-    @Override
-    public void checkServerTrusted(X509Certificate[] arg0, String arg1) throws CertificateException {
-    }
-
-    @Override
-    public X509Certificate[] getAcceptedIssuers() {
-      return null;
-    }
+  static boolean isAdImage(String imageUrl) {
+    return count(imageUrl, "ad") >= 2;
   }
 
   static int countLetters(String str) {

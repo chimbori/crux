@@ -19,109 +19,52 @@ import java.util.regex.Pattern;
 
 public class Extractor {
   private static final Logger logger = Logger.getInstance();
-  // Interesting nodes
-  private static final Pattern NODES = Pattern.compile("p|div|td|h1|h2|article|section");
-  // Unlikely candidates
-  private String unlikelyStr;
-  private Pattern UNLIKELY;
-  // Most likely positive candidates
-  private String positiveStr;
-  private Pattern POSITIVE;
-  // Most likely negative candidates
-  private String negativeStr;
-  private Pattern NEGATIVE;
-  private static final Pattern NEGATIVE_STYLE =
-      Pattern.compile("hidden|display: ?none|font-size: ?small");
+
+  private static final Pattern NODES =
+      Pattern.compile("p|div|td|h1|h2|article|section");
+  private static final Pattern UNLIKELY =
+      Pattern.compile("com(bx|ment|munity)|dis(qus|cuss)|e(xtra|[-]?mail)|foot|"
+      + "header|menu|re(mark|ply)|rss|sh(are|outbox)|sponsor"
+      + "a(d|ll|gegate|rchive|ttachment)|(pag(er|ination))|popup|print|"
+      + "login|si(debar|gn|ngle)");
+  private static final Pattern POSITIVE =
+      Pattern.compile("(^(body|content|h?entry|main|page|post|text|blog|story|haupt))"
+      + "|arti(cle|kel)|instapaper_body");
+  private static final Pattern NEGATIVE =
+      Pattern.compile("nav($|igation)|user|com(ment|bx)|(^com-)|contact|"
+      + "foot|masthead|(me(dia|ta))|outbrain|promo|related|scroll|(sho(utbox|pping))|"
+      + "sidebar|sponsor|tags|tool|widget|player|disclaimer|toc|infobox|vcard|post-ratings");
+
+  private static final Pattern NEGATIVE_STYLE = Pattern.compile("hidden|display: ?none|font-size: ?small");
+
   private static final Set<String> IGNORED_TITLE_PARTS = new LinkedHashSet<String>() {
     {
       add("hacker news");
       add("facebook");
     }
   };
+
   private static final OutputFormatter DEFAULT_FORMATTER = new OutputFormatter();
   private OutputFormatter formatter = DEFAULT_FORMATTER;
 
-  public Extractor() {
-    setUnlikely("com(bx|ment|munity)|dis(qus|cuss)|e(xtra|[-]?mail)|foot|"
-        + "header|menu|re(mark|ply)|rss|sh(are|outbox)|sponsor"
-        + "a(d|ll|gegate|rchive|ttachment)|(pag(er|ination))|popup|print|"
-        + "login|si(debar|gn|ngle)");
-    setPositive("(^(body|content|h?entry|main|page|post|text|blog|story|haupt))"
-        + "|arti(cle|kel)|instapaper_body");
-    setNegative("nav($|igation)|user|com(ment|bx)|(^com-)|contact|"
-        + "foot|masthead|(me(dia|ta))|outbrain|promo|related|scroll|(sho(utbox|pping))|"
-        + "sidebar|sponsor|tags|tool|widget|player|disclaimer|toc|infobox|vcard|post-ratings");
-  }
-
-  private Extractor setUnlikely(String unlikelyStr) {
-    this.unlikelyStr = unlikelyStr;
-    UNLIKELY = Pattern.compile(unlikelyStr);
-    return this;
-  }
-
-  public Extractor addUnlikely(String unlikelyMatches) {
-    return setUnlikely(unlikelyStr + "|" + unlikelyMatches);
-  }
-
-  private Extractor setPositive(String positiveStr) {
-    this.positiveStr = positiveStr;
-    POSITIVE = Pattern.compile(positiveStr);
-    return this;
-  }
-
-  public Extractor addPositive(String pos) {
-    return setPositive(positiveStr + "|" + pos);
-  }
-
-  private Extractor setNegative(String negativeStr) {
-    this.negativeStr = negativeStr;
-    NEGATIVE = Pattern.compile(negativeStr);
-    return this;
-  }
-
-  public Extractor addNegative(String neg) {
-    setNegative(negativeStr + "|" + neg);
-    return this;
-  }
-
-  public void setOutputFormatter(OutputFormatter formatter) {
+  public Extractor setOutputFormatter(OutputFormatter formatter) {
     this.formatter = formatter;
-  }
-
-  /**
-   * @param doc extracts article text from given html string. wasn't tested
-   *            with improper HTML, although jSoup should be able to handle minor stuff.
-   * @return extracted article, all HTML tags stripped
-   */
-  public ParsedResult extractContent(Document doc) {
-    return extractContent(new ParsedResult(), doc, formatter);
-  }
-
-  public ParsedResult extractContent(Document doc, OutputFormatter formatter) {
-    return extractContent(new ParsedResult(), doc, formatter);
+    return this;
   }
 
   public ParsedResult extractContent(String html) {
-    return extractContent(new ParsedResult(), html);
+    if (html.isEmpty()) {
+      throw new IllegalArgumentException();
+    }
+    return extractContent(Jsoup.parse(html), formatter);
   }
 
-  @SuppressWarnings("WeakerAccess")
-  public ParsedResult extractContent(ParsedResult res, String html) {
-    return extractContent(res, html, formatter);
-  }
+  private ParsedResult extractContent(Document doc, OutputFormatter formatter) {
+    if (doc == null) {
+      throw new IllegalArgumentException();
+    }
 
-  private ParsedResult extractContent(ParsedResult res, String html, OutputFormatter formatter) {
-    if (html.isEmpty())
-      throw new IllegalArgumentException("html string is empty!?");
-
-    // http://jsoup.org/cookbook/extracting-data/selector-syntax
-    return extractContent(res, Jsoup.parse(html), formatter);
-  }
-
-  private ParsedResult extractContent(ParsedResult res, Document doc, OutputFormatter formatter) {
-    if (doc == null)
-      throw new NullPointerException("missing document");
-
+    ParsedResult res = new ParsedResult();
     res.title = extractTitle(doc);
     res.description = extractDescription(doc);
     res.canonicalUrl = extractCanonicalUrl(doc);
@@ -175,7 +118,7 @@ public class Extractor {
     return res;
   }
 
-  private String extractTitle(Document doc) {
+  private static String extractTitle(Document doc) {
     String title = cleanTitle(doc.title());
     if (title.isEmpty()) {
       title = StringUtils.innerTrim(doc.select("head title").text());
@@ -192,7 +135,7 @@ public class Extractor {
     return title;
   }
 
-  private String extractCanonicalUrl(Document doc) {
+  private static String extractCanonicalUrl(Document doc) {
     String url = StringUtils.replaceSpaces(doc.select("head link[rel=canonical]").attr("href"));
     if (url.isEmpty()) {
       url = StringUtils.replaceSpaces(doc.select("head meta[property=og:url]").attr("content"));
@@ -203,7 +146,7 @@ public class Extractor {
     return url;
   }
 
-  private String extractDescription(Document doc) {
+  private static String extractDescription(Document doc) {
     String description = StringUtils.innerTrim(doc.select("head meta[name=description]").attr("content"));
     if (description.isEmpty()) {
       description = StringUtils.innerTrim(doc.select("head meta[property=og:description]").attr("content"));
@@ -214,27 +157,21 @@ public class Extractor {
     return description;
   }
 
-  private Collection<String> extractKeywords(Document doc) {
+  private static Collection<String> extractKeywords(Document doc) {
     String content = StringUtils.innerTrim(doc.select("head meta[name=keywords]").attr("content"));
 
-    if (content != null) {
-      if (content.startsWith("[") && content.endsWith("]"))
-        content = content.substring(1, content.length() - 1);
+    if (content.startsWith("[") && content.endsWith("]")) {
+      content = content.substring(1, content.length() - 1);
+    }
 
-      String[] split = content.split("\\s*,\\s*");
-      if (split.length > 1 || (split.length > 0 && !"".equals(split[0])))
-        return Arrays.asList(split);
+    String[] split = content.split("\\s*,\\s*");
+    if (split.length > 1 || (split.length > 0 && !"".equals(split[0]))) {
+      return Arrays.asList(split);
     }
     return Collections.emptyList();
   }
 
-  /**
-   * Tries to extract an image url from metadata if determineImageSource
-   * failed
-   *
-   * @return image url or empty str
-   */
-  private String extractImageUrl(Document doc) {
+  private static String extractImageUrl(Document doc) {
     // use open graph tag to get image
     String imageUrl = StringUtils.replaceSpaces(doc.select("head meta[property=og:image]").attr("content"));
     if (imageUrl.isEmpty()) {
@@ -274,7 +211,7 @@ public class Extractor {
    *
    * @param e Element to weight, along with child nodes
    */
-  private int getWeight(Element e) {
+  private static int getWeight(Element e) {
     int weight = calcWeight(e);
     weight += (int) Math.round(e.ownText().length() / 100.0 * 10);
     weight += weightChildNodes(e);
@@ -293,7 +230,7 @@ public class Extractor {
    *
    * @param rootEl Element, who's child nodes will be weighted
    */
-  private int weightChildNodes(Element rootEl) {
+  private static int weightChildNodes(Element rootEl) {
     int weight = 0;
     Element caption = null;
     List<Element> pEls = new ArrayList<>(5);
@@ -343,12 +280,12 @@ public class Extractor {
     return weight;
   }
 
-  private void addScore(Element el, int score) {
+  private static void addScore(Element el, int score) {
     int old = getScore(el);
     setScore(el, score + old);
   }
 
-  private int getScore(Element el) {
+  private static int getScore(Element el) {
     int old = 0;
     try {
       old = Integer.parseInt(el.attr("gravityScore"));
@@ -358,11 +295,11 @@ public class Extractor {
     return old;
   }
 
-  private void setScore(Element el, int score) {
+  private static void setScore(Element el, int score) {
     el.attr("gravityScore", Integer.toString(score));
   }
 
-  private int calcWeightForChild(Element child, String ownText) {
+  private static int calcWeightForChild(Element child, String ownText) {
     int c = StringUtils.count(ownText, "&quot;");
     c += StringUtils.count(ownText, "&lt;");
     c += StringUtils.count(ownText, "&gt;");
@@ -377,7 +314,7 @@ public class Extractor {
     return val;
   }
 
-  private int calcWeight(Element e) {
+  private static int calcWeight(Element e) {
     int weight = 0;
     if (POSITIVE.matcher(e.className()).find())
       weight += 35;
@@ -403,7 +340,7 @@ public class Extractor {
     return weight;
   }
 
-  private Element determineImageSource(Element el, List<ParsedResult.ImageResult> images) {
+  private static Element determineImageSource(Element el, List<ParsedResult.ImageResult> images) {
     int maxWeight = 0;
     Element maxNode = null;
     Elements els = el.select("img");
@@ -413,7 +350,7 @@ public class Extractor {
     double score = 1;
     for (Element e : els) {
       String sourceUrl = e.attr("src");
-      if (sourceUrl.isEmpty() || isAdImage(sourceUrl))
+      if (sourceUrl.isEmpty() || StringUtils.isAdImage(sourceUrl))
         continue;
 
       int weight = 0;
@@ -467,7 +404,7 @@ public class Extractor {
       images.add(image);
     }
 
-    Collections.sort(images, new ImageComparator());
+    Collections.sort(images, new ImageWeightComparator());
     return maxNode;
   }
 
@@ -522,49 +459,10 @@ public class Extractor {
     return doc;
   }
 
-  private void print(Element child) {
-    print("", child, "");
-  }
-
-  private void print(String add, Element child) {
-    print(add, child, "");
-  }
-
-  private void print(String add1, Element child, String add2) {
-    logger.info(add1 + " " + child.nodeName() + " id=" + child.id()
-        + " class=" + child.className() + " text=" + child.text() + " " + add2);
-  }
-
-  private boolean isAdImage(String imageUrl) {
-    return StringUtils.count(imageUrl, "ad") >= 2;
-  }
-
-  /**
-   * based on a delimeter in the title take the longest piece or do some
-   * custom logic based on the site
-   */
-  private String doTitleSplits(String title, String delimeter) {
-    String largeText = "";
-    int largetTextLen = 0;
-    String[] titlePieces = title.split(delimeter);
-
-    // take the largest split
-    for (String p : titlePieces) {
-      if (p.length() > largetTextLen) {
-        largeText = p;
-        largetTextLen = p.length();
-      }
-    }
-
-    largeText = largeText.replace("&raquo;", " ");
-    largeText = largeText.replace("»", " ");
-    return largeText.trim();
-  }
-
   /**
    * @return a set of all important nodes
    */
-  private Collection<Element> getNodes(Document doc) {
+  private static Collection<Element> getNodes(Document doc) {
     Map<Element, Object> nodes = new LinkedHashMap<>(64);
     int score = 100;
     for (Element el : doc.select("body").select("*")) {
@@ -577,7 +475,7 @@ public class Extractor {
     return nodes.keySet();
   }
 
-  public String cleanTitle(String title) {
+  public static String cleanTitle(String title) {
     StringBuilder res = new StringBuilder();
 //        int index = title.lastIndexOf("|");
 //        if (index > 0 && title.length() / 2 < index)
@@ -602,11 +500,7 @@ public class Extractor {
     return StringUtils.innerTrim(res.toString());
   }
 
-  /**
-   * Comparator for Image by weight
-   */
-  private class ImageComparator implements Comparator<ParsedResult.ImageResult> {
-
+  private static class ImageWeightComparator implements Comparator<ParsedResult.ImageResult> {
     @Override
     public int compare(ParsedResult.ImageResult o1, ParsedResult.ImageResult o2) {
       // Returns the highest weight first

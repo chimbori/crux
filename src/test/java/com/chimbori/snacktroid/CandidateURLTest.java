@@ -8,13 +8,7 @@ import static org.junit.Assert.assertTrue;
 
 public class CandidateURLTest {
   @Test
-  public void testHashbang() {
-    assertEquals("sdfiasduhf+asdsad+sdfsdf#!", new CandidateURL("sdfiasduhf+asdsad#!+sdfsdf#!").removeHashbang().url);
-    assertEquals("sdfiasduhf+asdsad+sdfsdf#!", new CandidateURL("sdfiasduhf+asdsad#!+sdfsdf#!").removeHashbang().url);
-  }
-
-  @Test
-  public void testIsVideoLink() {
+  public void testIsVideoHost() {
     assertTrue(new CandidateURL("m.vimeo.com").isVideoHost());
     assertTrue(new CandidateURL("m.youtube.com").isVideoHost());
     assertTrue(new CandidateURL("www.youtube.com").isVideoHost());
@@ -28,6 +22,6 @@ public class CandidateURLTest {
   @Test
   public void testRedirects() {
     assertEquals("http://www.bet.com/collegemarketingreps&h=42263",
-        new CandidateURL("http://www.facebook.com/l.php?u=http%3A%2F%2Fwww.bet.com%2Fcollegemarketingreps&h=42263").resolveRedirects().url);
+        new CandidateURL("http://www.facebook.com/l.php?u=http%3A%2F%2Fwww.bet.com%2Fcollegemarketingreps&h=42263").resolveRedirects().url.toString());
   }
 }
