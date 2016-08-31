@@ -4,6 +4,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Arrays;
@@ -728,7 +731,12 @@ public class ExtractorTest {
   }
 
   private ParsedResult getContentFromTestFile(String testFile) {
-    return extractor.extractContent(CharsetConverter.readStream(getClass().getResourceAsStream(testFile), null).content);
+    try {
+      return extractor.extractContent(CharsetConverter.readStream(new FileInputStream(new File("test_data/" + testFile)), null).content);
+    } catch (FileNotFoundException e) {
+      fail(e.getMessage());
+    }
+    return null;
   }
 
   @Test
