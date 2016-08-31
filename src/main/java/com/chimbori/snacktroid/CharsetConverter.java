@@ -56,10 +56,6 @@ public class CharsetConverter {
   }
 
   static StringWithEncoding readStream(InputStream inputStream, String encoding) {
-    return readStream(inputStream, encoding, DEFAULT_MAX_BYTES);
-  }
-
-  static StringWithEncoding readStream(InputStream inputStream, String encoding, int maxBytes) {
     // HTTP 1.1 standard is iso-8859-1 not utf8 but we force utf-8 as YouTube assumes it.
     encoding = encoding == null || encoding.isEmpty() ? UTF8 : encoding.toLowerCase();
 
@@ -98,8 +94,8 @@ public class CharsetConverter {
       int bytesRead = outputStream.size();
       byte[] arr = new byte[K2];
       while (true) {
-        if (bytesRead >= maxBytes) {
-          logger.warn("maxBytes " + maxBytes + " exceeded. HTML may be broken.");
+        if (bytesRead >= DEFAULT_MAX_BYTES) {
+          logger.warn("maxBytes " + DEFAULT_MAX_BYTES + " exceeded. HTML may be broken.");
           break;
         }
 

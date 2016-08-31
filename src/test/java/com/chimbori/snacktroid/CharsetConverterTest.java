@@ -29,7 +29,7 @@ public class CharsetConverterTest extends TestCase {
 
   public void testMaxBytesExceedingButGetTitleNevertheless() throws Exception {
     CharsetConverter.StringWithEncoding parsed = CharsetConverter.readStream(
-        getClass().getResourceAsStream("faz.html"), null, 10000);
+        getClass().getResourceAsStream("faz.html"), null);
     assertEquals("utf-8", parsed.encoding);
     assertEquals("Im Gespräch: Umweltaktivist Stewart Brand: Ihr Deutschen steht allein da "
         + "- Atomdebatte - FAZ.NET", Jsoup.parse(parsed.content).select("title").text());

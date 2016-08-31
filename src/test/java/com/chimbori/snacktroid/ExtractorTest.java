@@ -717,13 +717,6 @@ public class ExtractorTest {
     //https://i4online.com
     ParsedResult article = getContentFromTestFile("i4online.html");
     assertTrue(article.text, article.text.startsWith("Just one week to go and everything is set for the summer Forum 2013"));
-
-    Extractor extractor2 = new Extractor();
-    OutputFormatter outputFormater = new OutputFormatter(10);
-    outputFormater.setNodesToKeepCssSelector("p,h1,h2,h3,h4,h5,h6");
-    extractor2.setFormatter(outputFormater);
-    article = extractor2.extractContent(CharsetConverter.readStream(getClass().getResourceAsStream("i4online.html"), null).content);
-    assertTrue(article.text, article.text.startsWith("Upcoming events: Forum 79 Just one week to go and everything is set for the summer Forum 2013"));
   }
 
   private ParsedResult getContentFromTestFile(String testFile) {
