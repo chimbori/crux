@@ -55,16 +55,26 @@ dependencies {
 
 ## Sample Code
 
+Using a singleton instance of OkHttp.
 ```java
-HtmlFetcher fetcher = new HtmlFetcher();
-// set cache. e.g. take the map implementation from google collections:
-// fetcher.setCache(new MapMaker().concurrencyLevel(20).maximumSize(count).
-//    expireAfterWrite(minutes, TimeUnit.MINUTES).makeMap();
+OkHttpClient okHttpClient = new OkHttpClient();
+```
 
-JResult res = fetcher.fetchAndExtract(articleUrl, resolveTimeout, true);
-String text = res.text; 
-String title = res.title; 
-String imageUrl = res.imageUrl;
+In a background thread:
+```java
+CandidateURL candidateUrl = new CandidateURL(url); 
+if (candidateURL.isLikelyArticle()) {
+  Request request = new Request.Builder()
+      .url(url)  // Customize your network request as you see fit.
+      .build();
+  Response response = okHttpClient.newCall().execute();
+  ParsedResult result = new Extractor().extractContent(response.body().string());
+}
+```
+
+On the UI thread:
+```java
+// Use result.text, result.title, etc.
 ```
 
 # License

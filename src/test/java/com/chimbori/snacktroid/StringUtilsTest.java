@@ -3,9 +3,7 @@ package com.chimbori.snacktroid;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 
 public class StringUtilsTest {
   @Test
@@ -34,26 +32,6 @@ public class StringUtilsTest {
     assertEquals(" people if ", StringUtils.getLongestSubstring("x now if people if todo?", "I know people if you"));
     assertEquals("", StringUtils.getLongestSubstring("?", "people"));
     assertEquals("people", StringUtils.getLongestSubstring(" people ", "people"));
-  }
-
-  @Test
-  public void testHashbang() {
-    assertEquals("sdfiasduhf+asdsad+sdfsdf#!", StringUtils.removeHashbang("sdfiasduhf+asdsad#!+sdfsdf#!"));
-    assertEquals("sdfiasduhf+asdsad+sdfsdf#!", StringUtils.removeHashbang("sdfiasduhf+asdsad#!+sdfsdf#!"));
-  }
-
-  @Test
-  public void testIsVideoLink() {
-    assertTrue(StringUtils.isVideoLink("m.vimeo.com"));
-    assertTrue(StringUtils.isVideoLink("m.youtube.com"));
-    assertTrue(StringUtils.isVideoLink("www.youtube.com"));
-    assertTrue(StringUtils.isVideoLink("http://youtube.com"));
-    assertTrue(StringUtils.isVideoLink("http://www.youtube.com"));
-
-    assertTrue(StringUtils.isVideoLink("https://youtube.com"));
-
-    assertFalse(StringUtils.isVideoLink("test.com"));
-    assertFalse(StringUtils.isVideoLink("irgendwas.com/youtube.com"));
   }
 
   @Test
@@ -88,12 +66,6 @@ public class StringUtilsTest {
     assertEquals("utf-8", StringUtils.encodingCleanup("utf-8\""));
     assertEquals("utf-8", StringUtils.encodingCleanup("utf-8'"));
     assertEquals("test-8", StringUtils.encodingCleanup(" test-8 &amp;"));
-  }
-
-  @Test
-  public void testUglyFacebook() {
-    assertEquals("http://www.bet.com/collegemarketingreps&h=42263",
-        StringUtils.getUrlFromUglyFacebookRedirect("http://www.facebook.com/l.php?u=http%3A%2F%2Fwww.bet.com%2Fcollegemarketingreps&h=42263"));
   }
 
   @Test

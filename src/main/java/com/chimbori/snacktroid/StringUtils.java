@@ -2,11 +2,9 @@ package com.chimbori.snacktroid;
 
 import org.jsoup.nodes.Element;
 
-import java.io.UnsupportedEncodingException;
 import java.net.CookieHandler;
 import java.net.CookieManager;
 import java.net.CookiePolicy;
-import java.net.URLDecoder;
 import java.security.SecureRandom;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
@@ -19,7 +17,6 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
 class StringUtils {
-  private static final String UTF8 = "UTF-8";
   private static final Pattern SPACE = Pattern.compile(" ");
 
   private StringUtils() {
@@ -195,40 +192,6 @@ class StringUtils {
     return url;
   }
 
-  static boolean isVideoLink(String url) {
-    url = extractDomain(url, true);
-    return url.startsWith("youtube.com") || url.startsWith("video.yahoo.com")
-        || url.startsWith("vimeo.com") || url.startsWith("blip.tv");
-  }
-
-  static boolean isVideo(String url) {
-    return url.endsWith(".mpeg") || url.endsWith(".mpg") || url.endsWith(".avi") || url.endsWith(".mov")
-        || url.endsWith(".mpg4") || url.endsWith(".mp4") || url.endsWith(".flv") || url.endsWith(".wmv");
-  }
-
-  static boolean isAudio(String url) {
-    return url.endsWith(".mp3") || url.endsWith(".ogg") || url.endsWith(".m3u") || url.endsWith(".wav");
-  }
-
-  static boolean isDoc(String url) {
-    return url.endsWith(".pdf") || url.endsWith(".ppt") || url.endsWith(".doc")
-        || url.endsWith(".swf") || url.endsWith(".rtf") || url.endsWith(".xls");
-  }
-
-  static boolean isPackage(String url) {
-    return url.endsWith(".gz") || url.endsWith(".tgz") || url.endsWith(".zip")
-        || url.endsWith(".rar") || url.endsWith(".deb") || url.endsWith(".rpm") || url.endsWith(".7z");
-  }
-
-  static boolean isApp(String url) {
-    return url.endsWith(".exe") || url.endsWith(".bin") || url.endsWith(".bat") || url.endsWith(".dmg");
-  }
-
-  static boolean isImage(String url) {
-    return url.endsWith(".png") || url.endsWith(".jpeg") || url.endsWith(".gif")
-        || url.endsWith(".jpg") || url.endsWith(".bmp") || url.endsWith(".ico") || url.endsWith(".eps");
-  }
-
   /**
    * @link http://blogs.sun.com/CoreJavaTechTips/entry/cookie_handling_in_java_se
    */
@@ -243,44 +206,6 @@ class StringUtils {
    */
   static void enableUserAgentOverwrite() {
     System.setProperty("http.agent", "");
-  }
-
-  static String getUrlFromUglyGoogleRedirect(String url) {
-    if (url.startsWith("http://www.google.com/url?")) {
-      url = url.substring("http://www.google.com/url?".length());
-      String arr[] = urlDecode(url).split("\\&");
-      for (String str : arr) {
-        if (str.startsWith("q=")) {
-          return str.substring("q=".length());
-        }
-      }
-    }
-    return null;
-  }
-
-  static String getUrlFromUglyFacebookRedirect(String url) {
-    if (url.startsWith("http://www.facebook.com/l.php?u=")) {
-      url = url.substring("http://www.facebook.com/l.php?u=".length());
-      return urlDecode(url);
-    }
-
-    return null;
-  }
-
-  private static String urlDecode(String str) {
-    try {
-      return URLDecoder.decode(str, UTF8);
-    } catch (UnsupportedEncodingException ex) {
-      return str;
-    }
-  }
-
-  /**
-   * Popular sites uses the #! to indicate the importance of the following
-   * chars. Ugly but true. Such as: facebook, twitter, gizmodo, ...
-   */
-  static String removeHashbang(String url) {
-    return url.replaceFirst("#!", "");
   }
 
   static String printNode(Element root) {
