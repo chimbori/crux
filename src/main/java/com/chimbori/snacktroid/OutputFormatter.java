@@ -14,23 +14,19 @@ import java.util.regex.Pattern;
 /**
  * Takes the top node and strips out junk for presentation to the user.
  */
-public class OutputFormatter {
+class OutputFormatter {
 
   private static final int MIN_PARAGRAPH_TEXT = 50;
   private static final List<String> NODES_TO_REPLACE = Arrays.asList("strong", "b", "i");
-  private Pattern unlikelyPattern = Pattern.compile("display\\:none|visibility\\:hidden");
+  private final Pattern unlikelyPattern = Pattern.compile("display\\:none|visibility\\:hidden");
   private final int minParagraphText;
   private String nodesToKeepCssSelector = "p";
 
   public OutputFormatter() {
-    this(MIN_PARAGRAPH_TEXT, NODES_TO_REPLACE);
+    this(MIN_PARAGRAPH_TEXT);
   }
 
   public OutputFormatter(int minParagraphText) {
-    this(minParagraphText, NODES_TO_REPLACE);
-  }
-
-  private OutputFormatter(int minParagraphText, List<String> nodesToReplace) {
     this.minParagraphText = minParagraphText;
   }
 

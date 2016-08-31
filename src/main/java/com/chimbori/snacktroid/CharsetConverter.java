@@ -10,6 +10,7 @@ import java.nio.charset.Charset;
 /**
  * This class is not thread safe. Use one new instance every time due to encoding variable.
  */
+@SuppressWarnings("WeakerAccess")
 public class CharsetConverter {
   private static final Logger logger = Logger.getInstance();
 
@@ -19,8 +20,8 @@ public class CharsetConverter {
   private static final int DEFAULT_MAX_BYTES = 500 * 1024;
 
   public static class StringWithEncoding {
-    public String content;
-    public String encoding;
+    public final String content;
+    public final String encoding;
 
     public StringWithEncoding(String content, String encoding) {
       this.content = content;

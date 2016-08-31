@@ -453,7 +453,7 @@ public class ExtractorTest {
   }
 
   @Test
-  public void tetGigaohm() throws Exception {
+  public void tetGigaohm() {
     //String url = "http://gigaom.com/apple/apples-next-macbook-an-800-mac-for-the-masses/";
     ParsedResult article = getContentFromTestFile("gigaom.html");
     assertTrue(article.text, article.text.startsWith("The MacBook Air is a bold move forward "));

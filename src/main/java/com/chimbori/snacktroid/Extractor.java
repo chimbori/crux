@@ -91,13 +91,13 @@ public class Extractor {
   /**
    * @param doc extracts article text from given html string. wasn't tested
    *            with improper HTML, although jSoup should be able to handle minor stuff.
-   * @returns extracted article, all HTML tags stripped
+   * @return extracted article, all HTML tags stripped
    */
-  public ParsedResult extractContent(Document doc) throws Exception {
+  public ParsedResult extractContent(Document doc) {
     return extractContent(new ParsedResult(), doc, formatter);
   }
 
-  public ParsedResult extractContent(Document doc, OutputFormatter formatter) throws Exception {
+  public ParsedResult extractContent(Document doc, OutputFormatter formatter) {
     return extractContent(new ParsedResult(), doc, formatter);
   }
 
@@ -105,6 +105,7 @@ public class Extractor {
     return extractContent(new ParsedResult(), html);
   }
 
+  @SuppressWarnings("WeakerAccess")
   public ParsedResult extractContent(ParsedResult res, String html) {
     return extractContent(res, html, formatter);
   }
