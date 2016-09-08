@@ -24,303 +24,303 @@ public class ExampleFilesTest {
   @Test
   public void testNPR() {
     // ? http://www.npr.org/blogs/money/2010/10/04/130329523/how-fake-money-saved-brazil
-    Article res = extractFromTestFile("npr.html");
-    assertEquals("How Fake Money Saved Brazil : Planet Money : NPR", res.title);
-    assertStartsWith("This is a story about how an economist and his buddies tricked the people of Brazil into saving the country from rampant inflation. They had a crazy, unlikely plan, and it worked. Twenty years ago, Brazil's", res.text);
-    assertTrue(res.text, res.text.endsWith("\"How Four Drinking Buddies Saved Brazil.\""));
-    assertEquals("http://media.npr.org/assets/img/2010/10/04/real_wide.jpg?t=1286218782&s=3", res.imageUrl);
-    assertTrue(res.keywords.isEmpty());
+    Article article = extractFromTestFile("npr.html");
+    assertEquals("How Fake Money Saved Brazil : Planet Money : NPR", article.title);
+    assertStartsWith("This is a story about how an economist and his buddies tricked the people of Brazil into saving the country from rampant inflation. They had a crazy, unlikely plan, and it worked. Twenty years ago, Brazil's", article.text);
+    assertTrue(article.text, article.text.endsWith("\"How Four Drinking Buddies Saved Brazil.\""));
+    assertEquals("http://media.npr.org/assets/img/2010/10/04/real_wide.jpg?t=1286218782&s=3", article.imageUrl);
+    assertTrue(article.keywords.isEmpty());
   }
 
   @Test
   public void testBenjaminStein() {
     // http://benjaminste.in/post/1223476561/hey-guys-whatcha-doing
-    Article res = extractFromTestFile("benjaminstein.html");
-    assertEquals("BenjaminSte.in - Hey guys, whatcha doing?", res.title);
-    assertStartsWith("This month is the 15th anniversary of my last CD.", res.text);
-    assertTrue(res.keywords.isEmpty());
+    Article article = extractFromTestFile("benjaminstein.html");
+    assertEquals("BenjaminSte.in - Hey guys, whatcha doing?", article.title);
+    assertStartsWith("This month is the 15th anniversary of my last CD.", article.text);
+    assertTrue(article.keywords.isEmpty());
   }
 
   @Test
   public void testYCombinator() {
-    Article res = extractFromTestFile("ycombinator.html");
-    assertStartsWith("October 2010 Silicon Valley proper is mostly suburban sprawl. At first glance it ", res.text);
-    assertTrue(res.text.endsWith(" and Jessica Livingston for reading drafts of this."));
-    assertTrue(res.keywords.isEmpty());
+    Article article = extractFromTestFile("ycombinator.html");
+    assertStartsWith("October 2010 Silicon Valley proper is mostly suburban sprawl. At first glance it ", article.text);
+    assertTrue(article.text.endsWith(" and Jessica Livingston for reading drafts of this."));
+    assertTrue(article.keywords.isEmpty());
   }
 
   @Test
   public void testTraindom() {
     // http://blog.traindom.com/places-where-to-submit-your-startup-for-coverage/
-    Article res = extractFromTestFile("traindom.html");
-    assertEquals("36 places where you can submit your startup for some coverage", res.title);
-    assertEquals(Arrays.asList("blog coverage", "get coverage", "startup review", "startups", "submit startup"), res.keywords);
-    assertStartsWith("So you have a new startup company and want some coverage", res.text);
+    Article article = extractFromTestFile("traindom.html");
+    assertEquals("36 places where you can submit your startup for some coverage", article.title);
+    assertEquals(Arrays.asList("blog coverage", "get coverage", "startup review", "startups", "submit startup"), article.keywords);
+    assertStartsWith("So you have a new startup company and want some coverage", article.text);
   }
 
   @Test
   public void testAirBnB() {
-    Article res = extractFromTestFile("airbnb.html");
-    assertStartsWith("Hackers unite in Stanford", res.text);
-    assertTrue(res.keywords.isEmpty());
+    Article article = extractFromTestFile("airbnb.html");
+    assertStartsWith("Hackers unite in Stanford", article.text);
+    assertTrue(article.keywords.isEmpty());
   }
 
   @Test
   public void testToloNews() {
-    Article res = extractFromTestFile("tolonews.html");
-    assertEquals("Acting Governor of Balkh province, Atta Mohammad Noor, said that differences between leaders of the National Unity Government (NUG) – namely President Ashraf Ghani and CEO Abdullah Abdullah— have paved the ground for mounting insecurity. Hundreds of worried relatives gathered outside Kabul hospitals on Tuesday desperate for news of loved ones following the deadly suicide bombing earlier in the day.", res.text);
+    Article article = extractFromTestFile("tolonews.html");
+    assertEquals("Acting Governor of Balkh province, Atta Mohammad Noor, said that differences between leaders of the National Unity Government (NUG) – namely President Ashraf Ghani and CEO Abdullah Abdullah— have paved the ground for mounting insecurity. Hundreds of worried relatives gathered outside Kabul hospitals on Tuesday desperate for news of loved ones following the deadly suicide bombing earlier in the day.", article.text);
   }
 
   @Test
   public void testKhaamaPress() {
-    Article res = extractFromTestFile("khaama.html");
-    assertStartsWith("Over 100 school girls have been poisoned in western Farah province of Afghanistan during the school hours.", res.text);
+    Article article = extractFromTestFile("khaama.html");
+    assertStartsWith("Over 100 school girls have been poisoned in western Farah province of Afghanistan during the school hours.", article.text);
   }
 
   @Test
   public void testCNN() {
     // http://edition.cnn.com/2011/WORLD/africa/04/06/libya.war/index.html?on.cnn=1
-    Article res = extractFromTestFile("cnn.html");
-    assertEquals("Gadhafi asks Obama to end NATO bombing - CNN.com", res.title);
-    assertEquals("/2011/WORLD/africa/04/06/libya.war/t1larg.libyarebel.gi.jpg", res.imageUrl);
-    assertStartsWith("Tripoli, Libya (CNN) -- As rebel and pro-government forces in Libya maneuvered on the battlefield Wedn", res.text);
+    Article article = extractFromTestFile("cnn.html");
+    assertEquals("Gadhafi asks Obama to end NATO bombing - CNN.com", article.title);
+    assertEquals("/2011/WORLD/africa/04/06/libya.war/t1larg.libyarebel.gi.jpg", article.imageUrl);
+    assertStartsWith("Tripoli, Libya (CNN) -- As rebel and pro-government forces in Libya maneuvered on the battlefield Wedn", article.text);
   }
 
   @Test
   public void testBBC() {
     // http://www.bbc.co.uk/news/world-latin-america-21226565
-    Article res = extractFromTestFile("bbc_noscript.html");
-    assertEquals("BBC News - Brazil mourns Santa Maria nightclub fire victims", res.title);
-    assertEquals("http://news.bbcimg.co.uk/media/images/65545000/gif/_65545798_brazil_santa_m_kiss_464.gif", res.imageUrl);
-    assertStartsWith("Brazil has declared three days of national mourning for 231 people killed in a nightclub fire in the southern city of Santa Maria.", res.text);
+    Article article = extractFromTestFile("bbc_noscript.html");
+    assertEquals("BBC News - Brazil mourns Santa Maria nightclub fire victims", article.title);
+    assertEquals("http://news.bbcimg.co.uk/media/images/65545000/gif/_65545798_brazil_santa_m_kiss_464.gif", article.imageUrl);
+    assertStartsWith("Brazil has declared three days of national mourning for 231 people killed in a nightclub fire in the southern city of Santa Maria.", article.text);
   }
 
   @Test
   public void testReuters() {
     // http://www.reuters.com/article/2012/08/03/us-knightcapital-trading-technology-idUSBRE87203X20120803
-    Article res = extractFromTestFile("reuters.html");
-    assertEquals("Knight trading loss shows cracks in equity markets", res.title);
-    assertEquals("http://s1.reutersmedia.net/resources/r/?m=02&d=20120803&t=2&i=637797752&w=460&fh=&fw=&ll=&pl=&r=CBRE872074Y00", res.imageUrl);
-    assertStartsWith("(Reuters) - The software glitch that cost Knight Capital Group $440 million in just 45 minutes reveals the deep fault lines in stock markets that are increasingly dominated by sophisticated high-speed trading systems. But Wall Street firms and regulators have few easy solutions for such problems.", res.text);
+    Article article = extractFromTestFile("reuters.html");
+    assertEquals("Knight trading loss shows cracks in equity markets", article.title);
+    assertEquals("http://s1.reutersmedia.net/resources/r/?m=02&d=20120803&t=2&i=637797752&w=460&fh=&fw=&ll=&pl=&r=CBRE872074Y00", article.imageUrl);
+    assertStartsWith("(Reuters) - The software glitch that cost Knight Capital Group $440 million in just 45 minutes reveals the deep fault lines in stock markets that are increasingly dominated by sophisticated high-speed trading systems. But Wall Street firms and regulators have few easy solutions for such problems.", article.text);
   }
 
   @Test
   public void testCaltonCaldwell() {
     // http://daltoncaldwell.com/dear-mark-zuckerberg (html5)
-    Article res = extractFromTestFile("daltoncaldwell.html");
-    assertEquals("Dear Mark Zuckerberg by Dalton Caldwell", res.title);
-    assertStartsWith("On June 13, 2012, at 4:30 p.m., I attended a meeting at Facebook HQ in Menlo Park, California.", res.text);
+    Article article = extractFromTestFile("daltoncaldwell.html");
+    assertEquals("Dear Mark Zuckerberg by Dalton Caldwell", article.title);
+    assertStartsWith("On June 13, 2012, at 4:30 p.m., I attended a meeting at Facebook HQ in Menlo Park, California.", article.text);
   }
 
   @Test
   public void testWordpress() {
     // http://karussell.wordpress.com/
-    Article res = extractFromTestFile("wordpress.html");
-    assertEquals("Twitter API and Me « Find Time for the Karussell", res.title);
-    assertStartsWith("I have a love hate relationship with Twitter. As a user I see ", res.text);
+    Article article = extractFromTestFile("wordpress.html");
+    assertEquals("Twitter API and Me « Find Time for the Karussell", article.title);
+    assertStartsWith("I have a love hate relationship with Twitter. As a user I see ", article.text);
   }
 
   @Test
   public void testFirefox() {
     // http://www.golem.de/1104/82797.html
-    Article res = extractFromTestFile("golem.html");
-    assertStartsWith("Mozilla hat Firefox 5.0a2 veröffentlicht und zugleich eine erste Entwicklerversion von Firefox 6 freigegeben.", res.text);
-    assertEquals("http://scr3.golem.de/screenshots/1104/Firefox-Aurora/thumb480/aurora-nighly-beta-logos.png", res.imageUrl);
-    assertEquals("Mozilla: Vorabversionen von Firefox 5 und 6 veröffentlicht - Golem.de", res.title);
+    Article article = extractFromTestFile("golem.html");
+    assertStartsWith("Mozilla hat Firefox 5.0a2 veröffentlicht und zugleich eine erste Entwicklerversion von Firefox 6 freigegeben.", article.text);
+    assertEquals("http://scr3.golem.de/screenshots/1104/Firefox-Aurora/thumb480/aurora-nighly-beta-logos.png", article.imageUrl);
+    assertEquals("Mozilla: Vorabversionen von Firefox 5 und 6 veröffentlicht - Golem.de", article.title);
   }
 
   @Test
   public void testYomiuri() {
     // http://www.yomiuri.co.jp/e-japan/gifu/news/20110410-OYT8T00124.htm
-    Article res = extractFromTestFile("yomiuri.html");
-    assertEquals("色とりどりのチューリップ : 岐阜 : 地域 : YOMIURI ONLINE（読売新聞）", res.title);
-    assertTrue("yomiuri:" + res.text, res.text.contains("海津市海津町の国営木曽三川公園で、チューリップが見頃を迎えている。２０日までは「チューリップ祭」が開かれており、大勢の人たちが多彩な色や形を鑑賞している＝写真＝"));
-    assertEquals(Arrays.asList("読売新聞", "地域"), res.keywords);
+    Article article = extractFromTestFile("yomiuri.html");
+    assertEquals("色とりどりのチューリップ : 岐阜 : 地域 : YOMIURI ONLINE（読売新聞）", article.title);
+    assertTrue("yomiuri:" + article.text, article.text.contains("海津市海津町の国営木曽三川公園で、チューリップが見頃を迎えている。２０日までは「チューリップ祭」が開かれており、大勢の人たちが多彩な色や形を鑑賞している＝写真＝"));
+    assertEquals(Arrays.asList("読売新聞", "地域"), article.keywords);
   }
 
   @Test
   public void testFAZ() {
     // http://www.faz.net/s/Rub469C43057F8C437CACC2DE9ED41B7950/Doc~EBA775DE7201E46E0B0C5AD9619BD56E9~ATpl~Ecommon~Scontent.html
-    Article res = extractFromTestFile("faz.html");
-    assertStartsWith("Deutschland hat vor, ganz auf Atomkraft zu verzichten. Ist das eine gute", res.text);
-    assertEquals("/m/{5F104CCF-3B5A-4B4C-B83E-4774ECB29889}g225_4.jpg", res.imageUrl);
+    Article article = extractFromTestFile("faz.html");
+    assertStartsWith("Deutschland hat vor, ganz auf Atomkraft zu verzichten. Ist das eine gute", article.text);
+    assertEquals("/m/{5F104CCF-3B5A-4B4C-B83E-4774ECB29889}g225_4.jpg", article.imageUrl);
 
     assertEquals(Arrays.asList("Atomkraft", "Deutschland", "Jahren", "Atommüll", "Fukushima", "Problem", "Brand", "Kohle", "2011", "11",
         "Stewart", "Atomdebatte", "Jahre", "Boden", "Treibhausgase", "April", "Welt", "Müll", "Radioaktivität",
         "Gesamtbild", "Klimawandel", "Reaktoren", "Verzicht", "Scheinheiligkeit", "Leute", "Risiken", "Löcher",
         "Fusion", "Gefahren", "Land"),
-        res.keywords);
+        article.keywords);
   }
 
   @Test
   public void testRian() {
     // http://en.rian.ru/world/20110410/163458489.html
-    Article res = extractFromTestFile("rian.html");
-    assertStartsWith("About 15,000 people took to the streets in Tokyo on Sunday to protest against th", res.text);
-    assertEquals("Japanese rally against nuclear power industry | World", res.title);
-    assertEquals("/favicon.ico", res.faviconUrl);
-    assertTrue(res.keywords.isEmpty());
+    Article article = extractFromTestFile("rian.html");
+    assertStartsWith("About 15,000 people took to the streets in Tokyo on Sunday to protest against th", article.text);
+    assertEquals("Japanese rally against nuclear power industry | World", article.title);
+    assertEquals("/favicon.ico", article.faviconUrl);
+    assertTrue(article.keywords.isEmpty());
   }
 
   @Test
   public void testJetwick() {
     // http://jetwick.com
-    Article res = extractFromTestFile("jetwick.html");
+    Article article = extractFromTestFile("jetwick.html");
     // TODO: FIX
-    // assertStartsWith("Search twitter without noise", res.text);
-    assertEquals("img/yourkit.png", res.imageUrl);
-    assertEquals(Arrays.asList("news", "twitter", "search", "jetwick"), res.keywords);
+    // assertStartsWith("Search twitter without noise", article.text);
+    assertEquals("img/yourkit.png", article.imageUrl);
+    assertEquals(Arrays.asList("news", "twitter", "search", "jetwick"), article.keywords);
   }
 
   @Test
   public void testVimeo() {
     // http://vimeo.com/20910443
-    Article res = extractFromTestFile("vimeo.html");
-    assertStartsWith("1 month ago 1 month ago: Fri, Mar 11, 2011 2:24am EST (Eastern Standard Time) See all Show me 1. finn. & Dirk von Lowtzow", res.text);
-    assertTrue(res.title, res.title.startsWith("finn. & Dirk von Lowtzow \"CRYING IN THE RAIN\""));
-//        assertEquals("http://b.vimeocdn.com/ts/134/104/134104048_200.jpg", res.imageUrl);
-    assertEquals("", res.videoUrl);
+    Article article = extractFromTestFile("vimeo.html");
+    assertStartsWith("1 month ago 1 month ago: Fri, Mar 11, 2011 2:24am EST (Eastern Standard Time) See all Show me 1. finn. & Dirk von Lowtzow", article.text);
+    assertTrue(article.title, article.title.startsWith("finn. & Dirk von Lowtzow \"CRYING IN THE RAIN\""));
+//        assertEquals("http://b.vimeocdn.com/ts/134/104/134104048_200.jpg", article.imageUrl);
+    assertEquals("", article.videoUrl);
     assertEquals(Arrays.asList("finn", "finn.", "Dirk von Lowtzow", "crying in the rain", "I wish I was someone else", "Tocotronic",
         "Sunday Service", "Indigo", "Patrick Zimmer", "Patrick Zimmer aka finn.", "video", "video sharing",
         "digital cameras", "videoblog", "vidblog", "video blogging", "home video", "home movie"),
-        res.keywords);
+        article.keywords);
   }
 
   @Test
   public void testYoutube() {
-    Article res = extractFromTestFile("youtube.html");
-    assertStartsWith("Master of the Puppets by Metallica. Converted to 8 bit with GSXCC. Original verson can be found us", res.text);
-    assertEquals("YouTube - Metallica - Master of the Puppets 8-bit", res.title);
-    assertEquals("http://i4.ytimg.com/vi/wlupmjrfaB4/default.jpg", res.imageUrl);
-    assertEquals("http://www.youtube.com/v/wlupmjrfaB4?version=3", res.videoUrl);
+    Article article = extractFromTestFile("youtube.html");
+    assertStartsWith("Master of the Puppets by Metallica. Converted to 8 bit with GSXCC. Original verson can be found us", article.text);
+    assertEquals("YouTube - Metallica - Master of the Puppets 8-bit", article.title);
+    assertEquals("http://i4.ytimg.com/vi/wlupmjrfaB4/default.jpg", article.imageUrl);
+    assertEquals("http://www.youtube.com/v/wlupmjrfaB4?version=3", article.videoUrl);
   }
 
   @Test
   public void testSpiegel() {
-    Article res = extractFromTestFile("spiegel.html");
-    assertStartsWith("Da ist er wieder, der C64: Eigentlich längst ein Relikt der Technikgeschichte, soll der ", res.text);
+    Article article = extractFromTestFile("spiegel.html");
+    assertStartsWith("Da ist er wieder, der C64: Eigentlich längst ein Relikt der Technikgeschichte, soll der ", article.text);
   }
 
   @Test
   public void testGithub() {
     // https://github.com/ifesdjeen/jReadability
-    Article res = extractFromTestFile("github.html");
-    assertStartsWith("= jReadability This is a small helper utility (only 130 lines of code) for pepole", res.text);
+    Article article = extractFromTestFile("github.html");
+    assertStartsWith("= jReadability This is a small helper utility (only 130 lines of code) for pepole", article.text);
   }
 
   @Test
   public void testITunes() {
     // http://itunes.apple.com/us/album/21/id420075073
-    Article res = extractFromTestFile("itunes.html");
-    assertStartsWith("What else can be said of this album other than that it is simply amazing? Adele's voice is powerful, vulnerable, assured, and heartbreaking all in one fell swoop.", res.text);
-    assertStartsWith("Preview songs from 21 by ADELE", res.description);
+    Article article = extractFromTestFile("itunes.html");
+    assertStartsWith("What else can be said of this album other than that it is simply amazing? Adele's voice is powerful, vulnerable, assured, and heartbreaking all in one fell swoop.", article.text);
+    assertStartsWith("Preview songs from 21 by ADELE", article.description);
   }
 
   @Test
   public void testTwitpic() {
     // http://twitpic.com/4k1ku3
-    Article res = extractFromTestFile("twitpic.html");
-    assertEquals("It’s hard to be a dinosaur. on Twitpic", res.title);
-    assertStartsWith("Lazypicture from youtube made a video about this book! It cracked me up!!", res.text);
+    Article article = extractFromTestFile("twitpic.html");
+    assertEquals("It’s hard to be a dinosaur. on Twitpic", article.title);
+    assertStartsWith("Lazypicture from youtube made a video about this book! It cracked me up!!", article.text);
   }
 
   @Test
   public void testTwitpic2() {
     // http://twitpic.com/4kuem8
-    Article res = extractFromTestFile("twitpic2.html");
-    assertEquals("*Not* what you want to see on the fetal monitor when your wif... on Twitpic", res.title);
-    assertStartsWith("*Not* what you want to see on the fetal monitor when your wife begins to push.", res.text);
+    Article article = extractFromTestFile("twitpic2.html");
+    assertEquals("*Not* what you want to see on the fetal monitor when your wif... on Twitpic", article.title);
+    assertStartsWith("*Not* what you want to see on the fetal monitor when your wife begins to push.", article.text);
   }
 
   @Test
   public void testHeise() {
     // http://www.heise.de/newsticker/meldung/Internet-Explorer-9-jetzt-mit-schnellster-JavaScript-Engine-1138062.html
-    Article res = extractFromTestFile("heise.html");
-    assertEquals("", res.imageUrl);
-    assertEquals("heise online - Internet Explorer 9 jetzt mit schnellster JavaScript-Engine", res.title);
-    assertStartsWith("Microsoft hat heute eine siebte Platform Preview des Internet Explorer veröffentlicht. In den nur dr", res.text);
+    Article article = extractFromTestFile("heise.html");
+    assertEquals("", article.imageUrl);
+    assertEquals("heise online - Internet Explorer 9 jetzt mit schnellster JavaScript-Engine", article.title);
+    assertStartsWith("Microsoft hat heute eine siebte Platform Preview des Internet Explorer veröffentlicht. In den nur dr", article.text);
   }
 
   @Test
   public void testTechcrunch() {
     // http://techcrunch.com/2011/04/04/twitter-advanced-search/
-    Article res = extractFromTestFile("techcrunch.html");
-    assertEquals("http://tctechcrunch.files.wordpress.com/2011/04/screen-shot-2011-04-04-at-12-11-36-pm.png?w=285&h=85", res.imageUrl);
-    assertEquals("Twitter Finally Brings Advanced Search Out Of Purgatory; Updates Discovery Algorithms", res.title);
-    assertStartsWith("A couple weeks ago, we wrote a post wishing Twitter a happy fifth birthday, but also noting ", res.text);
+    Article article = extractFromTestFile("techcrunch.html");
+    assertEquals("http://tctechcrunch.files.wordpress.com/2011/04/screen-shot-2011-04-04-at-12-11-36-pm.png?w=285&h=85", article.imageUrl);
+    assertEquals("Twitter Finally Brings Advanced Search Out Of Purgatory; Updates Discovery Algorithms", article.title);
+    assertStartsWith("A couple weeks ago, we wrote a post wishing Twitter a happy fifth birthday, but also noting ", article.text);
   }
 
   @Test
   public void testEngadget() {
     // http://www.engadget.com/2011/04/09/editorial-androids-problem-isnt-fragmentation-its-contamina/
-    Article res = extractFromTestFile("engadget.html");
-    assertStartsWith("Editorial: Android's problem isn't fragmentation, it's contamination This thought was first given voice by Myriam Joire on last night's Mobile Podcast, and the", res.text);
-    assertEquals("http://www.blogcdn.com/www.engadget.com/media/2011/04/11x0409mnbvhg_thumbnail.jpg", res.imageUrl);
-    assertEquals("Editorial: Android's problem isn't fragmentation, it's contamination -- Engadget", res.title);
+    Article article = extractFromTestFile("engadget.html");
+    assertStartsWith("Editorial: Android's problem isn't fragmentation, it's contamination This thought was first given voice by Myriam Joire on last night's Mobile Podcast, and the", article.text);
+    assertEquals("http://www.blogcdn.com/www.engadget.com/media/2011/04/11x0409mnbvhg_thumbnail.jpg", article.imageUrl);
+    assertEquals("Editorial: Android's problem isn't fragmentation, it's contamination -- Engadget", article.title);
   }
 
   @Test
   public void testTwitterblog() {
     // http://engineering.twitter.com/2011/04/twitter-search-is-now-3x-faster_1656.html
-    Article res = extractFromTestFile("twitter.html");
-    assertEquals("Twitter Engineering: Twitter Search is Now 3x Faster", res.title);
-    assertEquals("http://4.bp.blogspot.com/-CmXJmr9UAbA/TZy6AsT72fI/AAAAAAAAAAs/aaF5AEzC-e4/s72-c/Blender_Tsunami.jpg", res.imageUrl);
-    assertStartsWith("In the spring of 2010, the search team at Twitter started to rewrite our search engine in order to serve our ever-growin", res.text);
+    Article article = extractFromTestFile("twitter.html");
+    assertEquals("Twitter Engineering: Twitter Search is Now 3x Faster", article.title);
+    assertEquals("http://4.bp.blogspot.com/-CmXJmr9UAbA/TZy6AsT72fI/AAAAAAAAAAs/aaF5AEzC-e4/s72-c/Blender_Tsunami.jpg", article.imageUrl);
+    assertStartsWith("In the spring of 2010, the search team at Twitter started to rewrite our search engine in order to serve our ever-growin", article.text);
   }
 
   @Test
   public void testTazBlog() {
     // http://www.taz.de/1/politik/asien/artikel/1/anti-atomkraft-nein-danke/
-    Article res = extractFromTestFile("taz.html");
-    assertStartsWith("Absolute Minderheit: Im Shiba-Park in Tokio treffen sich jetzt jeden Sonntag die Atomkraftgegner. Sie blicken neidisch auf die Anti-AKW-Bewegung in Deutschland.", res.text);
-    assertEquals("Protestkultur in Japan nach der Katastrophe: Anti-Atomkraft? Nein danke! - taz.de", res.title);
-//        assertEquals("http://www.taz.de/uploads/hp_taz_img/full/antiakwprotestjapandapd.20110410-19.jpg", res.imageUrl);
+    Article article = extractFromTestFile("taz.html");
+    assertStartsWith("Absolute Minderheit: Im Shiba-Park in Tokio treffen sich jetzt jeden Sonntag die Atomkraftgegner. Sie blicken neidisch auf die Anti-AKW-Bewegung in Deutschland.", article.text);
+    assertEquals("Protestkultur in Japan nach der Katastrophe: Anti-Atomkraft? Nein danke! - taz.de", article.title);
+//        assertEquals("http://www.taz.de/uploads/hp_taz_img/full/antiakwprotestjapandapd.20110410-19.jpg", article.imageUrl);
   }
 
   @Test
   public void testFacebook() {
     // http://www.facebook.com/ejdionne/posts/10150154175658687
-    Article res = extractFromTestFile("facebook.html");
-    assertStartsWith("In my column tomorrow, I urge President Obama to end the spectacle of", res.text);
-    assertEquals("", res.imageUrl);
-    assertEquals("In my column...", res.title);
+    Article article = extractFromTestFile("facebook.html");
+    assertStartsWith("In my column tomorrow, I urge President Obama to end the spectacle of", article.text);
+    assertEquals("", article.imageUrl);
+    assertEquals("In my column...", article.title);
   }
 
   @Test
   public void testFacebook2() {
     // http://www.facebook.com/permalink.php?story_fbid=214289195249322&id=101149616624415
-    Article res = extractFromTestFile("facebook2.html");
-    assertStartsWith("Sommer is the best time to wear Jetwick T-Shirts!", res.text);
-    assertEquals("", res.imageUrl);
-    assertEquals("Sommer is the best...", res.title);
+    Article article = extractFromTestFile("facebook2.html");
+    assertStartsWith("Sommer is the best time to wear Jetwick T-Shirts!", article.text);
+    assertEquals("", article.imageUrl);
+    assertEquals("Sommer is the best...", article.title);
   }
 
   @Test
   public void testBlogger() {
     // http://blog.talawah.net/2011/04/gavin-king-unviels-red-hats-top-secret.html
-    Article res = extractFromTestFile("blogger.html");
-    assertStartsWith("Gavin King unveils Red Hat's Java killer", res.text);
-    assertEquals("http://3.bp.blogspot.com/-cyMzveP3IvQ/TaR7f3qkYmI/AAAAAAAAAIk/mrChE-G0b5c/s200/Java.png", res.imageUrl);
-    assertEquals("The Brain Dump: Gavin King unveils Red Hat's Java killer successor: The Ceylon Project", res.title);
-    assertEquals("http://blog.talawah.net/feeds/posts/default?alt=rss", res.feedUrl);
+    Article article = extractFromTestFile("blogger.html");
+    assertStartsWith("Gavin King unveils Red Hat's Java killer", article.text);
+    assertEquals("http://3.bp.blogspot.com/-cyMzveP3IvQ/TaR7f3qkYmI/AAAAAAAAAIk/mrChE-G0b5c/s200/Java.png", article.imageUrl);
+    assertEquals("The Brain Dump: Gavin King unveils Red Hat's Java killer successor: The Ceylon Project", article.title);
+    assertEquals("http://blog.talawah.net/feeds/posts/default?alt=rss", article.feedUrl);
   }
 
   @Test
   public void testNyt() {
     // http://dealbook.nytimes.com/2011/04/11/for-defense-in-galleon-trial-no-time-to-rest/
-    Article res = extractFromTestFile("nyt.html");
+    Article article = extractFromTestFile("nyt.html");
     assertEquals("http://graphics8.nytimes.com/images/2011/04/12/business/dbpix-raj-rajaratnam-1302571800091/dbpix-raj-rajaratnam-1302571800091-tmagSF.jpg",
-        res.imageUrl);
-    assertStartsWith("I wouldn’t want to be Raj Rajaratnam’s lawyer right now.", res.text);
+        article.imageUrl);
+    assertStartsWith("I wouldn’t want to be Raj Rajaratnam’s lawyer right now.", article.text);
   }
 
   @Test
   public void testHuffingtonpost() {
     // "http://www.huffingtonpost.com/2010/08/13/federal-reserve-pursuing_n_681540.html";
-    Article res = extractFromTestFile("huffingtonpost.html");
-    assertEquals("Federal Reserve's Low Rate Policy Is A 'Dangerous Gamble,' Says Top Central Bank Official", res.title);
-    assertStartsWith("A top regional Federal Reserve official sharply", res.text);
-    assertEquals("http://i.huffpost.com/gen/157611/thumbs/s-FED-large.jpg", res.imageUrl);
+    Article article = extractFromTestFile("huffingtonpost.html");
+    assertEquals("Federal Reserve's Low Rate Policy Is A 'Dangerous Gamble,' Says Top Central Bank Official", article.title);
+    assertStartsWith("A top regional Federal Reserve official sharply", article.text);
+    assertEquals("http://i.huffpost.com/gen/157611/thumbs/s-FED-large.jpg", article.imageUrl);
   }
 
   @Test
@@ -335,47 +335,47 @@ public class ExampleFilesTest {
   @Test
   public void testCnn2() {
     //String url = "http://www.cnn.com/2010/POLITICS/08/13/democrats.social.security/index.html";
-    Article res = extractFromTestFile("cnn2.html");
-    assertEquals("Democrats to use Social Security against GOP this fall - CNN.com", res.title);
-    assertStartsWith("Washington (CNN) -- Democrats pledged ", res.text);
-    assertEquals(res.imageUrl, "http://i.cdn.turner.com/cnn/2010/POLITICS/08/13/democrats.social.security/story.kaine.gi.jpg");
+    Article article = extractFromTestFile("cnn2.html");
+    assertEquals("Democrats to use Social Security against GOP this fall - CNN.com", article.title);
+    assertStartsWith("Washington (CNN) -- Democrats pledged ", article.text);
+    assertEquals(article.imageUrl, "http://i.cdn.turner.com/cnn/2010/POLITICS/08/13/democrats.social.security/story.kaine.gi.jpg");
   }
 
   @Test
   public void testBusinessweek2() {
     //String url = "http://www.businessweek.com/magazine/content/10_34/b4192048613870.htm";
-    Article res = extractFromTestFile("businessweek2.html");
-    assertStartsWith("There's discord on Wall Street: Strategists at major American investment ", res.text);
-    assertEquals("http://images.businessweek.com/mz/covers/current_120x160.jpg", res.imageUrl);
+    Article article = extractFromTestFile("businessweek2.html");
+    assertStartsWith("There's discord on Wall Street: Strategists at major American investment ", article.text);
+    assertEquals("http://images.businessweek.com/mz/covers/current_120x160.jpg", article.imageUrl);
   }
 
   @Test
   public void testFoxnews() {
     //String url = "http://www.foxnews.com/politics/2010/08/14/russias-nuclear-help-iran-stirs-questions-improved-relations/";
-    Article res = extractFromTestFile("foxnews.html");
-    assertStartsWith("Apr. 8: President Obama signs the New START treaty with Russian President Dmitry Medvedev at the Prague Castle. Russia's announcement ", res.text);
-    assertEquals("http://a57.foxnews.com/static/managed/img/Politics/397/224/startsign.jpg", res.imageUrl);
+    Article article = extractFromTestFile("foxnews.html");
+    assertStartsWith("Apr. 8: President Obama signs the New START treaty with Russian President Dmitry Medvedev at the Prague Castle. Russia's announcement ", article.text);
+    assertEquals("http://a57.foxnews.com/static/managed/img/Politics/397/224/startsign.jpg", article.imageUrl);
   }
 
   @Test
   public void testStackoverflow() {
     //String url = "http://stackoverflow.com/questions/3553693/wicket-vs-vaadin/3660938";
-    Article res = extractFromTestFile("stackoverflow.html");
-    assertStartsWith("I think I've invested some time for both frameworks", res.text);
-    assertStartsWith("java - wicket vs Vaadin - Stack Overflow", res.title);
-    assertEquals("", res.imageUrl);
+    Article article = extractFromTestFile("stackoverflow.html");
+    assertStartsWith("I think I've invested some time for both frameworks", article.text);
+    assertStartsWith("java - wicket vs Vaadin - Stack Overflow", article.title);
+    assertEquals("", article.imageUrl);
   }
 
   @Test
   public void testAolnews() {
     //String url = "http://www.aolnews.com/nation/article/the-few-the-proud-the-marines-getting-a-makeover/19592478";
-    Article res = extractFromTestFile("aolnews.html");
-    assertEquals("http://o.aolcdn.com/art/ch_news/aol_favicon.ico", res.faviconUrl);
-    assertStartsWith("WASHINGTON (Aug. 13) -- Declaring \"the maritime soul of the Marine Corps", res.text);
-    assertEquals("http://o.aolcdn.com/photo-hub/news_gallery/6/8/680919/1281734929876.JPEG", res.imageUrl);
+    Article article = extractFromTestFile("aolnews.html");
+    assertEquals("http://o.aolcdn.com/art/ch_news/aol_favicon.ico", article.faviconUrl);
+    assertStartsWith("WASHINGTON (Aug. 13) -- Declaring \"the maritime soul of the Marine Corps", article.text);
+    assertEquals("http://o.aolcdn.com/photo-hub/news_gallery/6/8/680919/1281734929876.JPEG", article.imageUrl);
     assertEquals(Arrays.asList("news", "update", "breaking", "nation", "U.S.", "elections", "world", "entertainment", "sports", "business",
         "weird news", "health", "science", "latest news articles", "breaking news", "current news", "top news"),
-        res.keywords);
+        article.keywords);
   }
 
   @Test
@@ -405,9 +405,9 @@ public class ExampleFilesTest {
   @Test
   public void testEspn() {
     //String url = "http://sports.espn.go.com/espn/commentary/news/story?id=5461430";
-    Article res = extractFromTestFile("espn.html");
-    assertStartsWith("If you believe what college football coaches have said about sports", res.text);
-    assertEquals("http://a.espncdn.com/photo/2010/0813/ncf_i_mpouncey1_300.jpg", res.imageUrl);
+    Article article = extractFromTestFile("espn.html");
+    assertStartsWith("If you believe what college football coaches have said about sports", article.text);
+    assertEquals("http://a.espncdn.com/photo/2010/0813/ncf_i_mpouncey1_300.jpg", article.imageUrl);
   }
 
   @Test
@@ -421,9 +421,9 @@ public class ExampleFilesTest {
   @Test
   public void testEngadget2() {
     //String url = "http://www.engadget.com/2010/08/18/verizon-fios-set-top-boxes-getting-a-new-hd-guide-external-stor/";
-    Article res = extractFromTestFile("engadget2.html");
-    assertStartsWith("Verizon FiOS set-top boxes getting a new HD guide", res.text);
-    assertEquals("http://www.blogcdn.com/www.engadget.com/media/2010/08/44ni600_thumbnail.jpg", res.imageUrl);
+    Article article = extractFromTestFile("engadget2.html");
+    assertStartsWith("Verizon FiOS set-top boxes getting a new HD guide", article.text);
+    assertEquals("http://www.blogcdn.com/www.engadget.com/media/2010/08/44ni600_thumbnail.jpg", article.imageUrl);
   }
 
   @Test
@@ -486,9 +486,9 @@ public class ExampleFilesTest {
   @Test
   public void testDailybeast() {
     //String url = "http://www.thedailybeast.com/blogs-and-stories/2010-11-01/ted-sorensen-speechwriter-behind-jfks-best-jokes/?cid=topic:featured1";
-    Article res = extractFromTestFile("thedailybeast.html");
-    assertStartsWith("Legendary Kennedy speechwriter Ted Sorensen passed", res.text);
-    assertEquals("http://www.tdbimg.com/files/2010/11/01/img-article---katz-ted-sorensen_163531624950.jpg", res.imageUrl);
+    Article article = extractFromTestFile("thedailybeast.html");
+    assertStartsWith("Legendary Kennedy speechwriter Ted Sorensen passed", article.text);
+    assertEquals("http://www.tdbimg.com/files/2010/11/01/img-article---katz-ted-sorensen_163531624950.jpg", article.imageUrl);
   }
 
   @Test
@@ -510,10 +510,10 @@ public class ExampleFilesTest {
   @Test
   public void testEspn3WithFlashVideo() {
     //String url = "http://sports.espn.go.com/nfl/news/story?id=5971053";
-    Article res = extractFromTestFile("espn3.html");
-    assertStartsWith("PHILADELPHIA -- Michael Vick missed practice Thursday", res.text);
-    assertEquals("http://a.espncdn.com/i/espn/espn_logos/espn_red.png", res.imageUrl);
-    assertEquals("Michael Vick of Philadelphia Eagles misses practice, unlikely to play vs. Dallas Cowboys - ESPN", res.title);
+    Article article = extractFromTestFile("espn3.html");
+    assertStartsWith("PHILADELPHIA -- Michael Vick missed practice Thursday", article.text);
+    assertEquals("http://a.espncdn.com/i/espn/espn_logos/espn_red.png", article.imageUrl);
+    assertEquals("Michael Vick of Philadelphia Eagles misses practice, unlikely to play vs. Dallas Cowboys - ESPN", article.title);
   }
 
   @Test
@@ -538,10 +538,10 @@ public class ExampleFilesTest {
   @Test
   public void testEconomist() {
     //String url = "http://www.economist.com/node/17956885";
-    Article res = extractFromTestFile("economist.html");
-    assertStartsWith("FOR beleaguered smokers, the world is an increasingly", res.text);
+    Article article = extractFromTestFile("economist.html");
+    assertStartsWith("FOR beleaguered smokers, the world is an increasingly", article.text);
     assertEquals("http://www.economist.com/sites/default/files/images/articles/migrated/20110122_stp004.jpg",
-        res.imageUrl);
+        article.imageUrl);
   }
 
   @Test
@@ -622,17 +622,17 @@ public class ExampleFilesTest {
   @Test
   public void testCnet() {
     //String url = "http://news.cnet.com/8301-30686_3-20014053-266.html?tag=topStories1";
-    Article res = extractFromTestFile("cnet.html");
-    assertStartsWith("NEW YORK--Verizon Communications is prepping a new", res.text);
-    assertEquals("http://i.i.com.com/cnwk.1d/i/tim//2010/08/18/Verizon_iPad_and_live_TV_610x458.JPG", res.imageUrl);
+    Article article = extractFromTestFile("cnet.html");
+    assertStartsWith("NEW YORK--Verizon Communications is prepping a new", article.text);
+    assertEquals("http://i.i.com.com/cnwk.1d/i/tim//2010/08/18/Verizon_iPad_and_live_TV_610x458.JPG", article.imageUrl);
   }
 
   @Test
   public void testBloomberg() {
     //String url = "http://www.bloomberg.com/news/2010-11-01/china-becomes-boss-in-peru-on-50-billion-mountain-bought-for-810-million.html";
-    Article res = extractFromTestFile("bloomberg.html");
-    assertStartsWith("The Chinese entrepreneur and the Peruvian shopkeeper", res.text);
-    assertEquals("http://www.bloomberg.com/apps/data?pid=avimage&iid=iimODmqjtcQU", res.imageUrl);
+    Article article = extractFromTestFile("bloomberg.html");
+    assertStartsWith("The Chinese entrepreneur and the Peruvian shopkeeper", article.text);
+    assertEquals("http://www.bloomberg.com/apps/data?pid=avimage&iid=iimODmqjtcQU", article.imageUrl);
   }
 
   @Test
@@ -687,14 +687,14 @@ public class ExampleFilesTest {
 
   @Test
   public void testRetainSpaceInsideTags() {
-    Article res = extractor.extractContent("<html><body><div> aaa<a> bbb </a>ccc</div></body></html>");
-    assertEquals("aaa bbb ccc", res.text);
+    Article article = extractor.extractContent("<html><body><div> aaa<a> bbb </a>ccc</div></body></html>");
+    assertEquals("aaa bbb ccc", article.text);
 
-    res = extractor.extractContent("<html><body><div> aaa <strong>bbb </strong>ccc</div></body></html>");
-    assertEquals("aaa bbb ccc", res.text);
+    article = extractor.extractContent("<html><body><div> aaa <strong>bbb </strong>ccc</div></body></html>");
+    assertEquals("aaa bbb ccc", article.text);
 
-    res = extractor.extractContent("<html><body><div> aaa <strong> bbb </strong>ccc</div></body></html>");
-    assertEquals("aaa bbb ccc", res.text);
+    article = extractor.extractContent("<html><body><div> aaa <strong> bbb </strong>ccc</div></body></html>");
+    assertEquals("aaa bbb ccc", article.text);
   }
 
   @Test
@@ -941,40 +941,40 @@ public class ExampleFilesTest {
 
   @Test
   public void testHideHiddenText() {
-    Article res = extractFromTestFile("no-hidden.html");
-    assertEquals("This is the text which is shorter but visible", res.text);
+    Article article = extractFromTestFile("no-hidden.html");
+    assertEquals("This is the text which is shorter but visible", article.text);
   }
 
   @Test
   public void testShowOnlyNonHiddenText() {
-    Article res = extractFromTestFile("no-hidden2.html");
-    assertEquals("This is the NONE-HIDDEN text which shouldn't be shown and it is a bit longer so normally prefered", res.text);
+    Article article = extractFromTestFile("no-hidden2.html");
+    assertEquals("This is the NONE-HIDDEN text which shouldn't be shown and it is a bit longer so normally prefered", article.text);
   }
 
   @Test
   public void testImagesList() {
     // http://www.reuters.com/article/2012/08/03/us-knightcapital-trading-technology-idUSBRE87203X20120803
-    Article res = extractFromTestFile("reuters.html");
-    assertEquals(1, res.images.size());
-    assertEquals(res.imageUrl, res.images.get(0).src);
+    Article article = extractFromTestFile("reuters.html");
+    assertEquals(1, article.images.size());
+    assertEquals(article.imageUrl, article.images.get(0).src);
     assertEquals("http://s1.reutersmedia.net/resources/r/?m=02&d=20120803&t=2&i=637797752&w=460&fh=&fw=&ll=&pl=&r=CBRE872074Y00",
-        res.images.get(0).src);
+        article.images.get(0).src);
 
     // http://thevacationgals.com/vacation-rental-homes-are-a-family-reunion-necessity/
-    res = extractFromTestFile("thevacationgals.html");
-    assertEquals(3, res.images.size());
+    article = extractFromTestFile("thevacationgals.html");
+    assertEquals(3, article.images.size());
     assertEquals("http://thevacationgals.com/wp-content/uploads/2010/11/Gemmel-Family-Reunion-at-a-Vacation-Rental-Home1-300x225.jpg",
-        res.images.get(0).src);
+        article.images.get(0).src);
     assertEquals("../wp-content/uploads/2010/11/The-Gemmel-Family-Does-a-Gilligans-Island-Theme-Family-Reunion-Vacation-Sarah-Gemmel-300x225.jpg",
-        res.images.get(1).src);
-    assertEquals("http://www.linkwithin.com/pixel.png", res.images.get(2).src);
+        article.images.get(1).src);
+    assertEquals("http://www.linkwithin.com/pixel.png", article.images.get(2).src);
   }
 
   @Test
   public void testTextList() {
-    Article res = extractFromTestFile("npr.html");
-    String text = res.text;
-    List<String> textList = res.textList;
+    Article article = extractFromTestFile("npr.html");
+    String text = article.text;
+    List<String> textList = article.textList;
     assertEquals(23, textList.size());
     assertTrue(textList.get(0).startsWith(text.substring(0, 15)));
     assertTrue(textList.get(22).endsWith(text.substring(text.length() - 15, text.length())));
