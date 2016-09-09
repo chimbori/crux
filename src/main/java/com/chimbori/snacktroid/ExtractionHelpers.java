@@ -1,7 +1,10 @@
 package com.chimbori.snacktroid;
 
+import org.jsoup.nodes.Attribute;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.nodes.Node;
+import org.jsoup.nodes.TextNode;
 import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
@@ -9,6 +12,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -19,6 +23,8 @@ import java.util.regex.Pattern;
 class ExtractionHelpers {
   private ExtractionHelpers() {
   }
+
+  private static final String GRAVITY_SCORE_ATTRIBUTE = "gravityScore";
 
   private static final Pattern NODES =
       Pattern.compile("p|div|td|h1|h2|article|section");
@@ -40,6 +46,21 @@ class ExtractionHelpers {
 
   private static final Pattern NEGATIVE_STYLE =
       Pattern.compile("hidden|display: ?none|font-size: ?small");
+
+  /** If a string is shorter than this limit, it is not considered a paragraph. */
+  private static final int MIN_LENGTH_FOR_PARAGRAPHS = 50;
+
+  private static final Pattern UNLIKELY_CSS_CLASSES = Pattern.compile("display\\:none|visibility\\:hidden");
+
+  private static final String NODES_TO_KEEP_SELECTOR = "p";
+
+  private static final Set<String> TAGS_TO_RETAIN_IN_HTML = new HashSet<>(Arrays.asList(
+      "p", "li", "ol", "td", "span", "b", "i", "u", "strong", "em", "a"
+  ));
+
+  private static final Set<String> ATTRIBUTES_TO_RETAIN_IN_HTML = new HashSet<>(Arrays.asList(
+      "href"
+  ));
 
   private static final Set<String> IGNORED_TITLE_PARTS = new LinkedHashSet<String>() {
     {
@@ -223,7 +244,7 @@ class ExtractionHelpers {
   private static int getScore(Element el) {
     int old = 0;
     try {
-      old = Integer.parseInt(el.attr("gravityScore"));
+      old = Integer.parseInt(el.attr(GRAVITY_SCORE_ATTRIBUTE));
     } catch (NumberFormatException ex) {
       // Ignore.
     }
@@ -231,7 +252,7 @@ class ExtractionHelpers {
   }
 
   private static void setScore(Element el, int score) {
-    el.attr("gravityScore", Integer.toString(score));
+    el.attr(GRAVITY_SCORE_ATTRIBUTE, Integer.toString(score));
   }
 
   private static int calcWeightForChild(Element child, String ownText) {
@@ -418,20 +439,118 @@ class ExtractionHelpers {
     int counter = 0;
     String[] strs = title.split("\\|");
     for (String part : strs) {
-      if (IGNORED_TITLE_PARTS.contains(part.toLowerCase().trim()))
+      if (IGNORED_TITLE_PARTS.contains(part.toLowerCase().trim())) {
         continue;
-
-      if (counter == strs.length - 1 && res.length() > part.length())
+      }
+      if (counter == strs.length - 1 && res.length() > part.length()) {
         continue;
-
-      if (counter > 0)
+      }
+      if (counter > 0) {
         res.append("|");
-
+      }
       res.append(part);
       counter++;
     }
-
     return StringUtils.innerTrim(res.toString());
+  }
+
+  static void pruneBestMatchElement(Element topNode) {
+    removeNodesWithNegativeScores(topNode);
+    removeUnlikelyChildNodes(topNode);
+  }
+
+  private static void removeUnlikelyChildNodes(Element element) {
+    for (Element childElement: element.children()) {
+      if (isUnlikely(childElement)) {
+        childElement.remove();
+      } else if (childElement.children().size() > 0) {
+        removeUnlikelyChildNodes(childElement);
+      }
+    }
+  }
+
+  static private void removeNodesWithNegativeScores(Element topNode) {
+    Elements elementsWithGravityScore = topNode.select(String.format("*[%s]", GRAVITY_SCORE_ATTRIBUTE));
+    for (Element element : elementsWithGravityScore) {
+      int score = Integer.parseInt(element.attr(GRAVITY_SCORE_ATTRIBUTE));
+      if (score < 0 || element.text().length() < MIN_LENGTH_FOR_PARAGRAPHS) {
+        element.remove();
+      }
+    }
+  }
+
+  static private void appendContentFromNode(Element node, StringBuilder buffer, String tagName) {
+    // is select more costly then getElementsByTag?
+    MAIN:
+    for (Element e : node.select(tagName)) {
+      System.err.println("e: " + e);
+
+      Element tmpEl = e;
+      // check all elements until 'node'
+      while (tmpEl != null && !tmpEl.equals(node)) {
+        System.err.println("tmpEl: " + tmpEl);
+        boolean isUnlikely = isUnlikely(tmpEl);
+        System.err.println("isUnlikely: " + isUnlikely);
+        if (isUnlikely) {
+          continue MAIN;
+        }
+        tmpEl = tmpEl.parent();
+      }
+
+      StringBuilder textFromThisNode = new StringBuilder();
+      appendTextSkipHidden(e, textFromThisNode);
+      String text = textFromThisNode.toString();
+      if (text.isEmpty() ||
+          text.length() < MIN_LENGTH_FOR_PARAGRAPHS ||
+          text.length() > StringUtils.countLetters(text) * 2) {
+        continue;
+      }
+
+      buffer.append(text);
+      buffer.append("\n\n");
+
+      System.err.println("\n\n");
+    }
+  }
+
+  static private boolean isUnlikely(Element element) {
+    String styleAttribute = element.attr("style");
+    String classAttribute = element.attr("class");
+    return classAttribute != null && classAttribute.toLowerCase().contains("caption")
+        || UNLIKELY_CSS_CLASSES.matcher(styleAttribute).find()
+        || UNLIKELY_CSS_CLASSES.matcher(classAttribute).find();
+  }
+
+  static private void appendTextSkipHidden(Element element, StringBuilder buffer) {
+    for (Node child : element.childNodes()) {
+      System.err.println("appendTextSkipHidden: element: [" + element + "]");
+
+//      if (isUnlikely(child)) {
+//        continue;
+//      }
+
+      if (child instanceof TextNode) {
+        buffer.append(((TextNode) child).text());
+
+      } else if (child instanceof Element) {
+        Element childElement = (Element) child;
+        if (TAGS_TO_RETAIN_IN_HTML.contains(childElement.tagName())) {
+          stripDisallowedAttributes(childElement);
+          buffer.append(child.outerHtml());
+        } else {
+          // Node is a tag that we don’t want to retain, but we do care about the text it contains.
+          buffer.append(childElement.text());
+        }
+      }
+    }
+  }
+
+  static private void stripDisallowedAttributes(Element element) {
+    for (Attribute attribute : element.attributes()) {
+      if (!ATTRIBUTES_TO_RETAIN_IN_HTML.contains(attribute.getKey())) {
+        element.removeAttr(attribute.getKey());
+      }
+    }
   }
 
   private static class ImageWeightComparator implements Comparator<Article.Image> {

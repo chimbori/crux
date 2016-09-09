@@ -188,8 +188,9 @@ class StringUtils {
     int len = str.length();
     int chars = 0;
     for (int i = 0; i < len; i++) {
-      if (Character.isLetter(str.charAt(i)))
+      if (Character.isLetter(str.charAt(i))) {
         chars++;
+      }
     }
     return chars;
   }
