@@ -3,7 +3,12 @@ package com.chimbori.snacktroid;
 import org.jsoup.Jsoup;
 import org.junit.Test;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 public class CharsetConverterTest {
   @Test
@@ -23,13 +28,17 @@ public class CharsetConverterTest {
   @Test
   public void testMaxBytesExceedingButGetTitleNevertheless() throws Exception {
     CharsetConverter.StringWithEncoding parsed = CharsetConverter.readStream(
-        getClass().getResourceAsStream("faz.html"), null);
+        new FileInputStream(new File("test_data/faz.html")), null);
     assertEquals("utf-8", parsed.encoding);
     assertEquals("Im Gespräch: Umweltaktivist Stewart Brand: Ihr Deutschen steht allein da "
         + "- Atomdebatte - FAZ.NET", Jsoup.parse(parsed.content).select("title").text());
   }
 
   private void assertEncodingEquals(String encoding, String testFile) {
-    assertEquals(encoding, CharsetConverter.readStream(getClass().getResourceAsStream(testFile), null).encoding);
+    try {
+      assertEquals(encoding, CharsetConverter.readStream(new FileInputStream(new File("test_data/" + testFile)), null).encoding);
+    } catch (FileNotFoundException e) {
+      fail(e.getMessage());
+    }
   }
 }

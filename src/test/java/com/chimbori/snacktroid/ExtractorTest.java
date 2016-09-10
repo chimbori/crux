@@ -26,38 +26,42 @@ public class ExtractorTest {
 
   @Test
   public void testRetainSpaceInsideTags() {
-    Article article = extractor.extractContent("<html><body><div> aaa<a> bbb </a>ccc</div></body></html>");
-    assertEquals(3, article.content.childNodeSize());
-    assertEquals("aaa", article.content.childNode(0).outerHtml().trim());
-    assertEquals("<a> bbb </a>", article.content.childNode(1).outerHtml().trim());
-    assertEquals("ccc", article.content.childNode(2).outerHtml().trim());
+    final String As =  "aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa";
+    final String Bs =  "bbb bbb bbb bbb bbb bbb bbb bbb bbb bbb bbb bbb bbb bbb bbb bbb bbb bbb bbb bbb bbb bbb";
+    final String Cs =  "ccc ccc ccc ccc ccc ccc ccc ccc ccc ccc ccc ccc ccc ccc ccc ccc ccc ccc ccc ccc ccc ccc";
 
-    article = extractor.extractContent("<html><body><div> aaa <strong>bbb </strong>ccc</div></body></html>");
-    assertEquals(3, article.content.childNodeSize());
-    assertEquals("aaa", article.content.childNode(0).outerHtml().trim());
-    assertEquals("<strong>bbb </strong>", article.content.childNode(1).outerHtml().trim());
-    assertEquals("ccc", article.content.childNode(2).outerHtml().trim());
+    Article article = extractor.extractContent(String.format("<html><body><div> %s <a> %s</a>%s </div></body></html>", As, Bs, Cs));
+    assertEquals(3, article.document.childNodeSize());
+    assertEquals(As, article.document.childNode(0).outerHtml().trim());
+    assertEquals(String.format("<a> %s</a>", Bs), article.document.childNode(1).outerHtml().trim());
+    assertEquals(Cs, article.document.childNode(2).outerHtml().trim());
 
-    article = extractor.extractContent("<html><body><div> aaa <strong> bbb </strong>ccc</div></body></html>");
-    assertEquals(3, article.content.childNodeSize());
-    assertEquals("aaa", article.content.childNode(0).outerHtml().trim());
-    assertEquals("<strong> bbb </strong>", article.content.childNode(1).outerHtml().trim());
-    assertEquals("ccc", article.content.childNode(2).outerHtml().trim());
+    article = extractor.extractContent(String.format("<html><body><div> %s <strong>%s </strong>%s</div></body></html>", As, Bs, Cs));
+    assertEquals(3, article.document.childNodeSize());
+    assertEquals(As, article.document.childNode(0).outerHtml().trim());
+    assertEquals(String.format("<strong>%s </strong>", Bs), article.document.childNode(1).outerHtml().trim());
+    assertEquals(Cs, article.document.childNode(2).outerHtml().trim());
+
+    article = extractor.extractContent(String.format("<html><body><div> %s <strong> %s </strong>%s</div></body></html>", As, Bs, Cs));
+    assertEquals(3, article.document.childNodeSize());
+    assertEquals(As, article.document.childNode(0).outerHtml().trim());
+    assertEquals(String.format("<strong> %s </strong>", Bs), article.document.childNode(1).outerHtml().trim());
+    assertEquals(Cs, article.document.childNode(2).outerHtml().trim());
   }
 
   @Test
   public void testThatHiddenTextIsNotExtracted() {
     Article article = extractor.extractContent("<div style=\"margin: 5px; display:none; padding: 5px;\">Hidden Text</div>\n" +
-        "<div style=\"margin: 5px; display:block; padding: 5px;\">Visible Text</div>\n" +
+        "<div style=\"margin: 5px; display:block; padding: 5px;\">Visible Text that has to be longer than X characters so it’s not stripped out for being too short.</div>\n" +
         "<div>Default Text</div>");
-    assertEquals("Visible Text", article.content.text());
+    assertEquals("Visible Text that has to be longer than X characters so it’s not stripped out for being too short.", article.document.text());
   }
 
   @Test
   public void testThatLongerTextIsPreferred() {
     Article article = extractor.extractContent("<div style=\"margin: 5px; display:none; padding: 5px;\">Hidden Text</div>\n" +
-        "<div style=\"margin: 5px; display:block; padding: 5px;\">Visible Text</div>\n" +
-        "<div>Default Text But Longer</div>");
-    assertEquals("Default Text But Longer", article.content.text());
+        "<div style=\"margin: 5px; display:block; padding: 5px;\">Visible Text that’s still longer than our minimum text size limits</div>\n" +
+        "<div>Default Text but longer that’s still longer than our minimum text size limits</div>");
+    assertEquals("Default Text but longer that’s still longer than our minimum text size limits", article.document.text());
   }
 }

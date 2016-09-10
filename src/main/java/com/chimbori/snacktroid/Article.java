@@ -1,5 +1,6 @@
 package com.chimbori.snacktroid;
 
+import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
 import java.net.MalformedURLException;
@@ -45,8 +46,7 @@ public class Article {
   public String date = "";
   public Collection<String> keywords;
   public List<Image> images = new ArrayList<>();
-  public Element content;
-
+  public Document document;
 
   Article() {
     // Package private constructor to disallow outside the library.
@@ -77,7 +77,7 @@ public class Article {
         ", date='" + date + '\'' +
         ", keywords=" + keywords +
         ", images=" + images +
-        ", content=" + content +
+        ", document=" + document +
         '}';
   }
 

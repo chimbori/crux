@@ -26,10 +26,8 @@ public class Extractor {
     article.description = ExtractionHelpers.extractDescription(doc);
     article.canonicalUrl = ExtractionHelpers.extractCanonicalUrl(doc);
 
-    // now remove the clutter
-    ExtractionHelpers.prepareDocument(doc);
+    PreprocessHelpers.preprocess(doc);
 
-    // init elements
     Collection<Element> nodes = ExtractionHelpers.getNodes(doc);
     int maxWeight = 0;
     Element bestMatchElement = null;
@@ -54,8 +52,7 @@ public class Extractor {
         article.images = images;
       }
 
-      ExtractionHelpers.pruneBestMatchElement(bestMatchElement);
-      article.content = bestMatchElement;
+      article.document = PostprocessHelpers.postprocess(bestMatchElement);
     }
 
     if (article.imageUrl.isEmpty()) {

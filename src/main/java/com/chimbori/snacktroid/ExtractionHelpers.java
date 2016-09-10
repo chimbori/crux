@@ -1,10 +1,7 @@
 package com.chimbori.snacktroid;
 
-import org.jsoup.nodes.Attribute;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.jsoup.nodes.Node;
-import org.jsoup.nodes.TextNode;
 import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
@@ -14,7 +11,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -24,7 +20,8 @@ class ExtractionHelpers {
   private ExtractionHelpers() {
   }
 
-  private static final String GRAVITY_SCORE_ATTRIBUTE = "gravityScore";
+  public static final String GRAVITY_SCORE_ATTRIBUTE = "gravityScore";
+  public static final String GRAVITY_SCORE_SELECTOR = String.format("*[%s]", GRAVITY_SCORE_ATTRIBUTE);
 
   private static final Pattern NODES =
       Pattern.compile("p|div|td|h1|h2|article|section");
@@ -39,7 +36,7 @@ class ExtractionHelpers {
       Pattern.compile("(^(body|content|h?entry|main|page|post|text|blog|story|haupt))"
           + "|arti(cle|kel)|instapaper_body");
 
-  private static final Pattern NEGATIVE =
+  public static final Pattern NEGATIVE =
       Pattern.compile("nav($|igation)|user|com(ment|bx)|(^com-)|contact|"
           + "foot|masthead|(me(dia|ta))|outbrain|promo|related|scroll|(sho(utbox|pping))|"
           + "sidebar|sponsor|tags|tool|widget|player|disclaimer|toc|infobox|vcard|post-ratings");
@@ -47,27 +44,9 @@ class ExtractionHelpers {
   private static final Pattern NEGATIVE_STYLE =
       Pattern.compile("hidden|display: ?none|font-size: ?small");
 
-  /** If a string is shorter than this limit, it is not considered a paragraph. */
-  private static final int MIN_LENGTH_FOR_PARAGRAPHS = 50;
-
-  private static final Pattern UNLIKELY_CSS_CLASSES = Pattern.compile("display\\:none|visibility\\:hidden");
-
-  private static final String NODES_TO_KEEP_SELECTOR = "p";
-
-  private static final Set<String> TAGS_TO_RETAIN_IN_HTML = new HashSet<>(Arrays.asList(
-      "p", "li", "ol", "td", "span", "b", "i", "u", "strong", "em", "a"
+  private static final Set<String> IGNORED_TITLE_PARTS = new HashSet<>(Arrays.asList(
+      "hacker news", "facebook"
   ));
-
-  private static final Set<String> ATTRIBUTES_TO_RETAIN_IN_HTML = new HashSet<>(Arrays.asList(
-      "href"
-  ));
-
-  private static final Set<String> IGNORED_TITLE_PARTS = new LinkedHashSet<String>() {
-    {
-      add("hacker news");
-      add("facebook");
-    }
-  };
 
   static String extractTitle(Document doc) {
     try {
@@ -229,26 +208,24 @@ class ExtractionHelpers {
           addScore(subEl, -30);
         }
 
-        if ("p".contains(subEl.tagName()))
+        if ("p".contains(subEl.tagName())) {
           addScore(subEl, 30);
+        }
       }
     }
     return weight;
   }
 
   private static void addScore(Element el, int score) {
-    int old = getScore(el);
-    setScore(el, score + old);
+    setScore(el, getScore(el) + score);
   }
 
   private static int getScore(Element el) {
-    int old = 0;
     try {
-      old = Integer.parseInt(el.attr(GRAVITY_SCORE_ATTRIBUTE));
+      return Integer.parseInt(el.attr(GRAVITY_SCORE_ATTRIBUTE));
     } catch (NumberFormatException ex) {
-      // Ignore.
+      return 0;
     }
-    return old;
   }
 
   private static void setScore(Element el, int score) {
@@ -261,38 +238,43 @@ class ExtractionHelpers {
     c += StringUtils.countMatches(ownText, "&gt;");
     c += StringUtils.countMatches(ownText, "px");
     int val;
-    if (c > 5)
+    if (c > 5) {
       val = -30;
-    else
+    } else {
       val = (int) Math.round(ownText.length() / 25.0);
+    }
 
     addScore(child, val);
     return val;
   }
 
-  private static int calcWeight(Element e) {
+  private static int calcWeight(Element element) {
+    String className = element.className();
+    String id = element.id();
+    String style = element.attr("style");
+
     int weight = 0;
-    if (POSITIVE.matcher(e.className()).find())
+    if (POSITIVE.matcher(className).find()) {
       weight += 35;
-
-    if (POSITIVE.matcher(e.id()).find())
+    }
+    if (POSITIVE.matcher(id).find()) {
       weight += 40;
-
-    if (UNLIKELY.matcher(e.className()).find())
+    }
+    if (UNLIKELY.matcher(className).find()) {
       weight -= 20;
-
-    if (UNLIKELY.matcher(e.id()).find())
+    }
+    if (UNLIKELY.matcher(id).find()) {
       weight -= 20;
-
-    if (NEGATIVE.matcher(e.className()).find())
+    }
+    if (NEGATIVE.matcher(className).find()) {
       weight -= 50;
-
-    if (NEGATIVE.matcher(e.id()).find())
+    }
+    if (NEGATIVE.matcher(id).find()) {
       weight -= 50;
-
-    String style = e.attr("style");
-    if (style != null && !style.isEmpty() && NEGATIVE_STYLE.matcher(style).find())
+    }
+    if (style != null && !style.isEmpty() && NEGATIVE_STYLE.matcher(style).find()) {
       weight -= 50;
+    }
     return weight;
   }
 
@@ -365,56 +347,6 @@ class ExtractionHelpers {
   }
 
   /**
-   * Prepares document. Currently only stipping unlikely candidates, since
-   * from time to time they're getting more score than good ones especially in
-   * cases when major text is short.
-   *
-   * @param doc document to prepare. Passed as reference, and changed inside
-   *            of function
-   */
-  static void prepareDocument(Document doc) {
-//    stripUnlikelyCandidates(doc);
-    removeScriptsAndStyles(doc);
-  }
-
-  /**
-   * Removes unlikely candidates from HTML. It often ends up removing more than just the unlikely
-   * candidates, so exercise caution when enabling this.
-   */
-  static void stripUnlikelyCandidates(Document doc) {
-    if (true) {
-      return;  // Temporarily disabled; see comment above.
-    }
-
-    for (Element child : doc.select("body").select("*")) {
-      String className = child.className().toLowerCase();
-      String id = child.id().toLowerCase();
-      if (NEGATIVE.matcher(className).find() || NEGATIVE.matcher(id).find()) {
-        child.remove();
-      }
-    }
-  }
-
-  private static Document removeScriptsAndStyles(Document doc) {
-    Elements scripts = doc.getElementsByTag("script");
-    for (Element item : scripts) {
-      item.remove();
-    }
-
-    Elements noscripts = doc.getElementsByTag("noscript");
-    for (Element item : noscripts) {
-      item.remove();
-    }
-
-    Elements styles = doc.getElementsByTag("style");
-    for (Element style : styles) {
-      style.remove();
-    }
-
-    return doc;
-  }
-
-  /**
    * @return a set of all important nodes
    */
   static Collection<Element> getNodes(Document doc) {
@@ -452,105 +384,6 @@ class ExtractionHelpers {
       counter++;
     }
     return StringUtils.innerTrim(res.toString());
-  }
-
-  static void pruneBestMatchElement(Element topNode) {
-    removeNodesWithNegativeScores(topNode);
-    removeUnlikelyChildNodes(topNode);
-  }
-
-  private static void removeUnlikelyChildNodes(Element element) {
-    for (Element childElement: element.children()) {
-      if (isUnlikely(childElement)) {
-        childElement.remove();
-      } else if (childElement.children().size() > 0) {
-        removeUnlikelyChildNodes(childElement);
-      }
-    }
-  }
-
-  static private void removeNodesWithNegativeScores(Element topNode) {
-    Elements elementsWithGravityScore = topNode.select(String.format("*[%s]", GRAVITY_SCORE_ATTRIBUTE));
-    for (Element element : elementsWithGravityScore) {
-      int score = Integer.parseInt(element.attr(GRAVITY_SCORE_ATTRIBUTE));
-      if (score < 0 || element.text().length() < MIN_LENGTH_FOR_PARAGRAPHS) {
-        element.remove();
-      }
-    }
-  }
-
-  static private void appendContentFromNode(Element node, StringBuilder buffer, String tagName) {
-    // is select more costly then getElementsByTag?
-    MAIN:
-    for (Element e : node.select(tagName)) {
-      System.err.println("e: " + e);
-
-      Element tmpEl = e;
-      // check all elements until 'node'
-      while (tmpEl != null && !tmpEl.equals(node)) {
-        System.err.println("tmpEl: " + tmpEl);
-        boolean isUnlikely = isUnlikely(tmpEl);
-        System.err.println("isUnlikely: " + isUnlikely);
-        if (isUnlikely) {
-          continue MAIN;
-        }
-        tmpEl = tmpEl.parent();
-      }
-
-      StringBuilder textFromThisNode = new StringBuilder();
-      appendTextSkipHidden(e, textFromThisNode);
-      String text = textFromThisNode.toString();
-      if (text.isEmpty() ||
-          text.length() < MIN_LENGTH_FOR_PARAGRAPHS ||
-          text.length() > StringUtils.countLetters(text) * 2) {
-        continue;
-      }
-
-      buffer.append(text);
-      buffer.append("\n\n");
-
-      System.err.println("\n\n");
-    }
-  }
-
-  static private boolean isUnlikely(Element element) {
-    String styleAttribute = element.attr("style");
-    String classAttribute = element.attr("class");
-    return classAttribute != null && classAttribute.toLowerCase().contains("caption")
-        || UNLIKELY_CSS_CLASSES.matcher(styleAttribute).find()
-        || UNLIKELY_CSS_CLASSES.matcher(classAttribute).find();
-  }
-
-  static private void appendTextSkipHidden(Element element, StringBuilder buffer) {
-    for (Node child : element.childNodes()) {
-      System.err.println("appendTextSkipHidden: element: [" + element + "]");
-
-//      if (isUnlikely(child)) {
-//        continue;
-//      }
-
-      if (child instanceof TextNode) {
-        buffer.append(((TextNode) child).text());
-
-      } else if (child instanceof Element) {
-        Element childElement = (Element) child;
-        if (TAGS_TO_RETAIN_IN_HTML.contains(childElement.tagName())) {
-          stripDisallowedAttributes(childElement);
-          buffer.append(child.outerHtml());
-        } else {
-          // Node is a tag that we don’t want to retain, but we do care about the text it contains.
-          buffer.append(childElement.text());
-        }
-      }
-    }
-  }
-
-  static private void stripDisallowedAttributes(Element element) {
-    for (Attribute attribute : element.attributes()) {
-      if (!ATTRIBUTES_TO_RETAIN_IN_HTML.contains(attribute.getKey())) {
-        element.removeAttr(attribute.getKey());
-      }
-    }
   }
 
   private static class ImageWeightComparator implements Comparator<Article.Image> {
