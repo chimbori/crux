@@ -11,7 +11,7 @@ import org.jsoup.select.Elements;
 class PreprocessHelpers {
   static void preprocess(Document doc) {
     stripUnlikelyCandidates(doc);
-    removeScriptsAndStyles(doc);
+    removeScriptsStylesForms(doc);
     removeComments(doc.body());
   }
 
@@ -33,7 +33,7 @@ class PreprocessHelpers {
     }
   }
 
-  private static Document removeScriptsAndStyles(Document doc) {
+  private static Document removeScriptsStylesForms(Document doc) {
     Elements scripts = doc.getElementsByTag("script");
     for (Element item : scripts) {
       item.remove();
@@ -46,6 +46,11 @@ class PreprocessHelpers {
 
     Elements styles = doc.getElementsByTag("style");
     for (Element item : styles) {
+      item.remove();
+    }
+
+    Elements forms = doc.getElementsByTag("form");
+    for (Element item : forms) {
       item.remove();
     }
 

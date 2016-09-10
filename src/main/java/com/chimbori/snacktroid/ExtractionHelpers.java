@@ -30,7 +30,7 @@ class ExtractionHelpers {
       Pattern.compile("com(bx|ment|munity)|dis(qus|cuss)|e(xtra|[-]?mail)|foot|"
           + "header|menu|re(mark|ply)|rss|sh(are|outbox)|sponsor"
           + "a(d|ll|gegate|rchive|ttachment)|(pag(er|ination))|popup|print|"
-          + "login|si(debar|gn|ngle)");
+          + "login|si(debar|gn|ngle)|facebook|twitter|email");
 
   private static final Pattern POSITIVE =
       Pattern.compile("(^(body|content|h?entry|main|page|post|text|blog|story|haupt))"
