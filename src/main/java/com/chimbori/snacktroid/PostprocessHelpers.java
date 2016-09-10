@@ -26,7 +26,7 @@ class PostprocessHelpers {
       "font", "table", "tbody", "tr", "td"
   ));
   private static final Set<String> RETAIN_TAGS = new HashSet<>(Arrays.asList(
-      "p", "li", "ol", "span", "b", "i", "u", "strong", "em", "a"
+      "p", "li", "ol", "span", "b", "i", "u", "strong", "em", "a", "pre"
       // , "h1", "h2", "h3", "h4", "h5", "h6"
   ));
   private static final Set<String> ATTRIBUTES_TO_RETAIN_IN_HTML = new HashSet<>(Arrays.asList(

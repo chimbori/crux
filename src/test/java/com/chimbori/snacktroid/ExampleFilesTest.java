@@ -210,7 +210,7 @@ public class ExampleFilesTest {
   public void testGithub() {
     // https://github.com/ifesdjeen/jReadability
     Article article = extractFromTestFile("github.html");
-    assertStartsWith("= jReadability This is a small helper utility (only 130 lines of code) for pepole", article.document.text());
+    assertStartsWith("= jReadability\n\nThis is a small helper utility (only 130 lines of code) for pepole", article.document.text());
   }
 
   @Test
