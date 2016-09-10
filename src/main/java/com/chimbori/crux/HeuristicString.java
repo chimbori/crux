@@ -1,4 +1,4 @@
-package com.chimbori.snacktroid;
+package com.chimbori.crux;
 
 /**
  * A string that is determined heuristically, with a fluent API. When extracting meaning from

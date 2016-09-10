@@ -1,4 +1,4 @@
-package com.chimbori.snacktroid;
+package com.chimbori.crux;
 
 class StringUtils {
   private static final String WHITESPACE = "[ \r\t\n]+";

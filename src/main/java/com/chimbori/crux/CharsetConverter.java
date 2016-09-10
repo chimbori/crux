@@ -1,4 +1,4 @@
-package com.chimbori.snacktroid;
+package com.chimbori.crux;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;

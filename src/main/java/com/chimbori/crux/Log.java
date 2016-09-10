@@ -1,4 +1,4 @@
-package com.chimbori.snacktroid;
+package com.chimbori.crux;
 
 public class Log {
   private static final boolean DEBUG = true;

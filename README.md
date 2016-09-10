@@ -1,37 +1,17 @@
-# Snacktroid
+# Crux
 
-Snacktroid is a fork of [Snacktory](http://github.com/karussell/snacktory) specially built for Android devices, but by no means exclusive to Android.
+Crux parses Web pages to identify the crux of an article — the very essential points — minus all the fluff.
 
-Snacktory is a library that can extract text, keywords, main image, and other metadata from a Web article.
+## Features
 
-Snacktory (and thus Snacktroid) borrow ideas and test cases from [Goose](https://github.com/GravityLabs/goose) 
-and [JReadability](https://github.com/ifesdjeen/jReadability).
-
-## Goals
-
-Snacktroid is a work in progress. Not all goals have been met yet, but here’s a list of what we want to achieve with Snacktroid.
-
-- Fewer dependencies: JSoup is the only required dependency.
-- Fewer setters/getters, to keep the method count low.
+- Rich formatted content available, not just plain text.
+- Support for more sites & better parsing overall.
+- Support for more metadata formats: OpenGraph, Twitter Cards, Schema.org.
+- Small footprint and code size: JSoup is the only required dependency.
+- Fewer setters/getters, to keep the method count low (this is important for Android).
 - The ability to use HTTP libraries besides the default HttpUrlConnection, such as OkHttp, under the hood.
-- First-class support for importing via Gradle.
-- Cleaner code, e.g. throwing specific Exceptions instead of `java.lang.Exception` and better error handling.
-
-# Features
-
-  - article text detection 
-  - get top image url(s)
-  - get top video url
-  - extraction of description, keywords, ...
-  - good detection for none-english sites (German, Japanese, ...), snacktory does not depend on the word count in its text detection to support CJK languages 
-  - good charset detection
-  - possible to do URL resolving, but caching is still possible after resolving
-  - skipping some known filetypes
-  - no http GET required to run the core tests
-
-## TODO
-
- * Only top text is currently supported.
+- Cleaner code (compared to Snacktory).
+- First-class support for importing into Android Studio projects via Gradle.
 
 # Usage
  
@@ -49,7 +29,7 @@ allprojects {
 Module/`build.gradle`:
 ```
 dependencies {
-  compile 'com.github.chimbori:snacktroid:-SNAPSHOT'
+  compile 'com.github.chimbori:crux:-SNAPSHOT'
 }
 ```
 
@@ -68,14 +48,22 @@ if (candidateURL.isLikelyArticle()) {
       .url(url)  // Customize your network request as you see fit.
       .build();
   Response response = okHttpClient.newCall().execute();
-  ParsedResult result = new Extractor().extractContent(response.body().string());
+  Article article = new Extractor().extractContent(response.body().string());
 }
 ```
 
 On the UI thread:
 ```java
-// Use result.text, result.title, etc.
+// Use article.document, article.title, etc.
 ```
+
+# History
+
+Crux began as a fork of [Snacktory](http://github.com/karussell/snacktory) with the goal of making it more performant on Android devices, 
+but it has quickly gained several new features that are not available in Snacktory.   
+
+Snacktory (and thus Crux) borrow ideas and test cases from [Goose](https://github.com/GravityLabs/goose) 
+and [JReadability](https://github.com/ifesdjeen/jReadability).
 
 # License
 

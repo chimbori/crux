@@ -1,9 +1,9 @@
 apply plugin: 'java'
 apply plugin: 'maven'
 
-group = 'com.chimbori.snacktroid'
+group = 'com.chimbori.crux'
 
-description = """Snacktroid"""
+description = """Crux"""
 
 sourceCompatibility = 1.7
 targetCompatibility = 1.7

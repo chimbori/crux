@@ -1,4 +1,4 @@
-package com.chimbori.snacktroid;
+package com.chimbori.crux;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

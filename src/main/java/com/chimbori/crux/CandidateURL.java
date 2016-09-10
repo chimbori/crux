@@ -1,4 +1,4 @@
-package com.chimbori.snacktroid;
+package com.chimbori.crux;
 
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
