@@ -3,6 +3,7 @@ package com.chimbori.crux;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 public class HeuristicStringTest {
   @Test
@@ -47,6 +48,15 @@ public class HeuristicStringTest {
       new HeuristicString("original").or("");
     } catch (HeuristicString.CandidateFound candidateFound) {
       assertEquals("original", candidateFound.candidate);
+    }
+  }
+
+  @Test
+  public void testNullOriginalStringIsPreservedIfAllChangedStringsAreNull() {
+    try {
+      assertNull(new HeuristicString(null).or(null).toString());
+    } catch (HeuristicString.CandidateFound candidateFound) {
+      assertEquals(null, candidateFound.candidate);
     }
   }
 }

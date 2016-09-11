@@ -34,8 +34,9 @@ import java.util.List;
  * 7x faster than invoking a trivial getter.
  */
 public class Article {
+  public final String url;
+
   public String title = "";
-  public String url = "";
   public String originalUrl = "";
   public String canonicalUrl = "";
   public String imageUrl = "";
@@ -48,25 +49,28 @@ public class Article {
   public List<Image> images = new ArrayList<>();
   public Document document;
 
-  Article() {
+  Article(String url) {
     // Package private constructor to disallow outside the library.
+    this.url = url;
+    this.canonicalUrl = url;  // Can be overridden later, but we start off by setting it to the URL itself.
   }
 
-  public Article ensureAbsoluteUrls() throws MalformedURLException {
-    URL absoluteArticleUrl = new URL(url);
-    canonicalUrl = new URL(absoluteArticleUrl, canonicalUrl).toString();
-    imageUrl = new URL(absoluteArticleUrl, imageUrl).toString();
-    videoUrl = new URL(absoluteArticleUrl, videoUrl).toString();
-    feedUrl = new URL(absoluteArticleUrl, feedUrl).toString();
-    faviconUrl = new URL(absoluteArticleUrl, faviconUrl).toString();
-    return this;
+  String makeAbsoluteUrl(String relativeUrl) {
+    if (relativeUrl == null || relativeUrl.isEmpty()) {
+      return null;
+    }
+    try {
+      return new URL(new URL(url), relativeUrl).toString();
+    } catch (MalformedURLException e) {
+      return relativeUrl;
+    }
   }
 
   @Override
   public String toString() {
     return "Article{" +
-        "title='" + title + '\'' +
-        ", url='" + url + '\'' +
+        "url='" + url + '\'' +
+        ", title='" + title + '\'' +
         ", originalUrl='" + originalUrl + '\'' +
         ", canonicalUrl='" + canonicalUrl + '\'' +
         ", imageUrl='" + imageUrl + '\'' +
@@ -102,6 +106,20 @@ public class Article {
       this.width = width;
       this.alt = alt;
       this.noFollow = noFollow;
+    }
+
+    @Override
+    public String toString() {
+      return "Image{" +
+          "src='" + src + '\'' +
+          ", weight=" + weight +
+          ", title='" + title + '\'' +
+          ", height=" + height +
+          ", width=" + width +
+          ", alt='" + alt + '\'' +
+          ", noFollow=" + noFollow +
+          ", element=" + element +
+          '}';
     }
   }
 }

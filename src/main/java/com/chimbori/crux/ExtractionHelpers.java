@@ -63,7 +63,7 @@ class ExtractionHelpers {
 
   static String extractCanonicalUrl(Document doc) {
     try {
-      return new HeuristicString("")
+      return new HeuristicString(null)
           .or(StringUtils.urlEncodeSpaceCharacter(doc.select("head link[rel=canonical]").attr("href")))
           .or(StringUtils.urlEncodeSpaceCharacter(doc.select("head meta[property=og:url]").attr("content")))
           .or(StringUtils.urlEncodeSpaceCharacter(doc.select("head meta[name=twitter:url]").attr("content")))
@@ -75,7 +75,7 @@ class ExtractionHelpers {
 
   static String extractDescription(Document doc) {
     try {
-      return new HeuristicString("")
+      return new HeuristicString(null)
           .or(StringUtils.innerTrim(doc.select("head meta[name=description]").attr("content")))
           .or(StringUtils.innerTrim(doc.select("head meta[property=og:description]").attr("content")))
           .or(StringUtils.innerTrim(doc.select("head meta[name=twitter:description]").attr("content")))
@@ -87,7 +87,7 @@ class ExtractionHelpers {
 
   static String extractImageUrl(Document doc) {
     try {
-      return new HeuristicString("")
+      return new HeuristicString(null)
           .or(StringUtils.urlEncodeSpaceCharacter(doc.select("head meta[property=og:image]").attr("content")))
           .or(StringUtils.urlEncodeSpaceCharacter(doc.select("head meta[name=twitter:image]").attr("content")))
           .or(StringUtils.urlEncodeSpaceCharacter(doc.select("link[rel=image_src]").attr("href")))
@@ -100,7 +100,7 @@ class ExtractionHelpers {
 
   static String extractFeedUrl(Document doc) {
     try {
-      return new HeuristicString("")
+      return new HeuristicString(null)
           .or(doc.select("link[rel=alternate]").select("link[type=application/rss+xml]").attr("href"))
           .or(doc.select("link[rel=alternate]").select("link[type=application/atom+xml]").attr("href"))
           .toString();
@@ -115,7 +115,7 @@ class ExtractionHelpers {
 
   static String extractFaviconUrl(Document doc) {
     try {
-      return new HeuristicString("")
+      return new HeuristicString(null)
           .or(StringUtils.urlEncodeSpaceCharacter(doc.select("head link[rel=icon]").attr("href")))
           .or(StringUtils.urlEncodeSpaceCharacter(doc.select("head link[rel^=shortcut],link[rel$=icon]").attr("href")))
           .toString();

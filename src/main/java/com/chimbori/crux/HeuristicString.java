@@ -11,7 +11,7 @@ package com.chimbori.crux;
  * evaluating other candidates as soon as the first one is found.
  */
 public class HeuristicString {
-  private String string;
+  private String string = null;
 
   public HeuristicString(String string) {
     this.string = string;
