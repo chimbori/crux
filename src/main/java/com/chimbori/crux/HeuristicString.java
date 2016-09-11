@@ -18,10 +18,12 @@ public class HeuristicString {
   }
 
   public HeuristicString or(String candidate) throws CandidateFound {
-    if (string.isEmpty()) {
-      string = candidate;
-    } else {
-      throw new CandidateFound(string);
+    if (candidate != null) {
+      if (string == null || string.isEmpty()) {
+        string = candidate;
+      } else {
+        throw new CandidateFound(string);
+      }
     }
     return this;
   }
