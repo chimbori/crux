@@ -58,6 +58,7 @@ class PostprocessHelpers {
   ));
 
   static Document postprocess(Element topNode) {
+    Log.i("postprocess");
     removeNodesWithNegativeScores(topNode);
     replaceLineBreaksWithSpaces(topNode);
     removeUnlikelyChildNodes(topNode);

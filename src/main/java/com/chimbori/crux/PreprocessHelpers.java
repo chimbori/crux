@@ -10,6 +10,7 @@ import org.jsoup.select.Elements;
  */
 class PreprocessHelpers {
   static void preprocess(Document doc) {
+    Log.i("preprocess");
     stripUnlikelyCandidates(doc);
     removeScriptsStylesForms(doc);
     removeComments(doc.body());
