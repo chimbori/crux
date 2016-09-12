@@ -59,6 +59,11 @@ class PostprocessHelpers {
 
   static Document postprocess(Element topNode) {
     Log.i("postprocess");
+    Document doc = new Document("");
+    if (topNode == null) {
+      return doc;
+    }
+
     removeNodesWithNegativeScores(topNode);
     replaceLineBreaksWithSpaces(topNode);
     removeUnlikelyChildNodes(topNode);
@@ -68,7 +73,6 @@ class PostprocessHelpers {
     removeShortParagraphs(topNode);
     removeDisallowedAttributes(topNode);
 
-    Document doc = new Document("");
     for (Node node : topNode.childNodes()) {
       doc.appendChild(node.clone());  // TODO: Don’t copy each item separately.
     }

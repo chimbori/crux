@@ -282,80 +282,45 @@ class ExtractionHelpers {
     return weight;
   }
 
-  static void determineImageSource(Element el, List<Article.Image> images) {
+  /**
+   * Extracts a set of images from the article content itself. This extraction must be run before
+   * the postprocess step, because that step removes tags that are useful for image extraction.
+   */
+  static List<Article.Image> extractImages(Element topNode) {
+    List<Article.Image> images = new ArrayList<>();
+
+    Elements imgElements = topNode.select("img");
+    if (imgElements.isEmpty()) {
+      imgElements = topNode.parent().select("img");
+    }
+
     int maxWeight = 0;
-    Element bestImageNode = null;
-    Elements els = el.select("img");
-    if (els.isEmpty())
-      els = el.parent().select("img");
-
     double score = 1;
-    for (Element e : els) {
-      String sourceUrl = e.attr("src");
-      if (sourceUrl.isEmpty() || StringUtils.isAdImage(sourceUrl))
+    for (Element imgElement : imgElements) {
+      Article.Image image = Article.Image.from(imgElement);
+      if (image.src.isEmpty() || StringUtils.isAdImage(image.src)) {
         continue;
-
-      int weight = 0;
-      int height = 0;
-      try {
-        height = Integer.parseInt(e.attr("height"));
-        if (height >= 50)
-          weight += 20;
-        else
-          weight -= 20;
-      } catch (NumberFormatException ex) {
-        // Ignore.
       }
 
-      int width = 0;
-      try {
-        width = Integer.parseInt(e.attr("width"));
-        if (width >= 50)
-          weight += 20;
-        else
-          weight -= 20;
-      } catch (NumberFormatException ex) {
-        // Ignore.
-      }
+      image.weight += image.height >= 50 ? 20 : -20;
+      image.weight += image.width >= 50 ? 20 : -20;
+      image.weight += image.src.endsWith(".gif") ? -20 : 0;
+      image.weight += image.src.endsWith(".jpg") ? 5 : 0;
+      image.weight += image.alt.length() > 35 ? 20 : 0;
+      image.weight += image.title.length() > 35 ? 20 : 0;
+      image.weight += image.noFollow ? -40 : 0;
 
-      String src = e.attr("src");
-      if (src.endsWith(".gif")) {
-        weight -= 20;
-      }
-
-      String alt = e.attr("alt");
-      if (alt.length() > 35)
-        weight += 20;
-
-      String title = e.attr("title");
-      if (title.length() > 35)
-        weight += 20;
-
-      String rel;
-      boolean noFollow = false;
-      if (e.parent() != null) {
-        rel = e.parent().attr("rel");
-        if (rel != null && rel.contains("nofollow")) {
-          noFollow = rel.contains("nofollow");
-          weight -= 40;
-        }
-      }
-
-      weight = (int) (weight * score);
-      if (weight > maxWeight) {
-        maxWeight = weight;
-        bestImageNode = e;
+      image.weight = (int) (image.weight * score);
+      if (image.weight > maxWeight) {
+        maxWeight = image.weight;
         score = score / 2;
-      } else if (maxWeight == 0 && weight == 0) {
-        // If we haven’t seen any better nodes so far, then mark the current Node as bestImageNode
-        // even if its weight is zero.
-        bestImageNode = e;
       }
 
-      images.add(new Article.Image(sourceUrl, weight, title, height, width, alt, noFollow));
+      images.add(image);
     }
 
     Collections.sort(images, new ImageWeightComparator());
+    return images;
   }
 
   /**
@@ -398,11 +363,13 @@ class ExtractionHelpers {
     return StringUtils.innerTrim(res.toString());
   }
 
+  /**
+   * Returns the highest-scored image first.
+   */
   private static class ImageWeightComparator implements Comparator<Article.Image> {
     @Override
     public int compare(Article.Image o1, Article.Image o2) {
-      // Returns the highest weight first
-      return o2.weight.compareTo(o1.weight);
+      return o2.weight - o1.weight;
     }
   }
 }

@@ -40,11 +40,8 @@ public class Extractor {
       }
     }
 
-    if (bestMatchElement != null) {
-      ExtractionHelpers.determineImageSource(bestMatchElement, article.images);
-      article.document = PostprocessHelpers.postprocess(bestMatchElement);
-    }
-
+    article.images = ExtractionHelpers.extractImages(bestMatchElement);
+    article.document = PostprocessHelpers.postprocess(bestMatchElement);
     article.imageUrl = article.makeAbsoluteUrl(ExtractionHelpers.extractImageUrl(doc, article.images));
     article.feedUrl = article.makeAbsoluteUrl(ExtractionHelpers.extractFeedUrl(doc));
     article.videoUrl = article.makeAbsoluteUrl(ExtractionHelpers.extractVideoUrl(doc));

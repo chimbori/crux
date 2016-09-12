@@ -109,7 +109,7 @@ public class GoldenFilesTest {
   @Test
   public void testGolem() {
     Article article = extractFromTestFile("http://www.golem.de/1104/82797.html", "golem.html");
-    assertStartsWith("Mozilla hat Firefox 5.0a2 veröffentlicht und zugleich eine erste Entwicklerversion von Firefox 6 freigegeben.", article.document.text());
+    assertStartsWith("Unter dem Namen \"Aurora\" hat Firefox einen neuen Kanal mit Vorabversionen von Firefox eingerichtet.", article.document.text());
     assertEquals("http://scr3.golem.de/screenshots/1104/Firefox-Aurora/thumb480/aurora-nighly-beta-logos.png", article.imageUrl);
     assertEquals("Mozilla: Vorabversionen von Firefox 5 und 6 veröffentlicht - Golem.de", article.title);
   }
@@ -511,10 +511,10 @@ public class GoldenFilesTest {
 
   @Test
   public void testTheFrisky() {
-    Article article = extractFromTestFile("http://www.thefrisky.com/post/246-rachel-dratch-met-her-baby-daddy-in-a-bar/", "thefrisky.html");
+    Article article = extractFromTestFile("", "thefrisky.html");
     assertStartsWith("Rachel Dratch had been keeping the identity of her baby daddy ", article.document.text());
-    assertEquals("http://cdn.thefrisky.com/images/uploads/rachel_dratch_102810_m.jpg", article.imageUrl);
-    assertEquals("Rachel Dratch Met Her Baby Daddy At A Bar", article.title);
+    assertEquals("http://static.thefrisky.com/uploads/2010/10/28/rachel_dratch_102810_m.jpg", article.imageUrl);
+    assertEquals("Rachel Dratch Met Her Baby Daddy At A Bar - The Frisky", article.title);
   }
 
   @Test
