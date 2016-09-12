@@ -4,6 +4,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.fail;
 
 public class HeuristicStringTest {
   @Test
@@ -58,5 +59,21 @@ public class HeuristicStringTest {
     } catch (HeuristicString.CandidateFound candidateFound) {
       assertEquals(null, candidateFound.candidate);
     }
+  }
+
+  @Test
+  public void testThatSubsequentStringsAreNotEvaluatedIfOneCandidateHasAlreadyBeenFound() {
+    try {
+      assertNull(new HeuristicString("original")
+          .or(getNewCandidate_ShouldNeverBeCalled())
+          .toString());
+    } catch (HeuristicString.CandidateFound candidateFound) {
+      assertEquals("original", candidateFound.candidate);
+    }
+  }
+
+  private String getNewCandidate_ShouldNeverBeCalled() {
+    fail("If an existing candidate is available, subsequent candidates should not be evaluated.");
+    return "changed";
   }
 }

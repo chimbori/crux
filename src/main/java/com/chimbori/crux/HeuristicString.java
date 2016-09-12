@@ -13,8 +13,11 @@ package com.chimbori.crux;
 public class HeuristicString {
   private String string = null;
 
-  public HeuristicString(String string) {
+  public HeuristicString(String string) throws CandidateFound {
     this.string = string;
+    if (string != null && !string.isEmpty()) {
+      throw new CandidateFound(string);
+    }
   }
 
   public HeuristicString or(String candidate) throws CandidateFound {
