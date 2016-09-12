@@ -4,9 +4,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 public class Extractor {
   public Article extractContent(String baseUri, String html) {
@@ -43,22 +41,11 @@ public class Extractor {
     }
 
     if (bestMatchElement != null) {
-      List<Article.Image> images = new ArrayList<>();
-      Element imgEl = ExtractionHelpers.determineImageSource(bestMatchElement, images);
-      if (imgEl != null) {
-        article.imageUrl = article.makeAbsoluteUrl(StringUtils.urlEncodeSpaceCharacter(imgEl.attr("src")));
-        // TODO remove parent container of image if it is contained in bestMatchElement
-        // to avoid image subtitles flooding in
-        article.images = images;
-      }
-
+      ExtractionHelpers.determineImageSource(bestMatchElement, article.images);
       article.document = PostprocessHelpers.postprocess(bestMatchElement);
     }
 
-    if (article.imageUrl.isEmpty()) {
-      article.imageUrl = article.makeAbsoluteUrl(ExtractionHelpers.extractImageUrl(doc));
-    }
-
+    article.imageUrl = article.makeAbsoluteUrl(ExtractionHelpers.extractImageUrl(doc, article.images));
     article.feedUrl = article.makeAbsoluteUrl(ExtractionHelpers.extractFeedUrl(doc));
     article.videoUrl = article.makeAbsoluteUrl(ExtractionHelpers.extractVideoUrl(doc));
     article.faviconUrl = article.makeAbsoluteUrl(ExtractionHelpers.extractFaviconUrl(doc));

@@ -85,11 +85,15 @@ class ExtractionHelpers {
     }
   }
 
-  static String extractImageUrl(Document doc) {
+  static String extractImageUrl(Document doc, List<Article.Image> images) {
     try {
       return new HeuristicString(null)
-          .or(StringUtils.urlEncodeSpaceCharacter(doc.select("head meta[property=og:image]").attr("content")))
+          // Twitter Cards and Open Graph images are usually higher quality, so rank them first.
           .or(StringUtils.urlEncodeSpaceCharacter(doc.select("head meta[name=twitter:image]").attr("content")))
+          .or(StringUtils.urlEncodeSpaceCharacter(doc.select("head meta[property=og:image]").attr("content")))
+          // Then, grab any hero images from the article itself.
+          .or(images != null && images.size() > 0 ? StringUtils.urlEncodeSpaceCharacter(images.get(0).src) : null)
+          // image_src or thumbnails are usually low quality, so prioritize them *after* article images.
           .or(StringUtils.urlEncodeSpaceCharacter(doc.select("link[rel=image_src]").attr("href")))
           .or(StringUtils.urlEncodeSpaceCharacter(doc.select("head meta[name=thumbnail]").attr("content")))
           .toString();
@@ -278,9 +282,9 @@ class ExtractionHelpers {
     return weight;
   }
 
-  static Element determineImageSource(Element el, List<Article.Image> images) {
+  static void determineImageSource(Element el, List<Article.Image> images) {
     int maxWeight = 0;
-    Element maxNode = null;
+    Element bestImageNode = null;
     Elements els = el.select("img");
     if (els.isEmpty())
       els = el.parent().select("img");
@@ -313,6 +317,12 @@ class ExtractionHelpers {
       } catch (NumberFormatException ex) {
         // Ignore.
       }
+
+      String src = e.attr("src");
+      if (src.endsWith(".gif")) {
+        weight -= 20;
+      }
+
       String alt = e.attr("alt");
       if (alt.length() > 35)
         weight += 20;
@@ -334,16 +344,18 @@ class ExtractionHelpers {
       weight = (int) (weight * score);
       if (weight > maxWeight) {
         maxWeight = weight;
-        maxNode = e;
+        bestImageNode = e;
         score = score / 2;
+      } else if (maxWeight == 0 && weight == 0) {
+        // If we haven’t seen any better nodes so far, then mark the current Node as bestImageNode
+        // even if its weight is zero.
+        bestImageNode = e;
       }
 
-      Article.Image image = new Article.Image(sourceUrl, weight, title, height, width, alt, noFollow);
-      images.add(image);
+      images.add(new Article.Image(sourceUrl, weight, title, height, width, alt, noFollow));
     }
 
     Collections.sort(images, new ImageWeightComparator());
-    return maxNode;
   }
 
   /**

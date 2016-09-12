@@ -86,14 +86,10 @@ public class GoldenFilesTest {
 
   @Test
   public void testReuters() {
-    Article article = extractFromTestFile("http://www.reuters.com/article/2012/08/03/us-knightcapital-trading-technology-idUSBRE87203X20120803", "reuters.html");
+    Article article = extractFromTestFile("http://www.reuters.com/article/us-knightcapital-trading-technology-idUSBRE87203X20120803", "reuters.html");
     assertEquals("Knight trading loss shows cracks in equity markets", article.title);
-    assertEquals("http://s1.reutersmedia.net/resources/r/?m=02&d=20120803&t=2&i=637797752&w=460&fh=&fw=&ll=&pl=&r=CBRE872074Y00", article.imageUrl);
+    assertEquals("http://s1.reutersmedia.net/resources/r/?m=02&d=20120803&t=2&i=637797752&w=130&fh=&fw=&ll=&pl=&r=CBRE872074Y00", article.imageUrl);
     assertStartsWith("Knight trading loss shows cracks in equity markets (Reuters) - The software glitch that cost Knight Capital Group", article.document.text());
-    assertEquals(1, article.images.size());
-    assertEquals(article.imageUrl, article.images.get(0).src);
-    assertEquals("http://s1.reutersmedia.net/resources/r/?m=02&d=20120803&t=2&i=637797752&w=460&fh=&fw=&ll=&pl=&r=CBRE872074Y00",
-        article.images.get(0).src);
   }
 
   @Test
@@ -111,7 +107,7 @@ public class GoldenFilesTest {
   }
 
   @Test
-  public void testFirefox() {
+  public void testGolem() {
     Article article = extractFromTestFile("http://www.golem.de/1104/82797.html", "golem.html");
     assertStartsWith("Mozilla hat Firefox 5.0a2 veröffentlicht und zugleich eine erste Entwicklerversion von Firefox 6 freigegeben.", article.document.text());
     assertEquals("http://scr3.golem.de/screenshots/1104/Firefox-Aurora/thumb480/aurora-nighly-beta-logos.png", article.imageUrl);
@@ -124,19 +120,6 @@ public class GoldenFilesTest {
     assertEquals("色とりどりのチューリップ : 岐阜 : 地域 : YOMIURI ONLINE（読売新聞）", article.title);
     assertTrue("yomiuri:" + article.document.text(), article.document.text().contains("海津市海津町の国営木曽三川公園で、チューリップが見頃を迎えている。２０日までは「チューリップ祭」が開かれており、大勢の人たちが多彩な色や形を鑑賞している＝写真＝"));
     assertEquals(Arrays.asList("読売新聞", "地域"), article.keywords);
-  }
-
-  @Test
-  public void testFAZ() {
-    Article article = extractFromTestFile("http://www.faz.net/s/Rub469C43057F8C437CACC2DE9ED41B7950/Doc~EBA775DE7201E46E0B0C5AD9619BD56E9~ATpl~Ecommon~Scontent.html", "faz.html");
-    assertStartsWith("Der amerikanische Umweltaktivist Stewart Brand ist eine \u0084grüne Instanz", article.document.text());
-    assertEquals("http://www.faz.net/m/{5F104CCF-3B5A-4B4C-B83E-4774ECB29889}g225_4.jpg", article.imageUrl);
-
-    assertEquals(Arrays.asList("Atomkraft", "Deutschland", "Jahren", "Atommüll", "Fukushima", "Problem", "Brand", "Kohle", "2011", "11",
-        "Stewart", "Atomdebatte", "Jahre", "Boden", "Treibhausgase", "April", "Welt", "Müll", "Radioaktivität",
-        "Gesamtbild", "Klimawandel", "Reaktoren", "Verzicht", "Scheinheiligkeit", "Leute", "Risiken", "Löcher",
-        "Fusion", "Gefahren", "Land"),
-        article.keywords);
   }
 
   @Test
@@ -193,16 +176,16 @@ public class GoldenFilesTest {
   @Test
   public void testHeise() {
     Article article = extractFromTestFile("http://www.heise.de/newsticker/meldung/Internet-Explorer-9-jetzt-mit-schnellster-JavaScript-Engine-1138062.html", "heise.html");
-    assertEquals(null, article.imageUrl);
-    assertEquals("heise online - Internet Explorer 9 jetzt mit schnellster JavaScript-Engine", article.title);
-    assertStartsWith("Microsoft hat heute eine siebte Platform Preview des Internet Explorer veröffentlicht. In den nur dr", article.document.text());
+    assertEquals("http://m.f.ix.de/scale/geometry/250/q50/imgs/18/1/7/8/2/8/5/5/b6e69ac13bb564dcaba745f4b419e23f_edited_105951127_8168730ae9-255ed03a302fdb50.jpeg@jpg", article.imageUrl);
+    assertEquals("Internet Explorer 9 jetzt mit schnellster JavaScript-Engine", article.title);
+    assertStartsWith("Internet Explorer 9 jetzt mit schnellster JavaScript-Engine Microsoft hat heute eine siebte Platform Preview ", article.document.text());
   }
 
   @Test
   public void testTechCrunch() {
     Article article = extractFromTestFile("http://techcrunch.com/2011/04/04/twitter-advanced-search/", "techcrunch.html");
-    assertEquals("http://tctechcrunch.files.wordpress.com/2011/04/screen-shot-2011-04-04-at-12-11-36-pm.png?w=285&h=85", article.imageUrl);
     assertEquals("Twitter Finally Brings Advanced Search Out Of Purgatory; Updates Discovery Algorithms", article.title);
+    assertEquals("https://s0.wp.com/wp-content/themes/vip/techcrunch-2013/assets/images/techcrunch.opengraph.default.png", article.imageUrl);
     assertStartsWith("A couple weeks ago, we wrote a post wishing Twitter a happy fifth birthday, but also noting ", article.document.text());
   }
 
@@ -210,7 +193,7 @@ public class GoldenFilesTest {
   public void testTwitterBlog() {
     Article article = extractFromTestFile("http://engineering.twitter.com/2011/04/twitter-search-is-now-3x-faster_1656.html", "twitter.html");
     assertEquals("Twitter Engineering: Twitter Search is Now 3x Faster", article.title);
-    assertEquals("http://4.bp.blogspot.com/-CmXJmr9UAbA/TZy6AsT72fI/AAAAAAAAAAs/aaF5AEzC-e4/s72-c/Blender_Tsunami.jpg", article.imageUrl);
+    assertEquals("http://4.bp.blogspot.com/-CmXJmr9UAbA/TZy6AsT72fI/AAAAAAAAAAs/aaF5AEzC-e4/s400/Blender_Tsunami.jpg", article.imageUrl);
     assertStartsWith("In the spring of 2010, the search team at Twitter started to rewrite our search engine in order to serve our ever-growin", article.document.text());
   }
 
@@ -225,7 +208,7 @@ public class GoldenFilesTest {
   public void testFacebook() {
     Article article = extractFromTestFile("http://www.facebook.com/ejdionne/posts/10150154175658687", "facebook.html");
     assertStartsWith("In my column tomorrow, I urge President Obama to end the spectacle of", article.document.text());
-    assertEquals(null, article.imageUrl);
+    assertEquals("http://profile.ak.fbcdn.net/hprofile-ak-snc4/41782_97057113686_1357_q.jpg", article.imageUrl);
     assertEquals("In my column...", article.title);
   }
 
@@ -280,8 +263,8 @@ public class GoldenFilesTest {
   @Test
   public void testFoxNews() {
     Article article = extractFromTestFile("http://www.foxnews.com/politics/2010/08/14/russias-nuclear-help-iran-stirs-questions-improved-relations/", "foxnews.html");
-    assertStartsWith("Apr. 8: President Obama signs the New START treaty with Russian President Dmitry Medvedev at the Prague Castle. Russia's announcement ", article.document.text());
-    assertEquals("http://a57.foxnews.com/static/managed/img/Politics/397/224/startsign.jpg", article.imageUrl);
+    assertStartsWith("Russia's announcement that it will help Iran get nuclear fuel is raising questions about what President Obama calls the \"better-than- ever\" relationship", article.document.text());
+    assertEquals("http://a57.foxnews.com/images.foxnews.com/content/fox-news/politics/2010/08/14/russias-nuclear-help-iran-stirs-questions-improved-relations/_jcr_content/par/featured-media/media-0.img.jpg/0/0/1446837847097.jpg?ve=1", article.imageUrl);
   }
 
   @Test
@@ -289,7 +272,7 @@ public class GoldenFilesTest {
     Article article = extractFromTestFile("http://stackoverflow.com/questions/3553693/wicket-vs-vaadin/3660938", "stackoverflow.html");
     assertStartsWith("I think I've invested some time for both frameworks", article.document.text());
     assertStartsWith("java - wicket vs Vaadin - Stack Overflow", article.title);
-    assertEquals(null, article.imageUrl);
+    assertEquals("http://cdn.sstatic.net/Sites/stackoverflow/img/apple-touch-icon@2.png?v=73d79a89bded&a", article.imageUrl);
   }
 
   @Test
@@ -304,10 +287,10 @@ public class GoldenFilesTest {
   }
 
   @Test
-  public void testWallstreetjournal() {
-    Article article = extractFromTestFile("http://online.wsj.com/article/SB10001424052748704532204575397061414483040.html", "wsj.html");
+  public void testWallStreetJournal() {
+    Article article = extractFromTestFile("http://www.wsj.com/articles/SB10001424052748704532204575397061414483040", "wsj.html");
     assertStartsWith("The Obama administration has paid out less than a third of the nearly $230 billion", article.document.text());
-    assertEquals("http://si.wsj.net/public/resources/images/OB-JO747_stimul_D_20100814113803.jpg", article.imageUrl);
+    assertEquals("https://si.wsj.net/public/resources/images/OB-JO759_0814st_D_20100814143158.jpg", article.imageUrl);
   }
 
   @Test
@@ -326,23 +309,23 @@ public class GoldenFilesTest {
 
   @Test
   public void testESPN() {
-    Article article = extractFromTestFile("http://sports.espn.go.com/espn/commentary/news/story?id=5461430", "espn.html");
+    Article article = extractFromTestFile("http://www.espn.com/espn/commentary/news/story?id=5461430", "espn.html");
     assertStartsWith("If you believe what college football coaches have said about sports", article.document.text());
-    assertEquals("http://a.espncdn.com/photo/2010/0813/ncf_i_mpouncey1_300.jpg", article.imageUrl);
+    assertEquals("http://a.espncdn.com/photo/2010/0813/pg2_g_bush3x_300.jpg", article.imageUrl);
   }
 
   @Test
   public void testGizmodo() {
     Article article = extractFromTestFile("http://www.gizmodo.com.au/2010/08/xbox-kinect-gets-its-fight-club/", "gizmodo.html");
     assertStartsWith("You love to punch your arms through the air", article.document.text());
-    assertEquals(null, article.imageUrl);
+    assertEquals("http://cache.gawkerassets.com/assets/images/9/2010/08/500x_fighters_uncaged__screenshot_3b__jawbreaker.jpg", article.imageUrl);
   }
 
   @Test
   public void testEngadget() {
     Article article = extractFromTestFile("http://www.engadget.com/2010/08/18/verizon-fios-set-top-boxes-getting-a-new-hd-guide-external-stor/", "engadget.html");
-    assertStartsWith("Verizon FiOS set-top boxes getting a new HD guide", article.document.text());
-    assertEquals("http://www.blogcdn.com/www.engadget.com/media/2010/08/44ni600_thumbnail.jpg", article.imageUrl);
+    assertStartsWith("Streaming and downloading TV content to mobiles is nice, but we enjoy watching TV... on the TV", article.document.text());
+    assertEquals("https://www.blogcdn.com/www.engadget.com/media/2010/08/44ni600.jpg", article.imageUrl);
   }
 
   @Test
@@ -357,7 +340,7 @@ public class GoldenFilesTest {
   public void testGigaOm() {
     Article article = extractFromTestFile("http://gigaom.com/apple/apples-next-macbook-an-800-mac-for-the-masses/", "gigaom.html");
     assertStartsWith("The MacBook Air is a bold move forward ", article.document.text());
-    assertEquals("http://gigapple.files.wordpress.com/2010/10/macbook-feature.png?w=300&h=200", article.imageUrl);
+    assertEquals("http://gigapple.files.wordpress.com/2010/10/macbook-feature.png?w=604", article.imageUrl);
   }
 
   @Test
@@ -389,17 +372,16 @@ public class GoldenFilesTest {
 
   @Test
   public void testSportsIllustrated() {
-    Article article = extractFromTestFile("http://sportsillustrated.cnn.com/2010/football/ncaa/10/15/ohio-state-holmes.ap/index.html?xid=si_ncaaf", "sportsillustrated.html");
-    assertStartsWith("COLUMBUS, Ohio (AP) -- Ohio State has closed", article.document.text());
-    assertEquals("http://i.cdn.turner.com/si/.e1d/img/4.0/global/logos/si_100x100.jpg",
-        article.imageUrl);
+    Article article = extractFromTestFile("http://www.si.com/nba/2016/09/07/shaq-basketball-hall-of-fame-lakers-magic-heat-lsu-tigers", "sportsillustrated.html");
+    assertStartsWith("Way back in 1994, Shaquille O’Neal, who will be inducted into the Naismith Basketball Hall of Fame on Friday, was asked about Knicks center Patrick Ewing.", article.document.text());
+    assertEquals("http://windows.api.si.com/s3/files/styles/inline_gallery_desktop/public/2016/09/08/shaquille-o-neal-hall-of-fame-lakers-magic-lsu.jpg?itok=oupTSSJY", article.imageUrl);
   }
 
   @Test
-  public void testDailyBeast() {
+  public void testTheDailyBeast() {
     Article article = extractFromTestFile("http://www.thedailybeast.com/blogs-and-stories/2010-11-01/ted-sorensen-speechwriter-behind-jfks-best-jokes/?cid=topic:featured1", "thedailybeast.html");
     assertStartsWith("Legendary Kennedy speechwriter Ted Sorensen passed", article.document.text());
-    assertEquals("http://www.tdbimg.com/files/2010/11/01/img-article---katz-ted-sorensen_163531624950.jpg", article.imageUrl);
+    assertEquals("http://www.tdbimg.com/resizeimage/YTo0OntzOjM6ImltZyI7czo2MToiMjAxMC8xMS8wMS9pbWctYnMtYm90dG9tLS0ta2F0ei10ZWQtc29yZW5zZW5fMTYzMjI4NjEwMzUxLmpwZyI7czo1OiJ3aWR0aCI7aTo1MDtzOjY6ImhlaWdodCI7aTo1MDtzOjY6InJhbmRvbSI7czoxOiIxIjt9.jpg", article.imageUrl);
   }
 
   @Test
@@ -437,29 +419,24 @@ public class GoldenFilesTest {
   public void testFoxSports() {
     Article article = extractFromTestFile("http://msn.foxsports.com/nfl/story/Tom-Cable-fired-contract-option-Oakland-Raiders-coach-010411", "foxsports.html");
     assertStartsWith("The Oakland Raiders informed coach Tom Cable", article.document.text());
-    assertEquals("Oakland Raiders won't bring Tom Cable back as coach - NFL News",
-        article.title);
+    assertEquals("Oakland Raiders won't bring Tom Cable back as coach - NFL News", article.title);
   }
 
   @Test
   public void testEconomist() {
     Article article = extractFromTestFile("http://www.economist.com/node/17956885", "economist.html");
     assertStartsWith("FOR beleaguered smokers, the world is an increasingly", article.document.text());
-    assertEquals("http://www.economist.com/sites/default/files/images/articles/migrated/20110122_stp004.jpg",
-        article.imageUrl);
+    assertEquals("http://www.economist.com/sites/default/files/images/articles/migrated/20110122_stp004.jpg", article.imageUrl);
   }
 
   @Test
   public void testTheVacationGals() {
     Article article = extractFromTestFile("http://thevacationgals.com/vacation-rental-homes-are-a-family-reunion-necessity/", "thevacationgals.html");
     assertStartsWith("Editors’ Note: We are huge proponents of vacation rental homes", article.document.text());
-    assertEquals("http://thevacationgals.com/wp-content/uploads/2010/11/Gemmel-Family-Reunion-at-a-Vacation-Rental-Home1-300x225.jpg",
-        article.imageUrl);
+    assertEquals("http://thevacationgals.com/wp-content/uploads/2010/11/Gemmel-Family-Reunion-at-a-Vacation-Rental-Home1-300x225.jpg", article.imageUrl);
     assertEquals(3, article.images.size());
-    assertEquals("http://thevacationgals.com/wp-content/uploads/2010/11/Gemmel-Family-Reunion-at-a-Vacation-Rental-Home1-300x225.jpg",
-        article.images.get(0).src);
-    assertEquals("../wp-content/uploads/2010/11/The-Gemmel-Family-Does-a-Gilligans-Island-Theme-Family-Reunion-Vacation-Sarah-Gemmel-300x225.jpg",
-        article.images.get(1).src);
+    assertEquals("http://thevacationgals.com/wp-content/uploads/2010/11/Gemmel-Family-Reunion-at-a-Vacation-Rental-Home1-300x225.jpg", article.images.get(0).src);
+    assertEquals("../wp-content/uploads/2010/11/The-Gemmel-Family-Does-a-Gilligans-Island-Theme-Family-Reunion-Vacation-Sarah-Gemmel-300x225.jpg", article.images.get(1).src);
     assertEquals("http://www.linkwithin.com/pixel.png", article.images.get(2).src);
   }
 
@@ -467,8 +444,7 @@ public class GoldenFilesTest {
   public void testShockYa() {
     Article article = extractFromTestFile("http://www.shockya.com/news/2011/01/30/daily-shock-jonathan-knight-of-new-kids-on-the-block-publicly-reveals-hes-gay/", "shockya.html");
     assertStartsWith("New Kids On The Block singer Jonathan Knight has publicly", article.document.text());
-    assertEquals("http://www.shockya.com/news/wp-content/uploads/jonathan_knight_new_kids_gay.jpg",
-        article.imageUrl);
+    assertEquals("http://www.shockya.com/news/wp-content/uploads/jonathan_knight_new_kids_gay.jpg", article.imageUrl);
   }
 
   @Test
@@ -521,9 +497,9 @@ public class GoldenFilesTest {
 
   @Test
   public void testCNet() {
-    Article article = extractFromTestFile("http://news.cnet.com/8301-30686_3-20014053-266.html?tag=topStories1", "cnet.html");
+    Article article = extractFromTestFile("http://www.cnet.com/news/verizon-shows-off-ipad-tv-app-and-more/", "cnet.html");
     assertStartsWith("NEW YORK--Verizon Communications is prepping a new", article.document.text());
-    assertEquals("http://i.i.com.com/cnwk.1d/i/tim//2010/08/18/Verizon_iPad_and_live_TV_610x458.JPG", article.imageUrl);
+    assertEquals("https://cnet1.cbsistatic.com/img/Bw23T5rupUVnvVPCQQ3KjfO9qic=/670x503/2010/08/18/53b6d52b-f0fa-11e2-8c7c-d4ae52e62bcc/Verizon_iPad_and_live_TV_with_big_TV.JPG", article.imageUrl);
   }
 
   @Test
@@ -648,9 +624,7 @@ public class GoldenFilesTest {
   public void testReuters2() {
     Article article = extractFromTestFile("http://www.reuters.com/article/2012/08/03/us-knightcapital-trading-technology-idUSBRE87203X20120803", "reuters.html");
     assertEquals(1, article.images.size());
-    assertEquals(article.imageUrl, article.images.get(0).src);
-    assertEquals("http://s1.reutersmedia.net/resources/r/?m=02&d=20120803&t=2&i=637797752&w=460&fh=&fw=&ll=&pl=&r=CBRE872074Y00",
-        article.images.get(0).src);
+    assertEquals("http://s1.reutersmedia.net/resources/r/?m=02&d=20120803&t=2&i=637797752&w=130&fh=&fw=&ll=&pl=&r=CBRE872074Y00", article.imageUrl);
   }
 
   //    @Test
