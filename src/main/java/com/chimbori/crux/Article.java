@@ -89,23 +89,28 @@ public class Article {
    * Class which encapsulates the data from an image found under an element
    */
   static class Image {
-    public final String src;
-    public final Integer weight;
-    private final String title;
-    private final int height;
-    private final int width;
-    private final String alt;
-    private final boolean noFollow;
+    public String src;
+    public int weight;
+    public String title;
+    public int height;
+    public int width;
+    public String alt;
+    public boolean noFollow;
     public Element element;
 
-    Image(String src, Integer weight, String title, int height, int width, String alt, boolean noFollow) {
-      this.src = src;
-      this.weight = weight;
-      this.title = title;
-      this.height = height;
-      this.width = width;
-      this.alt = alt;
-      this.noFollow = noFollow;
+    private Image() {
+    }
+
+    static Image from(Element imgElement) {
+      Image image = new Image();
+      image.element = imgElement;
+      image.src = imgElement.attr("src");
+      image.width = StringUtils.parseAttrAsInt(imgElement, "width");
+      image.height = StringUtils.parseAttrAsInt(imgElement, "height");
+      image.alt = imgElement.attr("alt");
+      image.title = imgElement.attr("title");
+      image.noFollow = imgElement.parent() != null && imgElement.parent().attr("rel") != null && imgElement.parent().attr("rel").contains("nofollow");
+      return image;
     }
 
     @Override

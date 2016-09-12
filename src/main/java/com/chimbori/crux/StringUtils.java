@@ -1,5 +1,7 @@
 package com.chimbori.crux;
 
+import org.jsoup.nodes.Element;
+
 class StringUtils {
   private static final String WHITESPACE = "[ \r\t\n]+";
 
@@ -193,5 +195,13 @@ class StringUtils {
       }
     }
     return chars;
+  }
+
+  public static int parseAttrAsInt(Element element, String attr) {
+    try {
+      return Integer.parseInt(element.attr(attr));
+    } catch (NumberFormatException e) {
+      return 0;
+    }
   }
 }
