@@ -288,9 +288,12 @@ class ExtractionHelpers {
    */
   static List<Article.Image> extractImages(Element topNode) {
     List<Article.Image> images = new ArrayList<>();
+    if (topNode == null) {
+      return images;
+    }
 
     Elements imgElements = topNode.select("img");
-    if (imgElements.isEmpty()) {
+    if (imgElements.isEmpty() && topNode.parent() != null) {
       imgElements = topNode.parent().select("img");
     }
 
