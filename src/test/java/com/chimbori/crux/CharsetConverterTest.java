@@ -13,7 +13,6 @@ import static org.junit.Assert.fail;
 public class CharsetConverterTest {
   @Test
   public void testDetermineEncoding() throws Exception {
-    assertEncodingEquals("utf-8", "faz.html");
     assertEncodingEquals("shift_jis", "yomiuri.html");
     assertEncodingEquals("shift_jis", "yomiuri2.html");
     assertEncodingEquals("iso-8859-1", "spiegel.html");
@@ -28,10 +27,9 @@ public class CharsetConverterTest {
   @Test
   public void testMaxBytesExceedingButGetTitleNevertheless() throws Exception {
     CharsetConverter.StringWithEncoding parsed = CharsetConverter.readStream(
-        new FileInputStream(new File("test_data/faz.html")), null);
+        new FileInputStream(new File("test_data/bbc.html")), null);
     assertEquals("utf-8", parsed.encoding);
-    assertEquals("Im Gespräch: Umweltaktivist Stewart Brand: Ihr Deutschen steht allein da "
-        + "- Atomdebatte - FAZ.NET", Jsoup.parse(parsed.content).select("title").text());
+    assertEquals("Brazil mourns Santa Maria nightclub fire victims - BBC News BBC News", Jsoup.parse(parsed.content).select("title").text());
   }
 
   private void assertEncodingEquals(String encoding, String testFile) {

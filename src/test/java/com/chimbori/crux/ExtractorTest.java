@@ -31,23 +31,22 @@ public class ExtractorTest {
     final String Bs =  "bbb bbb bbb bbb bbb bbb bbb bbb bbb bbb bbb bbb bbb bbb bbb bbb bbb bbb bbb bbb bbb bbb";
     final String Cs =  "ccc ccc ccc ccc ccc ccc ccc ccc ccc ccc ccc ccc ccc ccc ccc ccc ccc ccc ccc ccc ccc ccc";
 
-    Article article = extractor.extractContent(BLANK_URL, String.format("<html><body><div> %s <a> %s</a>%s </div></body></html>", As, Bs, Cs));
-    Log.i(article.document.childNodes().toString());
+    Article article = extractor.extractContent(BLANK_URL, String.format("<html><body><div> %s <p> %s</p>%s </div></body></html>", As, Bs, Cs));
     assertEquals(3, article.document.childNodeSize());
     assertEquals(As, article.document.childNode(0).outerHtml().trim());
-    assertEquals(String.format("<a> %s</a>", Bs), article.document.childNode(1).outerHtml().trim());
+    assertEquals(String.format("<p> %s</p>", Bs), article.document.childNode(1).outerHtml().trim());
     assertEquals(Cs, article.document.childNode(2).outerHtml().trim());
 
-    article = extractor.extractContent(BLANK_URL, String.format("<html><body><div> %s <strong>%s </strong>%s</div></body></html>", As, Bs, Cs));
+    article = extractor.extractContent(BLANK_URL, String.format("<html><body><div> %s <p>%s </p>%s</div></body></html>", As, Bs, Cs));
     assertEquals(3, article.document.childNodeSize());
     assertEquals(As, article.document.childNode(0).outerHtml().trim());
-    assertEquals(String.format("<strong>%s </strong>", Bs), article.document.childNode(1).outerHtml().trim());
+    assertEquals(String.format("<p>%s </p>", Bs), article.document.childNode(1).outerHtml().trim());
     assertEquals(Cs, article.document.childNode(2).outerHtml().trim());
 
-    article = extractor.extractContent(BLANK_URL, String.format("<html><body><div> %s <strong> %s </strong>%s</div></body></html>", As, Bs, Cs));
+    article = extractor.extractContent(BLANK_URL, String.format("<html><body><div> %s <p> %s </p>%s</div></body></html>", As, Bs, Cs));
     assertEquals(3, article.document.childNodeSize());
     assertEquals(As, article.document.childNode(0).outerHtml().trim());
-    assertEquals(String.format("<strong> %s </strong>", Bs), article.document.childNode(1).outerHtml().trim());
+    assertEquals(String.format("<p> %s </p>", Bs), article.document.childNode(1).outerHtml().trim());
     assertEquals(Cs, article.document.childNode(2).outerHtml().trim());
   }
 
