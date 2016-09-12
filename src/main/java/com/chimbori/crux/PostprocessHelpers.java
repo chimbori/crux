@@ -115,7 +115,7 @@ class PostprocessHelpers {
     for (Element childElement : element.children()) {
       removeTagsButRetainContent(childElement);
       if (REMOVE_TAGS_BUT_RETAIN_CONTENT.contains(childElement.tagName())) {
-        Log.i("removeTagsButRetainContent: " + childElement.outerHtml());
+        Log.i("removeTagsButRetainContent: %s", childElement.outerHtml());
         childElement.unwrap();
       }
     }
@@ -186,7 +186,7 @@ class PostprocessHelpers {
   }
 
   private static void printAndRemove(Node node, String reason) {
-    Log.i(String.format("%s [%s]", reason, node.outerHtml().substring(0, Math.min(node.outerHtml().length(), 80)).replace("\n", "")));
+    Log.i("%s [%s]", reason, node.outerHtml().substring(0, Math.min(node.outerHtml().length(), 80)).replace("\n", ""));
     node.remove();
   }
 }

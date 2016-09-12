@@ -12,8 +12,6 @@ import java.nio.charset.Charset;
  */
 @SuppressWarnings("WeakerAccess")
 public class CharsetConverter {
-  private static final Logger logger = Logger.getInstance();
-
   private final static String UTF8 = "UTF-8";
   private final static String ISO = "ISO-8859-1";
   private final static int K2 = 2048;
@@ -71,20 +69,20 @@ public class CharsetConverter {
         if (tmpEnc != null)
           encoding = tmpEnc;
         else {
-          logger.debug("no charset found in first stage");
+          Log.i("no charset found in first stage");
           // detect with the help of xml beginning ala encoding="charset"
           tmpEnc = detectCharset("encoding=", outputStream, in, encoding);
-          if (tmpEnc != null)
+          if (tmpEnc != null) {
             encoding = tmpEnc;
-          else
-            logger.debug("no charset found in second stage");
+          } else {
+            Log.i("no charset found in second stage");
+          }
         }
 
         if (!Charset.isSupported(encoding))
           throw new UnsupportedEncodingException(encoding);
       } catch (UnsupportedEncodingException e) {
-        logger.warn("Using default encoding:" + UTF8
-            + " problem:" + e.getMessage() + " encoding:" + encoding);
+        Log.i("Using default encoding:" + UTF8 + " problem:" + e.getMessage() + " encoding:" + encoding);
         encoding = UTF8;
       }
 
@@ -95,7 +93,7 @@ public class CharsetConverter {
       byte[] arr = new byte[K2];
       while (true) {
         if (bytesRead >= DEFAULT_MAX_BYTES) {
-          logger.warn("maxBytes " + DEFAULT_MAX_BYTES + " exceeded. HTML may be broken.");
+          Log.i("maxBytes " + DEFAULT_MAX_BYTES + " exceeded. HTML may be broken.");
           break;
         }
 
@@ -182,9 +180,8 @@ public class CharsetConverter {
           in.reset();
           bos.reset();
           return tmpEnc;
-        } catch (IOException ex) {
-          logger.warn("Couldn't reset stream to re-read with new encoding " + tmpEnc + " "
-              + ex.toString(), ex);
+        } catch (IOException e) {
+          Log.i("Couldn't reset stream to re-read with new encoding %s %s %s", tmpEnc, e.toString(), e);
         }
       }
     }

@@ -754,7 +754,7 @@ public class GoldenFilesTest {
   private Article extractFromTestFile(String baseUri, String testFile) {
     try {
       Article article = extractor.extractContent(baseUri, CharsetConverter.readStream(new FileInputStream(new File("test_data/" + testFile)), null).content);
-      Log.i(article.document.childNodes().toString());
+      Log.i("%s", article.document.childNodes().toString());
       return article;
     } catch (FileNotFoundException e) {
       fail(e.getMessage());
