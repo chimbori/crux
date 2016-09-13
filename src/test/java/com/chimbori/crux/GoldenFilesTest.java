@@ -101,6 +101,14 @@ public class GoldenFilesTest {
   }
 
   @Test
+  public void testNewYorker() {
+    Article article = extractFromTestFile("http://www.newyorker.com/humor/borowitz-report/scientists-earth-endangered-by-new-strain-of-fact-resistant-humans", "newyorker.html");
+    assertEquals("Scientists: Earth Endangered by New Strain of Fact-Resistant Humans - The New Yorker", article.title);
+    assertEquals("http://www.newyorker.com/wp-content/uploads/2015/05/Borowitz-Earth-Endangered-by-Fact-Resistant-Humans-1200-630-12152424.jpg", article.imageUrl);
+    assertStartsWith("MINNEAPOLIS (The Borowitz Report)—Scientists have discovered a powerful new strain of fact-resistant humans who are threatening the ability of Earth to sustain life", article.document.text());
+  }
+
+  @Test
   public void testCaltonCaldwell() {
     Article article = extractFromTestFile("http://daltoncaldwell.com/dear-mark-zuckerberg", "daltoncaldwell.html");
     assertEquals("Dear Mark Zuckerberg by Dalton Caldwell", article.title);
