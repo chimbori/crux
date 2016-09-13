@@ -29,7 +29,7 @@ public class CharsetConverterTest {
     CharsetConverter.StringWithEncoding parsed = CharsetConverter.readStream(
         new FileInputStream(new File("test_data/bbc.html")), null);
     assertEquals("utf-8", parsed.encoding);
-    assertEquals("Brazil mourns Santa Maria nightclub fire victims - BBC News BBC News", Jsoup.parse(parsed.content).select("title").text());
+    assertEquals("Baby born on Mediterranean rescue ship - BBC News BBC News", Jsoup.parse(parsed.content).select("title").text());
   }
 
   private void assertEncodingEquals(String encoding, String testFile) {
