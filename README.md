@@ -10,7 +10,8 @@ Crux parses Web pages to identify the crux of an article — the very essential 
 - Small footprint and code size: JSoup is the only required dependency.
 - Fewer setters/getters, to keep the method count low (this is important for Android).
 - The ability to use HTTP libraries besides the default HttpUrlConnection, such as OkHttp, under the hood.
-- Cleaner code (compared to Snacktory).
+- Cleaner, leaner code (compared to other libraries not optimized for Android), continuous integration with unit tests and golden file tests:
+  [![Build Status](https://travis-ci.org/chimbori/crux.svg?branch=master)](https://travis-ci.org/chimbori/crux)
 - First-class support for importing into Android Studio projects via Gradle.
 
 # Usage
