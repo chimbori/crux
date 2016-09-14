@@ -316,6 +316,7 @@ class ExtractionHelpers {
 
       image.weight += image.height >= 50 ? 20 : -20;
       image.weight += image.width >= 50 ? 20 : -20;
+      image.weight += image.src.startsWith("data:") ? -50 : 0;
       image.weight += image.src.endsWith(".gif") ? -20 : 0;
       image.weight += image.src.endsWith(".jpg") ? 5 : 0;
       image.weight += image.alt.length() > 35 ? 20 : 0;
@@ -332,6 +333,7 @@ class ExtractionHelpers {
     }
 
     Collections.sort(images, new ImageWeightComparator());
+    Log.i("images: %s", images);
     return images;
   }
 

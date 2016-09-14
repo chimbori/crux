@@ -106,7 +106,8 @@ public class Article {
     static Image from(Element imgElement) {
       Image image = new Image();
       image.element = imgElement;
-      image.src = imgElement.attr("src");
+      // Some sites use data-src to load images lazily, so prefer the data-src attribute if it exists.
+      image.src = !imgElement.attr("data-src").isEmpty() ? imgElement.attr("data-src") : imgElement.attr("src");
       image.width = StringUtils.parseAttrAsInt(imgElement, "width");
       image.height = StringUtils.parseAttrAsInt(imgElement, "height");
       image.alt = imgElement.attr("alt");

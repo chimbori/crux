@@ -271,13 +271,6 @@ public class GoldenFilesTest {
   }
 
   @Test
-  public void testBusinessWeek2() {
-    Article article = extractFromTestFile("http://www.businessweek.com/magazine/content/10_34/b4192048613870.htm", "businessweek2.html");
-    assertStartsWith("Some analysts surveyed by Bloomberg see a 20 percent second-half surge; others, even at the same firms, are trimming their forecasts", article.document.text());
-    assertEquals("http://images.businessweek.com/mz/covers/current_120x160.jpg", article.imageUrl);
-  }
-
-  @Test
   public void testFoxNews() {
     Article article = extractFromTestFile("http://www.foxnews.com/politics/2010/08/14/russias-nuclear-help-iran-stirs-questions-improved-relations/", "foxnews.html");
     assertStartsWith("Russia's announcement that it will help Iran get nuclear fuel is raising questions about what President Obama calls the \"better-than- ever\" relationship", article.document.text());
@@ -561,71 +554,54 @@ public class GoldenFilesTest {
     assertStartsWith("Just one week to go and everything is set for the summer Forum 2013", article.document.text());
   }
 
-  //    @Test
-  public void testEspn2() {
-    Article article = extractFromTestFile("http://sports.espn.go.com/golf/pgachampionship10/news/story?id=5463456", "espn2.html");
-    assertStartsWith("PHILADELPHIA -- Michael Vick missed practice Thursday because of a leg injury and is unlikely to play Sunday wh", article.document.text());
-    assertEquals("http://a.espncdn.com/media/motion/2010/0813/dm_100814_pga_rinaldi.jpg", article.imageUrl);
+  @Test
+  public void testESPN2() {
+    Article article = extractFromTestFile("http://www.espn.com/golf/pgachampionship10/news/story?id=5463456", "espn2.html");
+    assertStartsWith("SHEBOYGAN, Wis. -- The only number that matters at the PGA Championship is on the scorecard, not the birth certificate.", article.document.text());
+    assertEquals("http://a2.espncdn.com/combiner/i?img=%2Fi%2Fheadshots%2Fgolf%2Fplayers%2Ffull%2F780.png", article.imageUrl);
   }
 
-  //    @Test
-  public void testWashingtonpost() {
-    Article article = extractFromTestFile("http://www.washingtonpost.com/wp-dyn/content/article/2010/12/08/AR2010120803185.html", "washingtonpost.html");
-    assertStartsWith("The Supreme Court sounded ", article.document.text());
-    assertEquals("http://media3.washingtonpost.com/wp-dyn/content/photo/2010/10/09/PH2010100904575.jpg", article.imageUrl);
+  @Test
+  public void testWashingtonPost() {
+    Article article = extractFromTestFile("https://www.washingtonpost.com/lifestyle/style/the-nearly-forgotten-story-of-the-black-women-who-helped-land-a-man-on-the-moon/2016/09/12/95f2d356-7504-11e6-8149-b8d05321db62_story.html", "washingtonpost.html");
+    assertEquals("The nearly forgotten story of the black women who helped land a man on the moon - The Washington Post", article.title);
+    assertStartsWith("In 2011, Mary Gainer was a historic preservationist for NASA, and she stumbled on a 1943 picture of a thousand people standing in a huge building.", article.document.text());
+    assertEquals("https://img.washingtonpost.com/rf/image_1484w/2010-2019/WashingtonPost/2016/09/09/Style/Images/hidden-figures-DF-04856_R2_rgb.jpg", article.imageUrl);
   }
 
-  //    @Test
-  public void testBoingboing() {
+  @Test
+  public void testBoingBoing() {
     Article article = extractFromTestFile("http://www.boingboing.net/2010/08/18/dr-laura-criticism-o.html", "boingboing.html");
-    assertStartsWith("Dr. Laura Schlessinger is leaving radio to regain", article.document.text());
-    assertEquals("http://www.boingboing.net/images/drlaura.jpg", article.imageUrl);
+    assertStartsWith("Dr. Laura: criticism of me infringes my first amendment rights Dr. Laura Schlessinger is leaving radio to regain her \"first amendment\" rights on the internet.", article.document.text());
   }
 
-  //    @Test
-  public void testReadwriteWeb() {
-    Article article = extractFromTestFile("http://www.readwriteweb.com/start/2010/08/pagely-headline.php", "readwriteweb.html");
-    assertStartsWith("In the heart of downtown Chandler, Arizona", article.document.text());
-    assertEquals("http://rww.readwriteweb.netdna-cdn.com/start/images/logopagely_aug10.jpg", article.imageUrl);
+  @Test
+  public void testReadWriteWeb() {
+    Article article = extractFromTestFile("http://readwrite.com/2016/09/13/san-francisco-uc-berkeley-keep-smart-transit-city-plan-rolling-cl4/", "readwriteweb.html");
+    assertEquals("http://15809-presscdn-0-93.pagely.netdna-cdn.com/wp-content/uploads/iStock_83628999_SMALL-e1473787242221.jpg", article.imageUrl);
+    assertStartsWith("San Francisco is using the momentum from its failed Smart City Challenge bid to carry on developing smart transportation initiatives.", article.document.text());
   }
 
-  //    @Test
-  public void testYahooNews() {
-    Article article = extractFromTestFile("http://news.yahoo.com/s/ap/20110305/ap_on_re_af/af_libya", "yahoo.html");
-    assertStartsWith("TRIPOLI, Libya – Government forces in tanks rolled into the opposition-held city closest ", article.document.text());
-    assertEquals("http://d.yimg.com/a/p/ap/20110305/http://d.yimg.com/a/p/ap/20110305/thumb.23c7d780d8d84bc4a8c77af11ecba277-23c7d780d8d84bc4a8c77af11ecba277-0.jpg?x=130&y=90&xc=1&yc=1&wc=130&hc=90&q=85&sig=LbIZK0rnJlZAcrAWn.brLw--",
-        article.imageUrl);
-  }
-
-  //    @Test
+  @Test
   public void testLifehacker() {
-    Article article = extractFromTestFile("http://lifehacker.com/#!5659837/build-a-rocket-stove-to-heat-your-home-with-wood-scraps", "lifehacker.html");
+    Article article = extractFromTestFile("http://lifehacker.com/5659837/build-a-rocket-stove-to-heat-your-home-with-wood-scraps", "lifehacker.html");
     assertStartsWith("If you find yourself with lots of leftover wood", article.document.text());
-    assertEquals("http://cache.gawker.com/assets/images/lifehacker/2010/10/rocket-stove-finished.jpeg", article.imageUrl);
+    assertEquals("https://i.kinja-img.com/gawker-media/image/upload/s--9OsTlIZO--/c_fill,fl_progressive,g_center,h_358,q_80,w_636/18ixs0cqpu927jpg.jpg", article.imageUrl);
   }
 
-  //    @Test
-  public void testNaturalHomeMagazine() {
-    Article article = extractFromTestFile("http://www.naturalhomemagazine.com/diy-projects/try-this-papier-mache-ghostly-lanterns.aspx", "naturalhomemagazine.html");
-    assertStartsWith("Guide trick or treaters and other friendly spirits to your front", article.document.text());
-    assertEquals("http://www.naturalhomemagazine.com/uploadedImages/articles/issues/2010-09-01/NH-SO10-trythis-lantern-final2_resized400X266.jpg",
-        article.imageUrl);
-  }
-
-  //    @Test
+  @Test
   public void testSfGate() {
-    Article article = extractFromTestFile("http://www.sfgate.com/cgi-bin/article.cgi?f=/c/a/2010/10/27/BUD61G2DBL.DTL", "sfgate.html");
+    Article article = extractFromTestFile("http://www.sfgate.com/business/article/Foreclosure-activity-dips-in-California-Bay-Area-3248321.php", "sfgate.html");
     assertStartsWith("Fewer homes in California and", article.document.text());
-    assertEquals("http://imgs.sfgate.com/c/pictures/2010/10/26/ba-foreclosures2_SFCG1288130091.jpg",
-        article.imageUrl);
+    assertEquals("http://ww4.hdnux.com/photos/11/11/11/2396767/11/rawImage.jpg", article.imageUrl);
   }
 
-  //    @Test
+  @Test
   public void testScientificDaily() {
     Article article = extractFromTestFile("http://www.scientificamerican.com/article.cfm?id=bpa-semen-quality", "scientificamerican.html");
-    assertStartsWith("The common industrial chemical bisphenol A (BPA) ", article.document.text());
+    assertEquals("Everyday BPA Exposure Decreases Human Semen Quality: Scientific American", article.title);
     assertEquals("http://www.scientificamerican.com/media/inline/bpa-semen-quality_1.jpg", article.imageUrl);
-    assertEquals("Everyday BPA Exposure Decreases Human Semen Quality", article.title);
+    assertStartsWith("The common industrial chemical bisphenol A (BPA) ", article.document.text());
   }
 
   @Test
@@ -644,128 +620,52 @@ public class GoldenFilesTest {
     assertEquals("http://s1.reutersmedia.net/resources/r/?m=02&d=20120803&t=2&i=637797752&w=130&fh=&fw=&ll=&pl=&r=CBRE872074Y00", article.imageUrl);
   }
 
-  //    @Test
-  public void testCNBC() {
-    Article article = extractFromTestFile("http://www.cnbc.com/id/40491584", "cnbc.html");
-    assertStartsWith("A prominent expert on Chinese works ", article.document.text());
-    assertEquals("http://media.cnbc.com/i/CNBC/Sections/News_And_Analysis/__Story_Inserts/graphics/__ART/chinese_vase_150.jpg",
-        article.imageUrl);
-    assertTrue(article.title.equals("Chinese Art Expert 'Skeptical' of Record-Setting Vase"));
-  }
-
-  //    @Test
-  public void testMsnbc() {
+  @Test
+  public void testMSNBC() {
     Article article = extractFromTestFile("http://www.msnbc.msn.com/id/41207891/ns/world_news-europe/", "msnbc.html");
-    assertStartsWith("DUBLIM -- Prime Minister Brian Cowen announced Saturday", article.document.text());
-    assertEquals("Irish premier resigns as party leader, stays as PM", article.title);
-    assertEquals("http://msnbcmedia3.msn.com/j/ap/ireland government crisis--687575559_v2.grid-6x2.jpg",
-        article.imageUrl);
+    assertStartsWith("DUBLIN — Prime Minister Brian Cowen announced Saturday that he has resigned as leader of Ireland's dominant Fianna Fail party", article.document.text());
+    assertEquals("Irish premier resigns as party leader, stays as PM - Europe", article.title);
   }
 
-  //    @Test
+  @Test
   public void testTheAtlantic() {
-    Article article = extractFromTestFile("http://www.theatlantic.com/culture/archive/2011/01/how-to-stop-james-bond-from-getting-old/69695/", "theatlantic.html");
-    assertStartsWith("If James Bond could age, he'd be well into his 90s right now", article.document.text());
-    assertEquals("http://assets.theatlantic.com/static/mt/assets/culture_test/James%20Bond_post.jpg",
-        article.imageUrl);
+    Article article = extractFromTestFile("http://www.theatlantic.com/business/archive/2016/09/census-poverty-economy-terrible/499793/", "theatlantic.html");
+    assertStartsWith("In 2015, median household income increased for the first time in nearly a decade. On its face, that alone is progress.", article.document.text());
+    assertEquals("https://cdn.theatlantic.com/assets/media/img/mt/2016/09/AP_16252467700939/facebook.jpg?1473782708", article.imageUrl);
   }
 
-  //    @Test
-  public void testGawker() {
-    Article article = extractFromTestFile("http://gawker.com/#!5777023/charlie-sheen-is-going-to-haiti-with-sean-penn", "gawker.html");
-    assertStartsWith("With a backlash brewing against the incessant media", article.document.text());
-    assertEquals("http://cache.gawkerassets.com/assets/images/7/2011/03/medium_0304_pennsheen.jpg",
-        article.imageUrl);
-  }
-
-  //    @Test
-  public void testNyt2() {
+  @Test
+  public void testNYT2() {
     Article article = extractFromTestFile("http://www.nytimes.com/2010/12/22/world/europe/22start.html", "nyt2.html");
-    assertStartsWith("WASHINGTON &mdash; An arms control treaty paring back American", article.document.text());
-    assertEquals("http://graphics8.nytimes.com/images/2010/12/22/world/22start-span/Start-articleInline.jpg",
-        article.imageUrl);
+    assertStartsWith("WASHINGTON — An arms control treaty paring back American and Russian nuclear arsenals won a decisive vote in the Senate on Tuesday", article.document.text());
+    assertEquals("https://cdn1.nyt.com/images/2010/12/22/world/22start-span/Start-articleLarge.jpg", article.imageUrl);
   }
 
-  //    @Test
-  public void testGettingVideosFromGraphVinyl() {
-    Article article = extractFromTestFile("http://grapevinyl.com/v/84/magnetic-morning/getting-nowhere", "grapevinyl.html");
-    assertEquals("http://www.youtube.com/v/dsVWVtGWoa4&hl=en_US&fs=1&color1=d6d6d6&color2=ffffff&autoplay=1&iv_load_policy=3&rel=0&showinfo=0&hd=1",
-        article.videoUrl);
-  }
-
-  //    @Test
-  public void testLiveStrong() {
-    Article article = extractFromTestFile("http://www.livestrong.com/article/395538-how-to-decrease-the-rates-of-obesity-in-children/", "livestrong.html");
-    assertStartsWith("Childhood obesity increases a young person", article.document.text());
-    assertEquals("http://photos.demandstudios.com/getty/article/184/46/87576279_XS.jpg",
-        article.imageUrl);
-  }
-
-  //    @Test
-  public void testLiveStrong2() {
-    Article article = extractFromTestFile("http://www.livestrong.com/article/396152-do-resistance-bands-work-for-strength-training/", "livestrong2.html");
-    assertStartsWith("Resistance bands or tubes are named because", article.document.text());
-    assertEquals("http://photos.demandstudios.com/getty/article/142/66/86504893_XS.jpg", article.imageUrl);
-  }
-
-  //    @Test
+  @Test
   public void testCracked() {
-    Article article = extractFromTestFile("http://www.cracked.com/article_19029_6-things-social-networking-sites-need-to-stop-doing.html", "cracked.html");
-    assertStartsWith("Social networking is here to stay", article.document.text());
-    assertEquals("http://i-beta.crackedcdn.com/phpimages/article/2/1/6/45216.jpg?v=1", article.imageUrl);
+    Article article = extractFromTestFile("http://www.cracked.com/blog/the-9-circles-vacation-hell/", "cracked.html");
+    assertEquals("http://s3.crackedcdn.com/phpimages/article/0/6/6/573066_v1.jpg", article.imageUrl);
+    assertStartsWith("In theory, everyone likes a nice vacation.", article.document.text());
   }
 
-  //    @Test
-  public void testMidgetManOfSteel() {
-    Article article = extractFromTestFile("http://www.cracked.com/article_19029_6-things-social-networking-sites-need-to-stop-doing.html", "midgetmanofsteel.html");
-    assertStartsWith("I've decided to turn my Facebook assholishnessicicity", article.document.text());
-    assertEquals("http://4.bp.blogspot.com/_F74vJj-Clzk/TPkzP-Y93jI/AAAAAAAALKM/D3w1sfJqE5U/s200/funny-dog-pictures-will-work-for-hot-dogs.jpg", article.imageUrl);
-  }
-
-  //    @Test
-  public void testTrailsCom() {
-    Article article = extractFromTestFile("http://www.trails.com/facts_41596_hot-spots-citrus-county-florida.html", "trails.html");
-    assertStartsWith("Snorkel and view artificial reefs or chase", article.document.text());
-    assertEquals("http://cdn-www.trails.com/imagecache/articles/295x195/hot-spots-citrus-county-florida-295x195.png", article.imageUrl);
-  }
-
-  //    @Test
-  public void testTrailsCom2() {
-    Article article = extractFromTestFile("http://www.trails.com/facts_12408_history-alpine-skis.html", "trails2.html");
-    assertStartsWith("Derived from the old Norse word", article.document.text());
-    assertEquals("http://cdn-www.trails.com/imagecache/articles/295x195/history-alpine-skis-295x195.png", article.imageUrl);
-  }
-
-  //    @Test
+  @Test
   public void testEhow() {
-    Article article = extractFromTestFile("http://www.ehow.com/how_7734109_make-white-spaghetti.html", "ehow.html");
-    assertStartsWith("Heat the oil in the", article.document.text());
-    assertEquals("How to Make White Spaghetti", article.title);
+    Article article = extractFromTestFile("http://www.ehow.com/how_5122199_eat-fresh-figs.html", "ehow.html");
+    assertEquals("How to Eat Fresh Figs", article.title);
+    assertStartsWith("While dried figs are more commonly featured in recipes, fresh figs are an absolute treat.", article.document.text());
   }
 
-  //    @Test
+  @Test
   public void testNewsweek() {
-    Article article = extractFromTestFile("http://www.newsweek.com/2010/10/09/how-moscow-s-war-on-islamist-rebels-is-backfiring.html", "newsweek.html");
-    assertStartsWith("At first glance, Kadyrov might seem", article.document.text());
-    assertEquals("http://www.newsweek.com/content/newsweek/2010/10/09/how-moscow-s-war-on-islamist-rebels-is-backfiring.scaled.small.1309768214891.jpg",
-        article.imageUrl);
-    assertEquals("http://www.newsweek.com/content/newsweek/2010/10/09/how-moscow-s-war-on-islamist-rebels-is-backfiring.scaled.small.1302869450444.jpg",
-        article.imageUrl);
+    Article article = extractFromTestFile("http://www.newsweek.com/sport-rio-2016-paralympics-euthanasia-497932", "newsweek.html");
+    assertStartsWith("The Paralymics podium is a stage on which to get your voice heard, and Belgium’s Marieke Vervoort is doing just that.", article.document.text());
+    assertEquals("http://s.newsweek.com/sites/www.newsweek.com/files/2016/09/13/marieke-vervoort.jpg", article.imageUrl);
   }
 
-  //    @Test
-  public void testBusinessWeek() {
-    Article article = extractFromTestFile("http://www.businessweek.com/magazine/content/10_34/b4192066630779.htm", "businessweek.html");
-    assertEquals("Olivia Munn: Queen of the Uncool - BusinessWeek", article.title);
-    assertStartsWith("Six years ago, Olivia Munn arrived in Hollywood with fading ambitions of making it ", article.document.text());
-    assertEquals("http://images.businessweek.com/mz/10/34/370/1034_mz_66popmunnessa.jpg", article.imageUrl);
-  }
-
-  //    @Test
+  @Test
   public void testNature() {
     Article article = extractFromTestFile("http://www.nature.com/news/2011/110411/full/472146a.html", "nature.html");
-    assertStartsWith("As the immediate threat from Fukushima "
-        + "Daiichi's damaged nuclear reactors recedes, engineers and scientists are", article.document.text());
+    assertStartsWith("As the immediate threat from Fukushima Daiichi's damaged nuclear reactors recedes, engineers and scientists are", article.document.text());
   }
 
   private Article extractFromTestFile(String baseUri, String testFile) {
