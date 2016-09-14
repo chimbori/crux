@@ -61,6 +61,15 @@ class ExtractionHelpers {
     }
   }
 
+  static String extractAmpUrl(Document doc) {
+    try {
+      return new HeuristicString(StringUtils.urlEncodeSpaceCharacter(doc.select("link[rel=amphtml]").attr("href")))
+          .toString();
+    } catch (HeuristicString.CandidateFound candidateFound) {
+      return candidateFound.candidate;
+    }
+  }
+
   static String extractCanonicalUrl(Document doc) {
     try {
       return new HeuristicString(null)

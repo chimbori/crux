@@ -37,17 +37,19 @@ public class Article {
   public final String url;
 
   public String title = "";
+  public String description = "";
+
+  public String ampUrl = "";
   public String originalUrl = "";
   public String canonicalUrl = "";
   public String imageUrl = "";
   public String videoUrl = "";
   public String feedUrl = "";
   public String faviconUrl = "";
-  public String description = "";
-  public String date = "";
+
+  public Document document;
   public Collection<String> keywords;
   public List<Image> images = new ArrayList<>();
-  public Document document;
 
   Article(String url) {
     // Package private constructor to disallow outside the library.
@@ -71,17 +73,17 @@ public class Article {
     return "Article{" +
         "url='" + url + '\'' +
         ", title='" + title + '\'' +
+        ", description='" + description + '\'' +
+        ", ampUrl='" + ampUrl + '\'' +
         ", originalUrl='" + originalUrl + '\'' +
         ", canonicalUrl='" + canonicalUrl + '\'' +
         ", imageUrl='" + imageUrl + '\'' +
         ", videoUrl='" + videoUrl + '\'' +
         ", feedUrl='" + feedUrl + '\'' +
         ", faviconUrl='" + faviconUrl + '\'' +
-        ", description='" + description + '\'' +
-        ", date='" + date + '\'' +
+        ", document=" + document +
         ", keywords=" + keywords +
         ", images=" + images +
-        ", document=" + document +
         '}';
   }
 

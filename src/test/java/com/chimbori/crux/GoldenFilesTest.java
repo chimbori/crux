@@ -81,6 +81,7 @@ public class GoldenFilesTest {
     Article article = extractFromTestFile("http://www.bbc.co.uk/news/world-latin-america-21226565", "bbc.html");
     assertEquals("Baby born on Mediterranean rescue ship - BBC News", article.title);
     assertEquals("http://ichef-1.bbci.co.uk/news/1024/cpsprodpb/146E6/production/_91168638_baby070012-9-20162-1photocreditalvawhitemsf.jpg", article.imageUrl);
+    assertEquals("http://www.bbc.co.uk/news/amp/37341871", article.ampUrl);
     assertStartsWith("A Nigerian woman has given birth to a boy on board a rescue ship in the Mediterranean after being plucked from an overcrowded rubber dinghy.", article.document.text());
   }
 

@@ -23,6 +23,7 @@ public class Extractor {
     article.title = ExtractionHelpers.extractTitle(doc);
     article.description = ExtractionHelpers.extractDescription(doc);
     article.canonicalUrl = article.makeAbsoluteUrl(ExtractionHelpers.extractCanonicalUrl(doc));
+    article.ampUrl = article.makeAbsoluteUrl(ExtractionHelpers.extractAmpUrl(doc));
 
     PreprocessHelpers.preprocess(doc);
 
