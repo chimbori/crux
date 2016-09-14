@@ -12,7 +12,7 @@ Crux parses Web pages to identify the crux of an article — the very essential 
 - The ability to use HTTP libraries besides the default HttpUrlConnection, such as OkHttp, under the hood.
 - Cleaner, leaner code (compared to other libraries not optimized for Android)
 - First-class support for importing into Android Studio projects via Gradle.
-- [![Build Status](https://travis-ci.org/chimbori/crux.svg?branch=master)](https://travis-ci.org/chimbori/crux): Continuous integration with unit tests and golden file tests.  
+- [![Build Status](https://travis-ci.org/chimbori/crux.svg?branch=master)](https://travis-ci.org/chimbori/crux) Continuous integration with unit tests and golden file tests.  
 
 # Usage
  
