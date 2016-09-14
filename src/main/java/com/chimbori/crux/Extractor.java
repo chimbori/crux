@@ -20,10 +20,10 @@ public class Extractor {
     }
 
     Article article = new Article(baseUri);
-    article.title = ExtractionHelpers.extractTitle(doc);
-    article.description = ExtractionHelpers.extractDescription(doc);
-    article.canonicalUrl = article.makeAbsoluteUrl(ExtractionHelpers.extractCanonicalUrl(doc));
-    article.ampUrl = article.makeAbsoluteUrl(ExtractionHelpers.extractAmpUrl(doc));
+    article.title = MetadataHelpers.extractTitle(doc);
+    article.description = MetadataHelpers.extractDescription(doc);
+    article.canonicalUrl = article.makeAbsoluteUrl(MetadataHelpers.extractCanonicalUrl(doc));
+    article.ampUrl = article.makeAbsoluteUrl(MetadataHelpers.extractAmpUrl(doc));
 
     PreprocessHelpers.preprocess(doc);
 
@@ -41,13 +41,13 @@ public class Extractor {
       }
     }
 
-    article.images = ExtractionHelpers.extractImages(bestMatchElement);
+    article.images = MetadataHelpers.extractImages(bestMatchElement);
     article.document = PostprocessHelpers.postprocess(bestMatchElement);
-    article.imageUrl = article.makeAbsoluteUrl(ExtractionHelpers.extractImageUrl(doc, article.images));
-    article.feedUrl = article.makeAbsoluteUrl(ExtractionHelpers.extractFeedUrl(doc));
-    article.videoUrl = article.makeAbsoluteUrl(ExtractionHelpers.extractVideoUrl(doc));
-    article.faviconUrl = article.makeAbsoluteUrl(ExtractionHelpers.extractFaviconUrl(doc));
-    article.keywords = ExtractionHelpers.extractKeywords(doc);
+    article.imageUrl = article.makeAbsoluteUrl(MetadataHelpers.extractImageUrl(doc, article.images));
+    article.feedUrl = article.makeAbsoluteUrl(MetadataHelpers.extractFeedUrl(doc));
+    article.videoUrl = article.makeAbsoluteUrl(MetadataHelpers.extractVideoUrl(doc));
+    article.faviconUrl = article.makeAbsoluteUrl(MetadataHelpers.extractFaviconUrl(doc));
+    article.keywords = MetadataHelpers.extractKeywords(doc);
     return article;
   }
 }
