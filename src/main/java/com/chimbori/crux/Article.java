@@ -38,6 +38,8 @@ public class Article {
 
   public String title = "";
   public String description = "";
+  public String siteName = "";
+  public String themeColor = "";
 
   public String ampUrl = "";
   public String originalUrl = "";
@@ -74,6 +76,8 @@ public class Article {
         "url='" + url + '\'' +
         ", title='" + title + '\'' +
         ", description='" + description + '\'' +
+        ", siteName='" + siteName + '\'' +
+        ", themeColor='" + themeColor + '\'' +
         ", ampUrl='" + ampUrl + '\'' +
         ", originalUrl='" + originalUrl + '\'' +
         ", canonicalUrl='" + canonicalUrl + '\'' +

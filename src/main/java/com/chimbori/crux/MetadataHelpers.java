@@ -67,6 +67,21 @@ public class MetadataHelpers {
     }
   }
 
+  static String extractSiteName(Document doc) {
+    try {
+      return new HeuristicString(null)
+          .or(StringUtils.innerTrim(doc.select("head meta[property=og:site_name]").attr("content")))
+          .or(StringUtils.innerTrim(doc.select("head meta[name=application-name]").attr("content")))
+          .toString();
+    } catch (HeuristicString.CandidateFound candidateFound) {
+      return candidateFound.candidate;
+    }
+  }
+
+  static String extractThemeColor(Document doc) {
+    return doc.select("meta[name=theme-color]").attr("content");
+  }
+
   static String extractImageUrl(Document doc, List<Article.Image> images) {
     try {
       return new HeuristicString(null)

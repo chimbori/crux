@@ -24,6 +24,7 @@ public class GoldenFilesTest {
   public void testNPR() {
     Article article = extractFromTestFile("http://www.npr.org/blogs/money/2010/10/04/130329523/how-fake-money-saved-brazil", "npr.html");
     assertEquals("How Fake Money Saved Brazil : Planet Money : NPR", article.title);
+    assertEquals("", article.siteName);
     assertStartsWith("This is a story about how an economist and his buddies tricked the people of Brazil into saving the country from rampant inflation. They had a crazy, unlikely plan, and it worked. Twenty years ago, Brazil's", article.document.text());
     assertTrue(article.document.text(), article.document.text().endsWith("\"How Four Drinking Buddies Saved Brazil.\""));
     assertEquals("http://media.npr.org/assets/img/2010/10/04/real_wide.jpg?t=1286218782&s=3", article.imageUrl);
@@ -79,6 +80,7 @@ public class GoldenFilesTest {
   @Test
   public void testBBC() {
     Article article = extractFromTestFile("http://www.bbc.co.uk/news/world-latin-america-21226565", "bbc.html");
+    assertEquals("BBC News", article.siteName);
     assertEquals("Baby born on Mediterranean rescue ship - BBC News", article.title);
     assertEquals("http://ichef-1.bbci.co.uk/news/1024/cpsprodpb/146E6/production/_91168638_baby070012-9-20162-1photocreditalvawhitemsf.jpg", article.imageUrl);
     assertEquals("http://www.bbc.co.uk/news/amp/37341871", article.ampUrl);
@@ -88,6 +90,7 @@ public class GoldenFilesTest {
   @Test
   public void testBBC_AMP() {
     Article article = extractFromTestFile("http://www.bbc.co.uk/news/amp/37341871", "bbc-amp.html");
+    assertEquals("BBC News", article.siteName);
     assertEquals("Baby born on Mediterranean rescue ship", article.title);
     assertEquals("http://ichef.bbci.co.uk/news/999/cpsprodpb/146E6/production/_91168638_baby070012-9-20162-1photocreditalvawhitemsf.jpg", article.imageUrl);
     assertStartsWith("A Nigerian woman has given birth to a boy on board a rescue ship in the Mediterranean after being plucked from an overcrowded rubber dinghy.", article.document.text());
@@ -241,6 +244,7 @@ public class GoldenFilesTest {
   @Test
   public void testNYT() {
     Article article = extractFromTestFile("http://dealbook.nytimes.com/2011/04/11/for-defense-in-galleon-trial-no-time-to-rest/", "nyt.html");
+    assertEquals("DealBook", article.siteName);
     assertEquals("http://graphics8.nytimes.com/images/2011/04/12/business/dbpix-raj-rajaratnam-1302571800091/dbpix-raj-rajaratnam-1302571800091-tmagSF.jpg", article.imageUrl);
     assertStartsWith("I wouldn’t want to be Raj Rajaratnam’s lawyer right now.", article.document.text());
   }
@@ -327,6 +331,7 @@ public class GoldenFilesTest {
   @Test
   public void testGizmodo() {
     Article article = extractFromTestFile("http://www.gizmodo.com.au/2010/08/xbox-kinect-gets-its-fight-club/", "gizmodo.html");
+    assertEquals("Gizmodo Australia", article.siteName);
     assertStartsWith("You love to punch your arms through the air", article.document.text());
     assertEquals("http://cache.gawkerassets.com/assets/images/9/2010/08/500x_fighters_uncaged__screenshot_3b__jawbreaker.jpg", article.imageUrl);
   }
@@ -508,6 +513,7 @@ public class GoldenFilesTest {
   @Test
   public void testCNet() {
     Article article = extractFromTestFile("http://www.cnet.com/news/verizon-shows-off-ipad-tv-app-and-more/", "cnet.html");
+    assertEquals("CNET", article.siteName);
     assertStartsWith("NEW YORK--Verizon Communications is prepping a new", article.document.text());
     assertEquals("https://cnet1.cbsistatic.com/img/Bw23T5rupUVnvVPCQQ3KjfO9qic=/670x503/2010/08/18/53b6d52b-f0fa-11e2-8c7c-d4ae52e62bcc/Verizon_iPad_and_live_TV_with_big_TV.JPG", article.imageUrl);
   }
@@ -515,6 +521,7 @@ public class GoldenFilesTest {
   @Test
   public void testBloomberg() {
     Article article = extractFromTestFile("http://www.bloomberg.com/news/2010-11-01/china-becomes-boss-in-peru-on-50-billion-mountain-bought-for-810-million.html", "bloomberg.html");
+    assertEquals("Bloomberg", article.siteName);
     assertStartsWith("The Chinese entrepreneur and the Peruvian shopkeeper", article.document.text());
     assertEquals("http://www.bloomberg.com/apps/data?pid=avimage&iid=iimODmqjtcQU", article.imageUrl);
   }
@@ -578,6 +585,7 @@ public class GoldenFilesTest {
   @Test
   public void testReadWriteWeb() {
     Article article = extractFromTestFile("http://readwrite.com/2016/09/13/san-francisco-uc-berkeley-keep-smart-transit-city-plan-rolling-cl4/", "readwriteweb.html");
+    assertEquals("#121212", article.themeColor);
     assertEquals("http://15809-presscdn-0-93.pagely.netdna-cdn.com/wp-content/uploads/iStock_83628999_SMALL-e1473787242221.jpg", article.imageUrl);
     assertStartsWith("San Francisco is using the momentum from its failed Smart City Challenge bid to carry on developing smart transportation initiatives.", article.document.text());
   }

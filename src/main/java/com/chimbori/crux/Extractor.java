@@ -22,6 +22,8 @@ public class Extractor {
     Article article = new Article(baseUri);
     article.title = MetadataHelpers.extractTitle(doc);
     article.description = MetadataHelpers.extractDescription(doc);
+    article.siteName = MetadataHelpers.extractSiteName(doc);
+    article.themeColor = MetadataHelpers.extractThemeColor(doc);
     article.canonicalUrl = article.makeAbsoluteUrl(MetadataHelpers.extractCanonicalUrl(doc));
     article.ampUrl = article.makeAbsoluteUrl(MetadataHelpers.extractAmpUrl(doc));
 
