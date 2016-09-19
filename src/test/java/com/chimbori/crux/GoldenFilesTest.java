@@ -13,11 +13,11 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 public class GoldenFilesTest {
-  private Extractor extractor;
+  private ContentExtractor contentExtractor;
 
   @Before
   public void setup() {
-    extractor = new Extractor();
+    contentExtractor = new ContentExtractor();
   }
 
   @Test
@@ -678,7 +678,7 @@ public class GoldenFilesTest {
 
   private Article extractFromTestFile(String baseUri, String testFile) {
     try {
-      Article article = extractor.extractContent(baseUri, CharsetConverter.readStream(new FileInputStream(new File("test_data/" + testFile)), null).content);
+      Article article = contentExtractor.extractContent(baseUri, CharsetConverter.readStream(new FileInputStream(new File("test_data/" + testFile)), null).content);
       Log.i("%s", article.document.childNodes().toString());
       return article;
     } catch (FileNotFoundException e) {

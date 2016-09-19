@@ -6,7 +6,7 @@ import org.jsoup.nodes.Element;
 
 import java.util.Collection;
 
-public class Extractor {
+public class ContentExtractor {
   public Article extractContent(String baseUri, String html) {
     if (html.isEmpty()) {
       throw new IllegalArgumentException();

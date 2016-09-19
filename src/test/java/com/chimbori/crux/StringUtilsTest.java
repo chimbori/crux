@@ -30,7 +30,7 @@ public class StringUtilsTest {
 
   @Test
   public void longestSubstring() {
-//        assertEquals(9, Extractor.longestSubstring("hi hello how are you?", "hello how"));
+//        assertEquals(9, ContentExtractor.longestSubstring("hi hello how are you?", "hello how"));
     assertEquals("hello how", StringUtils.getLongestSubstring("hi hello how are you?", "hello how"));
     assertEquals(" people if ", StringUtils.getLongestSubstring("x now if people if todo?", "I know people if you"));
     assertEquals("", StringUtils.getLongestSubstring("?", "people"));
