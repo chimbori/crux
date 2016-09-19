@@ -35,6 +35,7 @@ import java.util.List;
  */
 public class Article {
   public final String url;
+  public final String originalUrl = "";
 
   public String title = "";
   public String description = "";
@@ -42,7 +43,6 @@ public class Article {
   public String themeColor = "";
 
   public String ampUrl = "";
-  public String originalUrl = "";
   public String canonicalUrl = "";
   public String imageUrl = "";
   public String videoUrl = "";

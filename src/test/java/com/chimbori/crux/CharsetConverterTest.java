@@ -27,14 +27,14 @@ public class CharsetConverterTest {
   @Test
   public void testMaxBytesExceedingButGetTitleNevertheless() throws Exception {
     CharsetConverter.StringWithEncoding parsed = CharsetConverter.readStream(
-        new FileInputStream(new File("test_data/bbc.html")), null);
+        new FileInputStream(new File("test_data/bbc.html")));
     assertEquals("utf-8", parsed.encoding);
     assertEquals("Baby born on Mediterranean rescue ship - BBC News BBC News", Jsoup.parse(parsed.content).select("title").text());
   }
 
   private void assertEncodingEquals(String encoding, String testFile) {
     try {
-      assertEquals(encoding, CharsetConverter.readStream(new FileInputStream(new File("test_data/" + testFile)), null).encoding);
+      assertEquals(encoding, CharsetConverter.readStream(new FileInputStream(new File("test_data/" + testFile))).encoding);
     } catch (FileNotFoundException e) {
       fail(e.getMessage());
     }

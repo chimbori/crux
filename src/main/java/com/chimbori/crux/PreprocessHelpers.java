@@ -34,7 +34,7 @@ class PreprocessHelpers {
     }
   }
 
-  private static Document removeScriptsStylesForms(Document doc) {
+  private static void removeScriptsStylesForms(Document doc) {
     Elements scripts = doc.getElementsByTag("script");
     for (Element item : scripts) {
       item.remove();
@@ -54,8 +54,6 @@ class PreprocessHelpers {
     for (Element item : forms) {
       item.remove();
     }
-
-    return doc;
   }
 
   private static void removeComments(Node node) {

@@ -10,7 +10,7 @@ package com.chimbori.crux;
  * ensure that other pending calls to {@link .or(...)} are not executed, and the caller can skip
  * evaluating other candidates as soon as the first one is found.
  */
-public class HeuristicString {
+class HeuristicString {
   private String string = null;
 
   public HeuristicString(String string) throws CandidateFound {
@@ -37,7 +37,7 @@ public class HeuristicString {
   }
 
   public static class CandidateFound extends Exception {
-    public String candidate;
+    public final String candidate;
 
     public CandidateFound(String candidate) {
       this.candidate = candidate;

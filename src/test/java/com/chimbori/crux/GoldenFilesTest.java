@@ -1,6 +1,5 @@
 package com.chimbori.crux;
 
-import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
@@ -13,13 +12,6 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 public class GoldenFilesTest {
-  private ContentExtractor contentExtractor;
-
-  @Before
-  public void setup() {
-    contentExtractor = new ContentExtractor();
-  }
-
   @Test
   public void testNPR() {
     Article article = extractFromTestFile("http://www.npr.org/blogs/money/2010/10/04/130329523/how-fake-money-saved-brazil", "npr.html");
@@ -678,7 +670,9 @@ public class GoldenFilesTest {
 
   private Article extractFromTestFile(String baseUri, String testFile) {
     try {
-      Article article = contentExtractor.extractContent(baseUri, CharsetConverter.readStream(new FileInputStream(new File("test_data/" + testFile)), null).content);
+      Article article = Extractor.with(new CandidateURL(baseUri),
+          CharsetConverter.readStream(new FileInputStream(new File("test_data/" + testFile))).content)
+          .extractMetadata().extractContent().article();
       Log.i("%s", article.document.childNodes().toString());
       return article;
     } catch (FileNotFoundException e) {
