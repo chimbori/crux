@@ -174,14 +174,14 @@ class PostprocessHelpers {
         || classAttribute != null && UNLIKELY_CSS_STYLES.matcher(classAttribute).find();
   }
 
-  private static void removeDisallowedAttributes(Element rootNode) {
-    for (Attribute attribute : rootNode.attributes()) {
-      if (!ATTRIBUTES_TO_RETAIN_IN_HTML.contains(attribute.getKey())) {
-        rootNode.removeAttr(attribute.getKey());
-      }
-    }
-    for (Element childElement : rootNode.children()) {
+  private static void removeDisallowedAttributes(Element node) {
+    for (Element childElement : node.children()) {
       removeDisallowedAttributes(childElement);
+    }
+    for (Attribute attribute : node.attributes()) {
+      if (!ATTRIBUTES_TO_RETAIN_IN_HTML.contains(attribute.getKey())) {
+        node.removeAttr(attribute.getKey());
+      }
     }
   }
 
