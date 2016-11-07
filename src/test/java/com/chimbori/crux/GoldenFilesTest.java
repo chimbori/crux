@@ -668,6 +668,13 @@ public class GoldenFilesTest {
     assertStartsWith("As the immediate threat from Fukushima Daiichi's damaged nuclear reactors recedes, engineers and scientists are", article.document.text());
   }
 
+  @Test
+  public void testGuardianAmpPage() {
+    Article article = extractFromTestFile("https://cdn.ampproject.org/c/s/amp.theguardian.com/business/2016/nov/07/world-stock-markets-surge-clinton-us-election", "guardian-amp.html");
+    assertEquals("World stock markets surge amid confidence Clinton will win US election | Business", article.title);
+    assertEquals("The three main US indices were almost 2% higher by noon, following strong gains in markets across the world ahead of the presidential election", article.description);
+  }
+
   private Article extractFromTestFile(String baseUri, String testFile) {
     try {
       Article article = Extractor.with(new CandidateURL(baseUri),
