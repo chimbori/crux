@@ -466,7 +466,7 @@ public class GoldenFilesTest {
   @Test
   public void testWikipedia2() {
     Article article = extractFromTestFile("http://en.wikipedia.org/wiki/President_of_the_United_States", "wikipedia_president.html");
-    assertStartsWith("&quot;POTUS&quot; redirects here.", article.document.html());
+    assertStartsWith("\"POTUS\" redirects here.", article.document.html());
   }
 
   @Test
