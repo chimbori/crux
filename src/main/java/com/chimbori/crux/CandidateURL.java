@@ -13,6 +13,10 @@ public class CandidateURL {
 
   @SuppressWarnings("unused")
   public CandidateURL(String url) {
+    if (url == null || url.isEmpty()) {
+      throw new IllegalArgumentException();
+    }
+
     try {
       this.url = new URL(url);
     } catch (MalformedURLException e) {
@@ -25,6 +29,11 @@ public class CandidateURL {
         }
       }
     }
+
+    if (this.url == null) {
+      throw new IllegalArgumentException(String.format("Unable to parse [%s]", url));
+    }
+
     this.fileName = this.url.getFile();
   }
 

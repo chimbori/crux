@@ -520,7 +520,7 @@ public class GoldenFilesTest {
 
   @Test
   public void testTheFrisky() {
-    Article article = extractFromTestFile("", "thefrisky.html");
+    Article article = extractFromTestFile("http://www.thefrisky.com/2010-10-28/rachel-dratch-met-her-baby-daddy-in-a-bar/", "thefrisky.html");
     assertStartsWith("Rachel Dratch had been keeping the identity of her baby daddy ", article.document.text());
     assertEquals("http://static.thefrisky.com/uploads/2010/10/28/rachel_dratch_102810_m.jpg", article.imageUrl);
     assertEquals("Rachel Dratch Met Her Baby Daddy At A Bar - The Frisky", article.title);

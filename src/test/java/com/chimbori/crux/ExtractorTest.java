@@ -5,7 +5,7 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 
 public class ExtractorTest {
-  private static final CandidateURL BLANK_URL = new CandidateURL("");
+  private static final CandidateURL BLANK_URL = new CandidateURL("http://example.com/");
   
   @Test
   public void testRetainSpaceInsideTags() {
