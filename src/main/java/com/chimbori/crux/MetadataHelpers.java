@@ -9,17 +9,11 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 class MetadataHelpers {
   private MetadataHelpers() {
   }
-
-  private static final Set<String> IGNORED_TITLE_PARTS = new HashSet<>(Arrays.asList(
-      "hacker news", "facebook"
-  ));
 
   static String extractTitle(Document doc) {
     try {
@@ -187,16 +181,13 @@ class MetadataHelpers {
 
   static String cleanTitle(String title) {
     StringBuilder res = new StringBuilder();
-//        int index = title.lastIndexOf("|");
-//        if (index > 0 && title.length() / 2 < index)
-//            title = title.substring(0, index + 1);
+        int index = title.lastIndexOf("|");
+        if (index > 0 && title.length() / 2 < index)
+            title = title.substring(0, index + 1);
 
     int counter = 0;
     String[] strs = title.split("\\|");
     for (String part : strs) {
-      if (IGNORED_TITLE_PARTS.contains(part.toLowerCase().trim())) {
-        continue;
-      }
       if (counter == strs.length - 1 && res.length() > part.length()) {
         continue;
       }

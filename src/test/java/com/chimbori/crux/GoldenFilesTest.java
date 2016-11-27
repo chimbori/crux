@@ -138,7 +138,7 @@ public class GoldenFilesTest {
   public void testRian() {
     Article article = extractFromTestFile("http://en.rian.ru/world/20110410/163458489.html", "rian.html");
     assertStartsWith("About 15,000 people took to the streets in Tokyo on Sunday to protest against th", article.document.text());
-    assertEquals("Japanese rally against nuclear power industry | World", article.title);
+    assertEquals("Japanese rally against nuclear power industry", article.title);
     assertEquals("http://en.rian.ru/favicon.ico", article.faviconUrl);
     assertTrue(article.keywords.isEmpty());
   }
@@ -531,7 +531,7 @@ public class GoldenFilesTest {
     Article article = extractFromTestFile("http://www.br-online.de/br-klassik/programmtipps/highlight-bayreuth-tannhaeuser-festspielzeit-2011-ID1309895438808.xml", "br-online.html");
     assertStartsWith("Wenn ein Dirigent, der Alte Musik liebt, erstmals eine "
         + "Neuproduktion bei den Bayreuther Richard-Wagner-Festspielen übernimmt,", article.document.text());
-    assertEquals("Eröffnung der 100. Bayreuther Festspiele: Alles neu beim \"Tannhäuser\" | Programmtipps | BR-KLASSIK",
+    assertEquals("Eröffnung der 100. Bayreuther Festspiele: Alles neu beim \"Tannhäuser\" | Programmtipps",
         article.title);
   }
 
@@ -671,8 +671,15 @@ public class GoldenFilesTest {
   @Test
   public void testGuardianAmpPage() {
     Article article = extractFromTestFile("https://cdn.ampproject.org/c/s/amp.theguardian.com/business/2016/nov/07/world-stock-markets-surge-clinton-us-election", "guardian-amp.html");
-    assertEquals("World stock markets surge amid confidence Clinton will win US election | Business", article.title);
+    assertEquals("World stock markets surge amid confidence Clinton will win US election", article.title);
     assertEquals("The three main US indices were almost 2% higher by noon, following strong gains in markets across the world ahead of the presidential election", article.description);
+  }
+
+  @Test
+  public void testHackerNews() {
+    Article article = extractFromTestFile("https://news.ycombinator.com/", "hackernews.html");
+    assertEquals("Hacker News", article.title);
+    assertEquals("", article.description);
   }
 
   private Article extractFromTestFile(String baseUri, String testFile) {
