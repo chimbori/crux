@@ -12,17 +12,17 @@ public class CandidateURL {
   public URL url;
 
   @SuppressWarnings("unused")
-  public CandidateURL(String url) {
-    if (url == null || url.isEmpty()) {
+  public CandidateURL(String candidateUrl) {
+    if (candidateUrl == null || candidateUrl.isEmpty()) {
       throw new IllegalArgumentException();
     }
 
     try {
-      this.url = new URL(url);
+      url = new URL(candidateUrl);
     } catch (MalformedURLException e) {
       if (e.getMessage().startsWith("no protocol")) {
         try {
-          this.url = new URL("http://" + url);
+          url = new URL("http://" + candidateUrl);
         } catch (MalformedURLException e1) {
           // Uninitialized!
           e1.printStackTrace();
@@ -30,15 +30,20 @@ public class CandidateURL {
       }
     }
 
-    if (this.url == null) {
-      throw new IllegalArgumentException(String.format("Unable to parse [%s]", url));
+    if (url == null) {
+      throw new IllegalArgumentException(String.format("Unable to parse [%s]", candidateUrl));
     }
 
-    this.fileName = this.url.getFile();
+    fileName = url.getFile();
   }
 
   CandidateURL resolveRedirects() {
     return resolveGoogleRedirect().resolveFacebookRedirect();
+  }
+
+  public boolean isHttp() {
+    String scheme = url.getProtocol().toLowerCase();
+    return scheme.equals("http") || scheme.equals("https");
   }
 
   public boolean isLikelyArticle() {
