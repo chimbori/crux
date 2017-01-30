@@ -37,7 +37,7 @@ public class CandidateURL {
     fileName = url.getFile();
   }
 
-  CandidateURL resolveRedirects() {
+  public CandidateURL resolveRedirects() {
     return resolveGoogleRedirect().resolveFacebookRedirect();
   }
 

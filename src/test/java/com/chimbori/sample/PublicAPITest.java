@@ -22,5 +22,7 @@ public class PublicAPITest {
       Article article = Extractor.with(candidateURL, content).extractMetadata().extractContent().article();
       assertEquals("Crux", article.title);
     }
+    CandidateURL directURL = candidateURL.resolveRedirects();
+    assertEquals("https://chimbori.com/", directURL.toString());
   }
 }
