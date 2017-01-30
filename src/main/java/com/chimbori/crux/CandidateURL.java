@@ -61,15 +61,6 @@ public class CandidateURL {
         || fileName.endsWith(".mpg4") || fileName.endsWith(".mp4") || fileName.endsWith(".flv") || fileName.endsWith(".wmv");
   }
 
-  public boolean isVideoHost() {
-    String host = url.getHost();
-    return host.endsWith("youtube.com") ||
-        host.endsWith("video.yahoo.com") ||
-        host.endsWith("vimeo.com") ||
-        host.endsWith(".blip.tv");
-  }
-
-
   @SuppressWarnings("WeakerAccess")
   public boolean isLikelyAudio() {
     return fileName.endsWith(".mp3") || fileName.endsWith(".ogg") || fileName.endsWith(".m3u") || fileName.endsWith(".wav");

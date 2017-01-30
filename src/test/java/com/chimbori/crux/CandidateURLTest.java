@@ -8,18 +8,6 @@ import static org.junit.Assert.assertTrue;
 
 public class CandidateURLTest {
   @Test
-  public void testIsVideoHost() {
-    assertTrue(new CandidateURL("m.vimeo.com").isVideoHost());
-    assertTrue(new CandidateURL("m.youtube.com").isVideoHost());
-    assertTrue(new CandidateURL("www.youtube.com").isVideoHost());
-    assertTrue(new CandidateURL("http://youtube.com").isVideoHost());
-    assertTrue(new CandidateURL("http://www.youtube.com").isVideoHost());
-    assertTrue(new CandidateURL("https://youtube.com").isVideoHost());
-    assertFalse(new CandidateURL("test.com").isVideoHost());
-    assertFalse(new CandidateURL("irgendwas.com/youtube.com").isVideoHost());
-  }
-
-  @Test
   public void testIsHttpURL() {
     assertTrue(new CandidateURL("http://example.com").isHttp());
     assertTrue(new CandidateURL("https://example.com").isHttp());
