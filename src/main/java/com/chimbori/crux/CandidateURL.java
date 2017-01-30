@@ -1,9 +1,7 @@
 package com.chimbori.crux;
 
-import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLDecoder;
 
 @SuppressWarnings("WeakerAccess")
 public class CandidateURL {
@@ -91,15 +89,11 @@ public class CandidateURL {
 
   private CandidateURL resolveGoogleRedirect() {
     if (url.getHost().endsWith(".google.com") && url.getPath().equals("/url")) {
-      String arr[] = decodeUrl(url.getPath()).split("\\&");
-      for (String str : arr) {
-        if (str.startsWith("q=")) {
-          try {
-            url = new URL(str.substring("q=".length()));
-          } catch (MalformedURLException e) {
-            // Keep URL as is.
-          }
-        }
+      try {
+        String actualURL = StringUtils.getQueryParameters(url).get("q");
+        url = new URL(actualURL);
+      } catch (MalformedURLException e) {
+        // Keep URL as is.
       }
     }
     return this;
@@ -108,20 +102,13 @@ public class CandidateURL {
   private CandidateURL resolveFacebookRedirect() {
     if (url.getHost().endsWith(".facebook.com") && url.getPath().equals("/l.php")) {
       try {
-        url = new URL(decodeUrl(url.getQuery().substring("u=".length())));
+        String actualURL = StringUtils.getQueryParameters(url).get("u");
+        url = new URL(actualURL);
       } catch (MalformedURLException e) {
         // Keep URL as is.
       }
     }
     return this;
-  }
-
-  private static String decodeUrl(String str) {
-    try {
-      return URLDecoder.decode(str, UTF8);
-    } catch (UnsupportedEncodingException ex) {
-      return str;
-    }
   }
 
   @Override

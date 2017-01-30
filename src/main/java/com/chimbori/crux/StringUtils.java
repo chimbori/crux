@@ -2,8 +2,15 @@ package com.chimbori.crux;
 
 import org.jsoup.nodes.Element;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URL;
+import java.net.URLDecoder;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 class StringUtils {
   private static final String WHITESPACE = "[ \r\t\n]+";
+  public static final String UTF8 = "UTF-8";
 
   private StringUtils() {
     // Prevent instantiation.
@@ -203,5 +210,21 @@ class StringUtils {
     } catch (NumberFormatException e) {
       return 0;
     }
+  }
+
+  public static Map<String, String> getQueryParameters(URL url) {
+    Map<String, String> nameValuePairs = new LinkedHashMap<>();
+    String[] queryParameters = url.getQuery().split("&");
+    for (String nameValuePair : queryParameters) {
+      int equalsSignPosition = nameValuePair.indexOf("=");
+      try {
+        nameValuePairs.put(
+            URLDecoder.decode(nameValuePair.substring(0, equalsSignPosition), UTF8),
+            URLDecoder.decode(nameValuePair.substring(equalsSignPosition + 1), UTF8));
+      } catch (UnsupportedEncodingException e) {
+        e.printStackTrace();  // Quite unlikely to happen, so simplify the API by catching it here.
+      }
+    }
+    return nameValuePairs;
   }
 }
