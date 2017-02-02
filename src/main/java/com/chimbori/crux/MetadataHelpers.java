@@ -111,7 +111,8 @@ class MetadataHelpers {
   static String extractFaviconUrl(Document doc) {
     try {
       return new HeuristicString(null)
-          .or(StringUtils.urlEncodeSpaceCharacter(doc.select("head link[rel=icon]").attr("href")))
+          .or(StringUtils.urlEncodeSpaceCharacter(largestIconNode(doc.select("head link[rel=icon]"))))
+          .or(StringUtils.urlEncodeSpaceCharacter(largestIconNode(doc.select("head link[rel^=apple-touch-icon]"))))
           .or(StringUtils.urlEncodeSpaceCharacter(doc.select("head link[rel^=shortcut],link[rel$=icon]").attr("href")))
           .toString();
     } catch (HeuristicString.CandidateFound candidateFound) {
@@ -181,9 +182,9 @@ class MetadataHelpers {
 
   static String cleanTitle(String title) {
     StringBuilder res = new StringBuilder();
-        int index = title.lastIndexOf("|");
-        if (index > 0 && title.length() / 2 < index)
-            title = title.substring(0, index + 1);
+    int index = title.lastIndexOf("|");
+    if (index > 0 && title.length() / 2 < index)
+      title = title.substring(0, index + 1);
 
     int counter = 0;
     String[] strs = title.split("\\|");
@@ -198,6 +199,64 @@ class MetadataHelpers {
       counter++;
     }
     return StringUtils.innerTrim(res.toString());
+  }
+
+  private static String largestIconNode(Elements iconNodes) {
+    Element largestIcon = null;
+    long maxSize = -1;
+    for (Element iconNode : iconNodes) {
+      final long size = parseSize(iconNode.attr("sizes"));
+      if (size > maxSize) {
+        maxSize = size;
+        largestIcon = iconNode;
+      }
+    }
+    if (largestIcon != null) {
+      return StringUtils.urlEncodeSpaceCharacter(largestIcon.attr("href"));
+    }
+    return "";
+  }
+
+  /**
+   * Given a size represented by "WidthxHeight" or "WidthxHeight ...", will return the largest dimension found.
+   * <p>
+   * Examples: "128x128" will return 128.
+   * "128x64" will return 64.
+   * "24x24 48x48" will return 48.
+   * <p>
+   * If a non supported input is given, will return 0.
+   *
+   * @param sizes String representing the sizes.
+   * @return largest dimension.
+   */
+  static long parseSize(String sizes) {
+    if (sizes == null || sizes.trim().isEmpty()) {
+      return 0;
+    }
+    sizes = sizes.trim().toLowerCase();
+    if (sizes.contains(" ")) { // Some sizes can be "16x16 24x24", so we split them with space and process each one.
+      final String[] multiSizes = sizes.split(" ");
+      long maxSize = 0;
+      for (String size : multiSizes) {
+        long currentSize = parseSize(size);
+        if (currentSize > maxSize) {
+          maxSize = currentSize;
+        }
+      }
+      return maxSize;
+    } else if (sizes.contains("x")) { // For handling sizes of format 128x128 etc.
+      final String[] dimen = sizes.split("x");
+      if (dimen.length == 2) {
+        try {
+          final long width = Long.parseLong(dimen[0].trim());
+          final long height = Long.parseLong(dimen[1].trim());
+          return Math.max(width, height);
+        } catch (NumberFormatException e) {
+          return 0;
+        }
+      }
+    }
+    return 0;
   }
 
   /**

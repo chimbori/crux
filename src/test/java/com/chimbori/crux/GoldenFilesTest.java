@@ -9,6 +9,7 @@ import java.util.Arrays;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;
 
 public class GoldenFilesTest {
@@ -150,6 +151,7 @@ public class GoldenFilesTest {
     assertEquals("YouTube - Metallica - Master of the Puppets 8-bit", article.title);
     assertEquals("http://i4.ytimg.com/vi/wlupmjrfaB4/default.jpg", article.imageUrl);
     assertEquals("http://www.youtube.com/v/wlupmjrfaB4?version=3", article.videoUrl);
+    assertEquals("http://s.ytimg.com/yt/favicon-vflZlzSbU.ico", article.faviconUrl);
   }
 
   @Test
@@ -162,6 +164,7 @@ public class GoldenFilesTest {
   public void testGithub() {
     Article article = extractFromTestFile("https://github.com/ifesdjeen/jReadability", "github.html");
     assertStartsWith("= jReadability This is a small helper utility (only 130 lines of code) for pepole", article.document.text());
+    assertEquals("https://github.com/fluidicon.png", article.faviconUrl);
   }
 
   @Test
@@ -169,6 +172,7 @@ public class GoldenFilesTest {
     Article article = extractFromTestFile("http://itunes.apple.com/us/album/21/id420075073", "itunes.html");
     assertStartsWith("What else can be said of this album other than that it is simply amazing? Adele's voice is powerful, vulnerable, assured, and heartbreaking all in one fell swoop.", article.document.text());
     assertStartsWith("Preview songs from 21 by ADELE", article.description);
+    assertNull(article.faviconUrl);
   }
 
   @Test
@@ -342,6 +346,7 @@ public class GoldenFilesTest {
     Article article = extractFromTestFile("http://www.engadget.com/2010/08/18/verizon-fios-set-top-boxes-getting-a-new-hd-guide-external-stor/", "engadget.html");
     assertStartsWith("Streaming and downloading TV content to mobiles is nice, but we enjoy watching TV... on the TV", article.document.text());
     assertEquals("https://www.blogcdn.com/www.engadget.com/media/2010/08/44ni600.jpg", article.imageUrl);
+    assertEquals("https://s.blogsmithmedia.com/www.engadget.com/assets-haa9c2740c98180d07c436859c827e9f1/images/favicon-160x160.png?h=1638b0a8bbe7effa8f85c3ecabb63620", article.faviconUrl);
   }
 
   @Test
@@ -350,6 +355,7 @@ public class GoldenFilesTest {
     assertStartsWith("On November 25, 1980, professional boxing", article.document.text());
     assertEquals("Stress Hormones Could Predict Boxing Dominance", article.title);
     assertEquals("http://www.wired.com/playbook/wp-content/uploads/2010/08/fight_f-660x441.jpg", article.imageUrl);
+    assertEquals("http://blog.wired.com/gadgets/files/apple-touch-icon.png", article.faviconUrl);
   }
 
   @Test
@@ -391,6 +397,7 @@ public class GoldenFilesTest {
     Article article = extractFromTestFile("http://www.si.com/nba/2016/09/07/shaq-basketball-hall-of-fame-lakers-magic-heat-lsu-tigers", "sportsillustrated.html");
     assertStartsWith("Way back in 1994, Shaquille O’Neal, who will be inducted into the Naismith Basketball Hall of Fame on Friday, was asked about Knicks center Patrick Ewing.", article.document.text());
     assertEquals("http://windows.api.si.com/s3/files/styles/inline_gallery_desktop/public/2016/09/08/shaquille-o-neal-hall-of-fame-lakers-magic-lsu.jpg?itok=oupTSSJY", article.imageUrl);
+    assertEquals("http://www.si.com/img/favicons/favicon-192.png", article.faviconUrl);
   }
 
   @Test
@@ -689,6 +696,13 @@ public class GoldenFilesTest {
     Article article = extractFromTestFile("https://news.ycombinator.com/", "hackernews.html");
     assertEquals("Hacker News", article.title);
     assertEquals("", article.description);
+  }
+
+  @Test
+  public void testGoogleComTablet() {
+    Article article = extractFromTestFile("https://www.google.com/", "google_tablet.html");
+    assertEquals("Google", article.title);
+    assertEquals("https://www.google.com/images/branding/googleg/2x/googleg_standard_color_76dp.png", article.faviconUrl);
   }
 
   private Article extractFromTestFile(String baseUri, String testFile) {
