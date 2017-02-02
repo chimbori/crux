@@ -36,6 +36,8 @@ dependencies {
 
 ## Sample Code
 
+> Note that the Crux API is not yet final (we do not have a 1.0 release candidate yet), and it is likely to change. Feel free to use in your own projects, and let us know if the current API can be improved upon. And be prepared to update your apps if you update to a newer version of Crux that changes the API. Once we hit 1.0, we will be keeping the API fairly constant, so you would not need to keep updating your apps.
+
 Using a singleton instance of OkHttp.
 ```java
 OkHttpClient okHttpClient = new OkHttpClient();
