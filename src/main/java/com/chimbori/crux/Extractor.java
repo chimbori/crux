@@ -29,11 +29,11 @@ public class Extractor {
     article.description = MetadataHelpers.extractDescription(document);
     article.siteName = MetadataHelpers.extractSiteName(document);
     article.themeColor = MetadataHelpers.extractThemeColor(document);
-    article.canonicalUrl = article.makeAbsoluteUrl(MetadataHelpers.extractCanonicalUrl(document));
-    article.ampUrl = article.makeAbsoluteUrl(MetadataHelpers.extractAmpUrl(document));
-    article.feedUrl = article.makeAbsoluteUrl(MetadataHelpers.extractFeedUrl(document));
-    article.videoUrl = article.makeAbsoluteUrl(MetadataHelpers.extractVideoUrl(document));
-    article.faviconUrl = article.makeAbsoluteUrl(MetadataHelpers.extractFaviconUrl(document));
+    article.canonicalUrl = UrlUtils.makeAbsoluteUrl(article.url, MetadataHelpers.extractCanonicalUrl(document));
+    article.ampUrl = UrlUtils.makeAbsoluteUrl(article.url, MetadataHelpers.extractAmpUrl(document));
+    article.feedUrl = UrlUtils.makeAbsoluteUrl(article.url, MetadataHelpers.extractFeedUrl(document));
+    article.videoUrl = UrlUtils.makeAbsoluteUrl(article.url, MetadataHelpers.extractVideoUrl(document));
+    article.faviconUrl = UrlUtils.makeAbsoluteUrl(article.url, MetadataHelpers.extractFaviconUrl(document));
     article.keywords = MetadataHelpers.extractKeywords(document);
     return this;
   }
@@ -58,7 +58,7 @@ public class Extractor {
     // Extract images before post-processing, because that step may remove images.
     article.images = MetadataHelpers.extractImages(bestMatchElement);
     article.document = PostprocessHelpers.postprocess(bestMatchElement);
-    article.imageUrl = article.makeAbsoluteUrl(MetadataHelpers.extractImageUrl(document, article.images));
+    article.imageUrl = UrlUtils.makeAbsoluteUrl(article.url, MetadataHelpers.extractImageUrl(document, article.images));
     return this;
   }
 

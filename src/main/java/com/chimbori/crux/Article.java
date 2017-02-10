@@ -3,8 +3,6 @@ package com.chimbori.crux;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -57,17 +55,6 @@ public class Article {
     // Package private constructor to disallow outside the library.
     this.url = url;
     this.canonicalUrl = url;  // Can be overridden later, but we start off by setting it to the URL itself.
-  }
-
-  String makeAbsoluteUrl(String relativeUrl) {
-    if (relativeUrl == null || relativeUrl.isEmpty()) {
-      return null;
-    }
-    try {
-      return new URL(new URL(url), relativeUrl).toString();
-    } catch (MalformedURLException e) {
-      return relativeUrl;
-    }
   }
 
   @Override
