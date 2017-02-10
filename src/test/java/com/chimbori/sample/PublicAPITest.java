@@ -3,7 +3,9 @@ package com.chimbori.sample;
 import com.chimbori.crux.Article;
 import com.chimbori.crux.CandidateURL;
 import com.chimbori.crux.Extractor;
+import com.chimbori.crux.ImageUrlExtractor;
 
+import org.jsoup.Jsoup;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -14,7 +16,7 @@ import static org.junit.Assert.assertEquals;
  */
 public class PublicAPITest {
   @Test
-  public void testCallersCanAccessPublicAPIMethods() {
+  public void testCallersCanAccessArticleExtractorAPI() {
     String url = "https://chimbori.com/";
     String content = "<html><title>Crux";  // Intentionally malformed.
     CandidateURL candidateURL = new CandidateURL(url);
@@ -24,5 +26,14 @@ public class PublicAPITest {
     }
     CandidateURL directURL = candidateURL.resolveRedirects();
     assertEquals("https://chimbori.com/", directURL.toString());
+  }
+
+  @Test
+  public void testCallersCanAccessImageExtractorAPI() {
+    String url = "https://chimbori.com/";
+    String content = "<img src=\"test.jpg\">";  // Intentionally malformed.
+
+    String imageUrl = ImageUrlExtractor.with(url, Jsoup.parse(content).body()).findImage().imageUrl();
+    assertEquals("https://chimbori.com/test.jpg", imageUrl);
   }
 }
