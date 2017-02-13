@@ -59,7 +59,7 @@ public class Extractor {
     }
 
     // Extract images before post-processing, because that step may remove images.
-    article.images = MetadataHelpers.extractImages(bestMatchElement);
+    article.images = ImageHelpers.extractImages(bestMatchElement);
     article.document = PostprocessHelpers.postprocess(bestMatchElement);
     article.imageUrl = UrlUtils.makeAbsoluteUrl(article.url, MetadataHelpers.extractImageUrl(document, article.images));
     return this;
