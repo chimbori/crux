@@ -5,11 +5,69 @@ import com.chimbori.crux.common.StringUtils;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+/**
+ * Checks heuristically whether a given URL is likely to be an article, video, image, or other
+ * types. Can optionally resolve redirects such as when Facebook or Google show an interstitial
+ * page instead of redirecting the user to the actual URL.
+ */
 @SuppressWarnings("WeakerAccess")
 public class CandidateURL {
-  private static final String UTF8 = "UTF-8";
   private final String fileName;
   public URL url;
+
+  /**
+   * Defines a pattern used by a specific service for URL redirection. This should be stateless,
+   * and will be called for each URL that needs to be resolved.
+   */
+  private static abstract class RedirectPattern {
+    /**
+     * @return true if this RedirectPattern can handle the provided URL, false if not.
+     */
+    public abstract boolean matches(URL url);
+
+    /**
+     * @return the actual URL that is pointed to by this redirector URL.
+     */
+    public abstract URL resolve(URL url) throws MalformedURLException;
+
+    /**
+     * To avoid every implementing class wrap their own code with a try-catch, they are encouraged
+     * to use the resolve() method which throws {@link MalformedURLException}, while callers can
+     * use this method which simply wraps that method’s return value in a try-catch.
+     */
+    public URL resolveHandlingException(URL url) {
+      try {
+        return resolve(url);
+      } catch (MalformedURLException e) {
+        return url;
+      }
+    }
+  }
+
+  private static RedirectPattern[] REDIRECT_PATTERNS = {
+      new RedirectPattern() {  // Facebook.
+        @Override
+        public boolean matches(URL url) {
+          return url.getHost().endsWith(".facebook.com") && url.getPath().equals("/l.php");
+        }
+
+        @Override
+        public URL resolve(URL url) throws MalformedURLException {
+          return new URL(StringUtils.getQueryParameters(url).get("u"));
+        }
+      },
+      new RedirectPattern() {  // Google.
+        @Override
+        public boolean matches(URL url) {
+          return url.getHost().endsWith(".google.com") && url.getPath().equals("/url");
+        }
+
+        @Override
+        public URL resolve(URL url) throws MalformedURLException {
+          return new URL(StringUtils.getQueryParameters(url).get("q"));
+        }
+      }
+  };
 
   @SuppressWarnings("unused")
   public CandidateURL(String candidateUrl) {
@@ -39,10 +97,6 @@ public class CandidateURL {
 
   public boolean isAdImage() {
     return StringUtils.countMatches(url.toString(), "ad") >= 2;
-  }
-
-  public CandidateURL resolveRedirects() {
-    return resolveGoogleRedirect().resolveFacebookRedirect();
   }
 
   public boolean isHttp() {
@@ -93,25 +147,10 @@ public class CandidateURL {
         || fileName.endsWith(".jpg") || fileName.endsWith(".bmp") || fileName.endsWith(".ico") || fileName.endsWith(".eps");
   }
 
-  private CandidateURL resolveGoogleRedirect() {
-    if (url.getHost().endsWith(".google.com") && url.getPath().equals("/url")) {
-      try {
-        String actualURL = StringUtils.getQueryParameters(url).get("q");
-        url = new URL(actualURL);
-      } catch (MalformedURLException e) {
-        // Keep URL as is.
-      }
-    }
-    return this;
-  }
-
-  private CandidateURL resolveFacebookRedirect() {
-    if (url.getHost().endsWith(".facebook.com") && url.getPath().equals("/l.php")) {
-      try {
-        String actualURL = StringUtils.getQueryParameters(url).get("u");
-        url = new URL(actualURL);
-      } catch (MalformedURLException e) {
-        // Keep URL as is.
+  public CandidateURL resolveRedirects() {
+    for (RedirectPattern redirect : REDIRECT_PATTERNS) {
+      if (redirect.matches(url)) {
+        url = redirect.resolveHandlingException(url);
       }
     }
     return this;
