@@ -1,9 +1,9 @@
 package com.chimbori.sample;
 
 import com.chimbori.crux.articles.Article;
-import com.chimbori.crux.urls.CandidateURL;
 import com.chimbori.crux.articles.Extractor;
 import com.chimbori.crux.images.ImageUrlExtractor;
+import com.chimbori.crux.urls.CandidateURL;
 
 import org.jsoup.Jsoup;
 import org.junit.Test;

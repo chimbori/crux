@@ -1,7 +1,5 @@
 package com.chimbori.crux.common;
 
-import com.chimbori.crux.common.StringUtils;
-
 import org.junit.Test;
 
 import java.net.MalformedURLException;

@@ -1,7 +1,5 @@
 package com.chimbori.crux.common;
 
-import com.chimbori.crux.common.HeuristicString;
-
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -74,6 +72,7 @@ public class HeuristicStringTest {
     }
   }
 
+  @SuppressWarnings("SameReturnValue")
   private String getNewCandidate_ShouldNeverBeCalled() {
     fail("If an existing candidate is available, subsequent candidates should not be evaluated.");
     return "changed";

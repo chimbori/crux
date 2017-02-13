@@ -1,7 +1,5 @@
 package com.chimbori.crux.urls;
 
-import com.chimbori.crux.urls.CandidateURL;
-
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
