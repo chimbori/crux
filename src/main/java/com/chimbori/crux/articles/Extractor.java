@@ -1,4 +1,7 @@
-package com.chimbori.crux;
+package com.chimbori.crux.articles;
+
+import com.chimbori.crux.common.UrlUtils;
+import com.chimbori.crux.urls.CandidateURL;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;

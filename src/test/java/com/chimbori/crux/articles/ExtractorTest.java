@@ -1,4 +1,8 @@
-package com.chimbori.crux;
+package com.chimbori.crux.articles;
+
+import com.chimbori.crux.articles.Article;
+import com.chimbori.crux.articles.Extractor;
+import com.chimbori.crux.urls.CandidateURL;
 
 import org.junit.Test;
 

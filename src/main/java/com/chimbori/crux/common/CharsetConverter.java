@@ -1,4 +1,4 @@
-package com.chimbori.crux;
+package com.chimbori.crux.common;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
@@ -10,13 +10,13 @@ import java.nio.charset.Charset;
 /**
  * This class is not thread safe. Use one new instance every time due to encoding variable.
  */
-class CharsetConverter {
+public class CharsetConverter {
   private final static String UTF8 = "UTF-8";
   private final static String ISO = "ISO-8859-1";
   private final static int K2 = 2048;
   private static final int DEFAULT_MAX_BYTES = 500 * 1024;
 
-  static class StringWithEncoding {
+  public static class StringWithEncoding {
     public final String content;
     public final String encoding;
 
@@ -52,7 +52,7 @@ class CharsetConverter {
     return charset;
   }
 
-  static StringWithEncoding readStream(InputStream inputStream) {
+  public static StringWithEncoding readStream(InputStream inputStream) {
     // HTTP 1.1 standard is iso-8859-1 not utf8 but we force utf-8 as YouTube assumes it.
     String encoding = UTF8;
 

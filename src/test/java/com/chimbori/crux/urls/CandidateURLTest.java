@@ -1,4 +1,6 @@
-package com.chimbori.crux;
+package com.chimbori.crux.urls;
+
+import com.chimbori.crux.urls.CandidateURL;
 
 import org.junit.Test;
 

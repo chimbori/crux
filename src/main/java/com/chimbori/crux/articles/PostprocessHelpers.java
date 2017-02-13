@@ -1,4 +1,7 @@
-package com.chimbori.crux;
+package com.chimbori.crux.articles;
+
+import com.chimbori.crux.common.Log;
+import com.chimbori.crux.common.StringUtils;
 
 import org.jsoup.nodes.Attribute;
 import org.jsoup.nodes.Document;

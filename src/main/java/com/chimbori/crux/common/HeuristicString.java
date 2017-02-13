@@ -1,4 +1,4 @@
-package com.chimbori.crux;
+package com.chimbori.crux.common;
 
 /**
  * A string that is determined heuristically, with a fluent API. When extracting meaning from
@@ -10,7 +10,7 @@ package com.chimbori.crux;
  * ensure that other pending calls to {@link .or(...)} are not executed, and the caller can skip
  * evaluating other candidates as soon as the first one is found.
  */
-class HeuristicString {
+public class HeuristicString {
   private String string = null;
 
   public HeuristicString(String string) throws CandidateFound {

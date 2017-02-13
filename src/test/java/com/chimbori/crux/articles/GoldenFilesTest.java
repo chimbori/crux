@@ -1,4 +1,8 @@
-package com.chimbori.crux;
+package com.chimbori.crux.articles;
+
+import com.chimbori.crux.common.CharsetConverter;
+import com.chimbori.crux.common.Log;
+import com.chimbori.crux.urls.CandidateURL;
 
 import org.junit.Test;
 
@@ -8,8 +12,8 @@ import java.io.FileNotFoundException;
 import java.util.Arrays;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 public class GoldenFilesTest {

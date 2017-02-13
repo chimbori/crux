@@ -1,6 +1,6 @@
-package com.chimbori.crux;
+package com.chimbori.crux.common;
 
-class Log {
+public class Log {
   private static final boolean DEBUG = false;
 
   public static void i(String message, Object ... args) {

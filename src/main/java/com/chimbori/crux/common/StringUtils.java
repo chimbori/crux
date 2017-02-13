@@ -1,4 +1,4 @@
-package com.chimbori.crux;
+package com.chimbori.crux.common;
 
 import org.jsoup.nodes.Element;
 
@@ -8,7 +8,7 @@ import java.net.URLDecoder;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-class StringUtils {
+public class StringUtils {
   private static final String WHITESPACE = "[ \r\t\n]+";
   public static final String UTF8 = "UTF-8";
 
@@ -16,11 +16,11 @@ class StringUtils {
     // Prevent instantiation.
   }
 
-  static String urlEncodeSpaceCharacter(String url) {
+  public static String urlEncodeSpaceCharacter(String url) {
     return url.isEmpty() ? url : url.trim().replaceAll(WHITESPACE, "%20");
   }
 
-  static int countMatches(String str, String substring) {
+  public static int countMatches(String str, String substring) {
     int count = 0;
     int indexOf = str.indexOf(substring);
     if (indexOf >= 0) {
@@ -33,7 +33,7 @@ class StringUtils {
   /**
    * remove more than two spaces or newlines
    */
-  static String innerTrim(String str) {
+  public static String innerTrim(String str) {
     return str.replaceAll(WHITESPACE, " ").trim();
   }
 
@@ -189,11 +189,7 @@ class StringUtils {
     return dateStr + "/01/01";
   }
 
-  static boolean isAdImage(String imageUrl) {
-    return countMatches(imageUrl, "ad") >= 2;
-  }
-
-  static int countLetters(String str) {
+  public static int countLetters(String str) {
     int len = str.length();
     int chars = 0;
     for (int i = 0; i < len; i++) {

@@ -1,4 +1,6 @@
-package com.chimbori.crux;
+package com.chimbori.crux.articles;
+
+import com.chimbori.crux.articles.MetadataHelpers;
 
 import org.junit.Test;
 

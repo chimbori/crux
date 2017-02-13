@@ -1,4 +1,4 @@
-package com.chimbori.crux;
+package com.chimbori.crux.common;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -6,7 +6,7 @@ import java.net.URL;
 /**
  * Utility class to work with URLs.
  */
-class UrlUtils {
+public class UrlUtils {
   private UrlUtils() {
   }
 

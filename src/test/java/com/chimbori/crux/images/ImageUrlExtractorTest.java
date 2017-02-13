@@ -1,4 +1,6 @@
-package com.chimbori.crux;
+package com.chimbori.crux.images;
+
+import com.chimbori.crux.images.ImageUrlExtractor;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;

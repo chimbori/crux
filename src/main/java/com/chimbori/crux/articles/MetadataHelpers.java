@@ -1,4 +1,9 @@
-package com.chimbori.crux;
+package com.chimbori.crux.articles;
+
+import com.chimbori.crux.common.HeuristicString;
+import com.chimbori.crux.common.Log;
+import com.chimbori.crux.common.StringUtils;
+import com.chimbori.crux.urls.CandidateURL;
 
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -153,8 +158,15 @@ class MetadataHelpers {
     double score = 1;
     for (Element imgElement : imgElements) {
       Article.Image image = Article.Image.from(imgElement);
-      if (image.src.isEmpty() || StringUtils.isAdImage(image.src)) {
+      if (image.src.isEmpty()) {
         continue;
+      }
+      try {
+        if (new CandidateURL(image.src).isAdImage()) {
+          continue;
+        }
+      } catch (IllegalArgumentException e) {
+        // Quite likely trying to pass a "data://" URI, which the Java URL parser can’t handle.
       }
 
       image.weight += image.height >= 50 ? 20 : -20;

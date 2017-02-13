@@ -1,4 +1,6 @@
-package com.chimbori.crux;
+package com.chimbori.crux.urls;
+
+import com.chimbori.crux.common.StringUtils;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -33,6 +35,10 @@ public class CandidateURL {
     }
 
     fileName = url.getFile();
+  }
+
+  public boolean isAdImage() {
+    return StringUtils.countMatches(url.toString(), "ad") >= 2;
   }
 
   public CandidateURL resolveRedirects() {

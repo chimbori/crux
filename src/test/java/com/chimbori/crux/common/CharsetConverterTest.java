@@ -1,4 +1,6 @@
-package com.chimbori.crux;
+package com.chimbori.crux.common;
+
+import com.chimbori.crux.common.CharsetConverter;
 
 import org.jsoup.Jsoup;
 import org.junit.Test;

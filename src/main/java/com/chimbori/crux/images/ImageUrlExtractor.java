@@ -1,4 +1,7 @@
-package com.chimbori.crux;
+package com.chimbori.crux.images;
+
+import com.chimbori.crux.common.HeuristicString;
+import com.chimbori.crux.common.UrlUtils;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.jsoup.nodes.Element;
