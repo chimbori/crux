@@ -21,7 +21,7 @@ public class PublicAPITest {
     String content = "<html><title>Crux";  // Intentionally malformed.
     CandidateURL candidateURL = new CandidateURL(url);
     if (candidateURL.isLikelyArticle()) {
-      Article article = Extractor.with(candidateURL, content).extractMetadata().extractContent().article();
+      Article article = Extractor.with(url, content).extractMetadata().extractContent().article();
       assertEquals("Crux", article.title);
     }
     CandidateURL directURL = candidateURL.resolveRedirects();

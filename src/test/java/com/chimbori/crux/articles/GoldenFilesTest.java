@@ -2,7 +2,6 @@ package com.chimbori.crux.articles;
 
 import com.chimbori.crux.common.CharsetConverter;
 import com.chimbori.crux.common.Log;
-import com.chimbori.crux.urls.CandidateURL;
 
 import org.junit.Test;
 
@@ -711,7 +710,7 @@ public class GoldenFilesTest {
 
   private Article extractFromTestFile(String baseUri, String testFile) {
     try {
-      Article article = Extractor.with(new CandidateURL(baseUri),
+      Article article = Extractor.with(baseUri,
           CharsetConverter.readStream(new FileInputStream(new File("test_data/" + testFile))).content)
           .extractMetadata().extractContent().article();
       Log.i("%s", article.document.childNodes().toString());

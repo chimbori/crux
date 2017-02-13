@@ -1,7 +1,6 @@
 package com.chimbori.crux.articles;
 
 import com.chimbori.crux.common.UrlUtils;
-import com.chimbori.crux.urls.CandidateURL;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -10,21 +9,21 @@ import org.jsoup.nodes.Element;
 import java.util.Collection;
 
 public class Extractor {
-  private final CandidateURL candidateURL;
+  private final String url;
   private final Document document;
   private final Article article;
 
-  private Extractor(CandidateURL candidateURL, String html) {
-    this.candidateURL = candidateURL;
+  private Extractor(String url, String html) {
+    this.url = url;
     if (html.isEmpty()) {
       throw new IllegalArgumentException();
     }
     this.document = Jsoup.parse(html);
-    this.article = new Article(candidateURL.url.toString());
+    this.article = new Article(this.url);
   }
 
-  public static Extractor with(CandidateURL candidateURL, String html) {
-    return new Extractor(candidateURL, html);
+  public static Extractor with(String url, String html) {
+    return new Extractor(url, html);
   }
 
   public Extractor extractMetadata() {
@@ -69,7 +68,7 @@ public class Extractor {
     return article;
   }
 
-  public CandidateURL url() {
-    return candidateURL;
+  public String url() {
+    return url;
   }
 }
