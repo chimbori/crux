@@ -1,6 +1,6 @@
 package com.chimbori.crux.articles;
 
-import com.chimbori.crux.common.UrlUtils;
+import com.chimbori.crux.common.StringUtils;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -31,11 +31,11 @@ public class Extractor {
     article.description = MetadataHelpers.extractDescription(document);
     article.siteName = MetadataHelpers.extractSiteName(document);
     article.themeColor = MetadataHelpers.extractThemeColor(document);
-    article.canonicalUrl = UrlUtils.makeAbsoluteUrl(article.url, MetadataHelpers.extractCanonicalUrl(document));
-    article.ampUrl = UrlUtils.makeAbsoluteUrl(article.url, MetadataHelpers.extractAmpUrl(document));
-    article.feedUrl = UrlUtils.makeAbsoluteUrl(article.url, MetadataHelpers.extractFeedUrl(document));
-    article.videoUrl = UrlUtils.makeAbsoluteUrl(article.url, MetadataHelpers.extractVideoUrl(document));
-    article.faviconUrl = UrlUtils.makeAbsoluteUrl(article.url, MetadataHelpers.extractFaviconUrl(document));
+    article.canonicalUrl = StringUtils.makeAbsoluteUrl(article.url, MetadataHelpers.extractCanonicalUrl(document));
+    article.ampUrl = StringUtils.makeAbsoluteUrl(article.url, MetadataHelpers.extractAmpUrl(document));
+    article.feedUrl = StringUtils.makeAbsoluteUrl(article.url, MetadataHelpers.extractFeedUrl(document));
+    article.videoUrl = StringUtils.makeAbsoluteUrl(article.url, MetadataHelpers.extractVideoUrl(document));
+    article.faviconUrl = StringUtils.makeAbsoluteUrl(article.url, MetadataHelpers.extractFaviconUrl(document));
     article.keywords = MetadataHelpers.extractKeywords(document);
     return this;
   }
@@ -60,7 +60,7 @@ public class Extractor {
     // Extract images before post-processing, because that step may remove images.
     article.images = ImageHelpers.extractImages(bestMatchElement);
     article.document = PostprocessHelpers.postprocess(bestMatchElement);
-    article.imageUrl = UrlUtils.makeAbsoluteUrl(article.url, MetadataHelpers.extractImageUrl(document, article.images));
+    article.imageUrl = StringUtils.makeAbsoluteUrl(article.url, MetadataHelpers.extractImageUrl(document, article.images));
     return this;
   }
 

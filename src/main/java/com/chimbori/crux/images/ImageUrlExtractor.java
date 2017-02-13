@@ -1,7 +1,7 @@
 package com.chimbori.crux.images;
 
 import com.chimbori.crux.common.HeuristicString;
-import com.chimbori.crux.common.UrlUtils;
+import com.chimbori.crux.common.StringUtils;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.jsoup.nodes.Element;
@@ -49,7 +49,7 @@ public class ImageUrlExtractor {
     } catch (HeuristicString.CandidateFound candidateFound) {
       imageUrl = candidateFound.candidate;
     }
-    imageUrl = UrlUtils.makeAbsoluteUrl(url.toString(), imageUrl);
+    imageUrl = StringUtils.makeAbsoluteUrl(url.toString(), imageUrl);
     return this;
   }
 
