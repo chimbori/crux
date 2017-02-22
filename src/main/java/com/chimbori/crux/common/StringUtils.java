@@ -1,6 +1,8 @@
 package com.chimbori.crux.common;
 
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
@@ -261,5 +263,17 @@ public class StringUtils {
     } catch (MalformedURLException e) {
       return relativeUrl;
     }
+  }
+
+  public static String anyChildTagWithAttr(Elements elements, String attr) {
+    for (Element element : elements) {
+      String attrValue = element.attr(attr);
+      if (attrValue == null || attrValue.isEmpty()) {
+        continue;
+      }
+
+      return StringEscapeUtils.unescapeHtml4(attrValue);
+    }
+    return null;
   }
 }

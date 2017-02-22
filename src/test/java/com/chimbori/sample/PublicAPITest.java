@@ -3,6 +3,7 @@ package com.chimbori.sample;
 import com.chimbori.crux.articles.Article;
 import com.chimbori.crux.articles.Extractor;
 import com.chimbori.crux.images.ImageUrlExtractor;
+import com.chimbori.crux.links.LinkUrlExtractor;
 import com.chimbori.crux.urls.CandidateURL;
 
 import org.jsoup.Jsoup;
@@ -35,5 +36,14 @@ public class PublicAPITest {
 
     String imageUrl = ImageUrlExtractor.with(url, Jsoup.parse(content).body()).findImage().imageUrl();
     assertEquals("https://chimbori.com/test.jpg", imageUrl);
+  }
+
+  @Test
+  public void testCallersCanAccessLinkExtractorAPI() {
+    String url = "https://chimbori.com/";
+    String content = "<img href=\"/test\" src=\"test.jpg\">";  // Intentionally malformed.
+
+    String linkUrl = LinkUrlExtractor.with(url, Jsoup.parse(content).body()).findLink().linkUrl();
+    assertEquals("https://chimbori.com/test", linkUrl);
   }
 }

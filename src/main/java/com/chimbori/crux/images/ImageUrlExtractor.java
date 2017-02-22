@@ -10,6 +10,8 @@ import org.jsoup.select.Elements;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static com.chimbori.crux.common.StringUtils.anyChildTagWithAttr;
+
 /**
  * Given a single DOM Element root, this extractor inspects the sub-tree and returns the best
  * possible image URL candidate available within it. The use case for this application is to pick
@@ -51,18 +53,6 @@ public class ImageUrlExtractor {
     }
     imageUrl = StringUtils.makeAbsoluteUrl(url.toString(), imageUrl);
     return this;
-  }
-
-  private String anyChildTagWithAttr(Elements elements, String attr) {
-    for (Element element : elements) {
-      String attrValue = element.attr(attr);
-      if (attrValue == null || attrValue.isEmpty()) {
-        continue;
-      }
-
-      return StringEscapeUtils.unescapeHtml4(attrValue);
-    }
-    return null;
   }
 
   private String parseImageUrlFromStyleAttr(Elements elements) {
