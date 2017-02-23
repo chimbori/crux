@@ -72,7 +72,7 @@ public class CandidateURL {
   @SuppressWarnings("unused")
   public CandidateURL(String candidateUrl) {
     if (candidateUrl == null || candidateUrl.isEmpty()) {
-      throw new IllegalArgumentException();
+      throw new IllegalArgumentException(String.format("URL: [%s]", candidateUrl));
     }
 
     try {
@@ -89,7 +89,7 @@ public class CandidateURL {
     }
 
     if (url == null) {
-      throw new IllegalArgumentException(String.format("Unable to parse [%s]", candidateUrl));
+      throw new IllegalArgumentException(String.format("Unable to parse URL: [%s]", candidateUrl));
     }
 
     fileName = url.getFile();

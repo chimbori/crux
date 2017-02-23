@@ -5,6 +5,7 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 public class CandidateURLTest {
   @Test
@@ -15,6 +16,26 @@ public class CandidateURLTest {
     assertFalse(new CandidateURL("file://error").isHttp());
     assertFalse(new CandidateURL("ftp://example.com").isHttp());
     assertFalse(new CandidateURL("mailto:test@example.com").isHttp());
+  }
+
+  @Test
+  public void testNullURLs() {
+    try {
+      new CandidateURL(null);
+      fail("Failed to catch illegal input: null");
+    } catch (IllegalArgumentException e) {
+      assert(e.getMessage().contains("[null]"));
+    }
+  }
+
+  @Test
+  public void testBlankURLs() {
+    try {
+      new CandidateURL("");
+      fail("Failed to catch illegal input: \"\"");
+    } catch (IllegalArgumentException e) {
+      assert(e.getMessage().contains("[]"));
+    }
   }
 
   @Test
