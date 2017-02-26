@@ -1,8 +1,11 @@
 # Crux
 
 Crux parses Web pages to identify the crux of an article — the very essential points — minus all the fluff.
+The library consists of multiple independent APIs. You can pick and choose which ones you want to use.
+If you use Crux in an Android app, they are designed to be independent so that Proguard or other minification
+tools can strip out the parts you don’t use.
 
-## Features
+## Article Extraction API
 
 - Rich formatted content available, not just plain text.
 - Support for more sites & better parsing overall.
@@ -14,9 +17,77 @@ Crux parses Web pages to identify the crux of an article — the very essential 
 - First-class support for importing into Android Studio projects via Gradle.
 - [![Build Status](https://travis-ci.org/chimbori/crux.svg?branch=master)](https://travis-ci.org/chimbori/crux) Continuous integration with unit tests and golden file tests.  
 
+### Sample Code
+In a background thread, make a network request and obtain the `rawHTML` of the page you would like to analyze.
+
+```java
+String url = "https://example.com/article.html";
+String rawHTML = "<html><body><h1>This is an article</h1></body></html>";
+
+Article article = ArticleExtractor.with(url, rawHTML)
+    .extractMetadata()
+    .extractContent()  // If you only need metadata, you can skip `.extractorContent()`
+    .article();
+```
+
+On the UI thread:
+```java
+// Use article.document, article.title, etc.
+```
+
+## Image URL Extractor API
+
+From a single DOM Element root, the Image URL API inspects the sub-tree and returns the best
+possible image URL candidate available within it. It does this by scanning within the DOM tree
+for interesting `src` & `style` tags.
+
+All URLs are resolved as absolute URLs, even if the HTML contained relative URLs.
+
+```java
+ImageUrlExtractor.with(url, domElement).findImage().imageUrl();
+```
+
+## Anchor Links Extractor API
+
+From a single DOM Element root, the Image URL API inspects the sub-tree and returns the best
+possible link URL candidate available within it. It does this by scanning within the DOM tree
+for interesting `href` tags.
+
+All URLs are resolved as absolute URLs, even if the HTML contained relative URLs.
+
+```java
+LinkUrlExtractor.with(url, domElement).findLink().linkUrl();
+```
+
+## URL Heuristics API
+
+This API examines a given URL (without connecting to the server), and returns heuristically-determined
+answers to questions such as:
+
+- Is this URL likely a video URL?
+- Is this URL likely an image URL?
+- Is this URL likely an audio URL?
+- Is this URL likely an executable URL?
+- Is this URL likely an archive URL?
+
+This API also supports resolving redirects for certain well-known redirectors, with the precondition
+that the target URL be available as part of this candidate URL. In other words, this API will
+not be able to resolve redirectors that perform a HTTP 301 redirect.
+
+```java
+CruxURL cruxUrl = CruxURL.parse("https://example.com/article.html");
+cruxUrl.resolveRedirects();
+cruxUrl.isLikelyArticle();  // Returns true.
+cruxUrl.isLikelyImage();  // Returns false.
+```
+
 # Usage
- 
-## Import via Gradle
+
+Include Crux in your project, then see sample code for each API provided above.
+
+> Note that the Crux API is not yet final (we do not have a 1.0 release candidate yet), and it is likely to change. Feel free to use in your own projects, and let us know if the current API can be improved upon. And be prepared to update your apps if you update to a newer version of Crux that changes the API. Once we hit 1.0, we will be keeping the API fairly constant, so you would not need to keep updating your apps.
+
+## Import Crux via Gradle
 
 Project/`build.gradle`:
 ```groovy
@@ -32,32 +103,6 @@ Module/`build.gradle`:
 dependencies {
   compile 'com.github.chimbori:crux:-SNAPSHOT'
 }
-```
-
-## Sample Code
-
-> Note that the Crux API is not yet final (we do not have a 1.0 release candidate yet), and it is likely to change. Feel free to use in your own projects, and let us know if the current API can be improved upon. And be prepared to update your apps if you update to a newer version of Crux that changes the API. Once we hit 1.0, we will be keeping the API fairly constant, so you would not need to keep updating your apps.
-
-Using a singleton instance of OkHttp.
-```java
-OkHttpClient okHttpClient = new OkHttpClient();
-```
-
-In a background thread:
-```java
-CandidateURL candidateUrl = new CandidateURL(url); 
-if (candidateURL.isLikelyArticle()) {
-  Request request = new Request.Builder()
-      .url(url)  // Customize your network request as you see fit.
-      .build();
-  Response response = okHttpClient.newCall().execute();
-  Article article = new Extractor().extractContent(response.body().string());
-}
-```
-
-On the UI thread:
-```java
-// Use article.document, article.title, etc.
 ```
 
 # History
