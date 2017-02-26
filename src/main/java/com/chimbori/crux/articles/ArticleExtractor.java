@@ -8,12 +8,12 @@ import org.jsoup.nodes.Element;
 
 import java.util.Collection;
 
-public class Extractor {
+public class ArticleExtractor {
   private final String url;
   private final Document document;
   private final Article article;
 
-  private Extractor(String url, String html) {
+  private ArticleExtractor(String url, String html) {
     this.url = url;
     if (html.isEmpty()) {
       throw new IllegalArgumentException();
@@ -22,11 +22,11 @@ public class Extractor {
     this.article = new Article(this.url);
   }
 
-  public static Extractor with(String url, String html) {
-    return new Extractor(url, html);
+  public static ArticleExtractor with(String url, String html) {
+    return new ArticleExtractor(url, html);
   }
 
-  public Extractor extractMetadata() {
+  public ArticleExtractor extractMetadata() {
     article.title = MetadataHelpers.extractTitle(document);
     article.description = MetadataHelpers.extractDescription(document);
     article.siteName = MetadataHelpers.extractSiteName(document);
@@ -40,7 +40,7 @@ public class Extractor {
     return this;
   }
 
-  public Extractor extractContent() {
+  public ArticleExtractor extractContent() {
     PreprocessHelpers.preprocess(document);
 
     Collection<Element> nodes = ExtractionHelpers.getNodes(document);

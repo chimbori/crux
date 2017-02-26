@@ -710,7 +710,7 @@ public class GoldenFilesTest {
 
   private Article extractFromTestFile(String baseUri, String testFile) {
     try {
-      Article article = Extractor.with(baseUri,
+      Article article = ArticleExtractor.with(baseUri,
           CharsetConverter.readStream(new FileInputStream(new File("test_data/" + testFile))).content)
           .extractMetadata().extractContent().article();
       Log.i("%s", article.document.childNodes().toString());

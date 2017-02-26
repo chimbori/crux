@@ -1,7 +1,7 @@
 package com.chimbori.sample;
 
 import com.chimbori.crux.articles.Article;
-import com.chimbori.crux.articles.Extractor;
+import com.chimbori.crux.articles.ArticleExtractor;
 import com.chimbori.crux.images.ImageUrlExtractor;
 import com.chimbori.crux.links.LinkUrlExtractor;
 import com.chimbori.crux.urls.CruxURL;
@@ -22,7 +22,7 @@ public class PublicAPITest {
     String content = "<html><title>Crux";  // Intentionally malformed.
     CruxURL cruxURL = CruxURL.parse(url);
     if (cruxURL.isLikelyArticle()) {
-      Article article = Extractor.with(url, content).extractMetadata().extractContent().article();
+      Article article = ArticleExtractor.with(url, content).extractMetadata().extractContent().article();
       assertEquals("Crux", article.title);
     }
     CruxURL directURL = cruxURL.resolveRedirects();
