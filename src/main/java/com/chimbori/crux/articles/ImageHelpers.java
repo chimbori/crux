@@ -2,7 +2,7 @@ package com.chimbori.crux.articles;
 
 import com.chimbori.crux.common.Log;
 import com.chimbori.crux.common.StringUtils;
-import com.chimbori.crux.urls.CandidateURL;
+import com.chimbori.crux.urls.CruxURL;
 
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -98,11 +98,11 @@ class ImageHelpers {
         continue;
       }
 
-      CandidateURL candidateURL = CandidateURL.parse(image.src);
-      if (candidateURL != null && candidateURL.isAdImage()) {
+      CruxURL cruxURL = CruxURL.parse(image.src);
+      if (cruxURL != null && cruxURL.isAdImage()) {
         continue;
       }
-      // candidateURL may be null if trying to pass a "data://" URI, which the Java URL parser can’t handle.
+      // cruxURL may be null if trying to pass a "data://" URI, which the Java URL parser can’t handle.
 
       image.weight += image.height >= 50 ? 20 : -20;
       image.weight += image.width >= 50 ? 20 : -20;

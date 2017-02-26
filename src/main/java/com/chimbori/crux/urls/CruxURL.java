@@ -10,14 +10,14 @@ import java.net.URL;
  * types. Can optionally resolve redirects such as when Facebook or Google show an interstitial
  * page instead of redirecting the user to the actual URL.
  */
-public class CandidateURL {
+public class CruxURL {
   private final String fileName;
   public URL url;
 
   /**
-   * Static method to validate, initialize, and create a new {@link CandidateURL}.
+   * Static method to validate, initialize, and create a new {@link CruxURL}.
    */
-  public static CandidateURL parse(String url) {
+  public static CruxURL parse(String url) {
     if (url == null || url.isEmpty()) {
       return null;
     }
@@ -40,14 +40,14 @@ public class CandidateURL {
       return null;
     }
 
-    return new CandidateURL(javaNetUrl);
+    return new CruxURL(javaNetUrl);
   }
 
   /**
    * Private constructor, so that the wrapping static method can perform some validation before
    * invoking the constructor.
    */
-  private CandidateURL(URL url) {
+  private CruxURL(URL url) {
     this.url = url;
     fileName = url.getFile();
   }
@@ -104,7 +104,7 @@ public class CandidateURL {
         || fileName.endsWith(".jpg") || fileName.endsWith(".bmp") || fileName.endsWith(".ico") || fileName.endsWith(".eps");
   }
 
-  public CandidateURL resolveRedirects() {
+  public CruxURL resolveRedirects() {
     for (Redirectors.RedirectPattern redirect : Redirectors.REDIRECT_PATTERNS) {
       if (redirect.matches(url)) {
         url = redirect.resolveHandlingException(url);

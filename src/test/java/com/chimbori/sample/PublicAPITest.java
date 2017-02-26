@@ -4,7 +4,7 @@ import com.chimbori.crux.articles.Article;
 import com.chimbori.crux.articles.Extractor;
 import com.chimbori.crux.images.ImageUrlExtractor;
 import com.chimbori.crux.links.LinkUrlExtractor;
-import com.chimbori.crux.urls.CandidateURL;
+import com.chimbori.crux.urls.CruxURL;
 
 import org.jsoup.Jsoup;
 import org.junit.Test;
@@ -20,12 +20,12 @@ public class PublicAPITest {
   public void testCallersCanAccessArticleExtractorAPI() {
     String url = "https://chimbori.com/";
     String content = "<html><title>Crux";  // Intentionally malformed.
-    CandidateURL candidateURL = CandidateURL.parse(url);
-    if (candidateURL.isLikelyArticle()) {
+    CruxURL cruxURL = CruxURL.parse(url);
+    if (cruxURL.isLikelyArticle()) {
       Article article = Extractor.with(url, content).extractMetadata().extractContent().article();
       assertEquals("Crux", article.title);
     }
-    CandidateURL directURL = candidateURL.resolveRedirects();
+    CruxURL directURL = cruxURL.resolveRedirects();
     assertEquals("https://chimbori.com/", directURL.toString());
   }
 
