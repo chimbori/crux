@@ -10,34 +10,45 @@ import java.net.URL;
  * types. Can optionally resolve redirects such as when Facebook or Google show an interstitial
  * page instead of redirecting the user to the actual URL.
  */
-@SuppressWarnings("WeakerAccess")
 public class CandidateURL {
   private final String fileName;
   public URL url;
 
-  @SuppressWarnings("unused")
-  public CandidateURL(String candidateUrl) {
-    if (candidateUrl == null || candidateUrl.isEmpty()) {
-      throw new IllegalArgumentException(String.format("URL: [%s]", candidateUrl));
+  /**
+   * Static method to validate, initialize, and create a new {@link CandidateURL}.
+   */
+  public static CandidateURL parse(String url) {
+    if (url == null || url.isEmpty()) {
+      return null;
     }
 
+    URL javaNetUrl = null;
     try {
-      url = new URL(candidateUrl);
+      javaNetUrl = new URL(url);
     } catch (MalformedURLException e) {
       if (e.getMessage().startsWith("no protocol")) {
         try {
-          url = new URL("http://" + candidateUrl);
+          url = "http://" + url;
+          javaNetUrl = new URL(url);
         } catch (MalformedURLException e1) {
-          // Uninitialized!
-          e1.printStackTrace();
+          // Ignore.
         }
       }
     }
 
-    if (url == null) {
-      throw new IllegalArgumentException(String.format("Unable to parse URL: [%s]", candidateUrl));
+    if (javaNetUrl == null) {
+      return null;
     }
 
+    return new CandidateURL(javaNetUrl);
+  }
+
+  /**
+   * Private constructor, so that the wrapping static method can perform some validation before
+   * invoking the constructor.
+   */
+  private CandidateURL(URL url) {
+    this.url = url;
     fileName = url.getFile();
   }
 

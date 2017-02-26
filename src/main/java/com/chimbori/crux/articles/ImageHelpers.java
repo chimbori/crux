@@ -97,13 +97,12 @@ class ImageHelpers {
       if (image.src.isEmpty()) {
         continue;
       }
-      try {
-        if (new CandidateURL(image.src).isAdImage()) {
-          continue;
-        }
-      } catch (IllegalArgumentException e) {
-        // Quite likely trying to pass a "data://" URI, which the Java URL parser can’t handle.
+
+      CandidateURL candidateURL = CandidateURL.parse(image.src);
+      if (candidateURL != null && candidateURL.isAdImage()) {
+        continue;
       }
+      // candidateURL may be null if trying to pass a "data://" URI, which the Java URL parser can’t handle.
 
       image.weight += image.height >= 50 ? 20 : -20;
       image.weight += image.width >= 50 ? 20 : -20;
