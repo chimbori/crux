@@ -10,12 +10,12 @@ import static org.junit.Assert.assertTrue;
 public class CruxURLTest {
   @Test
   public void testIsHttpURL() {
-    assertTrue(CruxURL.parse("http://example.com").isHttp());
-    assertTrue(CruxURL.parse("https://example.com").isHttp());
-    assertTrue(CruxURL.parse("example.com").isHttp());
-    assertFalse(CruxURL.parse("file://error").isHttp());
-    assertFalse(CruxURL.parse("ftp://example.com").isHttp());
-    assertFalse(CruxURL.parse("mailto:test@example.com").isHttp());
+    assertTrue(CruxURL.parse("http://example.com").isWebScheme());
+    assertTrue(CruxURL.parse("https://example.com").isWebScheme());
+    assertTrue(CruxURL.parse("example.com").isWebScheme());
+    assertFalse(CruxURL.parse("file://error").isWebScheme());
+    assertFalse(CruxURL.parse("ftp://example.com").isWebScheme());
+    assertFalse(CruxURL.parse("mailto:test@example.com").isWebScheme());
   }
 
   @Test

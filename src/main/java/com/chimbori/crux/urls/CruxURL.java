@@ -56,7 +56,7 @@ public class CruxURL {
     return StringUtils.countMatches(url.toString(), "ad") >= 2;
   }
 
-  public boolean isHttp() {
+  public boolean isWebScheme() {
     String scheme = url.getProtocol().toLowerCase();
     return scheme.equals("http") || scheme.equals("https");
   }
