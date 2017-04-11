@@ -31,7 +31,7 @@ class PreprocessHelpers {
       String className = child.className().toLowerCase();
       String id = child.id().toLowerCase();
       if (ExtractionHelpers.NEGATIVE_CSS_CLASSES_AND_IDS.matcher(className).find() || ExtractionHelpers.NEGATIVE_CSS_CLASSES_AND_IDS.matcher(id).find()) {
-        child.remove();
+        Log.printAndRemove(child, "stripUnlikelyCandidates");
       }
     }
   }
@@ -39,22 +39,22 @@ class PreprocessHelpers {
   private static void removeScriptsStylesForms(Document doc) {
     Elements scripts = doc.getElementsByTag("script");
     for (Element item : scripts) {
-      item.remove();
+      Log.printAndRemove(item, "removeScriptsStylesForms('script')");
     }
 
     Elements noscripts = doc.getElementsByTag("noscript");
     for (Element item : noscripts) {
-      item.remove();
+      Log.printAndRemove(item, "removeScriptsStylesForms('noscript')");
     }
 
     Elements styles = doc.getElementsByTag("style");
     for (Element item : styles) {
-      item.remove();
+      Log.printAndRemove(item, "removeScriptsStylesForms('style')");
     }
 
     Elements forms = doc.getElementsByTag("form");
     for (Element item : forms) {
-      item.remove();
+      Log.printAndRemove(item, "removeScriptsStylesForms('form')");
     }
   }
 
@@ -62,7 +62,7 @@ class PreprocessHelpers {
     for (int i = 0; i < node.childNodes().size();) {
       Node child = node.childNode(i);
       if (child.nodeName().equals("#comment"))
-        child.remove();
+        Log.printAndRemove(child, "removeComments");
       else {
         removeComments(child);
         i++;

@@ -99,7 +99,7 @@ class PostprocessHelpers {
   private static void removeTopLevelTagsNotLikelyToBeParagraphs(Element element) {
     for (Element childElement : element.children()) {
       if (!RETAIN_TAGS_TOP_LEVEL.contains(childElement.tagName())) {
-        printAndRemove(childElement, "removeTopLevelTagsNotLikelyToBeParagraphs");
+        Log.printAndRemove(childElement, "removeTopLevelTagsNotLikelyToBeParagraphs");
       }
     }
   }
@@ -107,7 +107,7 @@ class PostprocessHelpers {
   private static void removeTagsNotLikelyToBeParagraphs(Element element) {
     for (Element childElement : element.children()) {
       if (!RETAIN_TAGS.contains(childElement.tagName())) {
-        printAndRemove(childElement, "removeTagsNotLikelyToBeParagraphs");
+        Log.printAndRemove(childElement, "removeTagsNotLikelyToBeParagraphs");
       } else if (childElement.children().size() > 0) {
         removeTagsNotLikelyToBeParagraphs(childElement);
       }
@@ -144,7 +144,7 @@ class PostprocessHelpers {
           text.isEmpty() ||
           (text.length() < MIN_LENGTH_FOR_PARAGRAPHS && !isAnchorTag) ||
           text.length() > StringUtils.countLetters(text) * 2) {
-        printAndRemove(childNode, "removeShortParagraphs");
+        Log.printAndRemove(childNode, "removeShortParagraphs:");
       }
     }
   }
@@ -152,7 +152,7 @@ class PostprocessHelpers {
   private static void removeUnlikelyChildNodes(Element element) {
     for (Element childElement : element.children()) {
       if (isUnlikely(childElement)) {
-        printAndRemove(childElement, "removeUnlikelyChildNodes");
+        Log.printAndRemove(childElement, "removeUnlikelyChildNodes");
       } else if (childElement.children().size() > 0) {
         removeUnlikelyChildNodes(childElement);
       }
@@ -164,7 +164,7 @@ class PostprocessHelpers {
     for (Element element : elementsWithGravityScore) {
       int score = Integer.parseInt(element.attr(ExtractionHelpers.GRAVITY_SCORE_ATTRIBUTE));
       if (score < 0 || element.text().length() < MIN_LENGTH_FOR_PARAGRAPHS) {
-        printAndRemove(element, "removeNodesWithNegativeScores");
+        Log.printAndRemove(element, "removeNodesWithNegativeScores");
       }
     }
   }
@@ -188,8 +188,4 @@ class PostprocessHelpers {
     }
   }
 
-  private static void printAndRemove(Node node, String reason) {
-    Log.i("%s [%s]", reason, node.outerHtml().substring(0, Math.min(node.outerHtml().length(), 80)).replace("\n", ""));
-    node.remove();
-  }
 }
