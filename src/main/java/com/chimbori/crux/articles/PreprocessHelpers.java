@@ -30,7 +30,7 @@ class PreprocessHelpers {
     for (Element child : doc.select("body").select("*")) {
       String className = child.className().toLowerCase();
       String id = child.id().toLowerCase();
-      if (ExtractionHelpers.NEGATIVE.matcher(className).find() || ExtractionHelpers.NEGATIVE.matcher(id).find()) {
+      if (ExtractionHelpers.NEGATIVE_CSS_CLASSES_AND_IDS.matcher(className).find() || ExtractionHelpers.NEGATIVE_CSS_CLASSES_AND_IDS.matcher(id).find()) {
         child.remove();
       }
     }

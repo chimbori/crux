@@ -19,25 +19,25 @@ class ExtractionHelpers {
   public static final String GRAVITY_SCORE_ATTRIBUTE = "gravityScore";
   public static final String GRAVITY_SCORE_SELECTOR = String.format("*[%s]", GRAVITY_SCORE_ATTRIBUTE);
 
-  private static final Pattern NODES =
+  private static final Pattern IMPORTANT_NODES =
       Pattern.compile("p|div|td|h1|h2|article|section");
 
-  private static final Pattern UNLIKELY =
+  private static final Pattern UNLIKELY_CSS_CLASSES_AND_IDS =
       Pattern.compile("com(bx|ment|munity)|dis(qus|cuss)|e(xtra|[-]?mail)|foot|"
           + "header|menu|re(mark|ply)|rss|sh(are|outbox)|sponsor"
           + "a(d|ll|gegate|rchive|ttachment)|(pag(er|ination))|popup|print|"
           + "login|si(debar|gn|ngle)|facebook|twitter|email");
 
-  private static final Pattern POSITIVE =
+  private static final Pattern POSITIVE_CSS_CLASSES_AND_IDS =
       Pattern.compile("(^(body|content|h?entry|main|page|post|text|blog|story|haupt))"
           + "|arti(cle|kel)|instapaper_body");
 
-  public static final Pattern NEGATIVE =
+  public static final Pattern NEGATIVE_CSS_CLASSES_AND_IDS =
       Pattern.compile("nav($|igation)|user|com(ment|bx)|(^com-)|contact|"
           + "foot|masthead|(me(dia|ta))|outbrain|promo|related|scroll|(sho(utbox|pping))|"
           + "sidebar|sponsor|tags|tool|widget|player|disclaimer|toc|infobox|vcard|post-ratings");
 
-  private static final Pattern NEGATIVE_STYLE =
+  private static final Pattern NEGATIVE_CSS_STYLES =
       Pattern.compile("hidden|display: ?none|font-size: ?small");
 
   /**
@@ -156,25 +156,25 @@ class ExtractionHelpers {
     String style = element.attr("style");
 
     int weight = 0;
-    if (POSITIVE.matcher(className).find()) {
+    if (POSITIVE_CSS_CLASSES_AND_IDS.matcher(className).find()) {
       weight += 35;
     }
-    if (POSITIVE.matcher(id).find()) {
+    if (POSITIVE_CSS_CLASSES_AND_IDS.matcher(id).find()) {
       weight += 40;
     }
-    if (UNLIKELY.matcher(className).find()) {
+    if (UNLIKELY_CSS_CLASSES_AND_IDS.matcher(className).find()) {
       weight -= 20;
     }
-    if (UNLIKELY.matcher(id).find()) {
+    if (UNLIKELY_CSS_CLASSES_AND_IDS.matcher(id).find()) {
       weight -= 20;
     }
-    if (NEGATIVE.matcher(className).find()) {
+    if (NEGATIVE_CSS_CLASSES_AND_IDS.matcher(className).find()) {
       weight -= 50;
     }
-    if (NEGATIVE.matcher(id).find()) {
+    if (NEGATIVE_CSS_CLASSES_AND_IDS.matcher(id).find()) {
       weight -= 50;
     }
-    if (style != null && !style.isEmpty() && NEGATIVE_STYLE.matcher(style).find()) {
+    if (style != null && !style.isEmpty() && NEGATIVE_CSS_STYLES.matcher(style).find()) {
       weight -= 50;
     }
     return weight;
@@ -187,7 +187,7 @@ class ExtractionHelpers {
     Map<Element, Object> nodes = new LinkedHashMap<>(64);
     int score = 100;
     for (Element el : doc.select("body").select("*")) {
-      if (NODES.matcher(el.tagName()).matches()) {
+      if (IMPORTANT_NODES.matcher(el.tagName()).matches()) {
         nodes.put(el, null);
         setScore(el, score);
         score = score / 2;
