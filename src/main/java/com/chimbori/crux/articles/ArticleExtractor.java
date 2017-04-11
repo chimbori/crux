@@ -46,11 +46,11 @@ public class ArticleExtractor {
     Collection<Element> nodes = ExtractionHelpers.getNodes(document);
     int maxWeight = 0;
     Element bestMatchElement = null;
-    for (Element entry : nodes) {
-      int currentWeight = ExtractionHelpers.getWeight(entry);
+    for (Element element : nodes) {
+      int currentWeight = ExtractionHelpers.getWeight(element);
       if (currentWeight > maxWeight) {
         maxWeight = currentWeight;
-        bestMatchElement = entry;
+        bestMatchElement = element;
         if (maxWeight > 200) {
           break;
         }
