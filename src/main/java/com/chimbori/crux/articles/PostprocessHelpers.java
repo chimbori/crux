@@ -31,7 +31,7 @@ class PostprocessHelpers {
    * Tags that should not be output, but still may contain interesting content.
    */
   private static final Set<String> REMOVE_TAGS_BUT_RETAIN_CONTENT = new HashSet<>(Arrays.asList(
-      "font", "table", "tbody", "tr", "td", "div", "ol", "ul", "li", "span", "pre"
+      "font", "table", "tbody", "tr", "td", "div", "ol", "ul", "li", "span"
   ));
 
   /**
@@ -39,7 +39,15 @@ class PostprocessHelpers {
    * to the list of tags that callers can be expected to be able to handle.
    */
   private static final Set<String> RETAIN_TAGS = new HashSet<>(Arrays.asList(
-      "p" , "b", "i", "u", "strong", "em", "a", "pre", "h1", "h2", "h3", "h4", "h5", "h6"
+      "p", "b", "i", "u", "strong", "em", "a", "pre", "h1", "h2", "h3", "h4", "h5", "h6", "blockquote"
+  ));
+
+  /**
+   * Tags that can contain really short content, because they are not paragraph-level tags. Content
+   * within these tags is not subject to the {@code MIN_LENGTH_FOR_PARAGRAPHS} requirement.
+   */
+  private static final Set<String> TAGS_EXEMPT_FROM_MIN_LENGTH_CHECK = new HashSet<>(Arrays.asList(
+      "b", "i", "u", "strong", "em", "a", "pre", "h1", "h2", "h3", "h4", "h5", "h6", "blockquote"
   ));
 
   /**
@@ -57,7 +65,7 @@ class PostprocessHelpers {
    * top-level children.
    */
   private static final Set<String> RETAIN_TAGS_TOP_LEVEL = new HashSet<>(Arrays.asList(
-      "p", "h1", "h2", "h3", "h4", "h5", "h6"
+      "p", "h1", "h2", "h3", "h4", "h5", "h6", "blockquote", "li"
   ));
 
   static Document postprocess(Element topNode) {
@@ -118,8 +126,8 @@ class PostprocessHelpers {
     for (Element childElement : element.children()) {
       removeTagsButRetainContent(childElement);
       if (REMOVE_TAGS_BUT_RETAIN_CONTENT.contains(childElement.tagName())) {
-        Log.i("removeTagsButRetainContent: %s", childElement.outerHtml());
-        childElement.unwrap();
+        Log.i("removeTagsButRetainContent: [%s] %s", childElement.tagName(), childElement.outerHtml());
+        childElement.tagName("p");  // Set the wrapper tag to <p> instead of unwrapping them.
       }
     }
   }
@@ -129,20 +137,21 @@ class PostprocessHelpers {
       Node childNode = topNode.childNode(i);
 
       String text = null;
-      boolean isAnchorTag = false;
+      boolean isExemptFromMinTextLengthCheck = false;
       if (childNode instanceof TextNode) {
         text = ((TextNode) childNode).text().trim();
 
       } else if (childNode instanceof Element) {
         Element childElement = (Element) childNode;
         text = childElement.text().trim();
-        isAnchorTag = childElement.tagName().equals("a") && childElement.hasAttr("href");
-
+        isExemptFromMinTextLengthCheck = TAGS_EXEMPT_FROM_MIN_LENGTH_CHECK.contains(childElement.tagName());
       }
+
+      Log.i("removeShortParagraphs: [%s] isExemptFromMinTextLengthCheck : %b", childNode, isExemptFromMinTextLengthCheck);
 
       if (text == null ||
           text.isEmpty() ||
-          (text.length() < MIN_LENGTH_FOR_PARAGRAPHS && !isAnchorTag) ||
+          (!isExemptFromMinTextLengthCheck && text.length() < MIN_LENGTH_FOR_PARAGRAPHS) ||
           text.length() > StringUtils.countLetters(text) * 2) {
         Log.printAndRemove(childNode, "removeShortParagraphs:");
       }

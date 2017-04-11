@@ -38,9 +38,8 @@ public class GoldenFilesTest {
   @Test
   public void testYCombinator() {
     Article article = extractFromTestFile("http://paulgraham.com/seesv.html", "ycombinator.html");
-    assertEquals(1, article.document.childNodeSize());
-    assertStartsWith("", article.document.text());
-    assertStartsWith("October 2010 • Silicon Valley proper is mostly suburban sprawl.", article.document.child(0).text());
+    assertStartsWith("Want to start a startup? Get funded by Y Combinator.", article.document.text());
+    assertStartsWith("October 2010 • Silicon Valley proper is mostly suburban sprawl.", article.document.child(1).text());
     assertTrue(article.document.text(), article.document.text().endsWith(" and Jessica Livingston for reading drafts of this. •"));
     assertTrue(article.keywords.isEmpty());
   }
@@ -54,23 +53,9 @@ public class GoldenFilesTest {
   }
 
   @Test
-  public void testToloNews() {
-    Article article = extractFromTestFile("http://www.tolonews.com/en/video/24865-tolonews-6pm-news-19-april-2016", "tolonews.html");
-    assertEquals("Acting Governor of Balkh province, Atta Mohammad Noor, said that differences between leaders of the National Unity Government (NUG) – namely President Ashraf Ghani and CEO Abdullah Abdullah— have paved the ground for mounting insecurity. Hundreds of worried relatives gathered outside Kabul hospitals on Tuesday desperate for news of loved ones following the deadly suicide bombing earlier in the day.", article.document.text());
-  }
-
-  @Test
   public void testKhaamaPress() {
     Article article = extractFromTestFile("http://www.khaama.com/over-100-school-girls-poisoned-in-western-afghanistan-0737", "khaama.html");
     assertStartsWith("Over 100 school girls have been poisoned in western Farah province of Afghanistan during the school hours.", article.document.text());
-  }
-
-  @Test
-  public void testCNN() {
-    Article article = extractFromTestFile("http://edition.cnn.com/2011/WORLD/africa/04/06/libya.war/index.html?on.cnn=1", "cnn.html");
-    assertEquals("Gadhafi asks Obama to end NATO bombing - CNN.com", article.title);
-    assertEquals("http://edition.cnn.com/2011/WORLD/africa/04/06/libya.war/t1larg.libyarebel.gi.jpg", article.imageUrl);
-    assertStartsWith("Tripoli, Libya (CNN) -- As rebel and pro-government forces in Libya maneuvered on the battlefield Wedn", article.document.child(0).text());
   }
 
   @Test
@@ -97,7 +82,7 @@ public class GoldenFilesTest {
     Article article = extractFromTestFile("http://www.reuters.com/article/us-knightcapital-trading-technology-idUSBRE87203X20120803", "reuters.html");
     assertEquals("Knight trading loss shows cracks in equity markets", article.title);
     assertEquals("http://s1.reutersmedia.net/resources/r/?m=02&d=20120803&t=2&i=637797752&w=130&fh=&fw=&ll=&pl=&r=CBRE872074Y00", article.imageUrl);
-    assertStartsWith("Knight trading loss shows cracks in equity markets (Reuters) - The software glitch that cost Knight Capital Group", article.document.text());
+    assertStartsWith("Knight trading loss shows cracks in equity markets Knight's future in balance after trading disaster", article.document.text());
   }
 
   @Test
@@ -164,13 +149,6 @@ public class GoldenFilesTest {
   }
 
   @Test
-  public void testGithub() {
-    Article article = extractFromTestFile("https://github.com/ifesdjeen/jReadability", "github.html");
-    assertStartsWith("= jReadability This is a small helper utility (only 130 lines of code) for pepole", article.document.text());
-    assertEquals("https://github.com/fluidicon.png", article.faviconUrl);
-  }
-
-  @Test
   public void testITunes() {
     Article article = extractFromTestFile("http://itunes.apple.com/us/album/21/id420075073", "itunes.html");
     assertStartsWith("What else can be said of this album other than that it is simply amazing? Adele's voice is powerful, vulnerable, assured, and heartbreaking all in one fell swoop.", article.document.text());
@@ -219,16 +197,8 @@ public class GoldenFilesTest {
   @Test
   public void testTazBlog() {
     Article article = extractFromTestFile("http://www.taz.de/1/politik/asien/artikel/1/anti-atomkraft-nein-danke/", "taz.html");
-    assertStartsWith("Absolute Minderheit: Im Shiba-Park in Tokio treffen sich jetzt jeden Sonntag die Atomkraftgegner. Sie blicken neidisch auf die Anti-AKW-Bewegung in Deutschland.", article.document.text());
+    assertStartsWith("Protestkultur in Japan nach der Katastrophe Absolute Minderheit: Im Shiba-Park in Tokio", article.document.text());
     assertEquals("Protestkultur in Japan nach der Katastrophe: Anti-Atomkraft? Nein danke! - taz.de", article.title);
-  }
-
-  @Test
-  public void testFacebook() {
-    Article article = extractFromTestFile("http://www.facebook.com/ejdionne/posts/10150154175658687", "facebook.html");
-    assertStartsWith("In my column tomorrow, I urge President Obama to end the spectacle of", article.document.text());
-    assertEquals("http://profile.ak.fbcdn.net/hprofile-ak-snc4/41782_97057113686_1357_q.jpg", article.imageUrl);
-    assertEquals("In my column...", article.title);
   }
 
   @Test
@@ -243,7 +213,8 @@ public class GoldenFilesTest {
   @Test
   public void testBlogger() {
     Article article = extractFromTestFile("http://blog.talawah.net/2011/04/gavin-king-unviels-red-hats-top-secret.html", "blogger.html");
-    assertStartsWith("Gavin King unveils Red Hat's Java successor: The Ceylon Project of Red Hat/Hibernate/Seam fame recently unveiled the top secret project", article.document.text());
+    assertStartsWith("Gavin King unveils Red Hat's Java successor: The Ceylon Project", article.document.text());
+    assertStartsWith("Gavin King of Red Hat/Hibernate/Seam fame recently unveiled the top secret project that he has been working on over the past two years", article.document.child(1).text());
     assertEquals("http://3.bp.blogspot.com/-cyMzveP3IvQ/TaR7f3qkYmI/AAAAAAAAAIk/mrChE-G0b5c/s200/Java.png", article.imageUrl);
     assertEquals("The Brain Dump: Gavin King unveils Red Hat's Java killer successor: The Ceylon Project", article.title);
     assertEquals("http://blog.talawah.net/feeds/posts/default?alt=rss", article.feedUrl);
@@ -271,15 +242,6 @@ public class GoldenFilesTest {
     assertEquals("Gantto Takes On Microsoft Project With Web-Based Project Management Application", article.title);
     assertStartsWith("Y Combinator-backed Gantto is launching", article.document.text());
     assertEquals("http://tctechcrunch.files.wordpress.com/2010/08/gantto.jpg", article.imageUrl);
-  }
-
-  @Test
-  public void testCNN2() {
-    Article article = extractFromTestFile("http://www.cnn.com/2010/POLITICS/08/13/democrats.social.security/index.html", "cnn2.html");
-    assertEquals("Democrats to use Social Security against GOP this fall - CNN.com", article.title);
-    assertEquals(31, article.document.childNodeSize());
-    assertStartsWith("Washington (CNN) -- Democrats pledged ", article.document.child(0).text());
-    assertEquals(article.imageUrl, "http://i.cdn.turner.com/cnn/2010/POLITICS/08/13/democrats.social.security/story.kaine.gi.jpg");
   }
 
   @Test
@@ -419,9 +381,9 @@ public class GoldenFilesTest {
   @Test
   public void testSlamMagazine() {
     Article article = extractFromTestFile("http://www.slamonline.com/online/nba/2010/10/nba-schoolyard-rankings/", "slamonline.html");
-    assertStartsWith("When in doubt, rank players and add your findings", article.document.text());
-    assertEquals(article.imageUrl, "http://www.slamonline.com/online/wp-content/uploads/2010/10/celtics.jpg");
     assertEquals("SLAM ONLINE | » NBA Schoolyard Rankings", article.title);
+    assertEquals(article.imageUrl, "http://www.slamonline.com/online/wp-content/uploads/2010/10/celtics.jpg");
+    assertStartsWith("Thursday, October 28th, 2010 at 3:32 pm", article.document.text());
   }
 
   @Test
@@ -483,42 +445,29 @@ public class GoldenFilesTest {
   }
 
   @Test
-  public void testWikipedia2() {
-    Article article = extractFromTestFile("http://en.wikipedia.org/wiki/President_of_the_United_States", "wikipedia_president.html");
-    assertStartsWith("\"POTUS\" redirects here.", article.document.html());
+  public void testWikipediaDarwin() {
+    Article article = extractFromTestFile("https://en.wikipedia.org/wiki/Charles_Darwin", "wikipedia_darwin.html");
+    assertEquals("Charles Darwin - Wikipedia", article.title);
+    assertStartsWith("For other people named Charles Darwin, see Charles Darwin (disambiguation).", article.document.text());
   }
 
   @Test
-  public void testWikipedia3() {
-    Article article = extractFromTestFile("http://en.wikipedia.org/wiki/Muhammad", "wikipedia_muhammad.html");
-    assertStartsWith("This article is about the Islamic prophet. For other persons named Muhammad, see Muhammad ( 570 – 8 June 632)", article.document.text());
+  public void testWikipediaGalileo() {
+    Article article = extractFromTestFile("https://en.wikipedia.org/wiki/Galileo_Galilei", "wikipedia_galileo.html");
+    assertStartsWith("\"Galileo\" redirects here. For other uses, see Galileo (disambiguation) and Galileo Galilei (disambiguation).", article.document.text());
   }
 
   @Test
-  public void testWikipedia4() {
-    Article article = extractFromTestFile("http://de.wikipedia.org/wiki/Henne_Strand", "wikipedia_Henne_Strand.html");
-    assertStartsWith("Der dänische Ort Henne Strand befindet sich in Südwest-Jütland und gehört zur Kommune Varde", article.document.text());
-  }
-
-  @Test
-  public void testWikipedia5() {
-    Article article = extractFromTestFile("http://de.wikipedia.org/wiki/Java", "wikipedia_java.html");
-    assertStartsWith("This article is about the Indonesian island. For other uses, see Java (Indonesian: Jawa) is an island of Indonesia. ", article.document.text());
-  }
-
-  @Test
-  public void testWikipedia6() {
-    Article article = extractFromTestFile("http://de.wikipedia.org/wiki/Knight_Rider", "wikipedia-knight_rider_de.html");
-    assertStartsWith("Knight Rider ist eine US-amerikanische Fernsehserie, "
-        + "die von 1982 bis 1986 produziert wurde. Knight Rider ist eine Krimi-Action-Serie mit futuristischen Komponenten "
-        + "und hat weltweit Kultstatus erlangt.", article.document.text());
+  public void testWikipediaOktoberfest() {
+    Article article = extractFromTestFile("https://de.m.wikipedia.org/wiki/Oktoberfest", "wikipedia_oktoberfest.html");
+    assertStartsWith("Das erste Oktoberfest Bearbeiten Anlässlich der Hochzeit zwischen Kronprinz Ludwig und Prinzessin Therese am 12. ", article.document.text());
   }
 
   @Test
   public void testTimeMagazine() {
-    Article article = extractFromTestFile("http://www.time.com/time/health/article/0,8599,2011497,00.html", "time.html");
+    Article article = extractFromTestFile("http://content.time.com/time/health/article/0,8599,2011497,00.html", "time.html");
     assertStartsWith("This month, the federal government released", article.document.child(0).text());
-    assertEquals(article.document.childNodes().toString(), "http://img.timeinc.net/time/daily/2010/1008/bp_oil_spill_0817.jpg", article.imageUrl);
+    assertEquals(article.document.childNodes().toString(), "http://img.timeinc.net/time/daily/2010/1008/360_bp_oil_spill_0817.jpg", article.imageUrl);
   }
 
   @Test
@@ -633,13 +582,6 @@ public class GoldenFilesTest {
   }
 
   @Test
-  public void testReuters2() {
-    Article article = extractFromTestFile("http://www.reuters.com/article/2012/08/03/us-knightcapital-trading-technology-idUSBRE87203X20120803", "reuters.html");
-    assertEquals(1, article.images.size());
-    assertEquals("http://s1.reutersmedia.net/resources/r/?m=02&d=20120803&t=2&i=637797752&w=130&fh=&fw=&ll=&pl=&r=CBRE872074Y00", article.imageUrl);
-  }
-
-  @Test
   public void testMSNBC() {
     Article article = extractFromTestFile("http://www.msnbc.msn.com/id/41207891/ns/world_news-europe/", "msnbc.html");
     assertStartsWith("DUBLIN — Prime Minister Brian Cowen announced Saturday that he has resigned as leader of Ireland's dominant Fianna Fail party", article.document.text());
@@ -708,6 +650,25 @@ public class GoldenFilesTest {
     assertEquals("https://www.google.com/images/branding/googleg/2x/googleg_standard_color_76dp.png", article.faviconUrl);
   }
 
+  @Test
+  public void testHackerNoon() {
+    Article article = extractFromTestFile("https://hackernoon.com/design-thinking-lessons-from-our-cats-9a43fd71457a", "hackernoon.html");
+    assertEquals("Design thinking lessons from our cats – Hacker Noon", article.title);
+    assertStartsWith("We can all agree that cats spend the vast majority of their time thinking through complex problems in innovative ways.", article.document.text());
+    assertContains("I’ve never known a cat that didn’t demonstrate a deep understanding of market economics.", article.document.text());
+    assertContains("Cats aren’t discouraged by the risk of looking dumb and being laughed at as they experiment and explore their environment…", article.document.text());
+    assertContains("*I did not actually do this but this is what I imagine would have happened if I had.", article.document.text());
+    assertContains("If you liked this article, be sure to recommend it and help spread good ideas as far and wide as tufts of cat hair caught in a warm summer’s breeze.", article.document.text());
+  }
+
+  @Test
+  public void testWiredScience() {
+    Article article = extractFromTestFile("https://www.wired.com/2017/04/dangerous-volcano-can-tricky-thing-pin/", "wired-volcano.html");
+    assertEquals("The ‘Most Dangerous’ Volcano Can Be a Tricky Thing to Pin Down", article.title);
+    assertStartsWith("I know you’ve all seen lists like this before: what is the “world’s most dangerous volcano“? Most of the time, that discuss devolves quickly into something about “supervolcanoes“, which is very exciting and all because they can generate massive eruptions. However, they are far from being the “most dangerous” volcano.", article.document.text());
+    assertContains("What is the volcano’s eruptive history?", article.document.text());
+  }
+
   private Article extractFromTestFile(String baseUri, String testFile) {
     try {
       Article article = ArticleExtractor.with(baseUri,
@@ -724,6 +685,12 @@ public class GoldenFilesTest {
   private void assertStartsWith(String expected, String actual) {
     if (!actual.startsWith(expected)) {
       fail(String.format("Expected \n[%s]\n at start of \n[%s]\n", expected, actual));
+    }
+  }
+
+  private void assertContains(String expected, String actual) {
+    if (!actual.contains(expected)) {
+      fail(String.format("Expected \n[%s]\n in \n[%s]\n", expected, actual));
     }
   }
 }
