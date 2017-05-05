@@ -669,6 +669,16 @@ public class GoldenFilesTest {
     assertContains("What is the volcano’s eruptive history?", article.document.text());
   }
 
+  @Test
+  public void testRetractionWatch() {
+    Article article = extractFromTestFile("http://retractionwatch.com/2017/04/26/troubling-new-way-evade-plagiarism-detection-software-tell-used/", "retraction_watch.html");
+    assertEquals("A troubling new way to evade plagiarism detection software. (And how to tell if it's been used.) - Retraction Watch at Retraction Watch", article.title);
+    assertStartsWith("Recently, at the end of a tutorial, a student asked Ann Rogerson a question she’d never heard before: Was it okay to use paraphrasing tools to write up assignments?", article.document.text());
+    assertContains("I had my answer about what the student in the previous session had done.", article.document.text());
+    assertContains("…however I have no experience or evidence whether professional academics are using the tools for their scholarly publishing.", article.document.text());
+    assertContains("SIDEBAR: How to identify text modified by a paraphrasing tool", article.document.text());
+  }
+
   private Article extractFromTestFile(String baseUri, String testFile) {
     try {
       Article article = ArticleExtractor.with(baseUri,
