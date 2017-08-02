@@ -38,7 +38,7 @@ public class LinkUrlExtractor {
     } catch (HeuristicString.CandidateFound candidateFound) {
       linkUrl = candidateFound.candidate;
     }
-    linkUrl = StringUtils.makeAbsoluteUrl(url.toString(), linkUrl);
+    linkUrl = StringUtils.makeAbsoluteUrl(url, linkUrl);
     return this;
   }
 

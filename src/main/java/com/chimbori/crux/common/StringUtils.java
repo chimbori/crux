@@ -10,9 +10,12 @@ import java.net.URL;
 import java.net.URLDecoder;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class StringUtils {
   private static final String WHITESPACE = "[ \r\t\n]+";
+
   public static final String UTF8 = "UTF-8";
 
   private StringUtils() {
@@ -258,6 +261,10 @@ public class StringUtils {
     if (relativeUrl == null || relativeUrl.isEmpty()) {
       return null;
     }
+
+    baseUrl = StringUtils.unescapeBackslashHex(baseUrl);
+    relativeUrl = StringUtils.unescapeBackslashHex(relativeUrl);
+
     try {
       return new URL(new URL(baseUrl), relativeUrl).toString();
     } catch (MalformedURLException e) {
@@ -275,5 +282,33 @@ public class StringUtils {
       return StringEscapeUtils.unescapeHtml4(attrValue);
     }
     return null;
+  }
+
+  private static final Pattern BACKSLASH_HEX_SPACE_PATTERN = Pattern.compile("\\\\([a-zA-Z0-9]+) "); // Space is included.
+
+  /**
+   * Unescapes backslash-hex escaped strings in URLs (typically found in URLs used in CSS).
+   * The escaped pattern begins with a backslash and ends with a space. All characters between these
+   * two delimiters must be valid hex digits.
+   *
+   * E.g.
+   * "\3a " --> :
+   * "\3d " --> =
+   * "\26 " --> &
+   */
+  public static String unescapeBackslashHex(String input) {
+    if (input == null) {
+      return null;
+    }
+    String output = input;
+    Matcher matcher = BACKSLASH_HEX_SPACE_PATTERN.matcher(input);
+    while (matcher.find()) {
+      String backSlashHexSpace = matcher.group(0);
+      String hexUnicode = matcher.group(1);
+      int decimalUnicode = Integer.parseInt(hexUnicode.trim(), 16);
+      String unicode = new String(Character.toChars(decimalUnicode));
+      output = output.replace(backSlashHexSpace, unicode);
+    }
+    return output;
   }
 }

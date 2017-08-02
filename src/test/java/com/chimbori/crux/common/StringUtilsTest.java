@@ -75,4 +75,21 @@ public class StringUtilsTest {
     assertEquals("2001/11/01", StringUtils.completeDate("2001/11"));
     assertEquals("2001/11/02", StringUtils.completeDate("2001/11/02"));
   }
+
+  @Test
+  public void testMakeAbsoluteUrl() {
+    assertEquals("http://example.com/test", StringUtils.makeAbsoluteUrl("http://example.com", "/test"));
+    assertEquals("http://example.com/test", StringUtils.makeAbsoluteUrl("http\\3a //example.com", "/test"));
+  }
+
+  @Test
+  public void testUnescapeBackslashHexUrl() {
+    assertEquals(null, StringUtils.unescapeBackslashHex(null));
+    assertEquals("", StringUtils.unescapeBackslashHex(""));
+    assertEquals(":", StringUtils.unescapeBackslashHex("\\3a "));
+    assertEquals("::", StringUtils.unescapeBackslashHex("\\3a \\3a "));
+    assertEquals("=:", StringUtils.unescapeBackslashHex("\\3d \\3a "));
+    assertEquals("https://scontent-sjc2-1.xx.fbcdn.net/v/t1.0-1/cp0/e15/q65/p120x120/00000000_00000000000000000_0000000000000000000_n.jpg?efg=aaaaaaaaaaaa&oh=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa&oe=abcdefgh",
+        StringUtils.unescapeBackslashHex("https\\3a //scontent-sjc2-1.xx.fbcdn.net/v/t1.0-1/cp0/e15/q65/p120x120/00000000_00000000000000000_0000000000000000000_n.jpg?efg\\3d aaaaaaaaaaaa\\26 oh\\3d aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\\26 oe\\3d abcdefgh"));
+  }
 }
