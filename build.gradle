@@ -2,6 +2,7 @@ apply plugin: 'java'
 apply plugin: 'maven'
 
 group = 'com.chimbori.crux'
+version = '2.0.0'
 
 description = """Crux"""
 
@@ -21,4 +22,21 @@ dependencies {
 
 configurations.all {
   resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
+}
+
+task writeNewPom {
+  doLast {
+    pom {
+      project {
+        inceptionYear '2016'
+        licenses {
+          license {
+            name 'The Apache Software License, Version 2.0'
+            url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+            distribution 'repo'
+          }
+        }
+      }
+    }.writeTo("$buildDir/newpom.xml")
+  }
 }
