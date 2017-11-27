@@ -1,9 +1,9 @@
 # Crux
 
-Crux parses Web pages to identify the crux of an article — the very essential points — minus all the fluff.
-The library consists of multiple independent APIs. You can pick and choose which ones you want to use.
-If you use Crux in an Android app, they are designed to be independent so that Proguard or other minification
-tools can strip out the parts you don’t use.
+Crux parses Web pages to identify the crux of an article — the very essential points — minus all the
+fluff. The library consists of multiple independent APIs. You can pick and choose which ones you
+want to use. If you use Crux in an Android app, they are designed to be independent so that Proguard
+or other minification tools can strip out the parts you don’t use.
 
 ## Article Extraction API
 
@@ -12,13 +12,16 @@ tools can strip out the parts you don’t use.
 - Support for more metadata formats: OpenGraph, Twitter Cards, Schema.org.
 - Small footprint and code size: JSoup is the only required dependency.
 - Fewer setters/getters, to keep the method count low (this is important for Android).
-- The ability to use HTTP libraries besides the default HttpUrlConnection, such as OkHttp, under the hood.
+- The ability to use HTTP libraries besides the default HttpUrlConnection, such as OkHttp, under
+  the hood.
 - Cleaner, leaner code (compared to other libraries not optimized for Android)
 - First-class support for importing into Android Studio projects via Gradle.
 - [![Build Status](https://travis-ci.org/chimbori/crux.svg?branch=master)](https://travis-ci.org/chimbori/crux) Continuous integration with unit tests and golden file tests.  
 
 ### Sample Code
-In a background thread, make a network request and obtain the `rawHTML` of the page you would like to analyze.
+
+In a background thread, make a network request and obtain the `rawHTML` of the page you would like
+to analyze.
 
 ```java
 String url = "https://example.com/article.html";
@@ -26,11 +29,12 @@ String rawHTML = "<html><body><h1>This is an article</h1></body></html>";
 
 Article article = ArticleExtractor.with(url, rawHTML)
     .extractMetadata()
-    .extractContent()  // If you only need metadata, you can skip `.extractorContent()`
+    .extractContent()  // If you only need metadata, you can skip `.extractContent()`
     .article();
 ```
 
 On the UI thread:
+
 ```java
 // Use article.document, article.title, etc.
 ```
@@ -61,8 +65,8 @@ LinkUrlExtractor.with(url, domElement).findLink().linkUrl();
 
 ## URL Heuristics API
 
-This API examines a given URL (without connecting to the server), and returns heuristically-determined
-answers to questions such as:
+This API examines a given URL (without connecting to the server), and returns
+heuristically-determined answers to questions such as:
 
 - Is this URL likely a video URL?
 - Is this URL likely an image URL?
@@ -85,7 +89,9 @@ cruxUrl.isLikelyImage();  // Returns false.
 
 Include Crux in your project, then see sample code for each API provided above.
 
-> Note that the Crux API is not yet final (we do not have a 1.0 release candidate yet), and it is likely to change. Feel free to use in your own projects, and let us know if the current API can be improved upon. And be prepared to update your apps if you update to a newer version of Crux that changes the API. Once we hit 1.0, we will be keeping the API fairly constant, so you would not need to keep updating your apps.
+Crux uses semantic versioning. If the API changes, then the major version will be incremented.
+Upgrading from one minor version to the next minor version within the same major version should
+not require any client code to be modified.
 
 ## Import Crux via Gradle
 
@@ -99,16 +105,21 @@ allprojects {
 ```
 
 Module/`build.gradle`:
+
+From the [Releases page](https://github.com/chimbori/crux/releases), copy the latest version number
+& use it below:
+
 ```
 dependencies {
-  compile 'com.github.chimbori:crux:-SNAPSHOT'
+  compile 'com.github.chimbori:crux:<version>'
 }
 ```
 
 # History
 
-Crux began as a fork of [Snacktory](http://github.com/karussell/snacktory) with the goal of making it more performant on Android devices, 
-but it has quickly gained several new features that are not available in Snacktory.   
+Crux began as a fork of [Snacktory](http://github.com/karussell/snacktory) with the goal of making
+it more performant on Android devices, but it has quickly gained several new features that are not
+available in Snacktory.
 
 Snacktory (and thus Crux) borrow ideas and test cases from [Goose](https://github.com/GravityLabs/goose) 
 and [JReadability](https://github.com/ifesdjeen/jReadability).
