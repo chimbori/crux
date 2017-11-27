@@ -16,7 +16,7 @@ import java.util.regex.Pattern;
 public class StringUtils {
   private static final String WHITESPACE = "[ \r\t\n]+";
 
-  public static final String UTF8 = "UTF-8";
+  private static final String UTF8 = "UTF-8";
 
   private StringUtils() {
     // Prevent instantiation.

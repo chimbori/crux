@@ -51,7 +51,7 @@ public class ImageUrlExtractor {
     } catch (HeuristicString.CandidateFound candidateFound) {
       imageUrl = candidateFound.candidate;
     }
-    imageUrl = StringUtils.makeAbsoluteUrl(url.toString(), imageUrl);
+    imageUrl = StringUtils.makeAbsoluteUrl(url, imageUrl);
     return this;
   }
 

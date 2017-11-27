@@ -33,6 +33,7 @@ import java.util.List;
  * JIT (where direct field access is as cheap as accessing a local), direct field access is about
  * 7x faster than invoking a trivial getter.
  */
+@SuppressWarnings("WeakerAccess")
 public class Article {
   public final String url;
   public final String originalUrl = "";

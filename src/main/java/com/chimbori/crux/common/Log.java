@@ -2,6 +2,7 @@ package com.chimbori.crux.common;
 
 import org.jsoup.nodes.Node;
 
+@SuppressWarnings("WeakerAccess")
 public class Log {
   private static final boolean DEBUG = false;
 

@@ -38,7 +38,7 @@ class Redirectors {
     }
   }
 
-  static RedirectPattern[] REDIRECT_PATTERNS = {
+  static final RedirectPattern[] REDIRECT_PATTERNS = {
       new RedirectPattern() {  // Facebook.
         @Override
         public boolean matches(URL url) {

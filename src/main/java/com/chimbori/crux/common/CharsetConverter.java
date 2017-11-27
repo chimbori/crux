@@ -122,9 +122,7 @@ public class CharsetConverter {
   /**
    * This method detects the charset even if the first call only returns some
    * bytes. It will read until 4K bytes are reached and then try to determine
-   * the encoding
-   *
-   * @throws IOException
+   * the encoding.
    */
   private static String detectCharset(String key, ByteArrayOutputStream bos, BufferedInputStream in,
                                String enc) throws IOException {
