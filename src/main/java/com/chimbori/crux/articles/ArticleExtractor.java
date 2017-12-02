@@ -13,12 +13,20 @@ public class ArticleExtractor {
   private final Document document;
   private final Article article;
 
+  /**
+   * Create an {@link ArticleExtractor} from a raw HTML string. The HTML must exist and should be
+   * non-empty.
+   */
   private ArticleExtractor(String url, String html) {
     this.url = url;
     this.document = Jsoup.parse(html);
     this.article = new Article(this.url);
   }
 
+  /**
+   * Create an {@link ArticleExtractor} from a raw HTML string. The HTML must exist and should be
+   * non-empty.
+   */
   public static ArticleExtractor with(String url, String html) {
     if (html.isEmpty()) {
       throw new IllegalArgumentException();
