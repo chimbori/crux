@@ -18,9 +18,18 @@ public class ArticleExtractor {
    * non-empty.
    */
   private ArticleExtractor(String url, String html) {
+    this(url, Jsoup.parse(html));
+  }
+
+  /**
+   * Create an {@link ArticleExtractor} from an already-parsed JSoup document, to be used when a
+   * JSoup document has already been parsed outside this library, and saves a second duplicate
+   * re-parse of the same content.
+   */
+  private ArticleExtractor(String url, Document document) {
     this.url = url;
-    this.document = Jsoup.parse(html);
     this.article = new Article(this.url);
+    this.document = document;
   }
 
   /**
@@ -32,6 +41,15 @@ public class ArticleExtractor {
       throw new IllegalArgumentException();
     }
     return new ArticleExtractor(url, html);
+  }
+
+  /**
+   * Create an {@link ArticleExtractor} from an already-parsed JSoup document, to be used when a
+   * JSoup document has already been parsed outside this library, and saves a second duplicate
+   * re-parse of the same content.
+   */
+  public static ArticleExtractor with(String url, Document document) {
+    return new ArticleExtractor(url, document);
   }
 
   public ArticleExtractor extractMetadata() {
