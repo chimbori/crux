@@ -14,6 +14,11 @@ public class ArticleExtractor {
   private final Article article;
 
   /**
+   * Number of words that can be read by an average person in one minute.
+   */
+  private static final int AVERAGE_WORDS_PER_MINUTE = 275;
+
+  /**
    * Create an {@link ArticleExtractor} from a raw HTML string. The HTML must exist and should be
    * non-empty.
    */
@@ -87,6 +92,18 @@ public class ArticleExtractor {
     article.images = ImageHelpers.extractImages(bestMatchElement);
     article.document = PostprocessHelpers.postprocess(bestMatchElement);
     article.imageUrl = StringUtils.makeAbsoluteUrl(article.url, MetadataHelpers.extractImageUrl(document, article.images));
+    return this;
+  }
+
+  /**
+   * Populates {@link Article.estimatedReadingTimeMinutes} based on the parsed content. This method
+   * must only be called after {@link .extractContent()} has already been performed.
+   * @return
+   */
+  public ArticleExtractor estimateReadingTime() {
+    // TODO: Consider handling badly-punctuated text such as missing spaces after periods.
+    long wordCount = document.text().split("\\s+").length;
+    article.estimatedReadingTimeMinutes = (int) Math.ceil(wordCount / AVERAGE_WORDS_PER_MINUTE);
     return this;
   }
 

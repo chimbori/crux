@@ -50,6 +50,12 @@ public class Article {
   public String feedUrl = "";
   public String faviconUrl = "";
 
+  /**
+   * Estimated reading time, in minutes. This is not populated unless explicitly requested by the
+   * caller.
+   */
+  public int estimatedReadingTimeMinutes = 0;
+
   public Document document;
   public Collection<String> keywords;
   public List<Image> images = new ArrayList<>();
@@ -75,6 +81,7 @@ public class Article {
         ", videoUrl='" + videoUrl + '\'' +
         ", feedUrl='" + feedUrl + '\'' +
         ", faviconUrl='" + faviconUrl + '\'' +
+        ", estimatedReadingTimeMinutes=" + estimatedReadingTimeMinutes +
         ", document=" + document +
         ", keywords=" + keywords +
         ", images=" + images +
