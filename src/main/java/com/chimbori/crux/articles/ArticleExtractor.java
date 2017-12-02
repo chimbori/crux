@@ -15,14 +15,14 @@ public class ArticleExtractor {
 
   private ArticleExtractor(String url, String html) {
     this.url = url;
-    if (html.isEmpty()) {
-      throw new IllegalArgumentException();
-    }
     this.document = Jsoup.parse(html);
     this.article = new Article(this.url);
   }
 
   public static ArticleExtractor with(String url, String html) {
+    if (html.isEmpty()) {
+      throw new IllegalArgumentException();
+    }
     return new ArticleExtractor(url, html);
   }
 
