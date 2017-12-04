@@ -2,8 +2,8 @@ package com.chimbori.crux.urls;
 
 import com.chimbori.crux.common.StringUtils;
 
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 /**
  * Checks heuristically whether a given URL is likely to be an article, video, image, or other
@@ -12,7 +12,7 @@ import java.net.URL;
  */
 public class CruxURL {
   private final String fileName;
-  public URL url;
+  private URI uri;
 
   /**
    * Static method to validate, initialize, and create a new {@link CruxURL}.
@@ -22,42 +22,48 @@ public class CruxURL {
       return null;
     }
 
-    URL javaNetUrl = null;
+    URI javaNetUri = null;
     try {
-      javaNetUrl = new URL(url);
-    } catch (MalformedURLException e) {
-      if (e.getMessage().startsWith("no protocol")) {
-        try {
-          url = "http://" + url;
-          javaNetUrl = new URL(url);
-        } catch (MalformedURLException e1) {
-          // Ignore.
-        }
+      javaNetUri = new URI(url);
+    } catch (URISyntaxException e) {
+      // Ignore
+    }
+
+    if (javaNetUri != null &&
+        (javaNetUri.getScheme() == null || javaNetUri.getScheme().isEmpty())) {
+      try {
+        url = "http://" + url;
+        javaNetUri = new URI(url);
+      } catch (URISyntaxException e) {
+        // Ignore.
       }
     }
 
-    if (javaNetUrl == null) {
+    if (javaNetUri == null) {
       return null;
     }
 
-    return new CruxURL(javaNetUrl);
+    return new CruxURL(javaNetUri);
   }
 
   /**
    * Private constructor, so that the wrapping static method can perform some validation before
    * invoking the constructor.
    */
-  private CruxURL(URL url) {
-    this.url = url;
-    fileName = url.getFile();
+  private CruxURL(URI uri) {
+    this.uri = uri;
+    String path = uri.getPath();
+    fileName = path != null && !path.isEmpty()
+        ? path.substring(path.lastIndexOf('/') + 1)
+        : "";
   }
 
   public boolean isAdImage() {
-    return StringUtils.countMatches(url.toString(), "ad") >= 2;
+    return StringUtils.countMatches(uri.toString(), "ad") >= 2;
   }
 
   public boolean isWebScheme() {
-    String scheme = url.getProtocol().toLowerCase();
+    String scheme = uri.getScheme().toLowerCase();
     return scheme.equals("http") || scheme.equals("https");
   }
 
@@ -106,8 +112,8 @@ public class CruxURL {
 
   public CruxURL resolveRedirects() {
     for (Redirectors.RedirectPattern redirect : Redirectors.REDIRECT_PATTERNS) {
-      if (redirect.matches(url)) {
-        url = redirect.resolveHandlingException(url);
+      if (redirect.matches(uri)) {
+        uri = redirect.resolveHandlingException(uri);
       }
     }
     return this;
@@ -115,6 +121,6 @@ public class CruxURL {
 
   @Override
   public String toString() {
-    return url.toString();
+    return uri.toString();
   }
 }

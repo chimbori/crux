@@ -6,6 +6,7 @@ import org.jsoup.select.Elements;
 
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.util.LinkedHashMap;
@@ -214,7 +215,7 @@ public class StringUtils {
     }
   }
 
-  public static Map<String, String> getQueryParameters(URL url) {
+  public static Map<String, String> getQueryParameters(URI url) {
     Map<String, String> nameValuePairs = new LinkedHashMap<>();
     String[] queryParameters = url.getQuery().split("&");
     for (String nameValuePair : queryParameters) {
