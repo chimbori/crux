@@ -25,6 +25,16 @@ public class CruxURLTest {
   }
 
   @Test
+  public void testNoOpRedirects() {
+    CruxURL exampleCruxUrl = CruxURL.parse("http://example.com").resolveRedirects();
+    assertEquals("http://example.com", exampleCruxUrl.toString());
+    assertTrue(exampleCruxUrl.isWebScheme());
+    assertTrue(exampleCruxUrl.isLikelyArticle());
+
+    assertEquals("about:blank", CruxURL.parse("about:blank").resolveRedirects().toString());
+  }
+
+  @Test
   public void testRedirects() {
     assertEquals("http://www.bet.com/collegemarketingreps",
         CruxURL.parse("http://www.facebook.com/l.php?u=http%3A%2F%2Fwww.bet.com%2Fcollegemarketingreps&h=42263")
