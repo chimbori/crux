@@ -2,8 +2,10 @@ package com.chimbori.crux.urls;
 
 import com.chimbori.crux.common.StringUtils;
 
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 
 /**
  * Checks heuristically whether a given URL is likely to be an article, video, image, or other
@@ -26,7 +28,18 @@ public class CruxURL {
     try {
       javaNetUri = new URI(url);
     } catch (URISyntaxException e) {
-      // Ignore
+      // Java’s java.net.URI is a stricter parser than real-world usage requires. Many characters
+      // used in valid URLs are rejected by it. So, if we encounter a URISyntaxException here, it
+      // doesn’t necessarily mean the URL is invalid. Instead of giving up, we try a more lenient
+      // parse.
+      // Code below is inspired by Android’s {@code toURILenient()}, and only the required bits
+      // have been included in this project.
+      try {
+        javaNetUri = LenientURLParser.toURILenient(new URL(url));
+      } catch (URISyntaxException | MalformedURLException e1) {
+        // Ignore; we tried it parsing it in two ways, and we couldn’t do much, so give up now.
+        e1.printStackTrace();
+      }
     }
 
     if (javaNetUri != null &&

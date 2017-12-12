@@ -25,6 +25,11 @@ public class CruxURLTest {
   }
 
   @Test
+  public void testURLsRejectedByJavaNetURIsStrictParser() {
+    assertTrue(CruxURL.parse("http://example.com/?parameter={invalid-character}").isWebScheme());
+  }
+
+  @Test
   public void testNoOpRedirects() {
     CruxURL exampleCruxUrl = CruxURL.parse("http://example.com").resolveRedirects();
     assertEquals("http://example.com", exampleCruxUrl.toString());
