@@ -312,4 +312,16 @@ public class StringUtils {
     }
     return output;
   }
+
+  /**
+   * @return the first {@code length} characters from {@code s}, including a trailing ellipsis
+   * to indicate if trimming was performed.
+   */
+  public static String trimTo(String s, int length) {
+    if (s.length() < length) {
+      return s;
+    } else {
+      return s.substring(0, length - 1) + "…";
+    }
+  }
 }
