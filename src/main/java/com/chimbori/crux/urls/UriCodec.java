@@ -16,6 +16,8 @@ package com.chimbori.crux.urls;
  * limitations under the License
  */
 
+import com.chimbori.crux.common.StandardCharsetsCompat;
+
 import java.net.URISyntaxException;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
@@ -25,7 +27,6 @@ import java.nio.charset.CharsetDecoder;
 import java.nio.charset.CharsetEncoder;
 import java.nio.charset.CoderResult;
 import java.nio.charset.CodingErrorAction;
-import java.nio.charset.StandardCharsets;
 
 /**
  * Encodes and decodes “application/x-www-form-urlencoded” content.
@@ -147,7 +148,7 @@ public abstract class UriCodec {
    * Encoded output is appended to {@code builder}. This uses the default output encoding (UTF-8).
    */
   public final void appendEncoded(StringBuilder builder, String s) {
-    appendEncoded(builder, s, StandardCharsets.UTF_8, false);
+    appendEncoded(builder, s, StandardCharsetsCompat.UTF_8, false);
   }
 
   /**
@@ -161,7 +162,7 @@ public abstract class UriCodec {
    * will be double encoded into “foo%2525bar”.
    */
   public final void appendPartiallyEncoded(StringBuilder builder, String s) {
-    appendEncoded(builder, s, StandardCharsets.UTF_8, true);
+    appendEncoded(builder, s, StandardCharsetsCompat.UTF_8, true);
   }
 
   private void appendEncoded(
@@ -368,6 +369,6 @@ public abstract class UriCodec {
    */
   public static String decode(String s) {
     return decode(
-        s, false /* convertPlus */, StandardCharsets.UTF_8, true /* throwOnFailure */);
+        s, false /* convertPlus */, StandardCharsetsCompat.UTF_8, true /* throwOnFailure */);
   }
 }
