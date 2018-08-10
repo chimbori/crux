@@ -12,7 +12,7 @@ import static org.junit.Assert.fail;
 
 public class CharsetConverterTest {
   @Test
-  public void testDetermineEncoding() throws Exception {
+  public void testDetermineEncoding() {
     assertEncodingEquals("shift_jis", "yomiuri.html");
     assertEncodingEquals("shift_jis", "yomiuri2.html");
     assertEncodingEquals("iso-8859-1", "spiegel.html");
