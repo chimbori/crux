@@ -38,7 +38,7 @@ public class StringUtilsTest {
   }
 
   @Test
-  public void testImageProtocolRelative() throws Exception {
+  public void testImageProtocolRelative() {
     String result;
     try {
       result = new URL(new URL("http://de.wikipedia.org/wiki/Griechenland"), "//upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Flag_of_Greece.svg/150px-Flag_of_Greece.svg.png").toString();
