@@ -317,6 +317,14 @@ public class GoldenFilesTest {
   }
 
   @Test
+  public void testNYTCooking() {
+    Article article = TestHelper.extractFromTestFile("https://cooking.nytimes.com/recipes/1018068-chicken-paprikash", "nyt-cooking.html");
+    assertEquals("Chicken Paprikash Recipe - NYT Cooking", article.title);
+    assertEquals("NYT Cooking", article.siteName);
+    assertStartsWith("Spices lose their flavor over time but few as quickly as paprika, which starts out tasting of pepper and sunshine", article.document.text());
+  }
+
+  @Test
   public void testNature() {
     Article article = TestHelper.extractFromTestFile("http://www.nature.com/news/2011/110411/full/472146a.html", "nature.html");
     assertStartsWith("As the immediate threat from Fukushima Daiichi's damaged nuclear reactors recedes, engineers and scientists are", article.document.text());
