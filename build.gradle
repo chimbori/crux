@@ -43,54 +43,56 @@ artifacts {
   archives jar, javadocJar, sourcesJar
 }
 
-signing {
-  sign configurations.archives
-}
+if (project.hasProperty("ossrhUsername")) {
+  signing {
+    sign configurations.archives
+  }
 
-uploadArchives {
-  repositories {
-    mavenDeployer {
-      beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+  uploadArchives {
+    repositories {
+      mavenDeployer {
+        beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
 
-      repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
-        authentication(userName: ossrhUsername, password: ossrhPassword)
-      }
+        repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+          authentication(userName: ossrhUsername, password: ossrhPassword)
+        }
 
-      snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
-        authentication(userName: ossrhUsername, password: ossrhPassword)
-      }
+        snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+          authentication(userName: ossrhUsername, password: ossrhPassword)
+        }
 
-      pom.project {
-        name 'Crux'
-        description 'Crux parses Web pages to identify the crux of an Article'
-        url 'https://github.com/chimbori/crux'
-        packaging 'jar'
-        inceptionYear '2016'
-
-        scm {
+        pom.project {
+          name 'Crux'
+          description 'Crux parses Web pages to identify the crux of an Article'
           url 'https://github.com/chimbori/crux'
-          connection 'scm:git:git://github.com/chimbori/crux.git'
-          developerConnection 'scm:git:ssh://github.com:chimbori/crux.git'
-        }
+          packaging 'jar'
+          inceptionYear '2016'
 
-        issueManagement {
-          system 'GitHub'
-          url 'https://github.com/chimbori/crux/issues'
-        }
-
-        licenses {
-          license {
-            name 'The Apache Software License, Version 2.0'
-            url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-            distribution 'repo'
+          scm {
+            url 'https://github.com/chimbori/crux'
+            connection 'scm:git:git://github.com/chimbori/crux.git'
+            developerConnection 'scm:git:ssh://github.com:chimbori/crux.git'
           }
-        }
 
-        developers {
-          developer {
-            id 'chimbori'
-            name 'Chimbori'
-            email 'hello@chimbori.com'
+          issueManagement {
+            system 'GitHub'
+            url 'https://github.com/chimbori/crux/issues'
+          }
+
+          licenses {
+            license {
+              name 'The Apache Software License, Version 2.0'
+              url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+              distribution 'repo'
+            }
+          }
+
+          developers {
+            developer {
+              id 'chimbori'
+              name 'Chimbori'
+              email 'hello@chimbori.com'
+            }
           }
         }
       }
