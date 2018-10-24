@@ -4,7 +4,7 @@ apply plugin: 'signing'
 
 group = 'com.chimbori.crux'
 archivesBaseName = 'crux'
-version = '2.0.1'
+version = '2.0.2'
 
 description = """Crux parses Web pages to identify the crux of an article — the very essential 
   points — minus all the fluff. The library consists of multiple independent APIs. You can pick and 
