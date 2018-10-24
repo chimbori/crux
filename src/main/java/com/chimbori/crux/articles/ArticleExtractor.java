@@ -96,9 +96,8 @@ public class ArticleExtractor {
   }
 
   /**
-   * Populates {@link Article.estimatedReadingTimeMinutes} based on the parsed content. This method
-   * must only be called after {@link .extractContent()} has already been performed.
-   * @return
+   * Populates {@link Article#estimatedReadingTimeMinutes} based on the parsed content. This method
+   * must only be called after {@link #extractContent()} has already been performed.
    */
   public ArticleExtractor estimateReadingTime() {
     // TODO: Consider handling badly-punctuated text such as missing spaces after periods.

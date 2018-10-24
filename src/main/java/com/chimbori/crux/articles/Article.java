@@ -14,7 +14,8 @@ import java.util.List;
  * <p>
  * All fields are public for performance reasons on Android.
  *
- * @link https://developer.android.com/training/articles/perf-tips.html#GettersSetters
+ * @see <a href="https://developer.android.com/training/articles/perf-tips.html#GettersSetters">Performance Tips</a>
+ *
  * <p>
  * Avoid Internal Getters/Setters
  * <p>

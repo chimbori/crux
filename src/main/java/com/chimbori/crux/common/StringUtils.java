@@ -38,7 +38,7 @@ public class StringUtils {
   }
 
   /**
-   * remove more than two spaces or newlines
+   * Remove more than two spaces or newlines
    */
   public static String innerTrim(String str) {
     return str.replaceAll(WHITESPACE, " ").trim();
@@ -292,10 +292,12 @@ public class StringUtils {
    * The escaped pattern begins with a backslash and ends with a space. All characters between these
    * two delimiters must be valid hex digits.
    *
+   * <p>
    * E.g.
-   * "\3a " --> :
-   * "\3d " --> =
-   * "\26 " --> &
+   * "\3a " becomes ":"
+   * "\3d " becomes "="
+   * "\26 " becomes "&amp;"
+   * </p>
    */
   public static String unescapeBackslashHex(String input) {
     if (input == null) {

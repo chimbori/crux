@@ -7,7 +7,7 @@ package com.chimbori.crux.common;
  * a candidate has been picked.
  *
  * When a candidate is found, it is returned via the {@link CandidateFound} Exception. This is to
- * ensure that other pending calls to {@link .or(...)} are not executed, and the caller can skip
+ * ensure that other pending calls to {@link #or(String)} are not executed, and the caller can skip
  * evaluating other candidates as soon as the first one is found.
  */
 public class HeuristicString {
