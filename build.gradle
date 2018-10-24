@@ -1,7 +1,9 @@
 apply plugin: 'java'
 apply plugin: 'maven'
+apply plugin: 'signing'
 
 group = 'com.chimbori.crux'
+archivesBaseName = 'crux'
 version = '2.0.1'
 
 description = """Crux parses Web pages to identify the crux of an article — the very essential 
@@ -27,11 +29,55 @@ configurations.all {
   resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
 }
 
-task writeNewPom {
-  doLast {
-    pom {
-      project {
+task javadocJar(type: Jar) {
+  classifier = 'javadoc'
+  from javadoc
+}
+
+task sourcesJar(type: Jar) {
+  classifier = 'sources'
+  from sourceSets.main.allSource
+}
+
+artifacts {
+  archives jar, javadocJar, sourcesJar
+}
+
+signing {
+  sign configurations.archives
+}
+
+uploadArchives {
+  repositories {
+    mavenDeployer {
+      beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+      repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+        authentication(userName: ossrhUsername, password: ossrhPassword)
+      }
+
+      snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+        authentication(userName: ossrhUsername, password: ossrhPassword)
+      }
+
+      pom.project {
+        name 'Crux'
+        description 'Crux parses Web pages to identify the crux of an Article'
+        url 'https://github.com/chimbori/crux'
+        packaging 'jar'
         inceptionYear '2016'
+
+        scm {
+          url 'https://github.com/chimbori/crux'
+          connection 'scm:git:git://github.com/chimbori/crux.git'
+          developerConnection 'scm:git:ssh://github.com:chimbori/crux.git'
+        }
+
+        issueManagement {
+          system 'GitHub'
+          url 'https://github.com/chimbori/crux/issues'
+        }
+
         licenses {
           license {
             name 'The Apache Software License, Version 2.0'
@@ -39,7 +85,15 @@ task writeNewPom {
             distribution 'repo'
           }
         }
+
+        developers {
+          developer {
+            id 'chimbori'
+            name 'Chimbori'
+            email 'hello@chimbori.com'
+          }
+        }
       }
-    }.writeTo("$buildDir/newpom.xml")
+    }
   }
 }
