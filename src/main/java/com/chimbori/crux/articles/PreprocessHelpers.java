@@ -14,7 +14,7 @@ class PreprocessHelpers {
   static void preprocess(Document doc) {
     Log.i("preprocess");
     stripUnlikelyCandidates(doc);
-    removeScriptsStylesForms(doc);
+    removeScriptsStyles(doc);
     removeComments(doc.body());
   }
 
@@ -36,25 +36,20 @@ class PreprocessHelpers {
     }
   }
 
-  private static void removeScriptsStylesForms(Document doc) {
+  private static void removeScriptsStyles(Document doc) {
     Elements scripts = doc.getElementsByTag("script");
     for (Element item : scripts) {
-      Log.printAndRemove(item, "removeScriptsStylesForms('script')");
+      Log.printAndRemove(item, "removeScriptsStyles('script')");
     }
 
     Elements noscripts = doc.getElementsByTag("noscript");
     for (Element item : noscripts) {
-      Log.printAndRemove(item, "removeScriptsStylesForms('noscript')");
+      Log.printAndRemove(item, "removeScriptsStyles('noscript')");
     }
 
     Elements styles = doc.getElementsByTag("style");
     for (Element item : styles) {
-      Log.printAndRemove(item, "removeScriptsStylesForms('style')");
-    }
-
-    Elements forms = doc.getElementsByTag("form");
-    for (Element item : forms) {
-      Log.printAndRemove(item, "removeScriptsStylesForms('form')");
+      Log.printAndRemove(item, "removeScriptsStyles('style')");
     }
   }
 
