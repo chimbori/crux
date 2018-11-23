@@ -291,6 +291,13 @@ public class GoldenFilesTest {
   }
 
   @Test
+  public void testNews24() {
+    Article article = TestHelper.extractFromTestFile("https://www.news24.com/World/News/watch-indonesia-frees-bali-nine-drug-smuggler-lawrence-from-prison-20181121", "news24.html");
+    // TODO: assertEquals("WATCH: Indonesia frees Bali Nine drug smuggler Lawrence from prison", article.title);
+    // TODO: assertStartsWith("The first member of the \"Bali Nine\" heroin-trafficking gang was released from prison on Wednesday after serving 13 years, in a case that caused a huge diplomatic rift between Indonesia and Australia.", article.document.text());
+  }
+
+  @Test
   public void testNPR() {
     Article article = TestHelper.extractFromTestFile("http://www.npr.org/blogs/money/2010/10/04/130329523/how-fake-money-saved-brazil", "npr.html");
     assertEquals("How Fake Money Saved Brazil : Planet Money : NPR", article.title);
@@ -639,6 +646,14 @@ public class GoldenFilesTest {
     assertEquals("Stress Hormones Could Predict Boxing Dominance", article.title);
     assertEquals("http://www.wired.com/playbook/wp-content/uploads/2010/08/fight_f-660x441.jpg", article.imageUrl);
     assertEquals("http://blog.wired.com/gadgets/files/apple-touch-icon.png", article.faviconUrl);
+  }
+
+  @Test
+  public void testWiredBitcoin() {
+    Article article = TestHelper.extractFromTestFile("https://www.wired.com/story/bitcoin-will-burn-planet-down-how-fast/", "wired-bitcoin.html");
+    assertStartsWith("Max Krause was thinking of buying some bitcoin, as one does.", article.document.text());
+    assertEquals("Bitcoin Will Burn the Planet Down. The Question: How Fast?", article.title);
+    // TODO: assertContains("/master/w_1064,c_limit/Crypto-Energy-Graph1.jpg", article.document.html());
   }
 
   @Test
