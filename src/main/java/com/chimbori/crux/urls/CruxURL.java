@@ -38,7 +38,6 @@ public class CruxURL {
         javaNetUri = LenientURLParser.toURILenient(new URL(url));
       } catch (URISyntaxException | MalformedURLException e1) {
         // Ignore; we tried it parsing it in two ways, and we couldn’t do much, so give up now.
-        e1.printStackTrace();
       }
     }
 
