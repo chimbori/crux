@@ -525,7 +525,7 @@ public class GoldenFilesTest {
   @Test
   public void testTimeMagazine() {
     Article article = TestHelper.extractFromTestFile("http://content.time.com/time/health/article/0,8599,2011497,00.html", "time.html");
-    assertStartsWith("This month, the federal government released", article.document.child(0).text());
+    assertStartsWith("This month, the federal government released", article.document.child(1).text());
     assertEquals(article.document.childNodes().toString(), "http://img.timeinc.net/time/daily/2010/1008/360_bp_oil_spill_0817.jpg", article.imageUrl);
   }
 

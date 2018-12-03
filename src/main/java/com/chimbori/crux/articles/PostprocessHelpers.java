@@ -49,7 +49,7 @@ class PostprocessHelpers {
    * within these tags is not subject to the {@code MIN_LENGTH_FOR_PARAGRAPHS} requirement.
    */
   private static final Set<String> TAGS_EXEMPT_FROM_MIN_LENGTH_CHECK = new HashSet<>(Arrays.asList(
-      "b", "i", "u", "strong", "em", "a", "pre", "h1", "h2", "h3", "h4", "h5", "h6", "blockquote"
+          "b", "i", "u", "strong", "em", "a", "pre", "h1", "h2", "h3", "h4", "h5", "h6", "blockquote", "figure"
   ));
 
   /**
@@ -57,7 +57,7 @@ class PostprocessHelpers {
    * will be retained.
    */
   private static final Set<String> ATTRIBUTES_TO_RETAIN_IN_HTML = new HashSet<>(Arrays.asList(
-      "href"
+          "href", "src"
   ));
 
   /**
@@ -67,7 +67,7 @@ class PostprocessHelpers {
    * top-level children.
    */
   private static final Set<String> RETAIN_TAGS_TOP_LEVEL = new HashSet<>(Arrays.asList(
-      "p", "h1", "h2", "h3", "h4", "h5", "h6", "blockquote", "li"
+          "p", "h1", "h2", "h3", "h4", "h5", "h6", "blockquote", "li", "figure"
   ));
 
   static Document postprocess(Element topNode) {
@@ -83,6 +83,7 @@ class PostprocessHelpers {
     removeTagsButRetainContent(topNode);
     removeTagsNotLikelyToBeParagraphs(topNode);
     removeTopLevelTagsNotLikelyToBeParagraphs(topNode);
+    takeImagesOutOfEmptyTags(topNode);
     removeShortParagraphs(topNode);
     removeDisallowedAttributes(topNode);
 
@@ -90,6 +91,17 @@ class PostprocessHelpers {
       doc.appendChild(node.clone());  // TODO: Don’t copy each item separately.
     }
     return doc;
+  }
+
+  private static void takeImagesOutOfEmptyTags(Element topNode) {
+
+    for(Element element : topNode.select("img")) {
+      for(Element x : element.parents()) {
+        Element withoutImage = x.clone();
+        withoutImage.children().remove(element);
+        System.out.println(withoutImage);
+      }
+    }
   }
 
   private static void replaceLineBreaksWithSpaces(Element topNode) {
@@ -116,7 +128,7 @@ class PostprocessHelpers {
 
   private static void removeTagsNotLikelyToBeParagraphs(Element element) {
     for (Element childElement : element.children()) {
-      if (!RETAIN_TAGS.contains(childElement.tagName())) {
+      if (!RETAIN_TAGS.contains(childElement.tagName()) && childElement.select("img").size() == 0) {
         Log.printAndRemove(childElement, "removeTagsNotLikelyToBeParagraphs");
       } else if (childElement.children().size() > 0) {
         removeTagsNotLikelyToBeParagraphs(childElement);
@@ -152,12 +164,17 @@ class PostprocessHelpers {
       Log.i("removeShortParagraphs: [%s] isExemptFromMinTextLengthCheck : %b", childNode, isExemptFromMinTextLengthCheck);
 
       if (text == null ||
-          text.isEmpty() ||
-          (!isExemptFromMinTextLengthCheck && text.length() < MIN_LENGTH_FOR_PARAGRAPHS) ||
-          text.length() > StringUtils.countLetters(text) * 2) {
+              (text.isEmpty() && !containsImage(childNode)) ||
+              (!isExemptFromMinTextLengthCheck && text.length() < MIN_LENGTH_FOR_PARAGRAPHS) ||
+              text.length() > StringUtils.countLetters(text) * 2) {
         Log.printAndRemove(childNode, "removeShortParagraphs:");
       }
     }
+  }
+
+  private static boolean containsImage(Node node) {
+
+    return node instanceof Element && ((Element) node).select("img").size() != 0;
   }
 
   private static void removeUnlikelyChildNodes(Element element) {
@@ -174,7 +191,7 @@ class PostprocessHelpers {
     Elements elementsWithGravityScore = topNode.select(ExtractionHelpers.GRAVITY_SCORE_SELECTOR);
     for (Element element : elementsWithGravityScore) {
       int score = Integer.parseInt(element.attr(ExtractionHelpers.GRAVITY_SCORE_ATTRIBUTE));
-      if (score < 0 || element.text().length() < MIN_LENGTH_FOR_PARAGRAPHS) {
+      if (score < 0 || (element.text().length() < MIN_LENGTH_FOR_PARAGRAPHS && element.select("img").size() == 0)) {
         Log.printAndRemove(element, "removeNodesWithNegativeScores");
       }
     }
@@ -184,8 +201,8 @@ class PostprocessHelpers {
     String styleAttribute = element.attr("style");
     String classAttribute = element.attr("class");
     return classAttribute != null && classAttribute.toLowerCase().contains("caption")
-        || UNLIKELY_CSS_STYLES.matcher(styleAttribute).find()
-        || classAttribute != null && UNLIKELY_CSS_STYLES.matcher(classAttribute).find();
+            || UNLIKELY_CSS_STYLES.matcher(styleAttribute).find()
+            || classAttribute != null && UNLIKELY_CSS_STYLES.matcher(classAttribute).find();
   }
 
   private static void removeDisallowedAttributes(Element node) {

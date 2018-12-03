@@ -5,9 +5,14 @@ import com.chimbori.crux.common.StringUtils;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Scanner;
 
 /**
  * Parsed result from web page containing important title, text and image.
@@ -67,6 +72,13 @@ public class Article {
     this.canonicalUrl = url;  // Can be overridden later, but we start off by setting it to the URL itself.
   }
 
+  public static void main(String...args) {
+
+    Article article = ArticleExtractor.with("https://www.example.com", getHtml()).extractContent().extractMetadata().article();
+
+    System.out.println("he" + article.document.html());
+  }
+
   @Override
   public String toString() {
     return "Article{" +
@@ -89,6 +101,22 @@ public class Article {
         '}';
   }
 
+  private static String getHtml() {
+
+    StringBuilder builder = new StringBuilder();
+
+    try {
+      Scanner scan = new Scanner(new FileInputStream(new File("testHtml")));
+      while(scan.hasNextLine()) {
+        String x = scan.nextLine();
+        builder.append(x).append("\n");
+      }
+    } catch (FileNotFoundException e) {
+      e.printStackTrace();
+    }
+
+    return builder.toString();
+  }
   /**
    * Class which encapsulates the data from an image found under an element
    */
