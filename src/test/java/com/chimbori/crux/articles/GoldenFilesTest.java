@@ -653,7 +653,7 @@ public class GoldenFilesTest {
     Article article = TestHelper.extractFromTestFile("https://www.wired.com/story/bitcoin-will-burn-planet-down-how-fast/", "wired-bitcoin.html");
     assertStartsWith("Max Krause was thinking of buying some bitcoin, as one does.", article.document.text());
     assertEquals("Bitcoin Will Burn the Planet Down. The Question: How Fast?", article.title);
-    // TODO: assertContains("/master/w_1064,c_limit/Crypto-Energy-Graph1.jpg", article.document.html());
+    assertContains("Crypto-Energy-Graph1.jpg", article.document.html());
   }
 
   @Test
