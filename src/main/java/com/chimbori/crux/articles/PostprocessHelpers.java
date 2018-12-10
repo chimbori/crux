@@ -178,18 +178,17 @@ class PostprocessHelpers {
   static private void removeNodesWithNegativeScores(Element topNode) {
     Elements elementsWithGravityScore = topNode.select(ExtractionHelpers.GRAVITY_SCORE_SELECTOR);
     for (Element element : elementsWithGravityScore) {
-      int score = Integer.parseInt(element.attr(ExtractionHelpers.GRAVITY_SCORE_ATTRIBUTE));
-      if (score < 0 || element.text().length() < MIN_LENGTH_FOR_PARAGRAPHS) {
+      if (isNegativeOrShort(element)) {
         if(containsImage(element)) {
           Elements images = element.getElementsByTag("img");
-          extractImages(images);
+          extractImagesFromRemovedElements(images);
         }
         Log.printAndRemove(element, "removeNodesWithNegativeScores");
       }
     }
   }
 
-  static private void extractImages(Elements images) {
+  static private void extractImagesFromRemovedElements(Elements images) {
     for(Element image : images) {
       Element parent = image.parent();
       Element oldParent = image;
@@ -203,7 +202,7 @@ class PostprocessHelpers {
 
   static private boolean isNegativeOrShort(Element element) {
     String scoreString = element.attr(ExtractionHelpers.GRAVITY_SCORE_ATTRIBUTE);
-    int score = Integer.parseInt(scoreString.isEmpty() ? "0" : scoreString);
+    int score = scoreString.isEmpty() ? 0 : Integer.parseInt(scoreString);
     return score < 0 || (element.text().length() < MIN_LENGTH_FOR_PARAGRAPHS);
   }
 
