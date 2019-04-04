@@ -1,0 +1,8 @@
+# To enable publishing to Maven Central, rename this to `gradle.properties`
+# in the same directory, and fill in the REDACTED credentials.
+
+signing.keyId=0x12345678
+signing.password=REDACTED
+signing.secretKeyRingFile=~/.gnupg/secring.gpg
+ossrhUsername=chimbori
+ossrhPassword=REDACTED
