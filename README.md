@@ -93,25 +93,32 @@ Crux uses semantic versioning. If the API changes, then the major version will b
 Upgrading from one minor version to the next minor version within the same major version should
 not require any client code to be modified.
 
-## Import Crux via Gradle
+## Get Crux via Maven
+
+```xml
+<dependency>
+  <groupId>com.chimbori.crux</groupId>
+  <artifactId>crux</artifactId>
+  <version>0.0.0</version>   <!-- Get latest version number from https://github.com/chimbori/crux/releases -->
+</dependency>
+```
+
+## Get Crux via Gradle
 
 Project/`build.gradle`:
 ```groovy
 allprojects {
   repositories {
-    maven { url "https://jitpack.io" }
+    mavenCentral()
   }
 }
 ```
 
 Module/`build.gradle`:
 
-From the [Releases page](https://github.com/chimbori/crux/releases), copy the latest version number
-& use it below:
-
 ```
 dependencies {
-  compile 'com.github.chimbori:crux:<version>'
+  compile 'com.github.chimbori:crux:0.0.0'  // Get latest version number from https://github.com/chimbori/crux/releases
 }
 ```
 
