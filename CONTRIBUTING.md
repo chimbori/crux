@@ -25,3 +25,12 @@ and that braces are required around single-line clauses, e.g.:
    new code, so that existing tests continue to pass.
 1. Changes should be self-contained, as far as possible. When implementing multiple independent
    improvements, each one should be in its own pull request.
+
+# Notes for Maintainers
+
+## Pushing a new release to Maven
+
+1. Change version number in `build.gradle`.
+2. Run `./gradlew uploadArchives`.
+3. Go to https://oss.sonatype.org/#stagingRepositories
+4. Select the comchimboricrux-xxxx repo, then click on “Close” from the toolbar.
