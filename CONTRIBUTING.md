@@ -36,6 +36,7 @@ and that braces are required around single-line clauses, e.g.:
 1. Create a separate commit for the version number change, naming it `Bump version to x.y.z`.
 1. Push all pending commits to GitHub.
 1. Wait for CI to confirm green status.
+1. Tag that commit as a release at https://github.com/chimbori/crux/releases .
 
 ### Publish to Maven Central
 
