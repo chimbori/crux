@@ -17,9 +17,22 @@ public class CruxURL {
   private URI uri;
 
   /**
-   * Static method to validate, initialize, and create a new {@link CruxURL}.
+   * Validate, initialize, and create a new {@link CruxURL}, without invoking a lenient URL parser.
+   */
+  public static CruxURL parseStrict(String url) {
+    return parseInternal(url, true);
+  }
+
+  /**
+   * Validate, initialize, and create a new {@link CruxURL}, invoking a lenient URL parser, since
+   * Java’s java.net.URI is a stricter parser than real-world usage requires. Many characters used
+   * in valid URLs are rejected by it.
    */
   public static CruxURL parse(String url) {
+    return parseInternal(url, false);
+  }
+
+  private static CruxURL parseInternal(String url, boolean isStrict) {
     if (url == null || url.isEmpty()) {
       return null;
     }
@@ -32,12 +45,14 @@ public class CruxURL {
       // used in valid URLs are rejected by it. So, if we encounter a URISyntaxException here, it
       // doesn’t necessarily mean the URL is invalid. Instead of giving up, we try a more lenient
       // parse.
-      // Code below is inspired by Android’s {@code toURILenient()}, and only the required bits
-      // have been included in this project.
-      try {
-        javaNetUri = LenientURLParser.toURILenient(new URL(url));
-      } catch (URISyntaxException | MalformedURLException e1) {
-        // Ignore; we tried it parsing it in two ways, and we couldn’t do much, so give up now.
+      if (!isStrict) {
+        // Code below is inspired by Android’s {@code toURILenient()}, and only the required bits
+        // have been included in this project.
+        try {
+          javaNetUri = LenientURLParser.toURILenient(new URL(url));
+        } catch (URISyntaxException | MalformedURLException e1) {
+          // Ignore; we tried it parsing it in two ways, and we couldn’t do much, so give up now.
+        }
       }
     }
 

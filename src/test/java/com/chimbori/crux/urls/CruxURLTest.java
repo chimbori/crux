@@ -4,6 +4,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
@@ -61,5 +62,12 @@ public class CruxURLTest {
     assertEquals("https://arstechnica.com/business/2017/01/before-the-760mph-hyperloop-dream-there-was-the-atmospheric-railway/",
         CruxURL.parse("https://plus.url.google.com/url?q=https://arstechnica.com/business/2017/01/before-the-760mph-hyperloop-dream-there-was-the-atmospheric-railway/&rct=j&ust=1485739059621000&usg=AFQjCNH6Cgp4iU0NB5OoDpT3OtOXds7HQg")
             .resolveRedirects().toString());
+  }
+
+  @Test
+  public void testStrictParsing() {
+    // Spaces in the domain name are caught by the strict parser but not by the lenient parser!
+    assertNotNull(CruxURL.parse("http://ex  ample.com"));
+    assertNull(CruxURL.parseStrict("http://ex  ample.com"));
   }
 }
