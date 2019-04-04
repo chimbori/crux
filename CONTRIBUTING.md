@@ -28,9 +28,31 @@ and that braces are required around single-line clauses, e.g.:
 
 # Notes for Maintainers
 
-## Pushing a new release to Maven
+## Publishing a New Release
 
-1. Change version number in `build.gradle`.
-2. Run `./gradlew uploadArchives`.
-3. Go to https://oss.sonatype.org/#stagingRepositories
-4. Select the comchimboricrux-xxxx repo, then click on “Close” from the toolbar.
+### Repo
+
+1. Update `version` in `build.gradle`.
+1. Create a separate commit for the version number change, naming it `Bump version to x.y.z`.
+1. Push all pending commits to GitHub.
+1. Wait for CI to confirm green status.
+
+### Publish to Maven Central
+
+1. Run `./gradlew uploadArchives`; confirm that `uploadArchives` task completes successfully. If 
+   the `ossrhUsername` property cannot be found, then uploading will not be performed.
+1. Go to https://oss.sonatype.org/#stagingRepositories, login as `chimbori`.
+1. Select the `comchimboricrux-xxxx` repo, then click on `Close` from the top toolbar.
+1. Wait for the `Close` step to complete, then click on `Release` from the top toolbar.
+
+### Setting Up Key Signing on a New Machine
+
+1. Install GPG, e.g. `brew install gpg` on macOS.
+1. Locate stored credentials from private storage.
+1. Run `restore-keys.sh` from the stored credentials directory.
+1. Enter the password for `chimbori` when prompted. This password is different from the Sonatype/Nexus password.
+1. Rename `gradle.properties-sample` to `gradle.properties` in that same directory, and fill in 
+   missing redacted credentials. 
+1. `gradle.properties` is configured to be `.gitignore`d, but make sure it is never pushed to a 
+   public repo.
+1. The new machine is now ready and configured for pushing to Maven Central.
