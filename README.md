@@ -118,9 +118,11 @@ Module/`build.gradle`:
 
 ```
 dependencies {
-  compile 'com.github.chimbori:crux:0.0.0'  // Get latest version number from https://github.com/chimbori/crux/releases
+  compile 'com.github.chimbori:crux:0.0.0'  // See the latest version number below.
 }
 ```
+
+The latest version is [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.chimbori.crux/crux/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.chimbori.crux/crux)
 
 # History
 
