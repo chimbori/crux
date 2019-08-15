@@ -109,7 +109,8 @@ class PostprocessHelpers {
   private static void removeTopLevelTagsNotLikelyToBeParagraphs(Element element) {
     for (Element childElement : element.children()) {
       if (!RETAIN_TAGS_TOP_LEVEL.contains(childElement.tagName())) {
-        Log.printAndRemove(childElement, "removeTopLevelTagsNotLikelyToBeParagraphs");
+        if (!isImportant(childElement))
+          Log.printAndRemove(childElement, "removeTopLevelTagsNotLikelyToBeParagraphs");
       }
     }
   }
@@ -117,7 +118,8 @@ class PostprocessHelpers {
   private static void removeTagsNotLikelyToBeParagraphs(Element element) {
     for (Element childElement : element.children()) {
       if (!RETAIN_TAGS.contains(childElement.tagName())) {
-        Log.printAndRemove(childElement, "removeTagsNotLikelyToBeParagraphs");
+        if (!isImportant(childElement))
+          Log.printAndRemove(childElement, "removeTagsNotLikelyToBeParagraphs");
       } else if (childElement.children().size() > 0) {
         removeTagsNotLikelyToBeParagraphs(childElement);
       }
@@ -155,7 +157,8 @@ class PostprocessHelpers {
           text.isEmpty() ||
           (!isExemptFromMinTextLengthCheck && text.length() < MIN_LENGTH_FOR_PARAGRAPHS) ||
           text.length() > StringUtils.countLetters(text) * 2) {
-        Log.printAndRemove(childNode, "removeShortParagraphs:");
+        if (!isImportant(childNode))
+          Log.printAndRemove(childNode, "removeShortParagraphs:");
       }
     }
   }
@@ -163,7 +166,8 @@ class PostprocessHelpers {
   private static void removeUnlikelyChildNodes(Element element) {
     for (Element childElement : element.children()) {
       if (isUnlikely(childElement)) {
-        Log.printAndRemove(childElement, "removeUnlikelyChildNodes");
+        if (!isImportant(childElement))
+          Log.printAndRemove(childElement, "removeUnlikelyChildNodes");
       } else if (childElement.children().size() > 0) {
         removeUnlikelyChildNodes(childElement);
       }
@@ -175,7 +179,8 @@ class PostprocessHelpers {
     for (Element element : elementsWithGravityScore) {
       int score = Integer.parseInt(element.attr(ExtractionHelpers.GRAVITY_SCORE_ATTRIBUTE));
       if (score < 0 || element.text().length() < MIN_LENGTH_FOR_PARAGRAPHS) {
-        Log.printAndRemove(element, "removeNodesWithNegativeScores");
+        if (!isImportant(element))
+          Log.printAndRemove(element, "removeNodesWithNegativeScores");
       }
     }
   }
@@ -203,4 +208,13 @@ class PostprocessHelpers {
     }
   }
 
+  private static boolean isImportant(Node node) {
+      boolean result=false;
+      for(Node n=node;n!=null;n=n.parentNode())
+        if(n.attr("crux-important").equals("true")) {
+          result = true;
+          break;
+        }
+      return result;
+  }
 }
