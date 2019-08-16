@@ -1,7 +1,13 @@
 package com.chimbori.crux.articles;
 
-import com.chimbori.crux.common.Log;
-import com.chimbori.crux.common.StringUtils;
+import java.util.ArrayDeque;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
+import java.util.Set;
+import java.util.regex.Pattern;
 
 import org.jsoup.nodes.Attribute;
 import org.jsoup.nodes.Document;
@@ -10,12 +16,8 @@ import org.jsoup.nodes.Node;
 import org.jsoup.nodes.TextNode;
 import org.jsoup.select.Elements;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
-import java.util.regex.Pattern;
+import com.chimbori.crux.common.Log;
+import com.chimbori.crux.common.StringUtils;
 
 /**
  * Cleans up the best-match Element after one has been picked, in order to provide a sanitized
@@ -109,7 +111,7 @@ class PostprocessHelpers {
   private static void removeTopLevelTagsNotLikelyToBeParagraphs(Element element) {
     for (Element childElement : element.children()) {
       if (!RETAIN_TAGS_TOP_LEVEL.contains(childElement.tagName())) {
-        if (!isImportant(childElement))
+        if (!shouldKeep(childElement))
           Log.printAndRemove(childElement, "removeTopLevelTagsNotLikelyToBeParagraphs");
       }
     }
@@ -118,7 +120,7 @@ class PostprocessHelpers {
   private static void removeTagsNotLikelyToBeParagraphs(Element element) {
     for (Element childElement : element.children()) {
       if (!RETAIN_TAGS.contains(childElement.tagName())) {
-        if (!isImportant(childElement))
+        if (!shouldKeep(childElement))
           Log.printAndRemove(childElement, "removeTagsNotLikelyToBeParagraphs");
       } else if (childElement.children().size() > 0) {
         removeTagsNotLikelyToBeParagraphs(childElement);
@@ -157,7 +159,7 @@ class PostprocessHelpers {
           text.isEmpty() ||
           (!isExemptFromMinTextLengthCheck && text.length() < MIN_LENGTH_FOR_PARAGRAPHS) ||
           text.length() > StringUtils.countLetters(text) * 2) {
-        if (!isImportant(childNode))
+        if (!shouldKeep(childNode))
           Log.printAndRemove(childNode, "removeShortParagraphs:");
       }
     }
@@ -166,7 +168,7 @@ class PostprocessHelpers {
   private static void removeUnlikelyChildNodes(Element element) {
     for (Element childElement : element.children()) {
       if (isUnlikely(childElement)) {
-        if (!isImportant(childElement))
+        if (!shouldKeep(childElement))
           Log.printAndRemove(childElement, "removeUnlikelyChildNodes");
       } else if (childElement.children().size() > 0) {
         removeUnlikelyChildNodes(childElement);
@@ -179,7 +181,7 @@ class PostprocessHelpers {
     for (Element element : elementsWithGravityScore) {
       int score = Integer.parseInt(element.attr(ExtractionHelpers.GRAVITY_SCORE_ATTRIBUTE));
       if (score < 0 || element.text().length() < MIN_LENGTH_FOR_PARAGRAPHS) {
-        if (!isImportant(element))
+        if (!shouldKeep(element))
           Log.printAndRemove(element, "removeNodesWithNegativeScores");
       }
     }
@@ -208,13 +210,21 @@ class PostprocessHelpers {
     }
   }
 
-  private static boolean isImportant(Node node) {
-      boolean result=false;
-      for(Node n=node;n!=null;n=n.parentNode())
-        if(n.attr("crux-important").equals("true")) {
-          result = true;
-          break;
-        }
-      return result;
+  private static boolean shouldKeep(Node node) {
+    for (Node n = node; n != null; n = n.parentNode())
+      if (n.hasAttr("crux-keep"))
+        return true;
+    
+    Queue<Node> nodes = new ArrayDeque<>(node.childNodes());
+    while (!nodes.isEmpty()) {
+      Node n = nodes.poll();
+      if (n.hasAttr("crux-keep"))
+        return true;
+        
+      for (Node c : n.childNodes())
+        nodes.offer(c);
+    }
+    
+    return false;
   }
 }
