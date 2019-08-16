@@ -65,7 +65,7 @@ public class ArticleExtractorTest {
       Article article = ArticleExtractor.with(EXAMPLE_URL,
         "<div>"
         + "Default Text but longer that’s still longer than our minimum text size limits"
-        + "<div crux-important=\"true\">short text</div>"
+        + "<div crux-keep>short text</div>"
         + "</div>").extractContent().article();
       assertEquals("Default Text but longer that’s still longer than our minimum text size limits short text", article.document.text());
   }
