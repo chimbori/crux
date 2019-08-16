@@ -5,3 +5,7 @@ build/
 local.properties
 *.private
 gradle.properties
+bin/
+.settings/
+.classpath
+.project
