@@ -290,6 +290,20 @@ public class GoldenFilesTest {
     assertEquals("http://9.mshcdn.com/wp-content/uploads/2010/07/love.jpg", article.imageUrl);
   }
 
+  /**
+   * This test checks the crux-keep feature. The crux-keep attributes are
+   * dropped into the test file directly for simplicity. The nodes with the
+   * crux-keep attribute are the <a> nodes being tested here.
+   */
+  @Test
+  public void testMashable2() {
+    Article article = TestHelper.extractFromTestFile("https://mashable.com/2015/04/24/astronaut-scott-kelly-room-photo/", "mashable2.html");
+    assertStartsWith("NASA astronaut Scott Kelly", article.document.text());
+    assertContains("<a href=\"https://twitter.com/StationCDRKelly/status/591594008046084096\">", article.document.html());
+    assertContains("<a href=\"https://twitter.com/StationCDRKelly/status/591334283081560064\">", article.document.html());
+    assertEquals("https://i.amz.mshcdn.com/r831Qn9cn1G7A9q2F3-1PH1VIyw=/640x360/2015%2F04%2F24%2Fda%2Fscottkellyr.3f2af.jpg", article.imageUrl);
+  }
+
   @Test
   public void testNews24() {
     Article article = TestHelper.extractFromTestFile("https://www.news24.com/World/News/watch-indonesia-frees-bali-nine-drug-smuggler-lawrence-from-prison-20181121", "news24.html");

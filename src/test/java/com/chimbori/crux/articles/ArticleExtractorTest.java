@@ -51,6 +51,26 @@ public class ArticleExtractorTest {
   }
 
   @Test
+  public void testThatShortTextIsDiscarded() {
+    Article article = ArticleExtractor.with(EXAMPLE_URL,
+        "<div>"
+        + "Default Text but longer that’s still longer than our minimum text size limits"
+        + "<div>short text</div>"
+        + "</div>").extractContent().article();
+    assertEquals("Default Text but longer that’s still longer than our minimum text size limits", article.document.text());
+  }
+
+  @Test
+  public void testThatImportantShortTextIsRetained() {
+      Article article = ArticleExtractor.with(EXAMPLE_URL,
+        "<div>"
+        + "Default Text but longer that’s still longer than our minimum text size limits"
+        + "<div crux-keep>short text</div>"
+        + "</div>").extractContent().article();
+      assertEquals("Default Text but longer that’s still longer than our minimum text size limits short text", article.document.text());
+  }
+
+  @Test
   public void testReadingTimeEstimates() {
     Article washingtonPostArticle = TestHelper.extractFromTestFile("https://www.washingtonpost.com/lifestyle/style/the-nearly-forgotten-story-of-the-black-women-who-helped-land-a-man-on-the-moon/2016/09/12/95f2d356-7504-11e6-8149-b8d05321db62_story.html", "washingtonpost.html");
     assertEquals(8, washingtonPostArticle.estimatedReadingTimeMinutes);
