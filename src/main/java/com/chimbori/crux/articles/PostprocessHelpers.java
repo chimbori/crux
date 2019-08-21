@@ -109,7 +109,7 @@ class PostprocessHelpers {
     List<Node> result=new ArrayList<>();
       
     // Add all ancestors, up to the top node
-    for (Node n = e; n != root; n = n.parentNode())
+    for (Node n = e; n != root && n != null; n = n.parentNode())
       result.add(n);
         
     // Add all descendants
