@@ -75,7 +75,7 @@ class PostprocessHelpers {
   private static final Set<String> RETAIN_TAGS_TOP_LEVEL = new HashSet<>(Arrays.asList(
       "p", "h1", "h2", "h3", "h4", "h5", "h6", "blockquote", "li"
   ));
-  
+
   static Document postprocess(Element topNode) {
     Log.i("postprocess");
     Document doc = new Document("");
@@ -84,9 +84,9 @@ class PostprocessHelpers {
     }
     
     Set<Node> keepers=Collections.newSetFromMap(
-        new IdentityHashMap<Node,Boolean>());
+      new IdentityHashMap<Node,Boolean>());
     for(Element element : topNode.select("[crux-keep]"))
-        keepers.addAll(lineage(topNode, element));
+      keepers.addAll(getAncestorsSelfAndDescendants(topNode, element));
     
     PostprocessHelpers helper=new PostprocessHelpers(keepers);
 
@@ -105,7 +105,7 @@ class PostprocessHelpers {
     return doc;
   }
   
-  private static Collection<Node> lineage(Element root, Element e) {
+  private static Collection<Node> getAncestorsSelfAndDescendants(Element root, Element e) {
     List<Node> result=new ArrayList<>();
       
     // Add all ancestors, up to the top node
@@ -115,10 +115,11 @@ class PostprocessHelpers {
     // Add all descendants
     Queue<Node> nodes = new ArrayDeque<>(e.childNodes());
     while (!nodes.isEmpty()) {
-      Node n = nodes.poll();
-      result.add(n);
-      for (Node c : n.childNodes())
-        nodes.offer(c);
+      Node node = nodes.poll();
+      result.add(node);
+      for (Node childNode : node.childNodes()) {
+        nodes.offer(childNode);
+      }
     }
 
     return result;
