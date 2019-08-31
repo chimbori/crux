@@ -39,6 +39,18 @@ On the UI thread:
 // Use article.document, article.title, etc.
 ```
 
+### `crux-keep`
+
+If you control the HTML that is fed into Crux, and would like to instruct Crux to keep certain DOM
+nodes, irrespective of what Crux’s algorithm recommends, add the special attribute `crux-keep` to 
+each such DOM node.
+
+```html
+<p crux-keep="true">
+  Content that should not be removed.
+</p>
+```
+
 ## Image URL Extractor API
 
 From a single DOM Element root, the Image URL API inspects the sub-tree and returns the best
