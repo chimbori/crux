@@ -1,8 +1,12 @@
 package com.chimbori.crux.articles;
 
 import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.IdentityHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
@@ -78,23 +82,56 @@ class PostprocessHelpers {
     if (topNode == null) {
       return doc;
     }
+    
+    Set<Node> keepers=Collections.newSetFromMap(
+      new IdentityHashMap<Node,Boolean>());
+    for(Element element : topNode.select("[crux-keep]"))
+      keepers.addAll(getAncestorsSelfAndDescendants(topNode, element));
+    
+    PostprocessHelpers helper=new PostprocessHelpers(keepers);
 
-    removeNodesWithNegativeScores(topNode);
-    replaceLineBreaksWithSpaces(topNode);
-    removeUnlikelyChildNodes(topNode);
-    removeTagsButRetainContent(topNode);
-    removeTagsNotLikelyToBeParagraphs(topNode);
-    removeTopLevelTagsNotLikelyToBeParagraphs(topNode);
-    removeShortParagraphs(topNode);
-    removeDisallowedAttributes(topNode);
+    helper.removeNodesWithNegativeScores(topNode);
+    helper.replaceLineBreaksWithSpaces(topNode);
+    helper.removeUnlikelyChildNodes(topNode);
+    helper.removeTagsButRetainContent(topNode);
+    helper.removeTagsNotLikelyToBeParagraphs(topNode);
+    helper.removeTopLevelTagsNotLikelyToBeParagraphs(topNode);
+    helper.removeShortParagraphs(topNode);
+    helper.removeDisallowedAttributes(topNode);
 
     for (Node node : topNode.childNodes()) {
       doc.appendChild(node.clone());  // TODO: Don’t copy each item separately.
     }
     return doc;
   }
+  
+  private static Collection<Node> getAncestorsSelfAndDescendants(Element root, Element e) {
+    List<Node> result=new ArrayList<>();
+      
+    // Add all ancestors, up to the top node
+    for (Node n = e; n != root && n != null; n = n.parentNode())
+      result.add(n);
+        
+    // Add all descendants
+    Queue<Node> nodes = new ArrayDeque<>(e.childNodes());
+    while (!nodes.isEmpty()) {
+      Node node = nodes.poll();
+      result.add(node);
+      for (Node childNode : node.childNodes()) {
+        nodes.offer(childNode);
+      }
+    }
 
-  private static void replaceLineBreaksWithSpaces(Element topNode) {
+    return result;
+  }
+
+  private Set<Node> keepers;
+  
+  private PostprocessHelpers(Set<Node> keepers) {
+    this.keepers = keepers;
+  }
+
+  private void replaceLineBreaksWithSpaces(Element topNode) {
     for (Element brNextToBrElement : topNode.select("br + br")) {
       brNextToBrElement.remove();
     }
@@ -108,7 +145,7 @@ class PostprocessHelpers {
     }
   }
 
-  private static void removeTopLevelTagsNotLikelyToBeParagraphs(Element element) {
+  private void removeTopLevelTagsNotLikelyToBeParagraphs(Element element) {
     for (Element childElement : element.children()) {
       if (!RETAIN_TAGS_TOP_LEVEL.contains(childElement.tagName())) {
         if (!shouldKeep(childElement))
@@ -117,7 +154,7 @@ class PostprocessHelpers {
     }
   }
 
-  private static void removeTagsNotLikelyToBeParagraphs(Element element) {
+  private void removeTagsNotLikelyToBeParagraphs(Element element) {
     for (Element childElement : element.children()) {
       if (!RETAIN_TAGS.contains(childElement.tagName())) {
         if (!shouldKeep(childElement))
@@ -128,7 +165,7 @@ class PostprocessHelpers {
     }
   }
 
-  private static void removeTagsButRetainContent(Element element) {
+  private void removeTagsButRetainContent(Element element) {
     for (Element childElement : element.children()) {
       removeTagsButRetainContent(childElement);
       if (REMOVE_TAGS_BUT_RETAIN_CONTENT.contains(childElement.tagName())) {
@@ -138,7 +175,7 @@ class PostprocessHelpers {
     }
   }
 
-  private static void removeShortParagraphs(Element topNode) {
+  private void removeShortParagraphs(Element topNode) {
     for (int i = topNode.childNodeSize() - 1; i >= 0; i--) {
       Node childNode = topNode.childNode(i);
 
@@ -165,7 +202,7 @@ class PostprocessHelpers {
     }
   }
 
-  private static void removeUnlikelyChildNodes(Element element) {
+  private void removeUnlikelyChildNodes(Element element) {
     for (Element childElement : element.children()) {
       if (isUnlikely(childElement)) {
         if (!shouldKeep(childElement))
@@ -176,7 +213,7 @@ class PostprocessHelpers {
     }
   }
 
-  static private void removeNodesWithNegativeScores(Element topNode) {
+  private void removeNodesWithNegativeScores(Element topNode) {
     Elements elementsWithGravityScore = topNode.select(ExtractionHelpers.GRAVITY_SCORE_SELECTOR);
     for (Element element : elementsWithGravityScore) {
       int score = Integer.parseInt(element.attr(ExtractionHelpers.GRAVITY_SCORE_ATTRIBUTE));
@@ -187,7 +224,7 @@ class PostprocessHelpers {
     }
   }
 
-  static private boolean isUnlikely(Element element) {
+  private boolean isUnlikely(Element element) {
     String styleAttribute = element.attr("style");
     String classAttribute = element.attr("class");
     return classAttribute != null && classAttribute.toLowerCase().contains("caption")
@@ -195,7 +232,7 @@ class PostprocessHelpers {
         || classAttribute != null && UNLIKELY_CSS_STYLES.matcher(classAttribute).find();
   }
 
-  private static void removeDisallowedAttributes(Element node) {
+  private void removeDisallowedAttributes(Element node) {
     for (Element childElement : node.children()) {
       removeDisallowedAttributes(childElement);
     }
@@ -210,21 +247,7 @@ class PostprocessHelpers {
     }
   }
 
-  private static boolean shouldKeep(Node node) {
-    for (Node n = node; n != null; n = n.parentNode())
-      if (n.hasAttr("crux-keep"))
-        return true;
-    
-    Queue<Node> nodes = new ArrayDeque<>(node.childNodes());
-    while (!nodes.isEmpty()) {
-      Node n = nodes.poll();
-      if (n.hasAttr("crux-keep"))
-        return true;
-        
-      for (Node c : n.childNodes())
-        nodes.offer(c);
-    }
-    
-    return false;
+  private boolean shouldKeep(Node node) {
+    return keepers.contains(node);
   }
 }
