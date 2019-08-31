@@ -82,13 +82,13 @@ class PostprocessHelpers {
     if (topNode == null) {
       return doc;
     }
-    
-    Set<Node> keepers=Collections.newSetFromMap(
-      new IdentityHashMap<Node,Boolean>());
-    for(Element element : topNode.select("[crux-keep]"))
+
+    Set<Node> keepers = Collections.newSetFromMap(
+        new IdentityHashMap<Node, Boolean>());
+    for (Element element : topNode.select("[crux-keep]"))
       keepers.addAll(getAncestorsSelfAndDescendants(topNode, element));
-    
-    PostprocessHelpers helper=new PostprocessHelpers(keepers);
+
+    PostprocessHelpers helper = new PostprocessHelpers(keepers);
 
     helper.removeNodesWithNegativeScores(topNode);
     helper.replaceLineBreaksWithSpaces(topNode);
@@ -104,14 +104,14 @@ class PostprocessHelpers {
     }
     return doc;
   }
-  
+
   private static Collection<Node> getAncestorsSelfAndDescendants(Element root, Element e) {
-    List<Node> result=new ArrayList<>();
-      
+    List<Node> result = new ArrayList<>();
+
     // Add all ancestors, up to the top node
     for (Node n = e; n != root && n != null; n = n.parentNode())
       result.add(n);
-        
+
     // Add all descendants
     Queue<Node> nodes = new ArrayDeque<>(e.childNodes());
     while (!nodes.isEmpty()) {
@@ -126,7 +126,7 @@ class PostprocessHelpers {
   }
 
   private Set<Node> keepers;
-  
+
   private PostprocessHelpers(Set<Node> keepers) {
     this.keepers = keepers;
   }
@@ -242,7 +242,7 @@ class PostprocessHelpers {
         keysToRemove.add(attribute.getKey());
       }
     }
-    for (String key: keysToRemove) {
+    for (String key : keysToRemove) {
       node.removeAttr(key);
     }
   }

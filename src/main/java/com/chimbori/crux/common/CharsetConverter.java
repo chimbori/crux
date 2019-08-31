@@ -125,7 +125,7 @@ public class CharsetConverter {
    * the encoding.
    */
   private static String detectCharset(String key, ByteArrayOutputStream bos, BufferedInputStream in,
-                               String enc) throws IOException {
+                                      String enc) throws IOException {
 
     // Grab better encoding from stream
     byte[] arr = new byte[K2];
