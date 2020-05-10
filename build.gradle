@@ -53,11 +53,13 @@ buildscript {
 }
 compileKotlin {
   kotlinOptions {
+    allWarningsAsErrors = true
     jvmTarget = "1.8"
   }
 }
 compileTestKotlin {
   kotlinOptions {
+    allWarningsAsErrors = true
     jvmTarget = "1.8"
   }
 }
