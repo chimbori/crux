@@ -138,9 +138,9 @@ public class CruxURL {
   }
 
   public CruxURL resolveRedirects() {
-    for (Redirectors.RedirectPattern redirect : Redirectors.REDIRECT_PATTERNS) {
+    for (Redirectors.RedirectPattern redirect : Redirectors.INSTANCE.getREDIRECT_PATTERNS()) {
       if (redirect.matches(uri)) {
-        uri = redirect.resolveHandlingException(uri);
+        uri = redirect.resolve(uri);
       }
     }
     return this;
