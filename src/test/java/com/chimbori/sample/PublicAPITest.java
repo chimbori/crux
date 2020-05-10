@@ -43,7 +43,7 @@ public class PublicAPITest {
     String url = "https://chimbori.com/";
     String content = "<img href=\"/test\" src=\"test.jpg\">";  // Intentionally malformed.
 
-    String linkUrl = LinkUrlExtractor.with(url, Jsoup.parse(content).body()).findLink().linkUrl();
+    String linkUrl = new LinkUrlExtractor(url, Jsoup.parse(content).body()).findLink().getLinkUrl();
     assertEquals("https://chimbori.com/test", linkUrl);
   }
 }
