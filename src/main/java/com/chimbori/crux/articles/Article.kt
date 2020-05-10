@@ -23,8 +23,7 @@ data class Article(
     var document: Document? = null,
     var keywords: List<String>? = null,
     var images: List<Image>? = null) {
-
-
+  
   /** Encapsulates the data from an image found under an element */
   data class Image(
       var src: String? = null,
