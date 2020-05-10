@@ -214,7 +214,7 @@ class PostprocessHelpers {
   }
 
   private void removeNodesWithNegativeScores(Element topNode) {
-    Elements elementsWithGravityScore = topNode.select(ExtractionHelpers.GRAVITY_SCORE_SELECTOR);
+    Elements elementsWithGravityScore = topNode.select(ExtractionHelpers.INSTANCE.getGRAVITY_SCORE_SELECTOR());
     for (Element element : elementsWithGravityScore) {
       int score = Integer.parseInt(element.attr(ExtractionHelpers.GRAVITY_SCORE_ATTRIBUTE));
       if (score < 0 || element.text().length() < MIN_LENGTH_FOR_PARAGRAPHS) {

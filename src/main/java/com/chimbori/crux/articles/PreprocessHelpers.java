@@ -7,9 +7,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 import org.jsoup.select.Elements;
 
-/**
- * Performs basic sanitization before starting the extraction process.
- */
+/** Performs basic sanitization before starting the extraction process. */
 class PreprocessHelpers {
   static void preprocess(Document doc) {
     Log.i("preprocess");
@@ -30,7 +28,8 @@ class PreprocessHelpers {
     for (Element child : doc.select("body").select("*")) {
       String className = child.className().toLowerCase();
       String id = child.id().toLowerCase();
-      if (ExtractionHelpers.NEGATIVE_CSS_CLASSES_AND_IDS.matcher(className).find() || ExtractionHelpers.NEGATIVE_CSS_CLASSES_AND_IDS.matcher(id).find()) {
+      if (ExtractionHelpers.INSTANCE.getNEGATIVE_CSS_CLASSES_AND_IDS().matcher(className).find() ||
+          ExtractionHelpers.INSTANCE.getNEGATIVE_CSS_CLASSES_AND_IDS().matcher(id).find()) {
         Log.printAndRemove(child, "stripUnlikelyCandidates");
       }
     }
