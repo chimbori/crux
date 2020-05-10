@@ -74,7 +74,7 @@ class GoldenFilesTest {
     val article = extractFromTestFile("http://www.br-online.de/br-klassik/programmtipps/highlight-bayreuth-tannhaeuser-festspielzeit-2011-ID1309895438808.xml", "br-online.html")
     assertStartsWith("Wenn ein Dirigent, der Alte Musik liebt, erstmals eine "
         + "Neuproduktion bei den Bayreuther Richard-Wagner-Festspielen übernimmt,", article!!.document?.text())
-    assertEquals("Eröffnung der 100. Bayreuther Festspiele: Alles neu beim \"Tannhäuser\" | Programmtipps",
+    assertEquals("Eröffnung der 100. Bayreuther Festspiele: Alles neu beim \"Tannhäuser\"",
         article.title)
   }
 

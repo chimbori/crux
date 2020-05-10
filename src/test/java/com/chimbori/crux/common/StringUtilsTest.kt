@@ -1,8 +1,13 @@
 package com.chimbori.crux.common
 
-import com.chimbori.crux.common.StringUtils.*
+import com.chimbori.crux.common.StringUtils.cleanTitle
+import com.chimbori.crux.common.StringUtils.countMatches
+import com.chimbori.crux.common.StringUtils.encodingCleanup
+import com.chimbori.crux.common.StringUtils.getLongestSubstring
+import com.chimbori.crux.common.StringUtils.innerTrim
+import com.chimbori.crux.common.StringUtils.makeAbsoluteUrl
+import com.chimbori.crux.common.StringUtils.unescapeBackslashHex
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNull
 import org.junit.Test
 import java.net.MalformedURLException
 import java.net.URL
@@ -54,25 +59,6 @@ class StringUtilsTest {
   }
 
   @Test
-  fun testEstimateDate() {
-    assertNull(estimateDate("http://www.facebook.com/l.php?u=http%3A%2F%2Fwww.bet.com%2Fcollegemarketin"))
-    assertEquals("2010/02/15", estimateDate("http://www.vogella.de/blog/2010/02/15/twitter-android/"))
-    assertEquals("2010/02", estimateDate("http://www.vogella.de/blog/2010/02/twitter-android/12"))
-    assertEquals("2009/11/05", estimateDate("http://cagataycivici.wordpress.com/2009/11/05/mobile-twitter-client-with-jsf/"))
-    assertEquals("2009", estimateDate("http://cagataycivici.wordpress.com/2009/sf/12/1/"))
-    assertEquals("2011/06", estimateDate("http://bdoughan.blogspot.com/2011/06/using-jaxbs-xmlaccessortype-to.html"))
-    assertEquals("2011", estimateDate("http://bdoughan.blogspot.com/2011/13/using-jaxbs-xmlaccessortype-to.html"))
-  }
-
-  @Test
-  fun testCompleteDate() {
-    assertNull(completeDate(null))
-    assertEquals("2001/01/01", completeDate("2001"))
-    assertEquals("2001/11/01", completeDate("2001/11"))
-    assertEquals("2001/11/02", completeDate("2001/11/02"))
-  }
-
-  @Test
   fun testMakeAbsoluteUrl() {
     assertEquals("http://example.com/test", makeAbsoluteUrl("http://example.com", "/test"))
     assertEquals("http://example.com/test", makeAbsoluteUrl("http\\3a //example.com", "/test"))
@@ -87,5 +73,11 @@ class StringUtilsTest {
     assertEquals("=:", unescapeBackslashHex("\\3d \\3a "))
     assertEquals("https://scontent-sjc2-1.xx.fbcdn.net/v/t1.0-1/cp0/e15/q65/p120x120/00000000_00000000000000000_0000000000000000000_n.jpg?efg=aaaaaaaaaaaa&oh=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa&oe=abcdefgh",
         unescapeBackslashHex("https\\3a //scontent-sjc2-1.xx.fbcdn.net/v/t1.0-1/cp0/e15/q65/p120x120/00000000_00000000000000000_0000000000000000000_n.jpg?efg\\3d aaaaaaaaaaaa\\26 oh\\3d aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\\26 oe\\3d abcdefgh"))
+  }
+
+  @Test
+  fun testCleanTitle() {
+    assertEquals("World stock markets surge amid confidence Clinton will win US election",
+        cleanTitle("World stock markets surge amid confidence Clinton will win US election | Business | The Guardian"))
   }
 }
