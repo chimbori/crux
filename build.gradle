@@ -1,4 +1,5 @@
 apply plugin: 'java'
+apply plugin: 'kotlin'
 apply plugin: 'maven'
 apply plugin: 'signing'
 
@@ -11,8 +12,8 @@ description = """Crux parses Web pages to identify the crux of an article — th
   choose which ones you want to use. If you use Crux in an Android app, they are designed to be
   independent so that Proguard or other minification tools can strip out the parts you don’t use."""
 
-sourceCompatibility = 1.7
-targetCompatibility = 1.7
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
 
 repositories {
   mavenCentral()
@@ -23,24 +24,42 @@ dependencies {
   implementation 'org.jsoup:jsoup:1.9.2'
   implementation 'org.apache.commons:commons-lang3:3.7'
   testImplementation 'junit:junit:4.12'
+  implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 }
 
 configurations.all {
   resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
 }
-
 task javadocJar(type: Jar) {
   classifier = 'javadoc'
   from javadoc
 }
-
 task sourcesJar(type: Jar) {
   classifier = 'sources'
   from sourceSets.main.allSource
 }
-
 artifacts {
   archives jar, javadocJar, sourcesJar
+}
+
+buildscript {
+  ext.kotlin_version = '1.3.72'
+  repositories {
+    mavenCentral()
+  }
+  dependencies {
+    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+  }
+}
+compileKotlin {
+  kotlinOptions {
+    jvmTarget = "1.8"
+  }
+}
+compileTestKotlin {
+  kotlinOptions {
+    jvmTarget = "1.8"
+  }
 }
 
 if (project.hasProperty("ossrhUsername")) {
