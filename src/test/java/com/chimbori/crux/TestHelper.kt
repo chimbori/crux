@@ -2,17 +2,15 @@ package com.chimbori.crux
 
 import com.chimbori.crux.articles.Article
 import com.chimbori.crux.articles.ArticleExtractor
-import com.chimbori.crux.common.CharsetConverter
-import com.chimbori.crux.common.Log
 import org.junit.Assert
 import java.io.File
-import java.io.FileInputStream
 import java.io.FileNotFoundException
+import java.nio.charset.Charset
 
-fun extractFromTestFile(baseUri: String, testFile: String): Article? {
+fun extractFromTestFile(baseUri: String, testFile: String, charset: String? = "UTF-8"): Article? {
   return try {
     val article = ArticleExtractor(baseUri,
-        CharsetConverter.readStream(FileInputStream(File("test_data/$testFile"))).content)
+        File("test_data/$testFile").readText(charset = Charset.forName(charset)))
         .extractMetadata()
         .extractContent()
         .estimateReadingTime()

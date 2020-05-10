@@ -3,7 +3,6 @@ package com.chimbori.crux.articles
 import com.chimbori.crux.extractFromTestFile
 import org.junit.Assert.*
 import org.junit.Test
-import java.util.*
 
 class GoldenFilesTest {
   @Test
@@ -14,7 +13,7 @@ class GoldenFilesTest {
     assertEquals("http://o.aolcdn.com/photo-hub/news_gallery/6/8/680919/1281734929876.JPEG", article.imageUrl)
     assertArrayEquals(
         listOf("news", "update", "breaking", "nation", "U.S.", "elections", "world", "entertainment", "sports", "business",
-        "weird news", "health", "science", "latest news articles", "breaking news", "current news", "top news").toTypedArray(),
+            "weird news", "health", "science", "latest news articles", "breaking news", "current news", "top news").toTypedArray(),
         article.keywords?.toTypedArray())
   }
 
@@ -71,7 +70,10 @@ class GoldenFilesTest {
 
   @Test
   fun testBrOnline() {
-    val article = extractFromTestFile("http://www.br-online.de/br-klassik/programmtipps/highlight-bayreuth-tannhaeuser-festspielzeit-2011-ID1309895438808.xml", "br-online.html")
+    val article = extractFromTestFile(
+        "http://www.br-online.de/br-klassik/programmtipps/highlight-bayreuth-tannhaeuser-festspielzeit-2011-ID1309895438808.xml",
+        "br-online.html",
+        charset = "iso-8859-15")
     assertStartsWith("Wenn ein Dirigent, der Alte Musik liebt, erstmals eine "
         + "Neuproduktion bei den Bayreuther Richard-Wagner-Festspielen übernimmt,", article!!.document?.text())
     assertEquals("Eröffnung der 100. Bayreuther Festspiele: Alles neu beim \"Tannhäuser\"",
@@ -146,7 +148,10 @@ class GoldenFilesTest {
 
   @Test
   fun testFolhaUolComBr() {
-    val article = extractFromTestFile("http://m.folha.uol.com.br/ciencia/2017/01/1854055-no-futuro-as-pessoas-nao-morrerao-por-envelhecimento-diz-cientista.shtml?mobile", "folha_uol_com_br.html")
+    val article = extractFromTestFile(
+        "http://m.folha.uol.com.br/ciencia/2017/01/1854055-no-futuro-as-pessoas-nao-morrerao-por-envelhecimento-diz-cientista.shtml?mobile",
+        "folha_uol_com_br.html",
+        charset = "windows-1252")
     assertEquals("No futuro, as pessoas não morrerão por envelhecimento, diz cientista - 30/01/2017 - Ciência - Folha de S.Paulo", article!!.title)
     assertStartsWith("Aubrey de Grey, 53, quer curar o envelhecimento. Sim, para esse pesquisador inglês, formado em ciências da computação na Universidade de Cambridge, envelhecer é uma doença tal como a malária –ou ainda pior, por vitimar muito mais pessoas– que pode ser perfeitamente evitável.", article.document?.text())
     assertStartsWith("""
@@ -455,7 +460,10 @@ class GoldenFilesTest {
 
   @Test
   fun testSpiegel() {
-    val article = extractFromTestFile("http://www.spiegel.de/netzwelt/gadgets/retro-pc-commodore-reaktiviert-den-c64-a-755090.html", "spiegel.html")
+    val article = extractFromTestFile(
+        "http://www.spiegel.de/netzwelt/gadgets/retro-pc-commodore-reaktiviert-den-c64-a-755090.html",
+        "spiegel.html",
+        charset = "iso-8859-1")
     assertStartsWith("Da ist er wieder, der C64: Eigentlich längst ein Relikt der Technikgeschichte, soll der ", article!!.document?.text())
   }
 
@@ -695,7 +703,10 @@ class GoldenFilesTest {
 
   @Test
   fun testYomiuri() {
-    val article = extractFromTestFile("http://www.yomiuri.co.jp/e-japan/gifu/news/20110410-OYT8T00124.htm", "yomiuri.html")
+    val article = extractFromTestFile(
+        "http://www.yomiuri.co.jp/e-japan/gifu/news/20110410-OYT8T00124.htm",
+        "yomiuri.html",
+        charset = "Shift_JIS")
     assertEquals("色とりどりのチューリップ : 岐阜 : 地域 : YOMIURI ONLINE（読売新聞）", article!!.title)
     assertEquals("yomiuri:" + article.document?.text(), true, article.document?.text()?.contains("海津市海津町の国営木曽三川公園で、チューリップが見頃を迎えている。２０日までは「チューリップ祭」が開かれており、大勢の人たちが多彩な色や形を鑑賞している＝写真＝"))
     assertArrayEquals(listOf("読売新聞", "地域").toTypedArray(), article.keywords?.toTypedArray())
