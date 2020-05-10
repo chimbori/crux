@@ -1,14 +1,13 @@
 package com.chimbori.crux.articles;
 
-import com.chimbori.crux.TestHelper;
-
 import org.junit.Test;
 
+import static com.chimbori.crux.TestHelperKt.extractFromTestFile;
 import static org.junit.Assert.assertEquals;
 
 public class ArticleExtractorTest {
   private static final String EXAMPLE_URL = "http://example.com/";
-  
+
   @Test
   public void testRetainSpaceInsideTags() {
     final String As =  "aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa";
@@ -72,10 +71,10 @@ public class ArticleExtractorTest {
 
   @Test
   public void testReadingTimeEstimates() {
-    Article washingtonPostArticle = TestHelper.extractFromTestFile("https://www.washingtonpost.com/lifestyle/style/the-nearly-forgotten-story-of-the-black-women-who-helped-land-a-man-on-the-moon/2016/09/12/95f2d356-7504-11e6-8149-b8d05321db62_story.html", "washingtonpost.html");
+    Article washingtonPostArticle = extractFromTestFile("https://www.washingtonpost.com/lifestyle/style/the-nearly-forgotten-story-of-the-black-women-who-helped-land-a-man-on-the-moon/2016/09/12/95f2d356-7504-11e6-8149-b8d05321db62_story.html", "washingtonpost.html");
     assertEquals(8, washingtonPostArticle.estimatedReadingTimeMinutes);
 
-    Article galileoArticle = TestHelper.extractFromTestFile("https://en.wikipedia.org/wiki/Galileo_Galilei", "wikipedia_galileo.html");
+    Article galileoArticle = extractFromTestFile("https://en.wikipedia.org/wiki/Galileo_Galilei", "wikipedia_galileo.html");
     assertEquals(53, galileoArticle.estimatedReadingTimeMinutes);
   }
 }
