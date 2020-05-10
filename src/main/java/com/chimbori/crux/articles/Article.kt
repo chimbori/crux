@@ -21,7 +21,7 @@ data class Article(
     /** Estimated reading time, in minutes. This is not populated unless explicitly requested by the caller. */
     var estimatedReadingTimeMinutes: Int? = null,
     var document: Document? = null,
-    var keywords: Collection<String>? = null,
+    var keywords: List<String>? = null,
     var images: List<Image>? = null) {
 
 
