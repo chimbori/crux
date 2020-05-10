@@ -36,26 +36,28 @@ class CruxURL private constructor(private var uri: URI) {
     get() = !isLikelyBinaryDocument && !isLikelyExecutable && !isLikelyArchive && !isLikelyImage && !isLikelyVideo && !isLikelyAudio
 
   val isLikelyVideo: Boolean
-    get() = fileName.endsWith(".mpeg") || fileName.endsWith(".mpg") || fileName.endsWith(".avi") || fileName.endsWith(".mov")
-        || fileName.endsWith(".mpg4") || fileName.endsWith(".mp4") || fileName.endsWith(".flv") || fileName.endsWith(".wmv")
+    get() = listOf(".mp4", ".mpg", ".mpeg", ".avi", ".mov", ".mpg4", ".flv", ".wmv")
+        .firstOrNull { fileName.endsWith(it) } != null
 
   val isLikelyAudio: Boolean
-    get() = fileName.endsWith(".mp3") || fileName.endsWith(".ogg") || fileName.endsWith(".m3u") || fileName.endsWith(".wav")
+    get() = listOf(".mp3", ".ogg", ".m3u", ".wav")
+        .firstOrNull { fileName.endsWith(it) } != null
 
   val isLikelyBinaryDocument: Boolean
-    get() = (fileName.endsWith(".pdf") || fileName.endsWith(".ppt") || fileName.endsWith(".doc")
-        || fileName.endsWith(".swf") || fileName.endsWith(".rtf") || fileName.endsWith(".xls"))
+    get() = listOf(".pdf", ".ppt", ".doc", ".swf", ".rtf", ".xls")
+        .firstOrNull { fileName.endsWith(it) } != null
 
   val isLikelyArchive: Boolean
-    get() = (fileName.endsWith(".gz") || fileName.endsWith(".tgz") || fileName.endsWith(".zip")
-        || fileName.endsWith(".rar") || fileName.endsWith(".deb") || fileName.endsWith(".rpm") || fileName.endsWith(".7z"))
+    get() = listOf(".gz", ".tgz", ".zip", ".rar", ".deb", ".rpm", ".7z")
+        .firstOrNull { fileName.endsWith(it) } != null
 
   val isLikelyExecutable: Boolean
-    get() = fileName.endsWith(".exe") || fileName.endsWith(".bin") || fileName.endsWith(".bat") || fileName.endsWith(".dmg")
+    get() = listOf(".exe", ".bin", ".bat", ".dmg")
+        .firstOrNull { fileName.endsWith(it) } != null
 
   val isLikelyImage: Boolean
-    get() = (fileName.endsWith(".png") || fileName.endsWith(".jpeg") || fileName.endsWith(".gif")
-        || fileName.endsWith(".jpg") || fileName.endsWith(".bmp") || fileName.endsWith(".ico") || fileName.endsWith(".eps"))
+    get() = listOf(".png", ".jpeg", ".gif", ".jpg", ".bmp", ".ico", ".eps")
+        .firstOrNull { fileName.endsWith(it) } != null
 
   fun resolveRedirects(): CruxURL? {
     REDIRECT_PATTERNS.forEach { redirect ->

@@ -5,13 +5,23 @@ import org.junit.Test
 
 class CruxURLTest {
   @Test
-  fun testIsHttpURL() {
+  fun testIsWebScheme() {
     assertEquals(true, CruxURL.parse("http://example.com")?.isWebScheme)
     assertEquals(true, CruxURL.parse("https://example.com")?.isWebScheme)
     assertEquals(true, CruxURL.parse("example.com")?.isWebScheme)
     assertEquals(false, CruxURL.parse("file://error")?.isWebScheme)
     assertEquals(false, CruxURL.parse("ftp://example.com")?.isWebScheme)
     assertEquals(false, CruxURL.parse("mailto:test@example.com")?.isWebScheme)
+  }
+
+  @Test
+  fun testIsLikelyType() {
+    assertEquals(true, CruxURL.parse("http://example.com/video.mp4")?.isLikelyVideo)
+    assertEquals(true, CruxURL.parse("http://example.com/video.mpg")?.isLikelyVideo)
+    assertEquals(true, CruxURL.parse("http://example.com/video.avi")?.isLikelyVideo)
+    assertEquals(false, CruxURL.parse("http://example.com/test.txt")?.isLikelyVideo)
+    assertEquals(false, CruxURL.parse("http://example.com/test.tmp")?.isLikelyVideo)
+    assertEquals(false, CruxURL.parse("http://example.com/test.log")?.isLikelyVideo)
   }
 
   @Test
