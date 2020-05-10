@@ -1,7 +1,16 @@
 package com.chimbori.crux.articles
 
 import com.chimbori.crux.articles.ImageHelpers.extractImages
-import com.chimbori.crux.articles.MetadataHelpers.*
+import com.chimbori.crux.articles.MetadataHelpers.extractAmpUrl
+import com.chimbori.crux.articles.MetadataHelpers.extractCanonicalUrl
+import com.chimbori.crux.articles.MetadataHelpers.extractDescription
+import com.chimbori.crux.articles.MetadataHelpers.extractFaviconUrl
+import com.chimbori.crux.articles.MetadataHelpers.extractFeedUrl
+import com.chimbori.crux.articles.MetadataHelpers.extractKeywords
+import com.chimbori.crux.articles.MetadataHelpers.extractSiteName
+import com.chimbori.crux.articles.MetadataHelpers.extractThemeColor
+import com.chimbori.crux.articles.MetadataHelpers.extractTitle
+import com.chimbori.crux.articles.MetadataHelpers.extractVideoUrl
 import com.chimbori.crux.common.StringUtils.makeAbsoluteUrl
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document

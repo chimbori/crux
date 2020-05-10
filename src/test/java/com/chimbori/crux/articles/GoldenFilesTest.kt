@@ -12,9 +12,10 @@ class GoldenFilesTest {
     assertEquals("http://o.aolcdn.com/art/ch_news/aol_favicon.ico", article!!.faviconUrl)
     assertStartsWith("WASHINGTON (Aug. 13) -- Declaring \"the maritime soul of the Marine Corps", article.document?.text())
     assertEquals("http://o.aolcdn.com/photo-hub/news_gallery/6/8/680919/1281734929876.JPEG", article.imageUrl)
-    assertEquals(Arrays.asList("news", "update", "breaking", "nation", "U.S.", "elections", "world", "entertainment", "sports", "business",
-        "weird news", "health", "science", "latest news articles", "breaking news", "current news", "top news"),
-        article.keywords)
+    assertArrayEquals(
+        listOf("news", "update", "breaking", "nation", "U.S.", "elections", "world", "entertainment", "sports", "business",
+        "weird news", "health", "science", "latest news articles", "breaking news", "current news", "top news").toTypedArray(),
+        article.keywords?.toTypedArray())
   }
 
   @Test
@@ -550,7 +551,9 @@ class GoldenFilesTest {
   fun testTraindom() {
     val article = extractFromTestFile("http://blog.traindom.com/places-where-to-submit-your-startup-for-coverage/", "traindom.html")
     assertEquals("36 places where you can submit your startup for some coverage", article!!.title)
-    assertEquals(Arrays.asList("blog coverage", "get coverage", "startup review", "startups", "submit startup"), article.keywords)
+    assertArrayEquals(
+        listOf("blog coverage", "get coverage", "startup review", "startups", "submit startup").toTypedArray(),
+        article.keywords?.toTypedArray())
     assertStartsWith("So you have a new startup company and want some coverage", article.document?.text())
   }
 
@@ -695,7 +698,7 @@ class GoldenFilesTest {
     val article = extractFromTestFile("http://www.yomiuri.co.jp/e-japan/gifu/news/20110410-OYT8T00124.htm", "yomiuri.html")
     assertEquals("色とりどりのチューリップ : 岐阜 : 地域 : YOMIURI ONLINE（読売新聞）", article!!.title)
     assertEquals("yomiuri:" + article.document?.text(), true, article.document?.text()?.contains("海津市海津町の国営木曽三川公園で、チューリップが見頃を迎えている。２０日までは「チューリップ祭」が開かれており、大勢の人たちが多彩な色や形を鑑賞している＝写真＝"))
-    assertEquals(Arrays.asList("読売新聞", "地域"), article.keywords)
+    assertArrayEquals(listOf("読売新聞", "地域").toTypedArray(), article.keywords?.toTypedArray())
   }
 
   @Test
