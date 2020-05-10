@@ -17,7 +17,7 @@ import static com.chimbori.crux.common.StringUtils.anyChildTagWithAttr;
  * possible image URL candidate available within it. The use case for this application is to pick
  * a single representative image from a DOM sub-tree, in a way that works without explicit CSS
  * selector foo.
- *
+ * <p>
  * Check out the test cases for markup that is supported.
  */
 public class ImageUrlExtractor {
@@ -39,17 +39,17 @@ public class ImageUrlExtractor {
 
   public ImageUrlExtractor findImage() {
     try {
-      imageUrl = new HeuristicString(root.attr("src"))
+      new HeuristicString()
+          .or(root.attr("src"))
           .or(root.attr("data-src"))
           .or(anyChildTagWithAttr(root.select("img"), "src"))
           .or(anyChildTagWithAttr(root.select("img"), "data-src"))
           .or(anyChildTagWithAttr(root.select("*"), "src"))
           .or(anyChildTagWithAttr(root.select("*"), "data-src"))
           .or(parseImageUrlFromStyleAttr(root.select("[role=img]")))
-          .or(parseImageUrlFromStyleAttr(root.select("*")))
-          .toString();
+          .or(parseImageUrlFromStyleAttr(root.select("*")));
     } catch (HeuristicString.CandidateFound candidateFound) {
-      imageUrl = candidateFound.candidate;
+      imageUrl = candidateFound.getCandidate();
     }
     imageUrl = StringUtils.makeAbsoluteUrl(url, imageUrl);
     return this;

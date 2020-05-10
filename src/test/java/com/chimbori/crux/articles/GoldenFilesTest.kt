@@ -215,7 +215,7 @@ class GoldenFilesTest {
   fun testHackerNews() {
     val article = extractFromTestFile("https://news.ycombinator.com/", "hackernews.html")
     assertEquals("Hacker News", article!!.title)
-    assertEquals("", article.description)
+    assertEquals(null, article.description)
   }
 
   @Test
@@ -311,7 +311,7 @@ class GoldenFilesTest {
   fun testNPR() {
     val article = extractFromTestFile("http://www.npr.org/blogs/money/2010/10/04/130329523/how-fake-money-saved-brazil", "npr.html")
     assertEquals("How Fake Money Saved Brazil : Planet Money : NPR", article!!.title)
-    assertEquals("", article.siteName)
+    assertEquals(null, article.siteName)
     assertStartsWith("This is a story about how an economist and his buddies tricked the people of Brazil into saving the country from rampant inflation. They had a crazy, unlikely plan, and it worked. Twenty years ago, Brazil's", article.document.text())
     assertTrue(article.document.text(), article.document.text().endsWith("\"How Four Drinking Buddies Saved Brazil.\""))
     assertEquals("http://media.npr.org/assets/img/2010/10/04/real_wide.jpg?t=1286218782&s=3", article.imageUrl)
