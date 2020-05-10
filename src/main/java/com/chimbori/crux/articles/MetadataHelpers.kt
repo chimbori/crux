@@ -3,13 +3,13 @@ package com.chimbori.crux.articles
 import com.chimbori.crux.articles.ImageHelpers.findLargestIcon
 import com.chimbori.crux.common.HeuristicString
 import com.chimbori.crux.common.HeuristicString.CandidateFound
-import com.chimbori.crux.common.StringUtils
-import com.chimbori.crux.common.StringUtils.*
+import com.chimbori.crux.common.StringUtils.cleanTitle
+import com.chimbori.crux.common.StringUtils.innerTrim
+import com.chimbori.crux.common.StringUtils.urlEncodeSpaceCharacter
 import org.jsoup.nodes.Document
-import java.util.*
 
 internal object MetadataHelpers {
-  fun extractTitle(doc: Document): String {
+  fun extractTitle(doc: Document): String? {
     return try {
       cleanTitle(HeuristicString()
           .or(doc.title())
@@ -19,7 +19,11 @@ internal object MetadataHelpers {
           .or(innerTrim(doc.select("head meta[name=twitter:title]").attr("content")))
           .toString())
     } catch (candidateFound: CandidateFound) {
-      cleanTitle(candidateFound.candidate)
+      if (candidateFound.candidate != null) {
+        cleanTitle(candidateFound.candidate)
+      } else {
+        null
+      }
     }
   }
 
@@ -77,7 +81,9 @@ internal object MetadataHelpers {
       HeuristicString() // Twitter Cards and Open Graph images are usually higher quality, so rank them first.
           .or(urlEncodeSpaceCharacter(doc.select("head meta[name=twitter:image]").attr("content")))
           .or(urlEncodeSpaceCharacter(doc.select("head meta[property=og:image]").attr("content"))) // Then, grab any hero images from the article itself.
-          .or(if (images != null && images.size > 0) urlEncodeSpaceCharacter(images[0].src) else null) // image_src or thumbnails are usually low quality, so prioritize them *after* article images.
+          .or(if (images != null && images.size > 0 && !images[0].src.isNullOrBlank()) {
+            urlEncodeSpaceCharacter(images[0].src!!)
+          } else null) // image_src or thumbnails are usually low quality, so prioritize them *after* article images.
           .or(urlEncodeSpaceCharacter(doc.select("link[rel=image_src]").attr("href")))
           .or(urlEncodeSpaceCharacter(doc.select("head meta[name=thumbnail]").attr("content")))
     } catch (candidateFound: CandidateFound) {

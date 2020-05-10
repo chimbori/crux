@@ -172,7 +172,7 @@ public class CharsetConverter {
       // re-read byte array with different encoding
       // assume that the encoding string cannot be greater than 40 chars
       if (lastEncIndex > encIndex + clength && lastEncIndex < encIndex + clength + 40) {
-        String tmpEnc = StringUtils.encodingCleanup(str.substring(encIndex + clength, lastEncIndex));
+        String tmpEnc = StringUtils.INSTANCE.encodingCleanup(str.substring(encIndex + clength, lastEncIndex));
         try {
           in.reset();
           bos.reset();
