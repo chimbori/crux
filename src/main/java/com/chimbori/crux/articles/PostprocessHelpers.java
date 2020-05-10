@@ -1,5 +1,15 @@
 package com.chimbori.crux.articles;
 
+import com.chimbori.crux.common.Log;
+import com.chimbori.crux.common.StringUtils;
+
+import org.jsoup.nodes.Attribute;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.nodes.Node;
+import org.jsoup.nodes.TextNode;
+import org.jsoup.select.Elements;
+
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -12,16 +22,6 @@ import java.util.List;
 import java.util.Queue;
 import java.util.Set;
 import java.util.regex.Pattern;
-
-import org.jsoup.nodes.Attribute;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.nodes.Node;
-import org.jsoup.nodes.TextNode;
-import org.jsoup.select.Elements;
-
-import com.chimbori.crux.common.Log;
-import com.chimbori.crux.common.StringUtils;
 
 /**
  * Cleans up the best-match Element after one has been picked, in order to provide a sanitized
