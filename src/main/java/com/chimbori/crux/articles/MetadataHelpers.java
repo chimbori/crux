@@ -85,7 +85,7 @@ class MetadataHelpers {
           .or(StringUtils.urlEncodeSpaceCharacter(doc.select("head meta[name=twitter:image]").attr("content")))
           .or(StringUtils.urlEncodeSpaceCharacter(doc.select("head meta[property=og:image]").attr("content")))
           // Then, grab any hero images from the article itself.
-          .or(images != null && images.size() > 0 ? StringUtils.urlEncodeSpaceCharacter(images.get(0).src) : null)
+          .or(images != null && images.size() > 0 ? StringUtils.urlEncodeSpaceCharacter(images.get(0).getSrc()) : null)
           // image_src or thumbnails are usually low quality, so prioritize them *after* article images.
           .or(StringUtils.urlEncodeSpaceCharacter(doc.select("link[rel=image_src]").attr("href")))
           .or(StringUtils.urlEncodeSpaceCharacter(doc.select("head meta[name=thumbnail]").attr("content")));
@@ -113,8 +113,8 @@ class MetadataHelpers {
   static String extractFaviconUrl(Document doc) {
     try {
       new HeuristicString()
-          .or(StringUtils.urlEncodeSpaceCharacter(ImageHelpers.findLargestIcon(doc.select("head link[rel=icon]"))))
-          .or(StringUtils.urlEncodeSpaceCharacter(ImageHelpers.findLargestIcon(doc.select("head link[rel^=apple-touch-icon]"))))
+          .or(StringUtils.urlEncodeSpaceCharacter(ImageHelpers.INSTANCE.findLargestIcon(doc.select("head link[rel=icon]"))))
+          .or(StringUtils.urlEncodeSpaceCharacter(ImageHelpers.INSTANCE.findLargestIcon(doc.select("head link[rel^=apple-touch-icon]"))))
           .or(StringUtils.urlEncodeSpaceCharacter(doc.select("head link[rel^=shortcut],link[rel$=icon]").attr("href")));
     } catch (HeuristicString.CandidateFound candidateFound) {
       return candidateFound.getCandidate();

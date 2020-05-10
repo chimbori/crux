@@ -22,8 +22,8 @@ public class PublicAPITest {
     String content = "<html><title>Crux";  // Intentionally malformed.
     CruxURL cruxURL = CruxURL.Companion.parse(url);
     if (cruxURL.isLikelyArticle()) {
-      Article article = ArticleExtractor.with(url, content).extractMetadata().extractContent().article();
-      assertEquals("Crux", article.title);
+      Article article = new ArticleExtractor(url, content).extractMetadata().extractContent().getArticle();
+      assertEquals("Crux", article.getTitle());
     }
     CruxURL directURL = cruxURL.resolveRedirects();
     assertEquals("https://chimbori.com/", directURL.toString());
