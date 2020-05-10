@@ -8,7 +8,9 @@ class HeuristicStringTest {
   @Test
   fun testOriginalStringIsRetained() {
     try {
-      HeuristicString("original").or("changed")
+      HeuristicString()
+          .or("original")
+          .or("changed")
     } catch (candidateFound: CandidateFound) {
       assertEquals("original", candidateFound.candidate)
     }
@@ -17,7 +19,8 @@ class HeuristicStringTest {
   @Test
   fun testChangedStringIsSetIfOriginalIsNull() {
     try {
-      HeuristicString(null).or("changed")
+      HeuristicString()
+          .or("changed")
     } catch (candidateFound: CandidateFound) {
       assertEquals("changed", candidateFound.candidate)
     }
@@ -26,7 +29,7 @@ class HeuristicStringTest {
   @Test
   fun testChangedStringIsSetIfOriginalIsEmpty() {
     try {
-      HeuristicString("").or("changed")
+      HeuristicString().or("changed")
     } catch (candidateFound: CandidateFound) {
       assertEquals("changed", candidateFound.candidate)
     }
@@ -35,7 +38,7 @@ class HeuristicStringTest {
   @Test
   fun testOriginalStringIsRetainedIfChangedStringIsNull() {
     try {
-      HeuristicString("original").or(null)
+      HeuristicString().or(null)
     } catch (candidateFound: CandidateFound) {
       assertEquals("original", candidateFound.candidate)
     }
@@ -44,7 +47,7 @@ class HeuristicStringTest {
   @Test
   fun testOriginalStringIsRetainedIfChangedStringIsEmpty() {
     try {
-      HeuristicString("original").or("")
+      HeuristicString().or("")
     } catch (candidateFound: CandidateFound) {
       assertEquals("original", candidateFound.candidate)
     }
@@ -53,18 +56,18 @@ class HeuristicStringTest {
   @Test
   fun testNullOriginalStringIsPreservedIfAllChangedStringsAreNull() {
     try {
-      assertNull(HeuristicString(null).or(null).toString())
+      HeuristicString().or(null)
     } catch (candidateFound: CandidateFound) {
-      assertEquals(null, candidateFound.candidate)
+      assertNull(candidateFound.candidate)
     }
   }
 
   @Test
   fun testThatSubsequentStringsAreNotEvaluatedIfOneCandidateHasAlreadyBeenFound() {
     try {
-      assertNull(HeuristicString("original")
+      HeuristicString()
+          .or("original")
           .or(getNewCandidate_ShouldNeverBeCalled())
-          .toString())
     } catch (candidateFound: CandidateFound) {
       assertEquals("original", candidateFound.candidate)
     }

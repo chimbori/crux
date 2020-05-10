@@ -32,11 +32,11 @@ public class LinkUrlExtractor {
 
   public LinkUrlExtractor findLink() {
     try {
-      linkUrl = new HeuristicString(root.attr("href"))
-          .or(anyChildTagWithAttr(root.select("*"), "href"))
-          .toString();
+      new HeuristicString()
+          .or(root.attr("href"))
+          .or(anyChildTagWithAttr(root.select("*"), "href"));
     } catch (HeuristicString.CandidateFound candidateFound) {
-      linkUrl = candidateFound.candidate;
+      linkUrl = candidateFound.getCandidate();
     }
     linkUrl = StringUtils.makeAbsoluteUrl(url, linkUrl);
     return this;
