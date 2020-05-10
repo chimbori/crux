@@ -20,7 +20,7 @@ public class PublicAPITest {
   public void testCallersCanAccessArticleExtractorAPI() {
     String url = "https://chimbori.com/";
     String content = "<html><title>Crux";  // Intentionally malformed.
-    CruxURL cruxURL = CruxURL.parse(url);
+    CruxURL cruxURL = CruxURL.Companion.parse(url);
     if (cruxURL.isLikelyArticle()) {
       Article article = ArticleExtractor.with(url, content).extractMetadata().extractContent().article();
       assertEquals("Crux", article.title);

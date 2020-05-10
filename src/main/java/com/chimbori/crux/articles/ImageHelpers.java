@@ -98,7 +98,7 @@ class ImageHelpers {
         continue;
       }
 
-      CruxURL cruxURL = CruxURL.parse(image.src);
+      CruxURL cruxURL = CruxURL.Companion.parse(image.src);
       if (cruxURL != null && cruxURL.isAdImage()) {
         continue;
       }
