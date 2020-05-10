@@ -16,8 +16,6 @@ package com.chimbori.crux.urls;
  * limitations under the License
  */
 
-import com.chimbori.crux.common.StandardCharsetsCompat;
-
 import java.net.URISyntaxException;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
@@ -148,7 +146,7 @@ public abstract class UriCodec {
    * Encoded output is appended to {@code builder}. This uses the default output encoding (UTF-8).
    */
   public final void appendEncoded(StringBuilder builder, String s) {
-    appendEncoded(builder, s, StandardCharsetsCompat.UTF_8, false);
+    appendEncoded(builder, s, Charset.forName("UTF-8"), false);
   }
 
   /**
@@ -162,7 +160,7 @@ public abstract class UriCodec {
    * will be double encoded into “foo%2525bar”.
    */
   public final void appendPartiallyEncoded(StringBuilder builder, String s) {
-    appendEncoded(builder, s, StandardCharsetsCompat.UTF_8, true);
+    appendEncoded(builder, s, Charset.forName("UTF-8"), true);
   }
 
   private void appendEncoded(
@@ -369,6 +367,6 @@ public abstract class UriCodec {
    */
   public static String decode(String s) {
     return decode(
-        s, false /* convertPlus */, StandardCharsetsCompat.UTF_8, true /* throwOnFailure */);
+        s, false /* convertPlus */, Charset.forName("UTF-8"), true /* throwOnFailure */);
   }
 }
