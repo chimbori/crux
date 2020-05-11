@@ -3,7 +3,8 @@ package com.chimbori.crux.articles
 import com.chimbori.crux.articles.Article.Image.Companion.from
 import com.chimbori.crux.common.Log
 import com.chimbori.crux.common.StringUtils
-import com.chimbori.crux.urls.CruxURL.Companion.parse
+import com.chimbori.crux.urls.isAdImage
+import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import org.jsoup.nodes.Element
 import org.jsoup.select.Elements
 import java.util.*
@@ -84,14 +85,12 @@ internal object ImageHelpers {
     var score = 1.0
     for (imgElement in imgElements) {
       val image = from(imgElement!!)
-      if (image.src!!.isEmpty()) {
+      if (image.src.isNullOrEmpty()) {
         continue
       }
-      val cruxURL = parse(image.src)
-      if (cruxURL != null && cruxURL.isAdImage) {
+      if (image.src?.toHttpUrlOrNull()?.isAdImage() == true) {
         continue
       }
-      // cruxURL may be null if trying to pass a "data://" URI, which the Java URL parser can’t handle.
       image.weight += if (image.height >= 50) 20 else -20
       image.weight += if (image.width >= 50) 20 else -20
       image.weight += if (image.src!!.startsWith("data:")) -50 else 0
