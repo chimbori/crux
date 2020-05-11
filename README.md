@@ -18,31 +18,44 @@ or other minification tools can strip out the parts you don’t use.
 - First-class support for importing into Android Studio projects via Gradle.
 - [![CircleCI](https://circleci.com/gh/chimbori/crux/tree/master.svg?style=svg)](https://circleci.com/gh/chimbori/crux/tree/master) Continuous integration with unit tests and golden file tests.
 
-### Sample Code
-
 In a background thread, make a network request and obtain the `rawHTML` of the page you would like
 to analyze.
 
-```java
-String url = "https://example.com/article.html";
-String rawHTML = "<html><body><h1>This is an article</h1></body></html>";
-
-Article article = ArticleExtractor.with(url, rawHTML)
+#### Kotlin
+```kotlin
+val url = "https://example.com/article.html"
+val rawHTML = "<html><body><h1>This is an article</h1></body></html>"
+val article = ArticleExtractor(url, rawHTML)
     .extractMetadata()
     .extractContent()  // If you only need metadata, you can skip `.extractContent()`
-    .article();
+    .article
 ```
 
 On the UI thread:
-
-```java
+```kotlin
 // Use article.document, article.title, etc.
+```
+
+#### Java
+```java
+String url = "https://example.com/article.html";
+String rawHTML = "<html><body><h1>This is an article</h1></body></html>";  // Intentionally malformed.
+HttpUrl httpURL = HttpUrl.Companion.parse(url);
+Article article = new ArticleExtractor(url, rawHTML)
+    .extractMetadata()
+    .extractContent()
+    .getArticle();
+```
+
+On the UI thread:
+```java
+// Use article.getDocument(), article.getTitle(), etc.
 ```
 
 ### `crux-keep`
 
 If you control the HTML that is fed into Crux, and would like to instruct Crux to keep certain DOM
-nodes, irrespective of what Crux’s algorithm recommends, add the special attribute `crux-keep` to 
+nodes, irrespective of what Crux’s algorithm recommends, add the special attribute `crux-keep` to
 each such DOM node.
 
 ```html
@@ -59,8 +72,14 @@ for interesting `src` & `style` tags.
 
 All URLs are resolved as absolute URLs, even if the HTML contained relative URLs.
 
+#### Kotlin
+```kotlin
+ImageUrlExtractor(url, domElement).findImage().imageUrl
+```
+
+#### Java
 ```java
-ImageUrlExtractor.with(url, domElement).findImage().imageUrl();
+new ImageUrlExtractor(url, domElement).findImage().getImageUrl();
 ```
 
 ## Anchor Links Extractor API
@@ -71,8 +90,14 @@ for interesting `href` tags.
 
 All URLs are resolved as absolute URLs, even if the HTML contained relative URLs.
 
+#### Kotlin
+```kotlin
+LinkUrlExtractor(url, domElement).findLink().linkUrl
+```
+
+#### Java
 ```java
-LinkUrlExtractor.with(url, domElement).findLink().linkUrl();
+new LinkUrlExtractor(url, domElement).findLink().getLinkUrl();
 ```
 
 ## URL Heuristics API
@@ -90,11 +115,20 @@ This API also supports resolving redirects for certain well-known redirectors, w
 that the target URL be available as part of this candidate URL. In other words, this API will
 not be able to resolve redirectors that perform a HTTP 301 redirect.
 
+#### Kotlin
+```kotlin
+val url = "https://example.com/article.html".toHttpUrlOrNull()
+url?.resolveRedirects()
+url?.isLikelyArticle()  // Returns true.
+url?.isLikelyImage()  // Returns false.
+```
+
+#### Java
 ```java
-CruxURL cruxUrl = CruxURL.parse("https://example.com/article.html");
-cruxUrl.resolveRedirects();
-cruxUrl.isLikelyArticle();  // Returns true.
-cruxUrl.isLikelyImage();  // Returns false.
+HttpUrl url = HttpUrl.Companion.parse("https://example.com/article.html");
+url.resolveRedirects();
+HttpUrlExtensionsKt.isLikelyArticle(url);  // Returns true.
+HttpUrlExtensionsKt.isLikelyImage(url);  // Returns false.
 ```
 
 # Usage
@@ -128,7 +162,7 @@ allprojects {
 
 Module/`build.gradle`:
 
-```
+```groovy
 dependencies {
   compile 'com.github.chimbori:crux:0.0.0'  // See the latest version number below.
 }
@@ -142,7 +176,7 @@ Crux began as a fork of [Snacktory](http://github.com/karussell/snacktory) with 
 it more performant on Android devices, but it has quickly gained several new features that are not
 available in Snacktory.
 
-Snacktory (and thus Crux) borrow ideas and test cases from [Goose](https://github.com/GravityLabs/goose) 
+Snacktory (and thus Crux) borrow ideas and test cases from [Goose](https://github.com/GravityLabs/goose)
 and [JReadability](https://github.com/ifesdjeen/jReadability).
 
 # License
