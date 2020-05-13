@@ -4,18 +4,18 @@ import com.chimbori.crux.articles.ImageHelpers.findLargestIcon
 import com.chimbori.crux.common.HeuristicString
 import com.chimbori.crux.common.HeuristicString.CandidateFound
 import com.chimbori.crux.common.StringUtils.cleanTitle
-import com.chimbori.crux.common.StringUtils.innerTrim
 import com.chimbori.crux.common.StringUtils.urlEncodeSpaceCharacter
+import com.chimbori.crux.common.removeWhiteSpace
 import org.jsoup.nodes.Document
 
 fun Document.extractTitle(): String? {
   return try {
     cleanTitle(HeuristicString()
         .or(title())
-        .or(innerTrim(select("head title").text()))
-        .or(innerTrim(select("head meta[name=title]").attr("content")))
-        .or(innerTrim(select("head meta[property=og:title]").attr("content")))
-        .or(innerTrim(select("head meta[name=twitter:title]").attr("content")))
+        .or(select("head title").text().removeWhiteSpace())
+        .or(select("head meta[name=title]").attr("content").removeWhiteSpace())
+        .or(select("head meta[property=og:title]").attr("content").removeWhiteSpace())
+        .or(select("head meta[name=twitter:title]").attr("content").removeWhiteSpace())
         .toString())
   } catch (candidateFound: CandidateFound) {
     if (candidateFound.candidate != null) {
@@ -51,9 +51,9 @@ fun Document.extractCanonicalUrl(): String? {
 fun Document.extractDescription(): String? {
   try {
     HeuristicString()
-        .or(innerTrim(select("head meta[name=description]").attr("content")))
-        .or(innerTrim(select("head meta[property=og:description]").attr("content")))
-        .or(innerTrim(select("head meta[name=twitter:description]").attr("content")))
+        .or(select("head meta[name=description]").attr("content").removeWhiteSpace())
+        .or(select("head meta[property=og:description]").attr("content").removeWhiteSpace())
+        .or(select("head meta[name=twitter:description]").attr("content").removeWhiteSpace())
   } catch (candidateFound: CandidateFound) {
     return candidateFound.candidate
   }
@@ -63,8 +63,8 @@ fun Document.extractDescription(): String? {
 fun Document.extractSiteName(): String? {
   try {
     HeuristicString()
-        .or(innerTrim(select("head meta[property=og:site_name]").attr("content")))
-        .or(innerTrim(select("head meta[name=application-name]").attr("content")))
+        .or(select("head meta[property=og:site_name]").attr("content").removeWhiteSpace())
+        .or(select("head meta[name=application-name]").attr("content").removeWhiteSpace())
   } catch (candidateFound: CandidateFound) {
     return candidateFound.candidate
   }
@@ -113,7 +113,7 @@ fun Document.extractFaviconUrl(): String? {
 }
 
 fun Document.extractKeywords(): List<String> {
-  var content = innerTrim(select("head meta[name=keywords]").attr("content"))
+  var content = select("head meta[name=keywords]").attr("content").removeWhiteSpace()
   if (content.startsWith("[") && content.endsWith("]")) {
     content = content.substring(1, content.length - 1)
   }

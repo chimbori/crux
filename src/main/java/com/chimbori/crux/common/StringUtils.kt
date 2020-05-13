@@ -19,18 +19,18 @@ fun String.countMatches(substring: String): Int {
   return count
 }
 
-object StringUtils {
-  private val WHITESPACE = "\\s+".toRegex()
+/** Remove more than two spaces or newlines */
+fun String.removeWhiteSpace() = replace(WHITESPACE, " ").trim { it <= ' ' }
 
+private val WHITESPACE = "\\s+".toRegex()
+
+object StringUtils {
   fun urlEncodeSpaceCharacter(url: String?) =
       if (url.isNullOrEmpty()) {
         null
       } else {
         url.trim { it <= ' ' }.replace(WHITESPACE, "%20")
       }
-
-  /** Remove more than two spaces or newlines */
-  fun innerTrim(str: String) = str.replace(WHITESPACE, " ").trim { it <= ' ' }
 
   /** Starts reading the encoding from the first valid character until an invalid encoding character occurs. */
   fun encodingCleanup(str: String): String {
@@ -106,7 +106,7 @@ object StringUtils {
   fun cleanTitle(title: String) = if (title.lastIndexOf("|") > title.length / 2) {
     title.substring(0, title.indexOf("|")).trim()
   } else {
-    innerTrim(title)
+    title.removeWhiteSpace()
   }
 
   fun anyChildTagWithAttr(elements: Elements, attribute: String?): String? {

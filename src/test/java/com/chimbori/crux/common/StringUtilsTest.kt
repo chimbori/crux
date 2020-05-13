@@ -3,7 +3,6 @@ package com.chimbori.crux.common
 import com.chimbori.crux.common.StringUtils.cleanTitle
 import com.chimbori.crux.common.StringUtils.encodingCleanup
 import com.chimbori.crux.common.StringUtils.getLongestSubstring
-import com.chimbori.crux.common.StringUtils.innerTrim
 import com.chimbori.crux.common.StringUtils.unescapeBackslashHex
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -13,12 +12,12 @@ import java.net.URL
 class StringUtilsTest {
   @Test
   fun testInnerTrim() {
-    assertEquals("", innerTrim("   "))
-    assertEquals("t", innerTrim("  t "))
-    assertEquals("t t t", innerTrim("t t t "))
-    assertEquals("t t", innerTrim("t    \nt "))
-    assertEquals("t peter", innerTrim("t  peter "))
-    assertEquals("t t", innerTrim("t    \n     t "))
+    assertEquals("", "   ".removeWhiteSpace())
+    assertEquals("t", "  t ".removeWhiteSpace())
+    assertEquals("t t t", "t t t ".removeWhiteSpace())
+    assertEquals("t t", "t    \nt ".removeWhiteSpace())
+    assertEquals("t peter", "t  peter ".removeWhiteSpace())
+    assertEquals("t t", "t    \n     t ".removeWhiteSpace())
   }
 
   @Test
