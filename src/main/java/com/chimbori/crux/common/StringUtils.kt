@@ -5,8 +5,6 @@ package com.chimbori.crux.common
 import org.apache.commons.lang3.StringEscapeUtils.unescapeHtml4
 import org.jsoup.nodes.Element
 import org.jsoup.select.Elements
-import java.io.UnsupportedEncodingException
-import java.net.URLDecoder
 import java.util.regex.Pattern
 
 fun String.countMatches(substring: String): Int {
@@ -89,19 +87,6 @@ object StringUtils {
     0
   }
 
-  fun getQueryParameters(url: URI): Map<String, String> {
-    val nameValuePairs: MutableMap<String, String> = LinkedHashMap()
-    val queryParameters = url.query.split("&").toTypedArray()
-    for (nameValuePair in queryParameters) {
-      val equalsSignPosition = nameValuePair.indexOf("=")
-      try {
-        nameValuePairs[URLDecoder.decode(nameValuePair.substring(0, equalsSignPosition), UTF8)] = URLDecoder.decode(nameValuePair.substring(equalsSignPosition + 1), UTF8)
-      } catch (e: UnsupportedEncodingException) {
-        e.printStackTrace() // Quite unlikely to happen, so simplify the API by catching it here.
-      }
-    }
-    return nameValuePairs
-  }
 
   fun cleanTitle(title: String) = if (title.lastIndexOf("|") > title.length / 2) {
     title.substring(0, title.indexOf("|")).trim()
