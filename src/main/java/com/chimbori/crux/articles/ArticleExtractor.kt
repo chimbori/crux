@@ -1,17 +1,6 @@
 package com.chimbori.crux.articles
 
 import com.chimbori.crux.articles.ImageHelpers.extractImages
-import com.chimbori.crux.articles.MetadataHelpers.extractAmpUrl
-import com.chimbori.crux.articles.MetadataHelpers.extractCanonicalUrl
-import com.chimbori.crux.articles.MetadataHelpers.extractDescription
-import com.chimbori.crux.articles.MetadataHelpers.extractFaviconUrl
-import com.chimbori.crux.articles.MetadataHelpers.extractFeedUrl
-import com.chimbori.crux.articles.MetadataHelpers.extractImageUrl
-import com.chimbori.crux.articles.MetadataHelpers.extractKeywords
-import com.chimbori.crux.articles.MetadataHelpers.extractSiteName
-import com.chimbori.crux.articles.MetadataHelpers.extractThemeColor
-import com.chimbori.crux.articles.MetadataHelpers.extractTitle
-import com.chimbori.crux.articles.MetadataHelpers.extractVideoUrl
 import okhttp3.HttpUrl
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
@@ -31,32 +20,32 @@ constructor(val url: HttpUrl, private val document: Document) {
   constructor(url: HttpUrl, html: String) : this(url, Jsoup.parse(html))
 
   fun extractMetadata(): ArticleExtractor {
-    extractCanonicalUrl(document)?.let {
+    document.extractCanonicalUrl()?.let {
       article.canonicalUrl = url.resolve(it) ?: url
     }
 
-    article.title = extractTitle(document)
-    article.description = extractDescription(document)
-    article.siteName = extractSiteName(document)
-    article.themeColor = extractThemeColor(document)
+    article.title = document.extractTitle()
+    article.description = document.extractDescription()
+    article.siteName = document.extractSiteName()
+    article.themeColor = document.extractThemeColor()
 
-    extractImageUrl(document)?.let {
+    document.extractImageUrl()?.let {
       article.imageUrl = article.canonicalUrl.resolve(it)
     }
-    extractAmpUrl(document)?.let {
+    document.extractAmpUrl()?.let {
       article.ampUrl = article.canonicalUrl.resolve(it)
     }
-    extractFeedUrl(document)?.let {
+    document.extractFeedUrl()?.let {
       article.feedUrl = article.canonicalUrl.resolve(it)
     }
-    extractVideoUrl(document)?.let {
+    document.extractVideoUrl()?.let {
       article.videoUrl = article.canonicalUrl.resolve(it)
     }
-    extractFaviconUrl(document)?.let {
+    document.extractFaviconUrl()?.let {
       article.faviconUrl = article.canonicalUrl.resolve(it)
     }
 
-    article.keywords = extractKeywords(document)
+    article.keywords = document.extractKeywords()
     return this
   }
 
