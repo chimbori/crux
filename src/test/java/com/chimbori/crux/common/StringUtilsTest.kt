@@ -5,7 +5,6 @@ import com.chimbori.crux.common.StringUtils.countMatches
 import com.chimbori.crux.common.StringUtils.encodingCleanup
 import com.chimbori.crux.common.StringUtils.getLongestSubstring
 import com.chimbori.crux.common.StringUtils.innerTrim
-import com.chimbori.crux.common.StringUtils.makeAbsoluteUrl
 import com.chimbori.crux.common.StringUtils.unescapeBackslashHex
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -56,12 +55,6 @@ class StringUtilsTest {
     assertEquals("utf-8", encodingCleanup("utf-8\""))
     assertEquals("utf-8", encodingCleanup("utf-8'"))
     assertEquals("test-8", encodingCleanup(" test-8 &amp;"))
-  }
-
-  @Test
-  fun testMakeAbsoluteUrl() {
-    assertEquals("http://example.com/test", makeAbsoluteUrl("http://example.com", "/test"))
-    assertEquals("http://example.com/test", makeAbsoluteUrl("http\\3a //example.com", "/test"))
   }
 
   @Test

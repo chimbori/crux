@@ -2,7 +2,8 @@ package com.chimbori.crux.links
 
 import com.chimbori.crux.common.HeuristicString
 import com.chimbori.crux.common.HeuristicString.CandidateFound
-import com.chimbori.crux.common.StringUtils
+import com.chimbori.crux.common.StringUtils.anyChildTagWithAttr
+import okhttp3.HttpUrl
 import org.jsoup.nodes.Element
 
 /**
@@ -10,19 +11,20 @@ import org.jsoup.nodes.Element
  * available within it. The use case for this application is to pick a single representative link from a DOM sub-tree,
  * in a way that works without explicit CSS selector foo. Check out the test cases for markup that is supported.
  */
-class LinkUrlExtractor(private val url: String, private val root: Element) {
-  var linkUrl: String? = null
+class LinkUrlExtractor(private val url: HttpUrl, private val root: Element) {
+  var linkUrl: HttpUrl? = null
     private set
 
   fun findLink(): LinkUrlExtractor {
     try {
       HeuristicString()
           .or(root.attr("href"))
-          .or(StringUtils.anyChildTagWithAttr(root.select("*"), "href"))
+          .or(anyChildTagWithAttr(root.select("*"), "href"))
     } catch (candidateFound: CandidateFound) {
-      linkUrl = candidateFound.candidate
+      candidateFound.candidate?.let {
+        linkUrl = url.resolve(it)
+      }
     }
-    linkUrl = StringUtils.makeAbsoluteUrl(url, linkUrl)
     return this
   }
 }

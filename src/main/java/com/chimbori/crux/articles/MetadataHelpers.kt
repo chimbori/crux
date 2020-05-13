@@ -76,14 +76,12 @@ internal object MetadataHelpers {
     return doc.select("meta[name=theme-color]").attr("content")
   }
 
-  fun extractImageUrl(doc: Document, images: List<Article.Image>?): String? {
+  fun extractImageUrl(doc: Document): String? {
     try {
       HeuristicString() // Twitter Cards and Open Graph images are usually higher quality, so rank them first.
           .or(urlEncodeSpaceCharacter(doc.select("head meta[name=twitter:image]").attr("content")))
-          .or(urlEncodeSpaceCharacter(doc.select("head meta[property=og:image]").attr("content"))) // Then, grab any hero images from the article itself.
-          .or(if (images != null && images.size > 0 && !images[0].src.isNullOrBlank()) {
-            urlEncodeSpaceCharacter(images[0].src!!)
-          } else null) // image_src or thumbnails are usually low quality, so prioritize them *after* article images.
+          .or(urlEncodeSpaceCharacter(doc.select("head meta[property=og:image]").attr("content")))
+          // image_src or thumbnails are usually low quality, so prioritize them *after* article images.
           .or(urlEncodeSpaceCharacter(doc.select("link[rel=image_src]").attr("href")))
           .or(urlEncodeSpaceCharacter(doc.select("head meta[name=thumbnail]").attr("content")))
     } catch (candidateFound: CandidateFound) {
@@ -103,7 +101,7 @@ internal object MetadataHelpers {
     return null
   }
 
-  fun extractVideoUrl(doc: Document): String {
+  fun extractVideoUrl(doc: Document): String? {
     return urlEncodeSpaceCharacter(doc.select("head meta[property=og:video]").attr("content"))
   }
 

@@ -20,33 +20,32 @@ import static org.junit.Assert.assertEquals;
 public class JavaPublicAPITest {
   @Test
   public void testCallersCanAccessArticleExtractorAPI() {
-    String url = "https://chimbori.com/";
+    HttpUrl url = HttpUrl.parse("https://chimbori.com/");
     String content = "<html><title>Crux";  // Intentionally malformed.
 
-    HttpUrl httpURL = HttpUrl.Companion.parse(url);
-    if (HttpUrlExtensionsKt.isLikelyArticle(httpURL)) {
+    if (HttpUrlExtensionsKt.isLikelyArticle(url)) {
       Article article = new ArticleExtractor(url, content).extractMetadata().extractContent().getArticle();
       assertEquals("Crux", article.getTitle());
     }
-    HttpUrl directURL = HttpUrlExtensionsKt.resolveRedirects(httpURL);
+    HttpUrl directURL = HttpUrlExtensionsKt.resolveRedirects(url);
     assertEquals("https://chimbori.com/", directURL.toString());
   }
 
   @Test
   public void testCallersCanAccessImageExtractorAPI() {
-    String url = "https://chimbori.com/";
+    HttpUrl url = HttpUrl.parse("https://chimbori.com/");
     String content = "<img src=\"test.jpg\">";  // Intentionally malformed.
 
-    String imageUrl = new ImageUrlExtractor(url, Jsoup.parse(content).body()).findImage().getImageUrl();
-    assertEquals("https://chimbori.com/test.jpg", imageUrl);
+    HttpUrl imageUrl = new ImageUrlExtractor(url, Jsoup.parse(content).body()).findImage().getImageUrl();
+    assertEquals(HttpUrl.parse("https://chimbori.com/test.jpg"), imageUrl);
   }
 
   @Test
   public void testCallersCanAccessLinkExtractorAPI() {
-    String url = "https://chimbori.com/";
+    HttpUrl url = HttpUrl.parse("https://chimbori.com/");
     String content = "<img href=\"/test\" src=\"test.jpg\">";  // Intentionally malformed.
 
-    String linkUrl = new LinkUrlExtractor(url, Jsoup.parse(content).body()).findLink().getLinkUrl();
-    assertEquals("https://chimbori.com/test", linkUrl);
+    HttpUrl linkUrl = new LinkUrlExtractor(url, Jsoup.parse(content).body()).findLink().getLinkUrl();
+    assertEquals(HttpUrl.parse("https://chimbori.com/test"), linkUrl);
   }
 }

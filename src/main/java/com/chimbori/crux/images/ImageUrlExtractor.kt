@@ -4,7 +4,8 @@ package com.chimbori.crux.images
 
 import com.chimbori.crux.common.HeuristicString
 import com.chimbori.crux.common.HeuristicString.CandidateFound
-import com.chimbori.crux.common.StringUtils
+import com.chimbori.crux.common.StringUtils.anyChildTagWithAttr
+import okhttp3.HttpUrl
 import org.apache.commons.lang3.StringEscapeUtils
 import org.jsoup.nodes.Element
 import org.jsoup.select.Elements
@@ -16,8 +17,8 @@ import java.util.regex.Pattern
  * sub-tree, in a way that works without explicit CSS selector foo. Check out the test cases for markup that is
  * supported.
  */
-class ImageUrlExtractor(private val url: String, private val root: Element) {
-  var imageUrl: String? = null
+class ImageUrlExtractor(private val url: HttpUrl, private val root: Element) {
+  var imageUrl: HttpUrl? = null
     private set
 
   fun findImage(): ImageUrlExtractor {
@@ -25,16 +26,17 @@ class ImageUrlExtractor(private val url: String, private val root: Element) {
       HeuristicString()
           .or(root.attr("src"))
           .or(root.attr("data-src"))
-          .or(StringUtils.anyChildTagWithAttr(root.select("img"), "src"))
-          .or(StringUtils.anyChildTagWithAttr(root.select("img"), "data-src"))
-          .or(StringUtils.anyChildTagWithAttr(root.select("*"), "src"))
-          .or(StringUtils.anyChildTagWithAttr(root.select("*"), "data-src"))
+          .or(anyChildTagWithAttr(root.select("img"), "src"))
+          .or(anyChildTagWithAttr(root.select("img"), "data-src"))
+          .or(anyChildTagWithAttr(root.select("*"), "src"))
+          .or(anyChildTagWithAttr(root.select("*"), "data-src"))
           .or(parseImageUrlFromStyleAttr(root.select("[role=img]")))
           .or(parseImageUrlFromStyleAttr(root.select("*")))
     } catch (candidateFound: CandidateFound) {
-      imageUrl = candidateFound.candidate
+      candidateFound.candidate?.let {
+        imageUrl = url.resolve(it)
+      }
     }
-    imageUrl = StringUtils.makeAbsoluteUrl(url, imageUrl)
     return this
   }
 

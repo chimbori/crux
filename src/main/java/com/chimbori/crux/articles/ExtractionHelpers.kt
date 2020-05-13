@@ -1,6 +1,6 @@
 package com.chimbori.crux.articles
 
-import com.chimbori.crux.common.StringUtils
+import com.chimbori.crux.common.StringUtils.countMatches
 import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
 import java.util.*
@@ -89,10 +89,10 @@ internal object ExtractionHelpers {
   }
 
   private fun calcWeightForChild(child: Element, ownText: String): Int {
-    var c = StringUtils.countMatches(ownText, "&quot;")
-    c += StringUtils.countMatches(ownText, "&lt;")
-    c += StringUtils.countMatches(ownText, "&gt;")
-    c += StringUtils.countMatches(ownText, "px")
+    var c = countMatches(ownText, "&quot;")
+    c += countMatches(ownText, "&lt;")
+    c += countMatches(ownText, "&gt;")
+    c += countMatches(ownText, "px")
     val `val`: Int
     `val` = if (c > 5) {
       -30

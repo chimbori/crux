@@ -1,16 +1,15 @@
 package com.chimbori.crux.articles
 
-import com.chimbori.crux.articles.Article.Image.Companion.from
 import com.chimbori.crux.common.Log
-import com.chimbori.crux.common.StringUtils
+import com.chimbori.crux.common.StringUtils.urlEncodeSpaceCharacter
 import com.chimbori.crux.urls.isAdImage
-import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
+import okhttp3.HttpUrl
 import org.jsoup.nodes.Element
 import org.jsoup.select.Elements
 import java.util.*
 
 internal object ImageHelpers {
-  fun findLargestIcon(iconNodes: Elements): String {
+  fun findLargestIcon(iconNodes: Elements): String? {
     var largestIcon: Element? = null
     var maxSize: Long = -1
     for (iconNode in iconNodes) {
@@ -21,7 +20,7 @@ internal object ImageHelpers {
       }
     }
     return if (largestIcon != null) {
-      StringUtils.urlEncodeSpaceCharacter(largestIcon.attr("href"))
+      urlEncodeSpaceCharacter(largestIcon.attr("href"))
     } else ""
   }
 
@@ -72,8 +71,8 @@ internal object ImageHelpers {
    * Extracts a set of images from the article content itself. This extraction must be run before
    * the postprocess step, because that step removes tags that are useful for image extraction.
    */
-  fun extractImages(topNode: Element?): List<Article.Image> {
-    val images: MutableList<Article.Image> = ArrayList()
+  fun extractImages(baseUrl: HttpUrl, topNode: Element?): List<Article.Image> {
+    val images = mutableListOf<Article.Image>()
     if (topNode == null) {
       return images
     }
@@ -84,18 +83,15 @@ internal object ImageHelpers {
     var maxWeight = 0
     var score = 1.0
     for (imgElement in imgElements) {
-      val image = from(imgElement!!)
-      if (image.src.isNullOrEmpty()) {
-        continue
-      }
-      if (image.src?.toHttpUrlOrNull()?.isAdImage() == true) {
+      val image = Article.Image.from(baseUrl, imgElement!!)
+      if (image.srcUrl == null || image.srcUrl?.isAdImage() == true) {
         continue
       }
       image.weight += if (image.height >= 50) 20 else -20
       image.weight += if (image.width >= 50) 20 else -20
-      image.weight += if (image.src!!.startsWith("data:")) -50 else 0
-      image.weight += if (image.src!!.endsWith(".gif")) -20 else 0
-      image.weight += if (image.src!!.endsWith(".jpg")) 5 else 0
+      image.weight += if (image.srcUrl?.scheme == "data") -50 else 0
+      image.weight += if (image.srcUrl?.encodedPath?.endsWith(".gif") == true) -20 else 0
+      image.weight += if (image.srcUrl?.encodedPath?.endsWith(".jpg") == true) 5 else 0
       image.weight += if (image.alt!!.length > 35) 20 else 0
       image.weight += if (image.title!!.length > 35) 20 else 0
       image.weight += if (image.noFollow) -40 else 0
@@ -111,9 +107,7 @@ internal object ImageHelpers {
     return images
   }
 
-  /**
-   * Returns the highest-scored image first.
-   */
+  /** Returns the highest-scored image first. */
   private class ImageWeightComparator : Comparator<Article.Image> {
     override fun compare(o1: Article.Image, o2: Article.Image): Int {
       return o2.weight - o1.weight

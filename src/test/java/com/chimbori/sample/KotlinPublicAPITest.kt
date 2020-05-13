@@ -17,7 +17,7 @@ import org.junit.Test
 class KotlinPublicAPITest {
   @Test
   fun testCallersCanAccessArticleExtractorAPI() {
-    val url = "https://chimbori.com/"
+    val url = "https://chimbori.com/".toHttpUrlOrNull()!!
     val content = "<html><title>Crux"  // Intentionally malformed.
     val httpURL = "https://chimbori.com/".toHttpUrlOrNull()
     if (httpURL?.isLikelyArticle() == true) {
@@ -30,17 +30,17 @@ class KotlinPublicAPITest {
 
   @Test
   fun testCallersCanAccessImageExtractorAPI() {
-    val url = "https://chimbori.com/"
+    val url = "https://chimbori.com/".toHttpUrlOrNull()!!
     val content = "<img src=\"test.jpg\">" // Intentionally malformed.
     val imageUrl = ImageUrlExtractor(url, Jsoup.parse(content).body()).findImage().imageUrl
-    assertEquals("https://chimbori.com/test.jpg", imageUrl)
+    assertEquals("https://chimbori.com/test.jpg".toHttpUrlOrNull()!!, imageUrl)
   }
 
   @Test
   fun testCallersCanAccessLinkExtractorAPI() {
-    val url = "https://chimbori.com/"
+    val url = "https://chimbori.com/".toHttpUrlOrNull()!!
     val content = "<img href=\"/test\" src=\"test.jpg\">" // Intentionally malformed.
     val linkUrl = LinkUrlExtractor(url, Jsoup.parse(content).body()).findLink().linkUrl
-    assertEquals("https://chimbori.com/test", linkUrl)
+    assertEquals("https://chimbori.com/test".toHttpUrlOrNull()!!, linkUrl)
   }
 }

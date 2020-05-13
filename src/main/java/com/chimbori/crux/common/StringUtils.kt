@@ -6,9 +6,7 @@ import org.apache.commons.lang3.StringEscapeUtils.unescapeHtml4
 import org.jsoup.nodes.Element
 import org.jsoup.select.Elements
 import java.io.UnsupportedEncodingException
-import java.net.MalformedURLException
 import java.net.URI
-import java.net.URL
 import java.net.URLDecoder
 import java.util.*
 import java.util.regex.Pattern
@@ -17,8 +15,12 @@ object StringUtils {
   private val WHITESPACE = "[ \r\t\n]+".toRegex()
   private const val UTF8 = "UTF-8"
 
-  fun urlEncodeSpaceCharacter(url: String) =
-      if (url.isEmpty()) url else url.trim { it <= ' ' }.replace(WHITESPACE, "%20")
+  fun urlEncodeSpaceCharacter(url: String?) =
+      if (url.isNullOrEmpty()) {
+        null
+      } else {
+        url.trim { it <= ' ' }.replace(WHITESPACE, "%20")
+      }
 
   fun countMatches(str: String, substring: String): Int {
     var count = 0
@@ -110,29 +112,14 @@ object StringUtils {
     innerTrim(title)
   }
 
-  /**
-   * Given a [baseUrl] and a [relativeUrl], it creates a new fully-qualified URL representing the [relativeUrl]. It is
-   * best-effort, and returns the original [relativeUrl] if an absolute URL could not be determined. It guarantees that no
-   * exceptions will be thrown.
-   */
-  fun makeAbsoluteUrl(baseUrl: String?, relativeUrl: String?) = if (relativeUrl.isNullOrEmpty()) null else {
-    try {
-      URL(URL(unescapeBackslashHex(baseUrl)), unescapeBackslashHex(relativeUrl)).toString()
-    } catch (e: MalformedURLException) {
-      relativeUrl
+  fun anyChildTagWithAttr(elements: Elements, attribute: String?): String? {
+    return elements.firstOrNull { element ->
+      element.attr(attribute).isNotBlank()
+    }?.attr(attribute).apply {
+      unescapeHtml4(this)
     }
   }
 
-  fun anyChildTagWithAttr(elements: Elements, attr: String?): String? {
-    elements.forEach { element ->
-      val attrValue = element.attr(attr)
-      if (attrValue.isNullOrEmpty()) {
-        return@forEach
-      }
-      return unescapeHtml4(attrValue)
-    }
-    return null
-  }
 
   private val BACKSLASH_HEX_SPACE_PATTERN = Pattern.compile("\\\\([a-zA-Z0-9]+) ") // Space is included.
 

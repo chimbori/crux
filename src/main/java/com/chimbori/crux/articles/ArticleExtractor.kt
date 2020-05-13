@@ -6,12 +6,13 @@ import com.chimbori.crux.articles.MetadataHelpers.extractCanonicalUrl
 import com.chimbori.crux.articles.MetadataHelpers.extractDescription
 import com.chimbori.crux.articles.MetadataHelpers.extractFaviconUrl
 import com.chimbori.crux.articles.MetadataHelpers.extractFeedUrl
+import com.chimbori.crux.articles.MetadataHelpers.extractImageUrl
 import com.chimbori.crux.articles.MetadataHelpers.extractKeywords
 import com.chimbori.crux.articles.MetadataHelpers.extractSiteName
 import com.chimbori.crux.articles.MetadataHelpers.extractThemeColor
 import com.chimbori.crux.articles.MetadataHelpers.extractTitle
 import com.chimbori.crux.articles.MetadataHelpers.extractVideoUrl
-import com.chimbori.crux.common.StringUtils.makeAbsoluteUrl
+import okhttp3.HttpUrl
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
@@ -23,27 +24,38 @@ class ArticleExtractor
  * JSoup document has already been parsed outside this library, and saves a second duplicate
  * re-parse of the same content.
  */
-constructor(val givenUrl: String, private val document: Document) {
-  val article = Article().apply {
-    canonicalUrl = givenUrl
-  }
+constructor(val url: HttpUrl, private val document: Document) {
+  val article = Article(url)
 
   /** Create an [ArticleExtractor] from a raw HTML string. The HTML must exist and should be non-empty. */
-  constructor(url: String, html: String) : this(url, Jsoup.parse(html))
+  constructor(url: HttpUrl, html: String) : this(url, Jsoup.parse(html))
 
   fun extractMetadata(): ArticleExtractor {
+    extractCanonicalUrl(document)?.let {
+      article.canonicalUrl = url.resolve(it) ?: url
+    }
+
     article.title = extractTitle(document)
     article.description = extractDescription(document)
     article.siteName = extractSiteName(document)
     article.themeColor = extractThemeColor(document)
-    val extractedCanonicalUrl = extractCanonicalUrl(document)
-    if (extractedCanonicalUrl != null) {
-      article.canonicalUrl = makeAbsoluteUrl(article.canonicalUrl, extractedCanonicalUrl)
+
+    extractImageUrl(document)?.let {
+      article.imageUrl = article.canonicalUrl.resolve(it)
     }
-    article.ampUrl = makeAbsoluteUrl(article.canonicalUrl, extractAmpUrl(document))
-    article.feedUrl = makeAbsoluteUrl(article.canonicalUrl, extractFeedUrl(document))
-    article.videoUrl = makeAbsoluteUrl(article.canonicalUrl, extractVideoUrl(document))
-    article.faviconUrl = makeAbsoluteUrl(article.canonicalUrl, extractFaviconUrl(document))
+    extractAmpUrl(document)?.let {
+      article.ampUrl = article.canonicalUrl.resolve(it)
+    }
+    extractFeedUrl(document)?.let {
+      article.feedUrl = article.canonicalUrl.resolve(it)
+    }
+    extractVideoUrl(document)?.let {
+      article.videoUrl = article.canonicalUrl.resolve(it)
+    }
+    extractFaviconUrl(document)?.let {
+      article.faviconUrl = article.canonicalUrl.resolve(it)
+    }
+
     article.keywords = extractKeywords(document)
     return this
   }
@@ -65,9 +77,9 @@ constructor(val givenUrl: String, private val document: Document) {
     }
 
     // Extract images before post-processing, because that step may remove images.
-    article.images = extractImages(bestMatchElement)
+    article.images = extractImages(article.canonicalUrl, bestMatchElement)
+
     article.document = PostprocessHelpers.postprocess(bestMatchElement)
-    article.imageUrl = makeAbsoluteUrl(article.canonicalUrl, MetadataHelpers.extractImageUrl(document, article.images))
     return this
   }
 

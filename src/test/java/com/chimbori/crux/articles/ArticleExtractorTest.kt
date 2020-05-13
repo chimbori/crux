@@ -1,6 +1,7 @@
 package com.chimbori.crux.articles
 
 import com.chimbori.crux.extractFromTestFile
+import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
@@ -79,13 +80,16 @@ class ArticleExtractorTest {
 
   @Test
   fun testReadingTimeEstimates() {
-    val washingtonPostArticle = extractFromTestFile("https://www.washingtonpost.com/lifestyle/style/the-nearly-forgotten-story-of-the-black-women-who-helped-land-a-man-on-the-moon/2016/09/12/95f2d356-7504-11e6-8149-b8d05321db62_story.html", "washingtonpost.html")
+    val washingtonPostArticle = extractFromTestFile(
+        "https://www.washingtonpost.com/lifestyle/style/the-nearly-forgotten-story-of-the-black-women-who-helped-land-a-man-on-the-moon/2016/09/12/95f2d356-7504-11e6-8149-b8d05321db62_story.html".toHttpUrlOrNull()!!,
+        "washingtonpost.html")
     assertEquals(8, washingtonPostArticle!!.estimatedReadingTimeMinutes)
-    val galileoArticle = extractFromTestFile("https://en.wikipedia.org/wiki/Galileo_Galilei", "wikipedia_galileo.html")
+    val galileoArticle = extractFromTestFile(
+        "https://en.wikipedia.org/wiki/Galileo_Galilei".toHttpUrlOrNull()!!, "wikipedia_galileo.html")
     assertEquals(53, galileoArticle!!.estimatedReadingTimeMinutes)
   }
 
   companion object {
-    private const val EXAMPLE_URL = "http://example.com/"
+    private val EXAMPLE_URL = "http://example.com/".toHttpUrlOrNull()!!
   }
 }
