@@ -1,6 +1,6 @@
 package com.chimbori.crux.urls
 
-import com.chimbori.crux.common.StringUtils.countMatches
+import com.chimbori.crux.common.countMatches
 import okhttp3.HttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 
@@ -9,7 +9,7 @@ import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
  * resolve redirects such as when Facebook or Google show an interstitial page instead of redirecting the user to the
  * actual URL.
  */
-fun HttpUrl.isAdImage() = countMatches(toString(), "ad") >= 2
+fun HttpUrl.isAdImage() = toString().countMatches( "ad") >= 2
 
 fun HttpUrl.isLikelyArticle() = !isLikelyImage() && !isLikelyVideo() && !isLikelyAudio() &&
     !isLikelyBinaryDocument() && !isLikelyExecutable() && !isLikelyArchive()

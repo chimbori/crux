@@ -1,7 +1,6 @@
 package com.chimbori.crux.common
 
 import com.chimbori.crux.common.StringUtils.cleanTitle
-import com.chimbori.crux.common.StringUtils.countMatches
 import com.chimbori.crux.common.StringUtils.encodingCleanup
 import com.chimbori.crux.common.StringUtils.getLongestSubstring
 import com.chimbori.crux.common.StringUtils.innerTrim
@@ -24,11 +23,11 @@ class StringUtilsTest {
 
   @Test
   fun testCount() {
-    assertEquals(1, countMatches("hi wie &test; gehts", "&test;").toLong())
-    assertEquals(1, countMatches("&test;", "&test;").toLong())
-    assertEquals(2, countMatches("&test;&test;", "&test;").toLong())
-    assertEquals(2, countMatches("&test; &test;", "&test;").toLong())
-    assertEquals(3, countMatches("&test; test; &test; plu &test;", "&test;").toLong())
+    assertEquals(1, "hi wie &test; gehts".countMatches("&test;"))
+    assertEquals(1, "&test;".countMatches("&test;"))
+    assertEquals(2, "&test;&test;".countMatches("&test;"))
+    assertEquals(2, "&test; &test;".countMatches("&test;"))
+    assertEquals(3, "&test; test; &test; plu &test;".countMatches("&test;"))
   }
 
   @Test

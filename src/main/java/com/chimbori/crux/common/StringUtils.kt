@@ -6,14 +6,21 @@ import org.apache.commons.lang3.StringEscapeUtils.unescapeHtml4
 import org.jsoup.nodes.Element
 import org.jsoup.select.Elements
 import java.io.UnsupportedEncodingException
-import java.net.URI
 import java.net.URLDecoder
-import java.util.*
 import java.util.regex.Pattern
 
+fun String.countMatches(substring: String): Int {
+  var count = 0
+  val indexOf = indexOf(substring)
+  if (indexOf >= 0) {
+    count++
+    count += substring(indexOf + substring.length).countMatches(substring)
+  }
+  return count
+}
+
 object StringUtils {
-  private val WHITESPACE = "[ \r\t\n]+".toRegex()
-  private const val UTF8 = "UTF-8"
+  private val WHITESPACE = "\\s+".toRegex()
 
   fun urlEncodeSpaceCharacter(url: String?) =
       if (url.isNullOrEmpty()) {
@@ -21,16 +28,6 @@ object StringUtils {
       } else {
         url.trim { it <= ' ' }.replace(WHITESPACE, "%20")
       }
-
-  fun countMatches(str: String, substring: String): Int {
-    var count = 0
-    val indexOf = str.indexOf(substring)
-    if (indexOf >= 0) {
-      count++
-      count += countMatches(str.substring(indexOf + substring.length), substring)
-    }
-    return count
-  }
 
   /** Remove more than two spaces or newlines */
   fun innerTrim(str: String) = str.replace(WHITESPACE, " ").trim { it <= ' ' }
@@ -119,7 +116,6 @@ object StringUtils {
       unescapeHtml4(this)
     }
   }
-
 
   private val BACKSLASH_HEX_SPACE_PATTERN = Pattern.compile("\\\\([a-zA-Z0-9]+) ") // Space is included.
 
