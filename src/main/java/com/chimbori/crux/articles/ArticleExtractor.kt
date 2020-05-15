@@ -29,12 +29,8 @@ constructor(val url: HttpUrl, private val document: Document) {
     article.siteName = document.extractSiteName()
     article.themeColor = document.extractThemeColor()
 
-    document.extractImageUrl()?.let {
-      article.imageUrl = article.canonicalUrl.resolve(it)
-    }
-    document.extractAmpUrl()?.let {
-      article.ampUrl = article.canonicalUrl.resolve(it)
-    }
+    document.extractImageUrl(article.canonicalUrl)?.let { article.imageUrl = it }
+    document.extractAmpUrl(article.canonicalUrl)?.let { article.ampUrl = it }
     document.extractFeedUrl(article.canonicalUrl)?.let { article.feedUrl = it }
     document.extractVideoUrl(article.canonicalUrl)?.let { article.videoUrl = it }
     document.extractFaviconUrl(article.canonicalUrl)?.let { article.faviconUrl = it }

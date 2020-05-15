@@ -28,14 +28,14 @@ fun Document.extractTitle(): String? {
   }
 }
 
-fun Document.extractAmpUrl(): String? {
-  try {
-    HeuristicString()
-        .or(urlEncodeSpaceCharacter(select("link[rel=amphtml]").attr("href")))
-  } catch (candidateFound: CandidateFound) {
-    return candidateFound.candidate
+fun Document.extractAmpUrl(baseUrl: HttpUrl) = try {
+  HeuristicString()
+      .or(urlEncodeSpaceCharacter(select("link[rel=amphtml]").attr("href")))
+  null
+} catch (candidateFound: CandidateFound) {
+  candidateFound.candidate?.let {
+    baseUrl.resolve(it)
   }
-  return null
 }
 
 fun Document.extractCanonicalUrl(): String? {
@@ -75,18 +75,18 @@ fun Document.extractSiteName(): String? {
 
 fun Document.extractThemeColor() = select("meta[name=theme-color]").attr("content")
 
-fun Document.extractImageUrl(): String? {
-  try {
-    HeuristicString() // Twitter Cards and Open Graph images are usually higher quality, so rank them first.
-        .or(urlEncodeSpaceCharacter(select("head meta[name=twitter:image]").attr("content")))
-        .or(urlEncodeSpaceCharacter(select("head meta[property=og:image]").attr("content")))
-        // image_src or thumbnails are usually low quality, so prioritize them *after* article images.
-        .or(urlEncodeSpaceCharacter(select("link[rel=image_src]").attr("href")))
-        .or(urlEncodeSpaceCharacter(select("head meta[name=thumbnail]").attr("content")))
-  } catch (candidateFound: CandidateFound) {
-    return candidateFound.candidate
+fun Document.extractImageUrl(baseUrl: HttpUrl) = try {
+  HeuristicString() // Twitter Cards and Open Graph images are usually higher quality, so rank them first.
+      .or(select("head meta[name=twitter:image]").attr("content"))
+      .or(select("head meta[property=og:image]").attr("content"))
+      // image_src or thumbnails are usually low quality, so prioritize them *after* article images.
+      .or(select("link[rel=image_src]").attr("href"))
+      .or(select("head meta[name=thumbnail]").attr("content"))
+  null
+} catch (candidateFound: CandidateFound) {
+  candidateFound.candidate?.let {
+    baseUrl.resolve(it)
   }
-  return null
 }
 
 fun Document.extractFeedUrl(baseUrl: HttpUrl): HttpUrl? = try {
