@@ -1,6 +1,5 @@
 package com.chimbori.crux.articles
 
-import com.chimbori.crux.articles.ImageHelpers.parseSize
 import org.junit.Assert.assertEquals
 import org.junit.Test
 

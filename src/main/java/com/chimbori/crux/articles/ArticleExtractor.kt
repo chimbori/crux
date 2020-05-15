@@ -1,6 +1,5 @@
 package com.chimbori.crux.articles
 
-import com.chimbori.crux.articles.ImageHelpers.extractImages
 import okhttp3.HttpUrl
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
@@ -29,11 +28,11 @@ constructor(val url: HttpUrl, private val document: Document) {
     article.siteName = document.extractSiteName()
     article.themeColor = document.extractThemeColor()
 
+    document.extractFaviconUrl(article.canonicalUrl)?.let { article.faviconUrl = it }
     document.extractImageUrl(article.canonicalUrl)?.let { article.imageUrl = it }
     document.extractAmpUrl(article.canonicalUrl)?.let { article.ampUrl = it }
     document.extractFeedUrl(article.canonicalUrl)?.let { article.feedUrl = it }
     document.extractVideoUrl(article.canonicalUrl)?.let { article.videoUrl = it }
-    document.extractFaviconUrl(article.canonicalUrl)?.let { article.faviconUrl = it }
 
     article.keywords = document.extractKeywords()
     return this

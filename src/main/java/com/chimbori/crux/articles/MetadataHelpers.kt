@@ -1,117 +1,55 @@
 package com.chimbori.crux.articles
 
-import com.chimbori.crux.articles.ImageHelpers.findLargestIcon
 import com.chimbori.crux.common.HeuristicString
 import com.chimbori.crux.common.HeuristicString.CandidateFound
 import com.chimbori.crux.common.StringUtils.cleanTitle
-import com.chimbori.crux.common.StringUtils.urlEncodeSpaceCharacter
 import com.chimbori.crux.common.removeWhiteSpace
 import okhttp3.HttpUrl
-import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import org.jsoup.nodes.Document
 
-fun Document.extractTitle(): String? {
-  return try {
-    cleanTitle(HeuristicString()
-        .or(title())
-        .or(select("head title").text().removeWhiteSpace())
-        .or(select("head meta[name=title]").attr("content").removeWhiteSpace())
-        .or(select("head meta[property=og:title]").attr("content").removeWhiteSpace())
-        .or(select("head meta[name=twitter:title]").attr("content").removeWhiteSpace())
-        .toString())
-  } catch (candidateFound: CandidateFound) {
-    if (candidateFound.candidate != null) {
-      cleanTitle(candidateFound.candidate)
-    } else {
-      null
-    }
-  }
-}
-
-fun Document.extractAmpUrl(baseUrl: HttpUrl) = try {
-  HeuristicString()
-      .or(urlEncodeSpaceCharacter(select("link[rel=amphtml]").attr("href")))
+fun Document.extractTitle() = try {
+  cleanTitle(HeuristicString()
+      .or(title())
+      .or(select("head title").text())
+      .or(select("head meta[name=title]").attr("content"))
+      .or(select("head meta[property=og:title]").attr("content"))
+      .or(select("head meta[name=twitter:title]").attr("content"))
+      .toString())
   null
 } catch (candidateFound: CandidateFound) {
-  candidateFound.candidate?.let {
-    baseUrl.resolve(it)
-  }
+  candidateFound.candidate?.let { cleanTitle(it) }
 }
 
-fun Document.extractCanonicalUrl(): String? {
-  try {
-    HeuristicString()
-        .or(urlEncodeSpaceCharacter(select("head link[rel=canonical]").attr("href")))
-        .or(urlEncodeSpaceCharacter(select("head meta[property=og:url]").attr("content")))
-        .or(urlEncodeSpaceCharacter(select("head meta[name=twitter:url]").attr("content")))
-  } catch (candidateFound: CandidateFound) {
-    return candidateFound.candidate
-  }
-  return null
+fun Document.extractCanonicalUrl() = try {
+  HeuristicString()
+      .or(select("head link[rel=canonical]").attr("href"))
+      .or(select("head meta[property=og:url]").attr("content"))
+      .or(select("head meta[name=twitter:url]").attr("content"))
+  null
+} catch (candidateFound: CandidateFound) {
+  candidateFound.candidate?.removeWhiteSpace()
 }
 
-fun Document.extractDescription(): String? {
-  try {
-    HeuristicString()
-        .or(select("head meta[name=description]").attr("content").removeWhiteSpace())
-        .or(select("head meta[property=og:description]").attr("content").removeWhiteSpace())
-        .or(select("head meta[name=twitter:description]").attr("content").removeWhiteSpace())
-  } catch (candidateFound: CandidateFound) {
-    return candidateFound.candidate
-  }
-  return null
+fun Document.extractDescription() = try {
+  HeuristicString()
+      .or(select("head meta[name=description]").attr("content"))
+      .or(select("head meta[property=og:description]").attr("content"))
+      .or(select("head meta[name=twitter:description]").attr("content"))
+  null
+} catch (candidateFound: CandidateFound) {
+  candidateFound.candidate?.removeWhiteSpace()
 }
 
-fun Document.extractSiteName(): String? {
-  try {
-    HeuristicString()
-        .or(select("head meta[property=og:site_name]").attr("content").removeWhiteSpace())
-        .or(select("head meta[name=application-name]").attr("content").removeWhiteSpace())
-  } catch (candidateFound: CandidateFound) {
-    return candidateFound.candidate
-  }
-  return null
+fun Document.extractSiteName() = try {
+  HeuristicString()
+      .or(select("head meta[property=og:site_name]").attr("content"))
+      .or(select("head meta[name=application-name]").attr("content"))
+  null
+} catch (candidateFound: CandidateFound) {
+  candidateFound.candidate?.removeWhiteSpace()
 }
 
 fun Document.extractThemeColor() = select("meta[name=theme-color]").attr("content")
-
-fun Document.extractImageUrl(baseUrl: HttpUrl) = try {
-  HeuristicString() // Twitter Cards and Open Graph images are usually higher quality, so rank them first.
-      .or(select("head meta[name=twitter:image]").attr("content"))
-      .or(select("head meta[property=og:image]").attr("content"))
-      // image_src or thumbnails are usually low quality, so prioritize them *after* article images.
-      .or(select("link[rel=image_src]").attr("href"))
-      .or(select("head meta[name=thumbnail]").attr("content"))
-  null
-} catch (candidateFound: CandidateFound) {
-  candidateFound.candidate?.let {
-    baseUrl.resolve(it)
-  }
-}
-
-fun Document.extractFeedUrl(baseUrl: HttpUrl): HttpUrl? = try {
-  HeuristicString()
-      .or(select("link[rel=alternate]").select("link[type=application/rss+xml]").attr("href"))
-      .or(select("link[rel=alternate]").select("link[type=application/atom+xml]").attr("href"))
-  null
-} catch (candidateFound: CandidateFound) {
-  candidateFound.candidate?.let {
-    baseUrl.resolve(it)
-  }
-}
-
-fun Document.extractVideoUrl(baseUrl: HttpUrl) =
-    baseUrl.resolve(select("head meta[property=og:video]").attr("content"))
-
-fun Document.extractFaviconUrl(baseUrl: HttpUrl) = try {
-  HeuristicString()
-      .or(findLargestIcon(baseUrl, select("head link[rel~=icon]")))
-      .or(findLargestIcon(baseUrl, select("head link[rel~=ICON]")))
-      .or(findLargestIcon(baseUrl, select("head link[rel^=apple-touch-icon]")))
-  null
-} catch (candidateFound: CandidateFound) {
-  candidateFound.candidate?.toHttpUrlOrNull()
-}
 
 fun Document.extractKeywords(): List<String> {
   var content = select("head meta[name=keywords]").attr("content").removeWhiteSpace()
@@ -123,3 +61,45 @@ fun Document.extractKeywords(): List<String> {
     split
   } else emptyList()
 }
+
+fun Document.extractFaviconUrl(baseUrl: HttpUrl) = try {
+  HeuristicString()
+      .or(findLargestIcon(select("head link[rel~=icon]")))
+      .or(findLargestIcon(select("head link[rel~=ICON]")))
+      .or(findLargestIcon(select("head link[rel^=apple-touch-icon]")))
+  null
+} catch (candidateFound: CandidateFound) {
+  candidateFound.candidate?.let { baseUrl.resolve(it) }
+}
+
+fun Document.extractImageUrl(baseUrl: HttpUrl) = try {
+  HeuristicString() // Twitter Cards and Open Graph images are usually higher quality, so rank them first.
+      .or(select("head meta[name=twitter:image]").attr("content"))
+      .or(select("head meta[property=og:image]").attr("content"))
+      // image_src or thumbnails are usually low quality, so prioritize them *after* article images.
+      .or(select("link[rel=image_src]").attr("href"))
+      .or(select("head meta[name=thumbnail]").attr("content"))
+  null
+} catch (candidateFound: CandidateFound) {
+  candidateFound.candidate?.let { baseUrl.resolve(it) }
+}
+
+fun Document.extractAmpUrl(baseUrl: HttpUrl) = try {
+  HeuristicString()
+      .or(select("link[rel=amphtml]").attr("href"))
+  null
+} catch (candidateFound: CandidateFound) {
+  candidateFound.candidate?.let { baseUrl.resolve(it) }
+}
+
+fun Document.extractFeedUrl(baseUrl: HttpUrl): HttpUrl? = try {
+  HeuristicString()
+      .or(select("link[rel=alternate]").select("link[type=application/rss+xml]").attr("href"))
+      .or(select("link[rel=alternate]").select("link[type=application/atom+xml]").attr("href"))
+  null
+} catch (candidateFound: CandidateFound) {
+  candidateFound.candidate?.let { baseUrl.resolve(it) }
+}
+
+fun Document.extractVideoUrl(baseUrl: HttpUrl) =
+    baseUrl.resolve(select("head meta[property=og:video]").attr("content"))
