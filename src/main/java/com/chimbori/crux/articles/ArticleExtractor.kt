@@ -35,9 +35,7 @@ constructor(val url: HttpUrl, private val document: Document) {
     document.extractAmpUrl()?.let {
       article.ampUrl = article.canonicalUrl.resolve(it)
     }
-    document.extractFeedUrl()?.let {
-      article.feedUrl = article.canonicalUrl.resolve(it)
-    }
+    document.extractFeedUrl(article.canonicalUrl)?.let { article.feedUrl = it }
     document.extractVideoUrl(article.canonicalUrl)?.let { article.videoUrl = it }
     document.extractFaviconUrl(article.canonicalUrl)?.let { article.faviconUrl = it }
 

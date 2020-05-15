@@ -89,15 +89,15 @@ fun Document.extractImageUrl(): String? {
   return null
 }
 
-fun Document.extractFeedUrl(): String? {
-  try {
-    HeuristicString()
-        .or(select("link[rel=alternate]").select("link[type=application/rss+xml]").attr("href"))
-        .or(select("link[rel=alternate]").select("link[type=application/atom+xml]").attr("href"))
-  } catch (candidateFound: CandidateFound) {
-    return candidateFound.candidate
+fun Document.extractFeedUrl(baseUrl: HttpUrl): HttpUrl? = try {
+  HeuristicString()
+      .or(select("link[rel=alternate]").select("link[type=application/rss+xml]").attr("href"))
+      .or(select("link[rel=alternate]").select("link[type=application/atom+xml]").attr("href"))
+  null
+} catch (candidateFound: CandidateFound) {
+  candidateFound.candidate?.let {
+    baseUrl.resolve(it)
   }
-  return null
 }
 
 fun Document.extractVideoUrl(baseUrl: HttpUrl) =
