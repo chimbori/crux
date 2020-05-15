@@ -2,7 +2,6 @@
 
 package com.chimbori.crux.common
 
-import org.apache.commons.lang3.StringEscapeUtils.unescapeHtml4
 import org.jsoup.nodes.Element
 import org.jsoup.select.Elements
 import java.util.regex.Pattern
@@ -95,11 +94,9 @@ object StringUtils {
   }
 
   fun anyChildTagWithAttr(elements: Elements, attribute: String?): String? {
-    return elements.firstOrNull { element ->
-      element.attr(attribute).isNotBlank()
-    }?.attr(attribute).apply {
-      unescapeHtml4(this)
-    }
+    return elements
+        .firstOrNull { element -> element.attr(attribute).isNotBlank() }
+        ?.attr(attribute)
   }
 
   private val BACKSLASH_HEX_SPACE_PATTERN = Pattern.compile("\\\\([a-zA-Z0-9]+) ") // Space is included.
