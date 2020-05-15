@@ -20,8 +20,7 @@ repositories {
 }
 
 dependencies {
-  // https://github.com/jhy/jsoup/issues/911 prevents upgrading to JSoup 1.11.2.
-  implementation("org.jsoup:jsoup:1.9.2")
+  implementation("org.jsoup:jsoup:1.13.1")
   implementation("org.apache.commons:commons-text:1.8")
   implementation("com.squareup.okhttp3:okhttp:4.6.0")
   testImplementation("junit:junit:4.12")
