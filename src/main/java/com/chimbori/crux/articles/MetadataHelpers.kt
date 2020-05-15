@@ -100,7 +100,8 @@ fun Document.extractFeedUrl(): String? {
   return null
 }
 
-fun Document.extractVideoUrl() = urlEncodeSpaceCharacter(select("head meta[property=og:video]").attr("content"))
+fun Document.extractVideoUrl(baseUrl: HttpUrl) =
+    baseUrl.resolve(select("head meta[property=og:video]").attr("content"))
 
 fun Document.extractFaviconUrl(baseUrl: HttpUrl) = try {
   HeuristicString()

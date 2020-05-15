@@ -38,12 +38,8 @@ constructor(val url: HttpUrl, private val document: Document) {
     document.extractFeedUrl()?.let {
       article.feedUrl = article.canonicalUrl.resolve(it)
     }
-    document.extractVideoUrl()?.let {
-      article.videoUrl = article.canonicalUrl.resolve(it)
-    }
-    document.extractFaviconUrl(article.canonicalUrl)?.let {
-      article.faviconUrl = it
-    }
+    document.extractVideoUrl(article.canonicalUrl)?.let { article.videoUrl = it }
+    document.extractFaviconUrl(article.canonicalUrl)?.let { article.faviconUrl = it }
 
     article.keywords = document.extractKeywords()
     return this
