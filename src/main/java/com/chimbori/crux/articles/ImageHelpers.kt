@@ -1,7 +1,6 @@
 package com.chimbori.crux.articles
 
 import com.chimbori.crux.common.Log
-import com.chimbori.crux.common.StringUtils.urlEncodeSpaceCharacter
 import com.chimbori.crux.urls.isAdImage
 import okhttp3.HttpUrl
 import org.jsoup.nodes.Element
@@ -9,7 +8,7 @@ import org.jsoup.select.Elements
 import java.util.*
 
 internal object ImageHelpers {
-  fun findLargestIcon(iconNodes: Elements): String? {
+  fun findLargestIcon(baseUrl: HttpUrl, iconNodes: Elements): String? {
     var largestIcon: Element? = null
     var maxSize: Long = -1
     for (iconNode in iconNodes) {
@@ -20,8 +19,8 @@ internal object ImageHelpers {
       }
     }
     return if (largestIcon != null) {
-      urlEncodeSpaceCharacter(largestIcon.attr("href"))
-    } else ""
+      baseUrl.resolve(largestIcon.attr("href"))?.toString()
+    } else null
   }
 
   /**
@@ -31,10 +30,8 @@ internal object ImageHelpers {
    * "128x64" will return 64.
    * "24x24 48x48" will return 48.
    *
-   * If a non supported input is given, will return 0.
-   *
    * @param sizes String representing the sizes.
-   * @return largest dimension.
+   * @return largest dimension, or 0 if input could not be parsed.
    */
   fun parseSize(sizeString: String?): Long {
     if (sizeString == null || sizeString.trim { it <= ' ' }.isEmpty()) {
@@ -42,18 +39,12 @@ internal object ImageHelpers {
     }
 
     val sizes = sizeString.trim { it <= ' ' }.toLowerCase()
-    if (sizes.contains(" ")) { // Some sizes can be "16x16 24x24", so we split them with space and process each one.
-      val multiSizes = sizes.split(" ").toTypedArray()
-      var maxSize: Long = 0
-      for (size in multiSizes) {
-        val currentSize = parseSize(size)
-        if (currentSize > maxSize) {
-          maxSize = currentSize
-        }
-      }
-      return maxSize
-    } else if (sizes.contains("x")) { // For handling sizes of format 128x128 etc.
-      val dimen = sizes.split("x").toTypedArray()
+    if (sizes.contains(" ")) {
+      // For multiple sizes in the same String, split it and parse recursively.
+      return sizes.split(" ").map { parseSize(it) }.max() ?: 0
+    } else if (sizes.contains("x")) {
+      // For handling sizes of format 128x128 etc.
+      val dimen = sizes.split("x")
       if (dimen.size == 2) {
         return try {
           val width = dimen[0].trim { it <= ' ' }.toLong()

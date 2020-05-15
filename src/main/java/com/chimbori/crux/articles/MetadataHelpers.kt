@@ -6,6 +6,8 @@ import com.chimbori.crux.common.HeuristicString.CandidateFound
 import com.chimbori.crux.common.StringUtils.cleanTitle
 import com.chimbori.crux.common.StringUtils.urlEncodeSpaceCharacter
 import com.chimbori.crux.common.removeWhiteSpace
+import okhttp3.HttpUrl
+import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import org.jsoup.nodes.Document
 
 fun Document.extractTitle(): String? {
@@ -100,16 +102,14 @@ fun Document.extractFeedUrl(): String? {
 
 fun Document.extractVideoUrl() = urlEncodeSpaceCharacter(select("head meta[property=og:video]").attr("content"))
 
-fun Document.extractFaviconUrl(): String? {
-  try {
-    HeuristicString()
-        .or(urlEncodeSpaceCharacter(findLargestIcon(select("head link[rel=icon]"))))
-        .or(urlEncodeSpaceCharacter(findLargestIcon(select("head link[rel^=apple-touch-icon]"))))
-        .or(urlEncodeSpaceCharacter(select("head link[rel^=shortcut],link[rel$=icon]").attr("href")))
-  } catch (candidateFound: CandidateFound) {
-    return candidateFound.candidate
-  }
-  return null
+fun Document.extractFaviconUrl(baseUrl: HttpUrl) = try {
+  HeuristicString()
+      .or(findLargestIcon(baseUrl, select("head link[rel~=icon]")))
+      .or(findLargestIcon(baseUrl, select("head link[rel~=ICON]")))
+      .or(findLargestIcon(baseUrl, select("head link[rel^=apple-touch-icon]")))
+  null
+} catch (candidateFound: CandidateFound) {
+  candidateFound.candidate?.toHttpUrlOrNull()
 }
 
 fun Document.extractKeywords(): List<String> {

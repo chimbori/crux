@@ -41,8 +41,8 @@ constructor(val url: HttpUrl, private val document: Document) {
     document.extractVideoUrl()?.let {
       article.videoUrl = article.canonicalUrl.resolve(it)
     }
-    document.extractFaviconUrl()?.let {
-      article.faviconUrl = article.canonicalUrl.resolve(it)
+    document.extractFaviconUrl(article.canonicalUrl)?.let {
+      article.faviconUrl = it
     }
 
     article.keywords = document.extractKeywords()
