@@ -16,7 +16,7 @@ or other minification tools can strip out the parts you don’t use.
   the hood.
 - Cleaner, leaner code (compared to other libraries not optimized for Android)
 - First-class support for importing into Android Studio projects via Gradle.
-- [![CircleCI](https://circleci.com/gh/chimbori/crux/tree/master.svg?style=svg)](https://circleci.com/gh/chimbori/crux/tree/master) Continuous integration with unit tests and golden file tests.
+- ![Gradle Test](https://github.com/chimbori/crux/workflows/Gradle%20Test/badge.svg) Continuous integration with unit tests and golden file tests.
 
 In a background thread, make a network request and obtain the `rawHTML` of the page you would like
 to analyze.
