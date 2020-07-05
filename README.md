@@ -164,7 +164,7 @@ Module/`build.gradle`:
 
 ```groovy
 dependencies {
-  compile 'com.github.chimbori:crux:0.0.0'  // See the latest version number below.
+  compile 'com.chimbori.crux:crux:0.0.0'  // See the latest version number below.
 }
 ```
 
