@@ -32,12 +32,21 @@ jobs:
     # ---- Build the JAR -------------------------------------------------------
     - name: Build the JAR
       run: ./gradlew jar
+
+    # ---- Compute the JAR filename --------------------------------------------
+    - name: Compute the JAR filename
+      # Remove the "v" prefix from the tag. ("v1.2.3" --> "crux-1.2.3.jar")
+      run: |
+        JAR_FILENAME=crux-$(echo ${{ github.ref }} | sed -e 's/^v//').jar
+        echo "::set-env name=JAR_FILENAME::$JAR_FILENAME"
+
+    # ---- Upload JAR to GitHub Release ----------------------------------------
     - name: Upload JAR to GitHub Release
       uses: actions/upload-release-asset@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: build/libs/crux-${{ github.event.release.tag_name }}.jar
-        asset_name: crux-${{ github.event.release.tag_name }}.jar
+        asset_path: build/libs/${{ env.JAR_FILENAME }}
+        asset_name: ${{ env.JAR_FILENAME }}
         asset_content_type: application/java-archive
