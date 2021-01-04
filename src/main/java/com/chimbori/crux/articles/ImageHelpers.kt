@@ -39,7 +39,7 @@ fun parseSize(sizeString: String?): Long {
   val sizes = sizeString.trim { it <= ' ' }.toLowerCase()
   if (sizes.contains(" ")) {
     // For multiple sizes in the same String, split it and parse recursively.
-    return sizes.split(" ").map { parseSize(it) }.max() ?: 0
+    return sizes.split(" ").map { parseSize(it) }.maxOrNull() ?: 0
   } else if (sizes.contains("x")) {
     // For handling sizes of format 128x128 etc.
     val dimen = sizes.split("x")

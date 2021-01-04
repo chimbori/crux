@@ -9,7 +9,7 @@ import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
  * resolve redirects such as when Facebook or Google show an interstitial page instead of redirecting the user to the
  * actual URL.
  */
-fun HttpUrl.isAdImage() = toString().countMatches( "ad") >= 2
+fun HttpUrl.isAdImage() = toString().countMatches("ad") >= 2
 
 fun HttpUrl.isLikelyArticle() = !isLikelyImage() && !isLikelyVideo() && !isLikelyAudio() &&
     !isLikelyBinaryDocument() && !isLikelyExecutable() && !isLikelyArchive()
