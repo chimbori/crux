@@ -4,7 +4,7 @@ package com.chimbori.crux.images
 
 import com.chimbori.crux.common.HeuristicString
 import com.chimbori.crux.common.HeuristicString.CandidateFound
-import com.chimbori.crux.common.StringUtils.anyChildTagWithAttr
+import com.chimbori.crux.common.anyChildTagWithAttr
 import okhttp3.HttpUrl
 import org.apache.commons.lang3.StringEscapeUtils.unescapeHtml4
 import org.jsoup.nodes.Element
@@ -26,10 +26,10 @@ class ImageUrlExtractor(private val url: HttpUrl, private val root: Element) {
       HeuristicString()
           .or(root.attr("src"))
           .or(root.attr("data-src"))
-          .or(anyChildTagWithAttr(root.select("img"), "src"))
-          .or(anyChildTagWithAttr(root.select("img"), "data-src"))
-          .or(anyChildTagWithAttr(root.select("*"), "src"))
-          .or(anyChildTagWithAttr(root.select("*"), "data-src"))
+          .or(root.select("img").anyChildTagWithAttr("src"))
+          .or(root.select("img").anyChildTagWithAttr("data-src"))
+          .or(root.select("*").anyChildTagWithAttr("src"))
+          .or(root.select("*").anyChildTagWithAttr("data-src"))
           .or(parseImageUrlFromStyleAttr(root.select("[role=img]")))
           .or(parseImageUrlFromStyleAttr(root.select("*")))
     } catch (candidateFound: CandidateFound) {

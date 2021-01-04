@@ -1,6 +1,6 @@
 package com.chimbori.crux.articles
 
-import com.chimbori.crux.common.StringUtils.parseAttrAsInt
+import com.chimbori.crux.common.parseAttrAsInt
 import okhttp3.HttpUrl
 import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
@@ -43,8 +43,8 @@ data class Article(
         } else {
           baseUrl.resolve(imgElement.attr("src"))
         }
-        width = parseAttrAsInt(imgElement, "width")
-        height = parseAttrAsInt(imgElement, "height")
+        width = imgElement.parseAttrAsInt("width")
+        height = imgElement.parseAttrAsInt("height")
         alt = imgElement.attr("alt")
         title = imgElement.attr("title")
         noFollow = imgElement.parent()?.attr("rel")?.contains("nofollow") == true

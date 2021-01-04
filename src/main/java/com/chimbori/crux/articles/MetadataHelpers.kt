@@ -2,22 +2,23 @@ package com.chimbori.crux.articles
 
 import com.chimbori.crux.common.HeuristicString
 import com.chimbori.crux.common.HeuristicString.CandidateFound
-import com.chimbori.crux.common.StringUtils.cleanTitle
+import com.chimbori.crux.common.cleanTitle
 import com.chimbori.crux.common.removeWhiteSpace
 import okhttp3.HttpUrl
 import org.jsoup.nodes.Document
 
 fun Document.extractTitle() = try {
-  cleanTitle(HeuristicString()
+  HeuristicString()
       .or(title())
       .or(select("head title").text())
       .or(select("head meta[name=title]").attr("content"))
       .or(select("head meta[property=og:title]").attr("content"))
       .or(select("head meta[name=twitter:title]").attr("content"))
-      .toString())
+      .toString()
+      .cleanTitle()
   null
 } catch (candidateFound: CandidateFound) {
-  candidateFound.candidate?.let { cleanTitle(it) }
+  candidateFound.candidate?.cleanTitle()
 }
 
 fun Document.extractCanonicalUrl() = try {

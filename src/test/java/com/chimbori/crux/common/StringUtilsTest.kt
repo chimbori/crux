@@ -1,6 +1,5 @@
 package com.chimbori.crux.common
 
-import com.chimbori.crux.common.StringUtils.cleanTitle
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import java.net.MalformedURLException
@@ -39,6 +38,6 @@ class StringUtilsTest {
   @Test
   fun testCleanTitle() {
     assertEquals("World stock markets surge amid confidence Clinton will win US election",
-        cleanTitle("World stock markets surge amid confidence Clinton will win US election | Business | The Guardian"))
+        "World stock markets surge amid confidence Clinton will win US election | Business | The Guardian".cleanTitle())
   }
 }

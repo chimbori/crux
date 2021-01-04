@@ -3,7 +3,7 @@ package com.chimbori.crux.articles
 import com.chimbori.crux.articles.ExtractionHelpers.GRAVITY_SCORE_SELECTOR
 import com.chimbori.crux.common.Log
 import com.chimbori.crux.common.Log.printAndRemove
-import com.chimbori.crux.common.StringUtils.countLetters
+import com.chimbori.crux.common.countLetters
 import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
 import org.jsoup.nodes.Node
@@ -74,7 +74,7 @@ internal class PostprocessHelpers private constructor(private val keepers: Set<N
       Log.i("removeShortParagraphs: [%s] isExemptFromMinTextLengthCheck : %b", childNode, isExemptFromMinTextLengthCheck)
       if (text == null ||
           text.isEmpty() ||
-          !isExemptFromMinTextLengthCheck && text.length < MIN_LENGTH_FOR_PARAGRAPHS || text.length > countLetters(text) * 2) {
+          !isExemptFromMinTextLengthCheck && text.length < MIN_LENGTH_FOR_PARAGRAPHS || text.length > text.countLetters() * 2) {
         if (!shouldKeep(childNode)) printAndRemove(childNode, "removeShortParagraphs:")
       }
     }

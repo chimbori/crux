@@ -4,7 +4,7 @@ package com.chimbori.crux.common
 
 import org.jsoup.nodes.Element
 import org.jsoup.select.Elements
-import java.util.regex.Pattern
+import java.lang.Character.isLetter
 
 fun String.countMatches(substring: String): Int {
   var count = 0
@@ -17,30 +17,22 @@ fun String.countMatches(substring: String): Int {
 }
 
 /** Remove more than two spaces or newlines */
-fun String.removeWhiteSpace() = replace(WHITESPACE, " ").trim { it <= ' ' }
+fun String.removeWhiteSpace() = replace("\\s+".toRegex(), " ").trim { it <= ' ' }
 
-private val WHITESPACE = "\\s+".toRegex()
+fun String.countLetters() = count { isLetter(it) }
 
-object StringUtils {
-  fun countLetters(str: String) = str.count { Character.isLetter(it) }
-
-  fun parseAttrAsInt(element: Element, attr: String?) = try {
-    element.attr(attr).toInt()
-  } catch (e: NumberFormatException) {
-    0
-  }
-
-  fun cleanTitle(title: String) = if (title.lastIndexOf("|") > title.length / 2) {
-    title.substring(0, title.indexOf("|")).trim()
-  } else {
-    title.removeWhiteSpace()
-  }
-
-  fun anyChildTagWithAttr(elements: Elements, attribute: String?): String? {
-    return elements
-        .firstOrNull { element -> element.attr(attribute).isNotBlank() }
-        ?.attr(attribute)
-  }
-
-  private val BACKSLASH_HEX_SPACE_PATTERN = Pattern.compile("\\\\([a-zA-Z0-9]+) ") // Space is included.
+fun Element.parseAttrAsInt(attr: String?) = try {
+  attr(attr).toInt()
+} catch (e: NumberFormatException) {
+  0
 }
+
+fun String.cleanTitle() = if (lastIndexOf("|") > length / 2) {
+  substring(0, indexOf("|")).trim()
+} else {
+  removeWhiteSpace()
+}
+
+fun Elements.anyChildTagWithAttr(attribute: String?): String? =
+    firstOrNull { element -> element.attr(attribute).isNotBlank() }
+        ?.attr(attribute)
