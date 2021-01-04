@@ -5,6 +5,7 @@ import com.chimbori.crux.urls.isAdImage
 import okhttp3.HttpUrl
 import org.jsoup.nodes.Element
 import org.jsoup.select.Elements
+import kotlin.math.max
 
 fun findLargestIcon(iconNodes: Elements): String? {
   var largestIcon: Element? = null
@@ -16,9 +17,7 @@ fun findLargestIcon(iconNodes: Elements): String? {
       largestIcon = iconNode
     }
   }
-  return if (largestIcon != null) {
-    largestIcon.attr("href")
-  } else null
+  return largestIcon?.attr("href")
 }
 
 /**
@@ -47,7 +46,7 @@ fun parseSize(sizeString: String?): Long {
       return try {
         val width = dimen[0].trim { it <= ' ' }.toLong()
         val height = dimen[1].trim { it <= ' ' }.toLong()
-        Math.max(width, height)
+        max(width, height)
       } catch (e: NumberFormatException) {
         0
       }

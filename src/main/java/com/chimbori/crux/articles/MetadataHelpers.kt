@@ -58,7 +58,7 @@ fun Document.extractKeywords(): List<String> {
     content = content.substring(1, content.length - 1)
   }
   val split = content.split("\\s*,\\s*".toRegex())
-  return if (split.size > 1 || split.size > 0 && split[0] != "") {
+  return if (split.size > 1 || split.isNotEmpty() && split[0] != "") {
     split
   } else emptyList()
 }

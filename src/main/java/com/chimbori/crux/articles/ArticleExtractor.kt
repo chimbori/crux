@@ -1,5 +1,7 @@
 package com.chimbori.crux.articles
 
+import com.chimbori.crux.articles.ExtractionHelpers.getNodes
+import com.chimbori.crux.articles.ExtractionHelpers.getWeight
 import okhttp3.HttpUrl
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
@@ -40,11 +42,11 @@ constructor(val url: HttpUrl, private val document: Document) {
 
   fun extractContent(): ArticleExtractor {
     PreprocessHelpers.preprocess(document)
-    val nodes = ExtractionHelpers.getNodes(document)
+    val nodes = document.getNodes()
     var maxWeight = 0
     var bestMatchElement: Element? = null
     for (element in nodes) {
-      val currentWeight = ExtractionHelpers.getWeight(element)
+      val currentWeight = element.getWeight()
       if (currentWeight > maxWeight) {
         maxWeight = currentWeight
         bestMatchElement = element

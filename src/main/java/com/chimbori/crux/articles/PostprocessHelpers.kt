@@ -67,9 +67,8 @@ internal class PostprocessHelpers private constructor(private val keepers: Set<N
       if (childNode is TextNode) {
         text = childNode.text().trim { it <= ' ' }
       } else if (childNode is Element) {
-        val childElement = childNode
-        text = childElement.text().trim { it <= ' ' }
-        isExemptFromMinTextLengthCheck = TAGS_EXEMPT_FROM_MIN_LENGTH_CHECK.contains(childElement.tagName())
+        text = childNode.text().trim { it <= ' ' }
+        isExemptFromMinTextLengthCheck = TAGS_EXEMPT_FROM_MIN_LENGTH_CHECK.contains(childNode.tagName())
       }
       Log.i("removeShortParagraphs: [%s] isExemptFromMinTextLengthCheck : %b", childNode, isExemptFromMinTextLengthCheck)
       if (text == null ||
