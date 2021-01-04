@@ -11,6 +11,7 @@ import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
  */
 fun HttpUrl.isAdImage() = toString().countMatches("ad") >= 2
 
+@Suppress("unused")
 fun HttpUrl.isLikelyArticle() = !isLikelyImage() && !isLikelyVideo() && !isLikelyAudio() &&
     !isLikelyBinaryDocument() && !isLikelyExecutable() && !isLikelyArchive()
 
@@ -32,6 +33,7 @@ fun HttpUrl.isLikelyExecutable() = listOf(".exe", ".bin", ".bat", ".dmg")
 fun HttpUrl.isLikelyImage() = listOf(".png", ".jpeg", ".gif", ".jpg", ".bmp", ".ico", ".eps")
     .firstOrNull { encodedPath.endsWith(it) } != null
 
+@Suppress("unused")
 fun HttpUrl.resolveRedirects(): HttpUrl {
   var urlBeforeThisPass = this
   var urlAfterThisPass = this

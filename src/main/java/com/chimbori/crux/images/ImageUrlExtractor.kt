@@ -17,6 +17,7 @@ import java.util.regex.Pattern
  * sub-tree, in a way that works without explicit CSS selector foo. Check out the test cases for markup that is
  * supported.
  */
+@Suppress("unused")
 class ImageUrlExtractor(private val url: HttpUrl, private val root: Element) {
   var imageUrl: HttpUrl? = null
     private set

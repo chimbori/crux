@@ -11,6 +11,7 @@ import org.jsoup.nodes.Element
  * available within it. The use case for this application is to pick a single representative link from a DOM sub-tree,
  * in a way that works without explicit CSS selector foo. Check out the test cases for markup that is supported.
  */
+@Suppress("unused")
 class LinkUrlExtractor(private val url: HttpUrl, private val root: Element) {
   var linkUrl: HttpUrl? = null
     private set
