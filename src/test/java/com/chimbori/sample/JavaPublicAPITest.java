@@ -23,6 +23,7 @@ public class JavaPublicAPITest {
     HttpUrl url = HttpUrl.parse("https://chimbori.com/");
     String content = "<html><title>Crux";  // Intentionally malformed.
 
+    assert url != null;
     if (HttpUrlExtensionsKt.isLikelyArticle(url)) {
       Article article = new ArticleExtractor(url, content).extractMetadata().extractContent().getArticle();
       assertEquals("Crux", article.getTitle());
@@ -36,6 +37,7 @@ public class JavaPublicAPITest {
     HttpUrl url = HttpUrl.parse("https://chimbori.com/");
     String content = "<img src=\"test.jpg\">";  // Intentionally malformed.
 
+    assert url != null;
     HttpUrl imageUrl = new ImageUrlExtractor(url, Jsoup.parse(content).body()).findImage().getImageUrl();
     assertEquals(HttpUrl.parse("https://chimbori.com/test.jpg"), imageUrl);
   }
@@ -45,6 +47,7 @@ public class JavaPublicAPITest {
     HttpUrl url = HttpUrl.parse("https://chimbori.com/");
     String content = "<img href=\"/test\" src=\"test.jpg\">";  // Intentionally malformed.
 
+    assert url != null;
     HttpUrl linkUrl = new LinkUrlExtractor(url, Jsoup.parse(content).body()).findLink().getLinkUrl();
     assertEquals(HttpUrl.parse("https://chimbori.com/test"), linkUrl);
   }
