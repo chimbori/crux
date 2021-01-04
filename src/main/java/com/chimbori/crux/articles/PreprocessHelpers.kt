@@ -27,20 +27,20 @@ internal object PreprocessHelpers {
       val id = child.id().toLowerCase()
       if (NEGATIVE_CSS_CLASSES_AND_IDS.matcher(className).find() ||
           NEGATIVE_CSS_CLASSES_AND_IDS.matcher(id).find()) {
-        Log.printAndRemove(child, "stripUnlikelyCandidates")
+        Log.printAndRemove("stripUnlikelyCandidates", child)
       }
     }
   }
 
   private fun removeScriptsStyles(doc: Document) {
     doc.getElementsByTag("script").forEach { item ->
-      Log.printAndRemove(item, "removeScriptsStyles('script')")
+      Log.printAndRemove("removeScriptsStyles('script')", item)
     }
     doc.getElementsByTag("noscript").forEach { item ->
-      Log.printAndRemove(item, "removeScriptsStyles('noscript')")
+      Log.printAndRemove("removeScriptsStyles('noscript')", item)
     }
     doc.getElementsByTag("style").forEach { item ->
-      Log.printAndRemove(item, "removeScriptsStyles('style')")
+      Log.printAndRemove("removeScriptsStyles('style')", item)
     }
   }
 
@@ -48,7 +48,7 @@ internal object PreprocessHelpers {
     var i = 0
     while (i < node.childNodes().size) {
       val child = node.childNode(i)
-      if (child.nodeName() == "#comment") Log.printAndRemove(child, "removeComments") else {
+      if (child.nodeName() == "#comment") Log.printAndRemove("removeComments", child) else {
         removeComments(child)
         i++
       }

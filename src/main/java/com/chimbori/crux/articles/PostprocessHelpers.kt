@@ -31,7 +31,7 @@ internal class PostprocessHelpers private constructor(private val keepers: Set<N
     element.children().forEach { childElement ->
       if (!RETAIN_TAGS_TOP_LEVEL.contains(childElement.tagName())) {
         if (!shouldKeep(childElement)) {
-          printAndRemove(childElement, "removeTopLevelTagsNotLikelyToBeParagraphs")
+          printAndRemove("removeTopLevelTagsNotLikelyToBeParagraphs", childElement)
         }
       }
     }
@@ -41,7 +41,7 @@ internal class PostprocessHelpers private constructor(private val keepers: Set<N
     element.children().forEach { childElement ->
       if (!RETAIN_TAGS.contains(childElement.tagName())) {
         if (!shouldKeep(childElement)) {
-          printAndRemove(childElement, "removeTagsNotLikelyToBeParagraphs")
+          printAndRemove("removeTagsNotLikelyToBeParagraphs", childElement)
         }
       } else if (childElement.children().size > 0) {
         removeTagsNotLikelyToBeParagraphs(childElement)
@@ -74,7 +74,7 @@ internal class PostprocessHelpers private constructor(private val keepers: Set<N
       if (text == null ||
           text.isEmpty() ||
           !isExemptFromMinTextLengthCheck && text.length < MIN_LENGTH_FOR_PARAGRAPHS || text.length > text.countLetters() * 2) {
-        if (!shouldKeep(childNode)) printAndRemove(childNode, "removeShortParagraphs:")
+        if (!shouldKeep(childNode)) printAndRemove("removeShortParagraphs:", childNode)
       }
     }
   }
@@ -83,7 +83,7 @@ internal class PostprocessHelpers private constructor(private val keepers: Set<N
     element.children().forEach { childElement ->
       if (isUnlikely(childElement)) {
         if (!shouldKeep(childElement)) {
-          printAndRemove(childElement, "removeUnlikelyChildNodes")
+          printAndRemove("removeUnlikelyChildNodes", childElement)
         }
       } else if (childElement.children().size > 0) {
         removeUnlikelyChildNodes(childElement)
@@ -96,7 +96,7 @@ internal class PostprocessHelpers private constructor(private val keepers: Set<N
       val score = element.attr(ExtractionHelpers.GRAVITY_SCORE_ATTRIBUTE).toInt()
       if (score < 0 || element.text().length < MIN_LENGTH_FOR_PARAGRAPHS) {
         if (!shouldKeep(element)) {
-          printAndRemove(element, "removeNodesWithNegativeScores")
+          printAndRemove("removeNodesWithNegativeScores", element)
         }
       }
     }
