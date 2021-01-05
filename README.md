@@ -10,11 +10,9 @@ or other minification tools can strip out the parts you don’t use.
 - Rich formatted content available, not just plain text.
 - Support for more sites & better parsing overall.
 - Support for more metadata formats: OpenGraph, Twitter Cards, Schema.org.
-- Small footprint and code size: JSoup is the only required dependency.
+- Small footprint and code size: JSoup & OkHttp are the only required dependencies.
 - Fewer setters/getters, to keep the method count low (this is important for Android).
-- The ability to use HTTP libraries besides the default HttpUrlConnection, such as OkHttp, under
-  the hood.
-- Cleaner, leaner code (compared to other libraries not optimized for Android)
+- Cleaner, leaner code (compared to other libraries not optimized for Android).
 - First-class support for importing into Android Studio projects via Gradle.
 - ![Gradle Test](https://github.com/chimbori/crux/workflows/Gradle%20Test/badge.svg) Continuous integration with unit tests and golden file tests.
 
@@ -39,7 +37,7 @@ On the UI thread:
 #### Java
 ```java
 String url = "https://example.com/article.html";
-String rawHTML = "<html><body><h1>This is an article</h1></body></html>";  // Intentionally malformed.
+String rawHTML = "<html><body><h1>This is an article</h1></body></html>";
 HttpUrl httpURL = HttpUrl.Companion.parse(url);
 Article article = new ArticleExtractor(url, rawHTML)
     .extractMetadata()
