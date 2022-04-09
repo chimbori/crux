@@ -2,6 +2,7 @@ package com.chimbori.crux.articles
 
 import com.chimbori.crux.articles.ExtractionHelpers.NEGATIVE_CSS_CLASSES_AND_IDS
 import com.chimbori.crux.common.Log
+import java.util.Locale
 import org.jsoup.nodes.Document
 import org.jsoup.nodes.Node
 
@@ -23,8 +24,8 @@ internal object PreprocessHelpers {
       return  // Temporarily disabled; see comment above.
     }
     doc.select("body").select("*").forEach { child ->
-      val className = child.className().toLowerCase()
-      val id = child.id().toLowerCase()
+      val className = child.className().lowercase(Locale.getDefault())
+      val id = child.id().lowercase(Locale.getDefault())
       if (NEGATIVE_CSS_CLASSES_AND_IDS.matcher(className).find() ||
         NEGATIVE_CSS_CLASSES_AND_IDS.matcher(id).find()
       ) {

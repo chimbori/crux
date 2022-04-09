@@ -67,7 +67,7 @@ internal object ExtractionHelpers {
       } else if (child.tagName() == "div" || child.tagName() == "p") {
         weight += calcWeightForChild(child, ownText)
         if (child.tagName() == "p" && ownTextLength > 50) pEls.add(child)
-        if (child.className().toLowerCase() == "caption") caption = child
+        if (child.className().lowercase(Locale.getDefault()) == "caption") caption = child
       }
     }
 

@@ -7,6 +7,7 @@ import com.chimbori.crux.common.countLetters
 import java.util.ArrayDeque
 import java.util.Collections
 import java.util.IdentityHashMap
+import java.util.Locale
 import java.util.Queue
 import java.util.regex.Pattern
 import org.jsoup.nodes.Document
@@ -113,7 +114,7 @@ internal class PostprocessHelpers private constructor(private val keepers: Set<N
   private fun isUnlikely(element: Element): Boolean {
     val styleAttribute = element.attr("style")
     val classAttribute = element.attr("class")
-    return (classAttribute != null && classAttribute.toLowerCase().contains("caption")
+    return (classAttribute != null && classAttribute.lowercase(Locale.getDefault()).contains("caption")
         || UNLIKELY_CSS_STYLES.matcher(styleAttribute).find()
         || classAttribute != null && UNLIKELY_CSS_STYLES.matcher(classAttribute).find())
   }

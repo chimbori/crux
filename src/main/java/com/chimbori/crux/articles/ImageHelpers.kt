@@ -2,6 +2,7 @@ package com.chimbori.crux.articles
 
 import com.chimbori.crux.common.Log
 import com.chimbori.crux.urls.isAdImage
+import java.util.Locale
 import kotlin.math.max
 import okhttp3.HttpUrl
 import org.jsoup.nodes.Element
@@ -35,7 +36,7 @@ fun parseSize(sizeString: String?): Long {
     return 0
   }
 
-  val sizes = sizeString.trim { it <= ' ' }.toLowerCase()
+  val sizes = sizeString.trim { it <= ' ' }.lowercase(Locale.getDefault())
   if (sizes.contains(" ")) {
     // For multiple sizes in the same String, split it and parse recursively.
     return sizes.split(" ").map { parseSize(it) }.maxOrNull() ?: 0
