@@ -1,12 +1,12 @@
 package com.chimbori.crux.articles
 
 import com.chimbori.crux.common.countMatches
-import org.jsoup.nodes.Document
-import org.jsoup.nodes.Element
 import java.util.*
 import java.util.regex.Pattern
 import kotlin.math.max
 import kotlin.math.roundToInt
+import org.jsoup.nodes.Document
+import org.jsoup.nodes.Element
 
 internal object ExtractionHelpers {
   internal const val GRAVITY_SCORE_ATTRIBUTE = "gravityScore"
@@ -16,19 +16,22 @@ internal object ExtractionHelpers {
   private val IMPORTANT_NODES = Pattern.compile("p|div|td|h1|h2|article|section")
 
   private val UNLIKELY_CSS_CLASSES_AND_IDS = Pattern.compile(
-      "com(bx|ment|munity)|dis(qus|cuss)|e(xtra|[-]?mail)|foot|"
-          + "header|menu|re(mark|ply)|rss|sh(are|outbox)|sponsor"
-          + "a(d|ll|gegate|rchive|ttachment)|(pag(er|ination))|popup|print|"
-          + "login|si(debar|gn|ngle)|facebook|twitter|email")
+    "com(bx|ment|munity)|dis(qus|cuss)|e(xtra|[-]?mail)|foot|"
+        + "header|menu|re(mark|ply)|rss|sh(are|outbox)|sponsor"
+        + "a(d|ll|gegate|rchive|ttachment)|(pag(er|ination))|popup|print|"
+        + "login|si(debar|gn|ngle)|facebook|twitter|email"
+  )
 
   private val POSITIVE_CSS_CLASSES_AND_IDS = Pattern.compile(
-      "(^(body|content|h?entry|main|page|post|text|blog|story|haupt))"
-          + "|arti(cle|kel)|instapaper_body")
+    "(^(body|content|h?entry|main|page|post|text|blog|story|haupt))"
+        + "|arti(cle|kel)|instapaper_body"
+  )
 
   internal val NEGATIVE_CSS_CLASSES_AND_IDS: Pattern = Pattern.compile(
-      "nav($|igation)|user|com(ment|bx)|(^com-)|contact|"
-          + "foot|masthead|(me(dia|ta))|outbrain|promo|related|scroll|(sho(utbox|pping))|"
-          + "sidebar|sponsor|tags|tool|widget|player|disclaimer|toc|infobox|vcard|post-ratings")
+    "nav($|igation)|user|com(ment|bx)|(^com-)|contact|"
+        + "foot|masthead|(me(dia|ta))|outbrain|promo|related|scroll|(sho(utbox|pping))|"
+        + "sidebar|sponsor|tags|tool|widget|player|disclaimer|toc|infobox|vcard|post-ratings"
+  )
 
   private val NEGATIVE_CSS_STYLES = Pattern.compile("hidden|display: ?none|font-size: ?small")
 

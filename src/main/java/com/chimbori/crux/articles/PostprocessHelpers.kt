@@ -4,12 +4,15 @@ import com.chimbori.crux.articles.ExtractionHelpers.GRAVITY_SCORE_SELECTOR
 import com.chimbori.crux.common.Log
 import com.chimbori.crux.common.Log.printAndRemove
 import com.chimbori.crux.common.countLetters
+import java.util.ArrayDeque
+import java.util.Collections
+import java.util.IdentityHashMap
+import java.util.Queue
+import java.util.regex.Pattern
 import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
 import org.jsoup.nodes.Node
 import org.jsoup.nodes.TextNode
-import java.util.*
-import java.util.regex.Pattern
 
 /** Cleans up the best-match Element after one has been picked, in order to provide a sanitized output tree to the caller. */
 internal class PostprocessHelpers private constructor(private val keepers: Set<Node>) {
@@ -70,10 +73,15 @@ internal class PostprocessHelpers private constructor(private val keepers: Set<N
         text = childNode.text().trim { it <= ' ' }
         isExemptFromMinTextLengthCheck = TAGS_EXEMPT_FROM_MIN_LENGTH_CHECK.contains(childNode.tagName())
       }
-      Log.i("removeShortParagraphs: [%s] isExemptFromMinTextLengthCheck : %b", childNode, isExemptFromMinTextLengthCheck)
-      if (text == null ||
-          text.isEmpty() ||
-          !isExemptFromMinTextLengthCheck && text.length < MIN_LENGTH_FOR_PARAGRAPHS || text.length > text.countLetters() * 2) {
+      Log.i(
+        "removeShortParagraphs: [%s] isExemptFromMinTextLengthCheck : %b",
+        childNode, isExemptFromMinTextLengthCheck
+      )
+      if (text == null
+        || text.isEmpty()
+        || !isExemptFromMinTextLengthCheck && text.length < MIN_LENGTH_FOR_PARAGRAPHS
+        || text.length > text.countLetters() * 2
+      ) {
         if (!shouldKeep(childNode)) printAndRemove("removeShortParagraphs:", childNode)
       }
     }
@@ -105,7 +113,8 @@ internal class PostprocessHelpers private constructor(private val keepers: Set<N
   private fun isUnlikely(element: Element): Boolean {
     val styleAttribute = element.attr("style")
     val classAttribute = element.attr("class")
-    return (classAttribute != null && classAttribute.toLowerCase().contains("caption") || UNLIKELY_CSS_STYLES.matcher(styleAttribute).find()
+    return (classAttribute != null && classAttribute.toLowerCase().contains("caption")
+        || UNLIKELY_CSS_STYLES.matcher(styleAttribute).find()
         || classAttribute != null && UNLIKELY_CSS_STYLES.matcher(classAttribute).find())
   }
 
@@ -134,21 +143,21 @@ internal class PostprocessHelpers private constructor(private val keepers: Set<N
 
     /** Tags that should not be output, but still may contain interesting content. */
     private val REMOVE_TAGS_BUT_RETAIN_CONTENT =
-        setOf("font", "table", "tbody", "tr", "td", "div", "ol", "ul", "li", "span")
+      setOf("font", "table", "tbody", "tr", "td", "div", "ol", "ul", "li", "span")
 
     /**
      * Tags that should be retained in the output. This list should be fairly minimal, and equivalent
      * to the list of tags that callers can be expected to be able to handle.
      */
     private val RETAIN_TAGS =
-        setOf("p", "b", "i", "u", "strong", "em", "a", "pre", "h1", "h2", "h3", "h4", "h5", "h6", "blockquote")
+      setOf("p", "b", "i", "u", "strong", "em", "a", "pre", "h1", "h2", "h3", "h4", "h5", "h6", "blockquote")
 
     /**
      * Tags that can contain really short content, because they are not paragraph-level tags. Content
      * within these tags is not subject to the `MIN_LENGTH_FOR_PARAGRAPHS` requirement.
      */
     private val TAGS_EXEMPT_FROM_MIN_LENGTH_CHECK =
-        setOf("b", "i", "u", "strong", "em", "a", "pre", "h1", "h2", "h3", "h4", "h5", "h6", "blockquote")
+      setOf("b", "i", "u", "strong", "em", "a", "pre", "h1", "h2", "h3", "h4", "h5", "h6", "blockquote")
 
     /** The whitelist of attributes that should be retained in the output. No other attributes will be retained. */
     private val ATTRIBUTES_TO_RETAIN_IN_HTML = setOf("href")
@@ -167,9 +176,10 @@ internal class PostprocessHelpers private constructor(private val keepers: Set<N
       if (topNode == null) {
         return doc
       }
-      val keepers = Collections.newSetFromMap(
-          IdentityHashMap<Node, Boolean>())
-      for (element in topNode.select("[crux-keep]")) keepers.addAll(getAncestorsSelfAndDescendants(topNode, element))
+      val keepers = Collections.newSetFromMap(IdentityHashMap<Node, Boolean>())
+      for (element in topNode.select("[crux-keep]")) {
+        keepers.addAll(getAncestorsSelfAndDescendants(topNode, element))
+      }
       val helper = PostprocessHelpers(keepers)
       helper.removeNodesWithNegativeScores(topNode)
       helper.replaceLineBreaksWithSpaces(topNode)

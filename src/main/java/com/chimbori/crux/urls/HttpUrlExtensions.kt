@@ -16,22 +16,22 @@ fun HttpUrl.isLikelyArticle() = !isLikelyImage() && !isLikelyVideo() && !isLikel
     !isLikelyBinaryDocument() && !isLikelyExecutable() && !isLikelyArchive()
 
 fun HttpUrl.isLikelyVideo() = listOf(".mp4", ".mpg", ".mpeg", ".avi", ".mov", ".mpg4", ".flv", ".wmv")
-    .firstOrNull { encodedPath.endsWith(it) } != null
+  .firstOrNull { encodedPath.endsWith(it) } != null
 
 fun HttpUrl.isLikelyAudio() = listOf(".mp3", ".ogg", ".m3u", ".wav")
-    .firstOrNull { encodedPath.endsWith(it) } != null
+  .firstOrNull { encodedPath.endsWith(it) } != null
 
 fun HttpUrl.isLikelyBinaryDocument() = listOf(".pdf", ".ppt", ".doc", ".swf", ".rtf", ".xls")
-    .firstOrNull { encodedPath.endsWith(it) } != null
+  .firstOrNull { encodedPath.endsWith(it) } != null
 
 fun HttpUrl.isLikelyArchive() = listOf(".gz", ".tgz", ".zip", ".rar", ".deb", ".rpm", ".7z")
-    .firstOrNull { encodedPath.endsWith(it) } != null
+  .firstOrNull { encodedPath.endsWith(it) } != null
 
 fun HttpUrl.isLikelyExecutable() = listOf(".exe", ".bin", ".bat", ".dmg")
-    .firstOrNull { encodedPath.endsWith(it) } != null
+  .firstOrNull { encodedPath.endsWith(it) } != null
 
 fun HttpUrl.isLikelyImage() = listOf(".png", ".jpeg", ".gif", ".jpg", ".bmp", ".ico", ".eps")
-    .firstOrNull { encodedPath.endsWith(it) } != null
+  .firstOrNull { encodedPath.endsWith(it) } != null
 
 @Suppress("unused")
 fun HttpUrl.resolveRedirects(): HttpUrl {
@@ -52,16 +52,16 @@ fun HttpUrl.resolveRedirects(): HttpUrl {
 }
 
 private val REDIRECTORS = listOf(
-    object : RedirectPattern {  // Facebook.
-      override fun matches(url: HttpUrl) = url.host.endsWith(".facebook.com") && url.encodedPath == "/l.php"
-      override fun resolve(url: HttpUrl) = url.queryParameter("u")
-          ?.toHttpUrlOrNull() ?: url
-    },
-    object : RedirectPattern { // Google.
-      override fun matches(url: HttpUrl) = url.host.endsWith(".google.com") && url.encodedPath == "/url"
-      override fun resolve(url: HttpUrl) = (url.queryParameter("q") ?: url.queryParameter("url"))
-          ?.toHttpUrlOrNull() ?: url
-    }
+  object : RedirectPattern {  // Facebook.
+    override fun matches(url: HttpUrl) = url.host.endsWith(".facebook.com") && url.encodedPath == "/l.php"
+    override fun resolve(url: HttpUrl) = url.queryParameter("u")
+      ?.toHttpUrlOrNull() ?: url
+  },
+  object : RedirectPattern { // Google.
+    override fun matches(url: HttpUrl) = url.host.endsWith(".google.com") && url.encodedPath == "/url"
+    override fun resolve(url: HttpUrl) = (url.queryParameter("q") ?: url.queryParameter("url"))
+      ?.toHttpUrlOrNull() ?: url
+  }
 )
 
 /**

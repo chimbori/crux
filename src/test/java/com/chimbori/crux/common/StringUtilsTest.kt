@@ -1,9 +1,9 @@
 package com.chimbori.crux.common
 
-import org.junit.Assert.assertEquals
-import org.junit.Test
 import java.net.MalformedURLException
 import java.net.URL
+import org.junit.Assert.assertEquals
+import org.junit.Test
 
 class StringUtilsTest {
   @Test
@@ -28,16 +28,24 @@ class StringUtilsTest {
   @Test
   fun testImageProtocolRelative() {
     val result = try {
-      URL(URL("http://de.wikipedia.org/wiki/Griechenland"), "//upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Flag_of_Greece.svg/150px-Flag_of_Greece.svg.png").toString()
+      URL(
+        URL("http://de.wikipedia.org/wiki/Griechenland"),
+        "//upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Flag_of_Greece.svg/150px-Flag_of_Greece.svg.png"
+      ).toString()
     } catch (e: MalformedURLException) {
       "//upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Flag_of_Greece.svg/150px-Flag_of_Greece.svg.png"
     }
-    assertEquals("http://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Flag_of_Greece.svg/150px-Flag_of_Greece.svg.png", result)
+    assertEquals(
+      "http://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Flag_of_Greece.svg/150px-Flag_of_Greece.svg.png",
+      result
+    )
   }
 
   @Test
   fun testCleanTitle() {
-    assertEquals("World stock markets surge amid confidence Clinton will win US election",
-        "World stock markets surge amid confidence Clinton will win US election | Business | The Guardian".cleanTitle())
+    assertEquals(
+      "World stock markets surge amid confidence Clinton will win US election",
+      "World stock markets surge amid confidence Clinton will win US election | Business | The Guardian".cleanTitle()
+    )
   }
 }

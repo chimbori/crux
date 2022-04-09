@@ -2,10 +2,10 @@ package com.chimbori.crux.articles
 
 import com.chimbori.crux.common.Log
 import com.chimbori.crux.urls.isAdImage
+import kotlin.math.max
 import okhttp3.HttpUrl
 import org.jsoup.nodes.Element
 import org.jsoup.select.Elements
-import kotlin.math.max
 
 fun findLargestIcon(iconNodes: Elements): String? {
   var largestIcon: Element? = null

@@ -5,11 +5,11 @@ package com.chimbori.crux.images
 import com.chimbori.crux.common.HeuristicString
 import com.chimbori.crux.common.HeuristicString.CandidateFound
 import com.chimbori.crux.common.anyChildTagWithAttr
+import java.util.regex.Pattern
 import okhttp3.HttpUrl
 import org.apache.commons.lang3.StringEscapeUtils.unescapeHtml4
 import org.jsoup.nodes.Element
 import org.jsoup.select.Elements
-import java.util.regex.Pattern
 
 /**
  * Given a single DOM Element root, this extractor inspects the sub-tree and returns the best possible image URL
@@ -25,14 +25,14 @@ class ImageUrlExtractor(private val url: HttpUrl, private val root: Element) {
   fun findImage(): ImageUrlExtractor {
     try {
       HeuristicString()
-          .or(root.attr("src"))
-          .or(root.attr("data-src"))
-          .or(root.select("img").anyChildTagWithAttr("src"))
-          .or(root.select("img").anyChildTagWithAttr("data-src"))
-          .or(root.select("*").anyChildTagWithAttr("src"))
-          .or(root.select("*").anyChildTagWithAttr("data-src"))
-          .or(parseImageUrlFromStyleAttr(root.select("[role=img]")))
-          .or(parseImageUrlFromStyleAttr(root.select("*")))
+        .or(root.attr("src"))
+        .or(root.attr("data-src"))
+        .or(root.select("img").anyChildTagWithAttr("src"))
+        .or(root.select("img").anyChildTagWithAttr("data-src"))
+        .or(root.select("*").anyChildTagWithAttr("src"))
+        .or(root.select("*").anyChildTagWithAttr("data-src"))
+        .or(parseImageUrlFromStyleAttr(root.select("[role=img]")))
+        .or(parseImageUrlFromStyleAttr(root.select("*")))
     } catch (candidateFound: CandidateFound) {
       candidateFound.candidate?.let {
         imageUrl = url.resolve(it)

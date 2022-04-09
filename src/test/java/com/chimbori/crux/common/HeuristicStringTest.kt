@@ -1,7 +1,9 @@
 package com.chimbori.crux.common
 
 import com.chimbori.crux.common.HeuristicString.CandidateFound
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNull
+import org.junit.Assert.fail
 import org.junit.Test
 
 class HeuristicStringTest {
@@ -9,8 +11,8 @@ class HeuristicStringTest {
   fun testOriginalStringIsRetained() {
     try {
       HeuristicString()
-          .or("original")
-          .or("changed")
+        .or("original")
+        .or("changed")
     } catch (candidateFound: CandidateFound) {
       assertEquals("original", candidateFound.candidate)
     }
@@ -20,7 +22,7 @@ class HeuristicStringTest {
   fun testChangedStringIsSetIfOriginalIsNull() {
     try {
       HeuristicString()
-          .or("changed")
+        .or("changed")
     } catch (candidateFound: CandidateFound) {
       assertEquals("changed", candidateFound.candidate)
     }
@@ -66,8 +68,8 @@ class HeuristicStringTest {
   fun testThatSubsequentStringsAreNotEvaluatedIfOneCandidateHasAlreadyBeenFound() {
     try {
       HeuristicString()
-          .or("original")
-          .or(getNewCandidate_ShouldNeverBeCalled())
+        .or("original")
+        .or(getNewCandidate_ShouldNeverBeCalled())
     } catch (candidateFound: CandidateFound) {
       assertEquals("original", candidateFound.candidate)
     }

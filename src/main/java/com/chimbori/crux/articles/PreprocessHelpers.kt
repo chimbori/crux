@@ -26,7 +26,8 @@ internal object PreprocessHelpers {
       val className = child.className().toLowerCase()
       val id = child.id().toLowerCase()
       if (NEGATIVE_CSS_CLASSES_AND_IDS.matcher(className).find() ||
-          NEGATIVE_CSS_CLASSES_AND_IDS.matcher(id).find()) {
+        NEGATIVE_CSS_CLASSES_AND_IDS.matcher(id).find()
+      ) {
         Log.printAndRemove("stripUnlikelyCandidates", child)
       }
     }

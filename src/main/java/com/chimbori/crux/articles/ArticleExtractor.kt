@@ -2,11 +2,11 @@ package com.chimbori.crux.articles
 
 import com.chimbori.crux.articles.ExtractionHelpers.getNodes
 import com.chimbori.crux.articles.ExtractionHelpers.getWeight
+import kotlin.math.ceil
 import okhttp3.HttpUrl
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
-import kotlin.math.ceil
 
 @Suppress("unused")
 class ArticleExtractor

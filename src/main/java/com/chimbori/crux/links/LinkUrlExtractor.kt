@@ -19,8 +19,8 @@ class LinkUrlExtractor(private val url: HttpUrl, private val root: Element) {
   fun findLink(): LinkUrlExtractor {
     try {
       HeuristicString()
-          .or(root.attr("href"))
-          .or(root.select("*").anyChildTagWithAttr("href"))
+        .or(root.attr("href"))
+        .or(root.select("*").anyChildTagWithAttr("href"))
     } catch (candidateFound: CandidateFound) {
       candidateFound.candidate?.let {
         linkUrl = url.resolve(it)

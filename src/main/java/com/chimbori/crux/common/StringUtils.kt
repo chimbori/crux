@@ -2,9 +2,9 @@
 
 package com.chimbori.crux.common
 
+import java.lang.Character.isLetter
 import org.jsoup.nodes.Element
 import org.jsoup.select.Elements
-import java.lang.Character.isLetter
 
 fun String.countMatches(substring: String): Int {
   var count = 0
@@ -34,5 +34,5 @@ fun String.cleanTitle() = if (lastIndexOf("|") > length / 2) {
 }
 
 fun Elements.anyChildTagWithAttr(attribute: String?): String? =
-    firstOrNull { element -> element.attr(attribute).isNotBlank() }
-        ?.attr(attribute)
+  firstOrNull { element -> element.attr(attribute).isNotBlank() }
+    ?.attr(attribute)
