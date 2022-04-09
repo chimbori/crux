@@ -4,34 +4,45 @@ import com.chimbori.crux.common.countMatches
 import okhttp3.HttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 
-/**
- * Checks heuristically whether a given URL is likely to be an article, video, image, or other types. Can optionally
- * resolve redirects such as when Facebook or Google show an interstitial page instead of redirecting the user to the
- * actual URL.
- */
-fun HttpUrl.isAdImage() = toString().countMatches("ad") >= 2
+// Checks heuristically whether a given URL is likely to be an article, video, image, or other types. Can optionally
+// resolve redirects such as when Facebook or Google show an interstitial page instead of redirecting the user to the
+// actual URL.
 
-@Suppress("unused")
-fun HttpUrl.isLikelyArticle() = !isLikelyImage() && !isLikelyVideo() && !isLikelyAudio() &&
+fun HttpUrl.isAdImage(): Boolean = toString().countMatches("ad") >= 2
+
+fun HttpUrl.isLikelyArticle(): Boolean = !isLikelyImage() && !isLikelyVideo() && !isLikelyAudio() &&
     !isLikelyBinaryDocument() && !isLikelyExecutable() && !isLikelyArchive()
 
-fun HttpUrl.isLikelyVideo() = listOf(".mp4", ".mpg", ".mpeg", ".avi", ".mov", ".mpg4", ".flv", ".wmv")
-  .firstOrNull { encodedPath.endsWith(it) } != null
+fun HttpUrl.isLikelyVideo(): Boolean = when (encodedPath.substringAfterLast(".")) {
+  "mp4", "mpg", "mpeg", "avi", "mov", "mpg4", "flv", "wmv" -> true
+  else -> false
+}
 
-fun HttpUrl.isLikelyAudio() = listOf(".mp3", ".ogg", ".m3u", ".wav")
-  .firstOrNull { encodedPath.endsWith(it) } != null
+fun HttpUrl.isLikelyAudio(): Boolean = when (encodedPath.substringAfterLast(".")) {
+  "mp3", "ogg", "m3u", "wav" -> true
+  else -> false
+}
 
-fun HttpUrl.isLikelyBinaryDocument() = listOf(".pdf", ".ppt", ".doc", ".swf", ".rtf", ".xls")
-  .firstOrNull { encodedPath.endsWith(it) } != null
+fun HttpUrl.isLikelyBinaryDocument(): Boolean = when (encodedPath.substringAfterLast(".")) {
+  "pdf", "ppt", "doc", "swf", "rtf", "xls" -> true
+  else -> false
+}
 
-fun HttpUrl.isLikelyArchive() = listOf(".gz", ".tgz", ".zip", ".rar", ".deb", ".rpm", ".7z")
-  .firstOrNull { encodedPath.endsWith(it) } != null
+fun HttpUrl.isLikelyArchive(): Boolean = when (encodedPath.substringAfterLast(".")) {
+  "gz", "tgz", "zip", "rar", "deb", "rpm", "7z" -> true
+  else -> false
+}
 
-fun HttpUrl.isLikelyExecutable() = listOf(".exe", ".bin", ".bat", ".dmg")
-  .firstOrNull { encodedPath.endsWith(it) } != null
+fun HttpUrl.isLikelyExecutable(): Boolean = when (encodedPath.substringAfterLast(".")) {
+  "exe", "bin", "bat", "dmg" -> true
+  else -> false
+}
 
-fun HttpUrl.isLikelyImage() = listOf(".png", ".jpeg", ".gif", ".jpg", ".bmp", ".ico", ".eps")
-  .firstOrNull { encodedPath.endsWith(it) } != null
+
+fun HttpUrl.isLikelyImage(): Boolean = when (encodedPath.substringAfterLast(".")) {
+  "png", "jpeg", "gif", "jpg", "bmp", "ico", "eps" -> true
+  else -> false
+}
 
 @Suppress("unused")
 fun HttpUrl.resolveRedirects(): HttpUrl {
