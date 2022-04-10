@@ -1,6 +1,7 @@
 *.iml
 *.private
 .classpath
+.DS_Store
 .gradle/
 .idea/
 .project
