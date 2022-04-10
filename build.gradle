@@ -19,6 +19,16 @@ repositories {
   mavenCentral()
 }
 
+buildscript {
+  ext.kotlin_version = "1.6.20"
+  repositories {
+    mavenCentral()
+  }
+  dependencies {
+    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+  }
+}
+
 dependencies {
   api("org.jsoup:jsoup:1.13.1")
   api("com.squareup.okhttp3:okhttp:4.9.0")
@@ -42,15 +52,6 @@ artifacts {
   archives jar, javadocJar, sourcesJar
 }
 
-buildscript {
-  ext.kotlin_version = "1.6.20"
-  repositories {
-    mavenCentral()
-  }
-  dependencies {
-    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-  }
-}
 compileKotlin {
   kotlinOptions {
     allWarningsAsErrors = true
