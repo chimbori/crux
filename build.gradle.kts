@@ -32,6 +32,10 @@ configurations.all {
   resolutionStrategy.cacheChangingModulesFor(0, "seconds")
 }
 
+tasks.jar {
+  archiveBaseName.set("crux")
+}
+
 tasks.withType<KotlinCompile>().configureEach {
   kotlinOptions {
     allWarningsAsErrors = true
