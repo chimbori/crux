@@ -1,0 +1,7 @@
+# Place this file at `~/.gradle/gradle.properties` and fill in the REDACTED credentials.
+
+signing.keyId=REDACTED
+signing.password=REDACTED
+signing.secretKeyRingFile=~/.gnupg/secring.gpg
+mavenCentralUsername=chimbori
+mavenCentralPassword=REDACTED

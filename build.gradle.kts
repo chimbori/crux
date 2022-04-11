@@ -2,6 +2,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
   kotlin("jvm").version("1.6.20")
+  id("com.vanniktech.maven.publish") version ("0.19.0")
 }
 
 repositories {
@@ -15,6 +16,7 @@ buildscript {
   }
   dependencies {
     classpath(kotlin("gradle-plugin", version = rootProject.extra["kotlinVersion"] as String?))
+    classpath("com.vanniktech:gradle-maven-publish-plugin:0.19.0")
   }
 }
 
@@ -26,7 +28,7 @@ dependencies {
 }
 
 configurations.all {
-  // Re-run tests every time test cases are updated, even if sources haven’t been updated.
+  // Re-run tests every time test cases are updated, even if sources haven’t changed.
   resolutionStrategy.cacheChangingModulesFor(0, "seconds")
 }
 
