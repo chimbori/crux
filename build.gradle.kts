@@ -23,7 +23,7 @@ buildscript {
 }
 
 dependencies {
-  api("org.jsoup:jsoup:1.13.1")
+  api("org.jsoup:jsoup:1.14.3")
   api("com.squareup.okhttp3:okhttp:4.9.3")
   implementation("org.apache.commons:commons-text:1.9")
   testImplementation("junit:junit:4.13.2")

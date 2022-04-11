@@ -23,9 +23,9 @@ internal class PostprocessHelpers private constructor(private val keepers: Set<N
     }
     topNode.select("br").forEach { brElement ->
       if (brElement.previousSibling() != null) {
-        brElement.previousSibling().after(" • ")
+        brElement?.previousSibling()?.after(" • ")
       } else {
-        brElement.parent().append(" • ")
+        brElement.parent()?.append(" • ")
       }
       brElement.unwrap()
     }
@@ -114,9 +114,9 @@ internal class PostprocessHelpers private constructor(private val keepers: Set<N
   private fun isUnlikely(element: Element): Boolean {
     val styleAttribute = element.attr("style")
     val classAttribute = element.attr("class")
-    return (classAttribute != null && classAttribute.lowercase(Locale.getDefault()).contains("caption")
-        || UNLIKELY_CSS_STYLES.matcher(styleAttribute).find()
-        || classAttribute != null && UNLIKELY_CSS_STYLES.matcher(classAttribute).find())
+    return ((classAttribute.lowercase(Locale.getDefault()).contains("caption")
+        || UNLIKELY_CSS_STYLES.matcher(styleAttribute).find())
+        || UNLIKELY_CSS_STYLES.matcher(classAttribute).find())
   }
 
   private fun removeDisallowedAttributes(node: Element) {

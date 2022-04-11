@@ -140,7 +140,7 @@ internal object ExtractionHelpers {
     if (NEGATIVE_CSS_CLASSES_AND_IDS.matcher(id).find()) {
       weight -= 50
     }
-    if (style != null && style.isNotEmpty() && NEGATIVE_CSS_STYLES.matcher(style).find()) {
+    if (style.isNotEmpty() && NEGATIVE_CSS_STYLES.matcher(style).find()) {
       weight -= 50
     }
     return weight

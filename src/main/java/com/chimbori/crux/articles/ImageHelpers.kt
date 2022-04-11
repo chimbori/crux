@@ -65,10 +65,12 @@ fun extractImages(baseUrl: HttpUrl, topNode: Element?): List<Article.Image> {
   if (topNode == null) {
     return images
   }
-  var imgElements = topNode.select("img")
-  if (imgElements.isEmpty() && topNode.parent() != null) {
-    imgElements = topNode.parent().select("img")
+
+  val imgElements: Elements = when {
+    topNode.select("img").isEmpty() && topNode.parent() != null -> topNode.parent()!!.select("img")
+    else -> topNode.select("img")
   }
+
   var maxWeight = 0
   var score = 1.0
   for (imgElement in imgElements) {
