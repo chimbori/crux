@@ -21,8 +21,6 @@ jobs:
       with:
         tag_name: ${{ github.ref }}
         release_name: ${{ github.ref }}
-        prerelease: true
-        draft: true
 
     # ---- Set up environment --------------------------------------------------
     - name: Checkout Source
