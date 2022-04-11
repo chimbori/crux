@@ -1,4 +1,4 @@
-# Contributing to Crux
+# Contribute to Crux
 
 Crux is a modern, robust library for parsing HTML articles. With all the content on the Web out
 there, there is always lots of room for improvement. We will gladly accept your pull requests that
@@ -26,34 +26,52 @@ and that braces are required around single-line clauses, e.g.:
 1. Changes should be self-contained, as far as possible. When implementing multiple independent
    improvements, each one should be in its own pull request.
 
-# Notes for Maintainers
+# Publish a New Release
 
-## Publishing a New Release
+## Create a New Release
 
-### Repo
-
-1. Update `version` in `build.gradle`.
+1. Update `version` in `build.gradle.kts`.
 1. Create a separate commit for the version number change, naming it `Bump version to x.y.z`.
 1. Push all pending commits to GitHub.
 1. Wait for CI to confirm green status.
 1. Tag that commit as a release at https://github.com/chimbori/crux/releases .
 
-### Publish to Maven Central
+## Publish to Maven Central
 
-1. Run `./gradlew uploadArchives`; confirm that `uploadArchives` task completes successfully. If 
-   the `ossrhUsername` property cannot be found, then uploading will not be performed.
-1. Go to https://oss.sonatype.org/#stagingRepositories, login as `chimbori`.
-1. Select the `comchimboricrux-xxxx` repo, then click on `Close` from the top toolbar.
-1. Wait for the `Close` step to complete, then click on `Release` from the top toolbar.
+Confirm that the `gradle.properties` file in the home directory (`~/.gradle/gradle.properties`) is present and [set up
+correctly](#set-up-key-signing-on-a-new-machine).
 
-### Setting Up Key Signing on a New Machine
+  ```shell
+  ./gradlew publish --no-daemon --no-parallel
+  ```
+
+## Close & Release
+
+### Automatically
+
+After archives have been successfully uploaded, publish using:
+
+  ```shell
+  ./gradlew closeAndReleaseRepository
+  ```
+### Manually
+
+- Go to https://oss.sonatype.org/#stagingRepositories, login as `chimbori`.
+- Select the `comchimboricrux-xxxx` repo, then click on `Close` from the top toolbar.
+- Wait for the `Close` step to complete, then click on `Release` from the top toolbar.
+
+## Set Up Key Signing on a New Machine
+
+### Signing
 
 1. Install GPG, e.g. `brew install gpg` on macOS.
 1. Locate stored credentials from private storage.
 1. Run `restore-keys.sh` from the stored credentials directory.
 1. Enter the password for `chimbori` when prompted. This password is different from the Sonatype/Nexus password.
-1. Rename `gradle.properties-sample` to `gradle.properties` in that same directory, and fill in 
-   missing redacted credentials. 
-1. `gradle.properties` is configured to be `.gitignore`d, but make sure it is never pushed to a 
-   public repo.
+
+### Credentials
+
+1. Copy `gradle.properties.sample` to `~/.gradle/gradle.properties` and fill in the missing redacted credentials.
+1. If `gradle.properties.private` exists, it may be used instead. `gradle.properties.private` is configured to be
+   `.gitignore`d, so make sure it is never pushed to a public repo.
 1. The new machine is now ready and configured for pushing to Maven Central.
