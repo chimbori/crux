@@ -1,8 +1,8 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-  kotlin("jvm").version("1.6.20")
-  id("com.vanniktech.maven.publish") version ("0.19.0")
+  kotlin("jvm") version "1.6.20"
+  id("com.vanniktech.maven.publish") version "0.19.0"
   id("com.github.ben-manes.versions") version "0.42.0"
 }
 
@@ -11,12 +11,11 @@ repositories {
 }
 
 buildscript {
-  extra["kotlinVersion"] = "1.6.20"
   repositories {
     mavenCentral()
   }
   dependencies {
-    classpath(kotlin("gradle-plugin", version = rootProject.extra["kotlinVersion"] as String?))
+    classpath(kotlin("gradle-plugin", version = "1.6.20"))
     classpath("com.github.ben-manes:gradle-versions-plugin:0.42.0")
     classpath("com.vanniktech:gradle-maven-publish-plugin:0.19.0")
   }
