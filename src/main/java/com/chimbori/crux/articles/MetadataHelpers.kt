@@ -49,17 +49,14 @@ fun Document.extractFaviconUrl(baseUrl: HttpUrl): HttpUrl? = (
       ?: findLargestIcon(select("head link[rel^=apple-touch-icon]"))
     )?.let { baseUrl.resolve(it) }
 
-fun Document.extractImageUrl(baseUrl: HttpUrl) = try {
-  HeuristicString() // Twitter Cards and Open Graph images are usually higher quality, so rank them first.
-    .or(select("head meta[name=twitter:image]").attr("content"))
-    .or(select("head meta[property=og:image]").attr("content"))
-    // image_src or thumbnails are usually low quality, so prioritize them *after* article images.
-    .or(select("link[rel=image_src]").attr("href"))
-    .or(select("head meta[name=thumbnail]").attr("content"))
-  null
-} catch (candidateFound: CandidateFound) {
-  candidateFound.candidate?.let { baseUrl.resolve(it) }
-}
+fun Document.extractImageUrl(baseUrl: HttpUrl): HttpUrl? = (
+    // Twitter Cards and Open Graph images are usually higher quality, so rank them first.
+    select("head meta[name=twitter:image]").attr("content").nullIfBlank()
+      ?: select("head meta[property=og:image]").attr("content").nullIfBlank()
+      // image_src or thumbnails are usually low quality, so prioritize them *after* article images.
+      ?: select("link[rel=image_src]").attr("href").nullIfBlank()
+      ?: select("head meta[name=thumbnail]").attr("content").nullIfBlank()
+    )?.let { baseUrl.resolve(it) }
 
 fun Document.extractAmpUrl(baseUrl: HttpUrl) = try {
   HeuristicString()
