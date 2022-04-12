@@ -897,237 +897,243 @@ class GoldenFilesTest {
 
   @Test
   fun testTheAtlantic() {
-    val article = fromFile(
+    fromFile(
       "http://www.theatlantic.com/business/archive/2016/09/census-poverty-economy-terrible/499793/",
       "theatlantic.html"
-    )
-    assertStartsWith(
-      "In 2015, median household income increased for the first time in nearly a decade. On its face, that alone is progress.",
-      article.document?.text()
-    )
-    assertEquals(
-      "https://cdn.theatlantic.com/assets/media/img/mt/2016/09/AP_16252467700939/facebook.jpg?1473782708".toHttpUrl(),
-      article.imageUrl
-    )
+    ).run {
+      assertStartsWith(
+        "In 2015, median household income increased for the first time in nearly a decade. On its face, that alone is progress.",
+        document?.text()
+      )
+      assertEquals(
+        "https://cdn.theatlantic.com/assets/media/img/mt/2016/09/AP_16252467700939/facebook.jpg?1473782708".toHttpUrl(),
+        imageUrl
+      )
+    }
   }
 
   @Test
   fun testTheDailyBeast() {
-    val article = fromFile(
+    fromFile(
       "http://www.thedailybeast.com/blogs-and-stories/2010-11-01/ted-sorensen-speechwriter-behind-jfks-best-jokes/?cid=topic:featured1",
       "thedailybeast.html"
-    )
-    assertStartsWith("Legendary Kennedy speechwriter Ted Sorensen passed", article.document?.text())
-    assertEquals(
-      "http://www.tdbimg.com/resizeimage/YTo0OntzOjM6ImltZyI7czo2MToiMjAxMC8xMS8wMS9pbWctYnMtYm90dG9tLS0ta2F0ei10ZWQtc29yZW5zZW5fMTYzMjI4NjEwMzUxLmpwZyI7czo1OiJ3aWR0aCI7aTo1MDtzOjY6ImhlaWdodCI7aTo1MDtzOjY6InJhbmRvbSI7czoxOiIxIjt9.jpg".toHttpUrl(),
-      article.imageUrl
-    )
+    ).run {
+      assertStartsWith("Legendary Kennedy speechwriter Ted Sorensen passed", document?.text())
+      assertEquals(
+        "http://www.tdbimg.com/resizeimage/YTo0OntzOjM6ImltZyI7czo2MToiMjAxMC8xMS8wMS9pbWctYnMtYm90dG9tLS0ta2F0ei10ZWQtc29yZW5zZW5fMTYzMjI4NjEwMzUxLmpwZyI7czo1OiJ3aWR0aCI7aTo1MDtzOjY6ImhlaWdodCI7aTo1MDtzOjY6InJhbmRvbSI7czoxOiIxIjt9.jpg".toHttpUrl(),
+        imageUrl
+      )
+    }
   }
 
   @Test
   fun testTheFrisky() {
-    val article = fromFile(
+    fromFile(
       "http://www.thefrisky.com/2010-10-28/rachel-dratch-met-her-baby-daddy-in-a-bar/",
       "thefrisky.html"
-    )
-    assertStartsWith("Rachel Dratch had been keeping the identity of her baby daddy ", article.document?.text())
-    assertEquals(
-      "http://static.thefrisky.com/uploads/2010/10/28/rachel_dratch_102810_m.jpg".toHttpUrl(),
-      article.imageUrl
-    )
-    assertEquals("Rachel Dratch Met Her Baby Daddy At A Bar - The Frisky", article.title)
+    ).run {
+      assertStartsWith("Rachel Dratch had been keeping the identity of her baby daddy ", document?.text())
+      assertEquals("http://static.thefrisky.com/uploads/2010/10/28/rachel_dratch_102810_m.jpg".toHttpUrl(), imageUrl)
+      assertEquals("Rachel Dratch Met Her Baby Daddy At A Bar - The Frisky", title)
+    }
   }
 
   @Test
   fun testTheVacationGals() {
-    val article = fromFile(
+    fromFile(
       "http://thevacationgals.com/vacation-rental-homes-are-a-family-reunion-necessity/",
       "thevacationgals.html"
-    )
-    assertStartsWith("Editors’ Note: We are huge proponents of vacation rental homes", article.document?.text())
-    assertEquals(3, article.images?.size)
-    // The first link is absolute, so the domain is correctly specified.
-    assertEquals(
-      "http://thevacationgals.com/wp-content/uploads/2010/11/Gemmel-Family-Reunion-at-a-Vacation-Rental-Home1-300x225.jpg".toHttpUrl(),
-      article.images?.get(0)?.srcUrl
-    )
-    // The second link has a relative path, and the canonical URL is incorrectly specified as a local hostname, so although the URL is inaccessible, the parsing is correct.
-    assertEquals(
-      "http://vacationrentalhomesfamilyreunions/wp-content/uploads/2010/11/The-Gemmel-Family-Does-a-Gilligans-Island-Theme-Family-Reunion-Vacation-Sarah-Gemmel-300x225.jpg".toHttpUrl(),
-      article.images?.get(1)?.srcUrl
-    )
-    assertEquals("http://www.linkwithin.com/pixel.png".toHttpUrl(), article.images?.get(2)?.srcUrl)
+    ).run {
+      assertStartsWith("Editors’ Note: We are huge proponents of vacation rental homes", document?.text())
+      assertEquals(3, images?.size)
+      // The first link is absolute, so the domain is correctly specified.
+      assertEquals(
+        "http://thevacationgals.com/wp-content/uploads/2010/11/Gemmel-Family-Reunion-at-a-Vacation-Rental-Home1-300x225.jpg".toHttpUrl(),
+        images?.get(0)?.srcUrl
+      )
+      // The second link has a relative path, and the canonical URL is incorrectly specified as a local hostname, so although the URL is inaccessible, the parsing is correct.
+      assertEquals(
+        "http://vacationrentalhomesfamilyreunions/wp-content/uploads/2010/11/The-Gemmel-Family-Does-a-Gilligans-Island-Theme-Family-Reunion-Vacation-Sarah-Gemmel-300x225.jpg".toHttpUrl(),
+        images?.get(1)?.srcUrl
+      )
+      assertEquals("http://www.linkwithin.com/pixel.png".toHttpUrl(), images?.get(2)?.srcUrl)
+    }
   }
 
   @Test
   fun testTimeMagazine() {
-    val article = fromFile("http://content.time.com/time/health/article/0,8599,2011497,00.html", "time.html")
-    assertStartsWith("This month, the federal government released", article.document?.child(0)?.text())
-    assertEquals(
-      article.document?.childNodes().toString(),
-      "http://img.timeinc.net/time/daily/2010/1008/360_bp_oil_spill_0817.jpg".toHttpUrl(),
-      article.imageUrl
-    )
+    fromFile("http://content.time.com/time/health/article/0,8599,2011497,00.html", "time.html").run {
+      assertStartsWith("This month, the federal government released", document?.child(0)?.text())
+      assertEquals("http://img.timeinc.net/time/daily/2010/1008/360_bp_oil_spill_0817.jpg".toHttpUrl(), imageUrl)
+    }
   }
 
   @Test
   fun testTraindom() {
-    val article =
-      fromFile("http://blog.traindom.com/places-where-to-submit-your-startup-for-coverage/", "traindom.html")
-    assertEquals("36 places where you can submit your startup for some coverage", article.title)
-    assertArrayEquals(
-      listOf("blog coverage", "get coverage", "startup review", "startups", "submit startup").toTypedArray(),
-      article.keywords?.toTypedArray()
-    )
-    assertStartsWith("So you have a new startup company and want some coverage", article.document?.text())
+    fromFile("http://blog.traindom.com/places-where-to-submit-your-startup-for-coverage/", "traindom.html").run {
+      assertEquals("36 places where you can submit your startup for some coverage", title)
+      assertArrayEquals(
+        listOf("blog coverage", "get coverage", "startup review", "startups", "submit startup").toTypedArray(),
+        keywords?.toTypedArray()
+      )
+      assertStartsWith("So you have a new startup company and want some coverage", document?.text())
+    }
   }
 
   @Test
   fun testTwitpic() {
-    val article = fromFile("http://twitpic.com/4k1ku3", "twitpic.html")
-    assertEquals("It’s hard to be a dinosaur. on Twitpic", article.title)
-    assertStartsWith(
-      "Lazypicture from youtube made a video about this book! It cracked me up!!",
-      article.document?.text()
-    )
+    fromFile("http://twitpic.com/4k1ku3", "twitpic.html").run {
+      assertEquals("It’s hard to be a dinosaur. on Twitpic", title)
+      assertStartsWith(
+        "Lazypicture from youtube made a video about this book! It cracked me up!!",
+        document?.text()
+      )
+    }
   }
 
   @Test
   fun testTwitpic2() {
-    val article = fromFile("http://twitpic.com/4kuem8", "twitpic2.html")
-    assertEquals("*Not* what you want to see on the fetal monitor when your wif... on Twitpic", article.title)
-    assertStartsWith(
-      "*Not* what you want to see on the fetal monitor when your wife begins to push.",
-      article.document?.text()
-    )
+    fromFile("http://twitpic.com/4kuem8", "twitpic2.html").run {
+      assertEquals("*Not* what you want to see on the fetal monitor when your wif... on Twitpic", title)
+      assertStartsWith(
+        "*Not* what you want to see on the fetal monitor when your wife begins to push.",
+        document?.text()
+      )
+    }
   }
 
   @Test
   fun testTwitterBlog() {
-    val article = fromFile(
+    fromFile(
       "http://engineering.twitter.com/2011/04/twitter-search-is-now-3x-faster_1656.html",
       "twitter.html"
-    )
-    assertEquals("Twitter Engineering: Twitter Search is Now 3x Faster", article.title)
-    assertEquals(
-      "http://4.bp.blogspot.com/-CmXJmr9UAbA/TZy6AsT72fI/AAAAAAAAAAs/aaF5AEzC-e4/s400/Blender_Tsunami.jpg".toHttpUrl(),
-      article.images?.get(0)?.srcUrl
-    )
-    assertStartsWith(
-      "In the spring of 2010, the search team at Twitter started to rewrite our search engine in order to serve our ever-growin",
-      article.document?.text()
-    )
+    ).run {
+      assertEquals("Twitter Engineering: Twitter Search is Now 3x Faster", title)
+      assertEquals(
+        "http://4.bp.blogspot.com/-CmXJmr9UAbA/TZy6AsT72fI/AAAAAAAAAAs/aaF5AEzC-e4/s400/Blender_Tsunami.jpg".toHttpUrl(),
+        images?.get(0)?.srcUrl
+      )
+      assertStartsWith(
+        "In the spring of 2010, the search team at Twitter started to rewrite our search engine in order to serve our ever-growin",
+        document?.text()
+      )
+    }
   }
 
   @Test
   fun testUniverseToday() {
-    val article = fromFile(
+    fromFile(
       "http://www.universetoday.com/76881/podcast-more-from-tony-colaprete-on-lcross/",
       "universetoday.html"
-    )
-    assertStartsWith("I had the chance to interview LCROSS", article.document?.text())
-    assertEquals(
-      "http://www.universetoday.com/wp-content/uploads/2009/10/lcross-impact_01_01.jpg".toHttpUrl(),
-      article.images?.get(0)?.srcUrl
-    )
-    assertEquals("Podcast: More From Tony Colaprete on LCROSS", article.title)
+    ).run {
+      assertStartsWith("I had the chance to interview LCROSS", document?.text())
+      assertEquals(
+        "http://www.universetoday.com/wp-content/uploads/2009/10/lcross-impact_01_01.jpg".toHttpUrl(),
+        images?.get(0)?.srcUrl
+      )
+      assertEquals("Podcast: More From Tony Colaprete on LCROSS", title)
+    }
   }
 
   @Test
   fun testUsaToday2() {
-    val article = fromFile(
+    fromFile(
       "http://content.usatoday.com/communities/driveon/post/2010/08/gm-finally-files-for-ipo/1",
       "usatoday2.html"
-    )
-    assertStartsWith(
-      "GM files for IPO, but are taxpayers still on the hook? General Motors just filed with the Securities and Exchange Commission",
-      article.document?.text()
-    )
-    assertEquals(
-      "http://i.usatoday.net/communitymanager/_photos/drive-on/2010/08/18/cruzex-wide-community.jpg".toHttpUrl(),
-      article.images?.get(0)?.srcUrl
-    )
+    ).run {
+      assertStartsWith(
+        "GM files for IPO, but are taxpayers still on the hook? General Motors just filed with the Securities and Exchange Commission",
+        document?.text()
+      )
+      assertEquals(
+        "http://i.usatoday.net/communitymanager/_photos/drive-on/2010/08/18/cruzex-wide-community.jpg".toHttpUrl(),
+        images?.get(0)?.srcUrl
+      )
+    }
   }
 
   @Test
   fun testUsatoday() {
-    val article = fromFile(
+    fromFile(
       "http://content.usatoday.com/communities/thehuddle/post/2010/08/brett-favre-practices-set-to-speak-about-return-to-minnesota-vikings/1",
       "usatoday.html"
-    )
-    assertStartsWith(
-      "Brett Favre says he couldn't give up on one more chance to win the Super Bowl with Vikings Brett Favre couldn't get away from the \"what ifs.\"",
-      article.document?.text()
-    )
-    assertEquals(
-      "http://i.usatoday.net/communitymanager/_photos/the-huddle/2010/08/18/favrespeaksx-inset-community.jpg".toHttpUrl(),
-      article.images?.get(0)?.srcUrl
-    )
+    ).run {
+      assertStartsWith(
+        "Brett Favre says he couldn't give up on one more chance to win the Super Bowl with Vikings Brett Favre couldn't get away from the \"what ifs.\"",
+        document?.text()
+      )
+      assertEquals(
+        "http://i.usatoday.net/communitymanager/_photos/the-huddle/2010/08/18/favrespeaksx-inset-community.jpg".toHttpUrl(),
+        images?.get(0)?.srcUrl
+      )
+    }
   }
 
   @Test
   fun testVentureBeat() {
-    val article = fromFile(
+    fromFile(
       "http://social.venturebeat.com/2010/08/18/facebook-reveals-the-details-behind-places/",
       "venturebeat.html"
-    )
-    assertStartsWith("Facebook just confirmed the rumors", article.document?.text())
-    assertEquals(
-      "http://cdn.venturebeat.com/wp-content/uploads/2010/08/mark-zuckerberg-facebook-places.jpg".toHttpUrl(),
-      article.images?.get(0)?.srcUrl
-    )
+    ).run {
+      assertStartsWith("Facebook just confirmed the rumors", document?.text())
+      assertEquals(
+        "http://cdn.venturebeat.com/wp-content/uploads/2010/08/mark-zuckerberg-facebook-places.jpg".toHttpUrl(),
+        images?.get(0)?.srcUrl
+      )
+    }
   }
 
   @Test
   fun testWallStreetJournal() {
-    val article =
-      fromFile("http://www.wsj.com/articles/SB10001424052748704532204575397061414483040", "wsj.html")
-    assertStartsWith(
-      "The Obama administration has paid out less than a third of the nearly $230 billion",
-      article.document?.text()
-    )
-    assertEquals(
-      "https://si.wsj.net/public/resources/images/OB-JO759_0814st_D_20100814143158.jpg".toHttpUrl(),
-      article.imageUrl
-    )
+    fromFile("http://www.wsj.com/articles/SB10001424052748704532204575397061414483040", "wsj.html").run {
+      assertStartsWith(
+        "The Obama administration has paid out less than a third of the nearly $230 billion",
+        document?.text()
+      )
+      assertEquals(
+        "https://si.wsj.net/public/resources/images/OB-JO759_0814st_D_20100814143158.jpg".toHttpUrl(),
+        imageUrl
+      )
+    }
   }
 
   @Test
   fun testWashingtonPost() {
-    val article = fromFile(
+    fromFile(
       "https://www.washingtonpost.com/lifestyle/style/the-nearly-forgotten-story-of-the-black-women-who-helped-land-a-man-on-the-moon/2016/09/12/95f2d356-7504-11e6-8149-b8d05321db62_story.html",
       "washingtonpost.html"
-    )
-    assertEquals(
-      "The nearly forgotten story of the black women who helped land a man on the moon - The Washington Post",
-      article.title
-    )
-    assertStartsWith(
-      "In 2011, Mary Gainer was a historic preservationist for NASA, and she stumbled on a 1943 picture of a thousand people standing in a huge building.",
-      article.document?.text()
-    )
-    assertEquals(
-      "https://img.washingtonpost.com/rf/image_1484w/2010-2019/WashingtonPost/2016/09/09/Style/Images/hidden-figures-DF-04856_R2_rgb.jpg".toHttpUrl(),
-      article.imageUrl
-    )
+    ).run {
+      assertEquals(
+        "The nearly forgotten story of the black women who helped land a man on the moon - The Washington Post", title
+      )
+      assertStartsWith(
+        "In 2011, Mary Gainer was a historic preservationist for NASA, and she stumbled on a 1943 picture of a thousand people standing in a huge building.",
+        document?.text()
+      )
+      assertEquals(
+        "https://img.washingtonpost.com/rf/image_1484w/2010-2019/WashingtonPost/2016/09/09/Style/Images/hidden-figures-DF-04856_R2_rgb.jpg".toHttpUrl(),
+        imageUrl
+      )
+    }
   }
 
   @Test
   fun testWikipedia() {
-    val article = fromFile("http://en.wikipedia.org/wiki/Therapsids", "wikipedia.html")
-    assertStartsWith(
-      "Therapsida is a group of the most advanced reptile-grade synapsids, and the ancestors of mammals",
-      article.document?.text()
-    )
-    assertStartsWith(
-      "<b>Therapsida</b> is a group of the most advanced reptile-grade <a href=\"/wiki/Synapsid\">synapsids</a>",
-      article.document?.child(0)?.html()
-    )
-    assertEquals(
-      "http://upload.wikimedia.org/wikipedia/commons/thumb/4/42/Pristeroognathus_DB.jpg/240px-Pristeroognathus_DB.jpg".toHttpUrl(),
-      article.images?.get(0)?.srcUrl
-    )
-    assertEquals("http://en.wikipedia.org/apple-touch-icon.png".toHttpUrl(), article.faviconUrl)
+    fromFile("http://en.wikipedia.org/wiki/Therapsids", "wikipedia.html").run {
+      assertStartsWith(
+        "Therapsida is a group of the most advanced reptile-grade synapsids, and the ancestors of mammals",
+        document?.text()
+      )
+      assertStartsWith(
+        "<b>Therapsida</b> is a group of the most advanced reptile-grade <a href=\"/wiki/Synapsid\">synapsids</a>",
+        document?.child(0)?.html()
+      )
+      assertEquals(
+        "http://upload.wikimedia.org/wikipedia/commons/thumb/4/42/Pristeroognathus_DB.jpg/240px-Pristeroognathus_DB.jpg".toHttpUrl(),
+        images?.get(0)?.srcUrl
+      )
+      assertEquals("http://en.wikipedia.org/apple-touch-icon.png".toHttpUrl(), faviconUrl)
+    }
   }
 
   @Test
