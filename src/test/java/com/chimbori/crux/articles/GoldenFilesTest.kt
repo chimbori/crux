@@ -639,92 +639,95 @@ class GoldenFilesTest {
 
   @Test
   fun testPolitico() {
-    val article = fromFile("http://www.politico.com/news/stories/1010/43352.html", "politico.html")
-    assertStartsWith("If the newest Census Bureau estimates stay close to form", article.document?.text())
-    assertEquals(
-      "http://images.politico.com/global/news/100927_obama22_ap_328.jpg".toHttpUrl(),
-      article.imageUrl
-    )
+    fromFile("http://www.politico.com/news/stories/1010/43352.html", "politico.html").run {
+      assertStartsWith("If the newest Census Bureau estimates stay close to form", document?.text())
+      assertEquals("http://images.politico.com/global/news/100927_obama22_ap_328.jpg".toHttpUrl(), imageUrl)
+    }
   }
 
   @Test
   fun testReadWriteWeb() {
-    val article = fromFile(
+    fromFile(
       "http://readwrite.com/2016/09/13/san-francisco-uc-berkeley-keep-smart-transit-city-plan-rolling-cl4/",
       "readwriteweb.html"
-    )
-    assertEquals("#121212", article.themeColor)
-    assertEquals(
-      "http://15809-presscdn-0-93.pagely.netdna-cdn.com/wp-content/uploads/iStock_83628999_SMALL-e1473787242221.jpg".toHttpUrl(),
-      article.imageUrl
-    )
-    assertStartsWith(
-      "San Francisco is using the momentum from its failed Smart City Challenge bid to carry on developing smart transportation initiatives.",
-      article.document?.text()
-    )
+    ).run {
+      assertEquals("#121212", themeColor)
+      assertEquals(
+        "http://15809-presscdn-0-93.pagely.netdna-cdn.com/wp-content/uploads/iStock_83628999_SMALL-e1473787242221.jpg".toHttpUrl(),
+        imageUrl
+      )
+      assertStartsWith(
+        "San Francisco is using the momentum from its failed Smart City Challenge bid to carry on developing smart transportation initiatives.",
+        document?.text()
+      )
+    }
   }
 
   @Test
   fun testRedditAtomFeed() {
-    val article = fromFile(
+    fromFile(
       "https://www.reddit.com/r/androidapps/comments/4nle7s/dev_hermit_has_a_new_ad_blocker_50_off_premium/",
       "reddit.html"
-    )
-    assertEquals(
-      "https://www.reddit.com/r/androidapps/comments/4nle7s/dev_hermit_has_a_new_ad_blocker_50_off_premium/.rss".toHttpUrl(),
-      article.feedUrl
-    )
+    ).run {
+      assertEquals(
+        "https://www.reddit.com/r/androidapps/comments/4nle7s/dev_hermit_has_a_new_ad_blocker_50_off_premium/.rss".toHttpUrl(),
+        feedUrl
+      )
+    }
   }
 
   @Test
   fun testRetractionWatch() {
-    val article = fromFile(
+    fromFile(
       "http://retractionwatch.com/2017/04/26/troubling-new-way-evade-plagiarism-detection-software-tell-used/",
       "retraction_watch.html"
-    )
-    assertEquals(
-      "A troubling new way to evade plagiarism detection software. (And how to tell if it's been used.) - Retraction Watch at Retraction Watch",
-      article.title
-    )
-    assertStartsWith(
-      "Recently, at the end of a tutorial, a student asked Ann Rogerson a question she’d never heard before: Was it okay to use paraphrasing tools to write up assignments?",
-      article.document?.text()
-    )
-    assertContains("I had my answer about what the student in the previous session had done.", article.document?.text())
-    assertContains(
-      "…however I have no experience or evidence whether professional academics are using the tools for their scholarly publishing.",
-      article.document?.text()
-    )
-    assertContains("SIDEBAR: How to identify text modified by a paraphrasing tool", article.document?.text())
+    ).run {
+      assertEquals(
+        "A troubling new way to evade plagiarism detection software. (And how to tell if it's been used.) - Retraction Watch at Retraction Watch",
+        title
+      )
+      assertStartsWith(
+        "Recently, at the end of a tutorial, a student asked Ann Rogerson a question she’d never heard before: Was it okay to use paraphrasing tools to write up assignments?",
+        document?.text()
+      )
+      assertContains("I had my answer about what the student in the previous session had done.", document?.text())
+      assertContains(
+        "…however I have no experience or evidence whether professional academics are using the tools for their scholarly publishing.",
+        document?.text()
+      )
+      assertContains("SIDEBAR: How to identify text modified by a paraphrasing tool", document?.text())
+    }
   }
 
   @Test
   fun testReuters() {
-    val article = fromFile(
+    fromFile(
       "http://www.reuters.com/article/us-knightcapital-trading-technology-idUSBRE87203X20120803",
       "reuters.html"
-    )
-    assertEquals("Knight trading loss shows cracks in equity markets", article.title)
-    assertEquals(
-      "http://s1.reutersmedia.net/resources/r/?m=02&d=20120803&t=2&i=637797752&w=130&fh=&fw=&ll=&pl=&r=CBRE872074Y00".toHttpUrl(),
-      article.imageUrl
-    )
-    assertStartsWith(
-      "Knight trading loss shows cracks in equity markets Knight's future in balance after trading disaster",
-      article.document?.text()
-    )
+    ).run {
+      assertEquals("Knight trading loss shows cracks in equity markets", title)
+      assertEquals(
+        "http://s1.reutersmedia.net/resources/r/?m=02&d=20120803&t=2&i=637797752&w=130&fh=&fw=&ll=&pl=&r=CBRE872074Y00".toHttpUrl(),
+        imageUrl
+      )
+      assertStartsWith(
+        "Knight trading loss shows cracks in equity markets Knight's future in balance after trading disaster",
+        document?.text()
+      )
+    }
   }
 
   @Test
   fun testRian() {
-    val article = fromFile("http://en.rian.ru/world/20110410/163458489.html", "rian.html")
-    assertStartsWith(
-      "About 15,000 people took to the streets in Tokyo on Sunday to protest against th",
-      article.document?.text()
-    )
-    assertEquals("Japanese rally against nuclear power industry", article.title)
-    assertEquals("http://en.rian.ru/favicon.ico".toHttpUrl(), article.faviconUrl)
-    assertEquals(true, article.keywords?.isEmpty())
+    fromFile("http://en.rian.ru/world/20110410/163458489.html", "rian.html").run {
+      assertStartsWith(
+        "About 15,000 people took to the streets in Tokyo on Sunday to protest against ",
+        document?.text()
+      )
+      assertEquals("Japanese rally against nuclear power industry", title)
+      assertEquals("http://en.rian.ru/favicon.ico".toHttpUrl(), faviconUrl)
+      assertEquals(true, keywords?.isEmpty())
+    }
   }
 
   @Test
