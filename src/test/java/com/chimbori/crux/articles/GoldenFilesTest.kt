@@ -127,105 +127,111 @@ class GoldenFilesTest {
 
   @Test
   fun testCNet() {
-    val article = fromFile("http://www.cnet.com/news/verizon-shows-off-ipad-tv-app-and-more/", "cnet.html")
-    assertEquals("CNET", article.siteName)
-    assertEquals("http://www.cnet.com/news/verizon-shows-off-ipad-tv-app-and-more/".toHttpUrl(), article.canonicalUrl)
-    assertStartsWith("NEW YORK--Verizon Communications is prepping a new", article.document?.text())
-    assertEquals(
-      "https://cnet1.cbsistatic.com/img/Bw23T5rupUVnvVPCQQ3KjfO9qic=/670x503/2010/08/18/53b6d52b-f0fa-11e2-8c7c-d4ae52e62bcc/Verizon_iPad_and_live_TV_with_big_TV.JPG".toHttpUrl(),
-      article.imageUrl
-    )
+    fromFile("http://www.cnet.com/news/verizon-shows-off-ipad-tv-app-and-more/", "cnet.html").run {
+      assertEquals("CNET", siteName)
+      assertEquals("http://www.cnet.com/news/verizon-shows-off-ipad-tv-app-and-more/".toHttpUrl(), canonicalUrl)
+      assertStartsWith("NEW YORK--Verizon Communications is prepping a new", document?.text())
+      assertEquals(
+        "https://cnet1.cbsistatic.com/img/Bw23T5rupUVnvVPCQQ3KjfO9qic=/670x503/2010/08/18/53b6d52b-f0fa-11e2-8c7c-d4ae52e62bcc/Verizon_iPad_and_live_TV_with_big_TV.JPG".toHttpUrl(),
+        imageUrl
+      )
+    }
   }
 
   @Test
   fun testCaltonCaldwell() {
-    val article = fromFile("http://daltoncaldwell.com/dear-mark-zuckerberg", "daltoncaldwell.html")
-    assertEquals("Dear Mark Zuckerberg by Dalton Caldwell", article.title)
-    assertStartsWith(
-      "On June 13, 2012, at 4:30 p.m., I attended a meeting at Facebook HQ in Menlo Park, California.",
-      article.document?.text()
-    )
+    fromFile("http://daltoncaldwell.com/dear-mark-zuckerberg", "daltoncaldwell.html").run {
+      assertEquals("Dear Mark Zuckerberg by Dalton Caldwell", title)
+      assertStartsWith(
+        "On June 13, 2012, at 4:30 p.m., I attended a meeting at Facebook HQ in Menlo Park, California.",
+        document?.text()
+      )
+    }
   }
 
   @Test
   fun testCracked() {
-    val article = fromFile("http://www.cracked.com/blog/the-9-circles-vacation-hell/", "cracked.html")
-    assertEquals(
-      "http://s3.crackedcdn.com/phpimages/article/0/6/6/573066_v1.jpg".toHttpUrl(),
-      article.imageUrl
-    )
-    assertStartsWith("In theory, everyone likes a nice vacation.", article.document?.text())
+    fromFile("http://www.cracked.com/blog/the-9-circles-vacation-hell/", "cracked.html").run {
+      assertEquals("http://s3.crackedcdn.com/phpimages/article/0/6/6/573066_v1.jpg".toHttpUrl(), imageUrl)
+      assertStartsWith("In theory, everyone likes a nice vacation.", document?.text())
+    }
   }
 
   @Test
   fun testESPN() {
-    val article = fromFile("http://www.espn.com/espn/commentary/news/story?id=5461430", "espn.html")
-    assertStartsWith("If you believe what college football coaches have said about sports", article.document?.text())
-    assertEquals("http://a.espncdn.com/photo/2010/0813/pg2_g_bush3x_300.jpg".toHttpUrl(), article.imageUrl)
+    fromFile("http://www.espn.com/espn/commentary/news/story?id=5461430", "espn.html").run {
+      assertStartsWith("If you believe what college football coaches have said about sports", document?.text())
+      assertEquals("http://a.espncdn.com/photo/2010/0813/pg2_g_bush3x_300.jpg".toHttpUrl(), imageUrl)
+    }
   }
 
   @Test
   fun testESPN2() {
-    val article = fromFile("http://www.espn.com/golf/pgachampionship10/news/story?id=5463456", "espn2.html")
-    assertStartsWith(
-      "SHEBOYGAN, Wis. -- The only number that matters at the PGA Championship is on the scorecard, not the birth certificate.",
-      article.document?.text()
-    )
-    assertEquals(
-      "http://a2.espncdn.com/combiner/i?img=%2Fi%2Fheadshots%2Fgolf%2Fplayers%2Ffull%2F780.png".toHttpUrl(),
-      article.imageUrl
-    )
+    fromFile("http://www.espn.com/golf/pgachampionship10/news/story?id=5463456", "espn2.html").run {
+      assertStartsWith(
+        "SHEBOYGAN, Wis. -- The only number that matters at the PGA Championship is on the scorecard, not the birth certificate.",
+        document?.text()
+      )
+      assertEquals(
+        "http://a2.espncdn.com/combiner/i?img=%2Fi%2Fheadshots%2Fgolf%2Fplayers%2Ffull%2F780.png".toHttpUrl(),
+        imageUrl
+      )
+    }
   }
 
   @Test
   fun testEconomist() {
-    val article = fromFile("http://www.economist.com/node/17956885", "economist.html")
-    assertStartsWith("FOR beleaguered smokers, the world is an increasingly", article.document?.text())
-    assertEquals(
-      "http://www.economist.com/sites/default/files/images/articles/migrated/20110122_stp004.jpg".toHttpUrl(),
-      article.imageUrl
-    )
+    fromFile("http://www.economist.com/node/17956885", "economist.html").run {
+      assertStartsWith("FOR beleaguered smokers, the world is an increasingly", document?.text())
+      assertEquals(
+        "http://www.economist.com/sites/default/files/images/articles/migrated/20110122_stp004.jpg".toHttpUrl(),
+        imageUrl
+      )
+    }
   }
 
   @Test
   fun testEhow() {
-    val article = fromFile("http://www.ehow.com/how_5122199_eat-fresh-figs.html", "ehow.html")
-    assertEquals("How to Eat Fresh Figs", article.title)
-    assertStartsWith(
-      "While dried figs are more commonly featured in recipes, fresh figs are an absolute treat.",
-      article.document?.text()
-    )
+    fromFile("http://www.ehow.com/how_5122199_eat-fresh-figs.html", "ehow.html").run {
+      assertEquals("How to Eat Fresh Figs", title)
+      assertStartsWith(
+        "While dried figs are more commonly featured in recipes, fresh figs are an absolute treat.",
+        document?.text()
+      )
+    }
   }
 
   @Test
   fun testEngadget() {
-    val article = fromFile(
+    fromFile(
       "http://www.engadget.com/2010/08/18/verizon-fios-set-top-boxes-getting-a-new-hd-guide-external-stor/",
       "engadget.html"
-    )
-    assertStartsWith(
-      "Streaming and downloading TV content to mobiles is nice, but we enjoy watching TV... on the TV",
-      article.document?.text()
-    )
-    assertEquals(
-      "https://www.blogcdn.com/www.engadget.com/media/2010/08/44ni600.jpg".toHttpUrl(),
-      article.imageUrl
-    )
-    assertEquals(
-      "https://s.blogsmithmedia.com/www.engadget.com/assets-haa9c2740c98180d07c436859c827e9f1/images/favicon-160x160.png?h=1638b0a8bbe7effa8f85c3ecabb63620".toHttpUrl(),
-      article.faviconUrl
-    )
+    ).run {
+      assertStartsWith(
+        "Streaming and downloading TV content to mobiles is nice, but we enjoy watching TV... on the TV",
+        document?.text()
+      )
+      assertEquals(
+        "https://www.blogcdn.com/www.engadget.com/media/2010/08/44ni600.jpg".toHttpUrl(),
+        imageUrl
+      )
+      assertEquals(
+        "https://s.blogsmithmedia.com/www.engadget.com/assets-haa9c2740c98180d07c436859c827e9f1/images/favicon-160x160.png?h=1638b0a8bbe7effa8f85c3ecabb63620".toHttpUrl(),
+        faviconUrl
+      )
+    }
   }
 
   @Test
   fun testEspn3WithFlashVideo() {
-    val article = fromFile("http://sports.espn.go.com/nfl/news/story?id=5971053", "espn3.html")
-    assertStartsWith("PHILADELPHIA -- Michael Vick missed practice Thursday", article.document?.text())
-    assertEquals("http://a.espncdn.com/i/espn/espn_logos/espn_red.png".toHttpUrl(), article.imageUrl)
-    assertEquals(
-      "Michael Vick of Philadelphia Eagles misses practice, unlikely to play vs. Dallas Cowboys - ESPN",
-      article.title
-    )
+    fromFile("http://sports.espn.go.com/nfl/news/story?id=5971053", "espn3.html").run {
+      assertStartsWith("PHILADELPHIA -- Michael Vick missed practice Thursday", document?.text())
+      assertEquals("http://a.espncdn.com/i/espn/espn_logos/espn_red.png".toHttpUrl(), imageUrl)
+      assertEquals(
+        "Michael Vick of Philadelphia Eagles misses practice, unlikely to play vs. Dallas Cowboys - ESPN",
+        title
+      )
+    }
   }
 
   @Test
