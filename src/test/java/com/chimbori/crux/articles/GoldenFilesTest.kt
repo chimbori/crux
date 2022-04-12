@@ -29,104 +29,100 @@ class GoldenFilesTest {
 
   @Test
   fun testBBC() {
-    val article = fromFile("http://www.bbc.co.uk/news/world-latin-america-21226565", "bbc.html")
-    assertEquals("BBC News", article.siteName)
-    assertEquals("Baby born on Mediterranean rescue ship - BBC News", article.title)
-    assertEquals("http://www.bbc.com/news/world-africa-37341871".toHttpUrl(), article.canonicalUrl)
-    assertEquals(
-      "http://ichef-1.bbci.co.uk/news/1024/cpsprodpb/146E6/production/_91168638_baby070012-9-20162-1photocreditalvawhitemsf.jpg".toHttpUrl(),
-      article.imageUrl
-    )
-    assertEquals("http://www.bbc.co.uk/news/amp/37341871".toHttpUrl(), article.ampUrl)
-    assertStartsWith(
-      "A Nigerian woman has given birth to a boy on board a rescue ship in the Mediterranean after being plucked from an overcrowded rubber dinghy.",
-      article.document?.text()
-    )
+    fromFile("http://www.bbc.co.uk/news/world-latin-america-21226565", "bbc.html").run {
+      assertEquals("BBC News", siteName)
+      assertEquals("Baby born on Mediterranean rescue ship - BBC News", title)
+      assertEquals("http://www.bbc.com/news/world-africa-37341871".toHttpUrl(), canonicalUrl)
+      assertEquals(
+        "http://ichef-1.bbci.co.uk/news/1024/cpsprodpb/146E6/production/_91168638_baby070012-9-20162-1photocreditalvawhitemsf.jpg".toHttpUrl(),
+        imageUrl
+      )
+      assertEquals("http://www.bbc.co.uk/news/amp/37341871".toHttpUrl(), ampUrl)
+      assertStartsWith(
+        "A Nigerian woman has given birth to a boy on board a rescue ship in the Mediterranean",
+        document?.text()
+      )
+    }
   }
 
   @Test
   fun testBBC_AMP() {
-    val article = fromFile("http://www.bbc.co.uk/news/amp/37341871", "bbc-amp.html")
-    assertEquals("BBC News", article.siteName)
-    assertEquals("Baby born on Mediterranean rescue ship", article.title)
-    assertEquals(
-      "http://ichef.bbci.co.uk/news/999/cpsprodpb/146E6/production/_91168638_baby070012-9-20162-1photocreditalvawhitemsf.jpg".toHttpUrl(),
-      article.imageUrl
-    )
-    assertStartsWith(
-      "A Nigerian woman has given birth to a boy on board a rescue ship in the Mediterranean after being plucked from an overcrowded rubber dinghy.",
-      article.document?.text()
-    )
+    fromFile("http://www.bbc.co.uk/news/amp/37341871", "bbc-amp.html").run {
+      assertEquals("BBC News", siteName)
+      assertEquals("Baby born on Mediterranean rescue ship", title)
+      assertEquals(
+        "http://ichef.bbci.co.uk/news/999/cpsprodpb/146E6/production/_91168638_baby070012-9-20162-1photocreditalvawhitemsf.jpg".toHttpUrl(),
+        imageUrl
+      )
+      assertStartsWith(
+        "A Nigerian woman has given birth to a boy on board a rescue ship in the Mediterranean after being plucked from an overcrowded rubber dinghy.",
+        document?.text()
+      )
+    }
   }
 
   @Test
   fun testBenjaminStein() {
-    val article =
-      fromFile("http://benjaminste.in/post/1223476561/hey-guys-whatcha-doing", "benjaminstein.html")
-    assertEquals("BenjaminSte.in - Hey guys, whatcha doing?", article.title)
-    assertStartsWith("This month is the 15th anniversary of my last CD.", article.document?.text())
-    assertEquals(true, article.keywords?.isEmpty())
+    fromFile("http://benjaminste.in/post/1223476561/hey-guys-whatcha-doing", "benjaminstein.html").run {
+      assertEquals("BenjaminSte.in - Hey guys, whatcha doing?", title)
+      assertStartsWith("This month is the 15th anniversary of my last CD.", document?.text())
+      assertEquals(true, keywords?.isEmpty())
+    }
   }
 
   @Test
   fun testBlogger() {
-    val article =
-      fromFile("http://blog.talawah.net/2011/04/gavin-king-unviels-red-hats-top-secret.html", "blogger.html")
-    assertStartsWith("Gavin King unveils Red Hat's Java successor: The Ceylon Project", article.document?.text())
-    assertStartsWith(
-      "Gavin King of Red Hat/Hibernate/Seam fame recently unveiled the top secret project that he has been working on over the past two years",
-      article.document?.child(1)?.text()
-    )
-    assertEquals(
-      "http://3.bp.blogspot.com/-cyMzveP3IvQ/TaR7f3qkYmI/AAAAAAAAAIk/mrChE-G0b5c/s200/Java.png".toHttpUrl(),
-      article.images?.get(0)?.srcUrl
-    )
-    assertEquals(
-      "The Brain Dump: Gavin King unveils Red Hat's Java killer successor: The Ceylon Project",
-      article.title
-    )
-    assertEquals("http://blog.talawah.net/feeds/posts/default?alt=rss".toHttpUrl(), article.feedUrl)
+    fromFile("http://blog.talawah.net/2011/04/gavin-king-unviels-red-hats-top-secret.html", "blogger.html")
+      .run {
+        assertStartsWith("Gavin King unveils Red Hat's Java successor: The Ceylon Project", document?.text())
+        assertStartsWith(
+          "Gavin King of Red Hat/Hibernate/Seam fame recently unveiled the top secret project that he has been working on over the past two years",
+          document?.child(1)?.text()
+        )
+        assertEquals(
+          "http://3.bp.blogspot.com/-cyMzveP3IvQ/TaR7f3qkYmI/AAAAAAAAAIk/mrChE-G0b5c/s200/Java.png".toHttpUrl(),
+          images?.get(0)?.srcUrl
+        )
+        assertEquals("The Brain Dump: Gavin King unveils Red Hat's Java killer successor: The Ceylon Project", title)
+        assertEquals("http://blog.talawah.net/feeds/posts/default?alt=rss".toHttpUrl(), feedUrl)
+      }
   }
 
   @Test
   fun testBloomberg() {
-    val article = fromFile(
+    fromFile(
       "http://www.bloomberg.com/news/2010-11-01/china-becomes-boss-in-peru-on-50-billion-mountain-bought-for-810-million.html",
       "bloomberg.html"
-    )
-    assertEquals("Bloomberg", article.siteName)
-    assertStartsWith("The Chinese entrepreneur and the Peruvian shopkeeper", article.document?.text())
-    assertEquals(
-      "http://www.bloomberg.com/apps/data?pid=avimage&iid=iimODmqjtcQU".toHttpUrl(),
-      article.imageUrl
-    )
+    ).run {
+      assertEquals("Bloomberg", siteName)
+      assertStartsWith("The Chinese entrepreneur and the Peruvian shopkeeper", document?.text())
+      assertEquals("http://www.bloomberg.com/apps/data?pid=avimage&iid=iimODmqjtcQU".toHttpUrl(), imageUrl)
+    }
   }
 
   @Test
   fun testBoingBoing() {
-    val article =
-      fromFile("http://www.boingboing.net/2010/08/18/dr-laura-criticism-o.html", "boingboing.html")
-    assertStartsWith(
-      "Dr. Laura: criticism of me infringes my first amendment rights Dr. Laura Schlessinger is leaving radio to regain her \"first amendment\" rights on the internet.",
-      article.document?.text()
-    )
+    fromFile("http://www.boingboing.net/2010/08/18/dr-laura-criticism-o.html", "boingboing.html").run {
+      assertStartsWith(
+        "Dr. Laura: criticism of me infringes my first amendment rights Dr. Laura Schlessinger is leaving radio to regain her \"first amendment\" rights on the internet.",
+        document?.text()
+      )
+    }
   }
 
   @Test
   fun testBrOnline() {
-    val article = fromFile(
+    fromFile(
       "http://www.br-online.de/br-klassik/programmtipps/highlight-bayreuth-tannhaeuser-festspielzeit-2011-ID1309895438808.xml",
       "br-online.html",
       charset = "iso-8859-15"
-    )
-    assertStartsWith(
-      "Wenn ein Dirigent, der Alte Musik liebt, erstmals eine "
-          + "Neuproduktion bei den Bayreuther Richard-Wagner-Festspielen übernimmt,", article.document?.text()
-    )
-    assertEquals(
-      "Eröffnung der 100. Bayreuther Festspiele: Alles neu beim \"Tannhäuser\"",
-      article.title
-    )
+    ).run {
+      assertStartsWith(
+        "Wenn ein Dirigent, der Alte Musik liebt, erstmals eine Neuproduktion bei den Bayreuther Richard-Wagner-Festspielen übernimmt,",
+        document?.text()
+      )
+      assertEquals("Eröffnung der 100. Bayreuther Festspiele: Alles neu beim \"Tannhäuser\"", title)
+    }
   }
 
   @Test
