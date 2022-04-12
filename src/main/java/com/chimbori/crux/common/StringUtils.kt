@@ -21,6 +21,8 @@ fun String.removeWhiteSpace() = replace("\\s+".toRegex(), " ").trim { it <= ' ' 
 
 fun String.countLetters() = count { isLetter(it) }
 
+fun String.nullIfBlank(): String? = ifBlank { null }
+
 fun Element.parseAttrAsInt(attr: String) = try {
   attr(attr).toInt()
 } catch (e: NumberFormatException) {

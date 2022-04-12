@@ -3,23 +3,18 @@ package com.chimbori.crux.articles
 import com.chimbori.crux.common.HeuristicString
 import com.chimbori.crux.common.HeuristicString.CandidateFound
 import com.chimbori.crux.common.cleanTitle
+import com.chimbori.crux.common.nullIfBlank
 import com.chimbori.crux.common.removeWhiteSpace
 import okhttp3.HttpUrl
 import org.jsoup.nodes.Document
 
-fun Document.extractTitle() = try {
-  HeuristicString()
-    .or(title())
-    .or(select("head title").text())
-    .or(select("head meta[name=title]").attr("content"))
-    .or(select("head meta[property=og:title]").attr("content"))
-    .or(select("head meta[name=twitter:title]").attr("content"))
-    .toString()
-    .cleanTitle()
-  null
-} catch (candidateFound: CandidateFound) {
-  candidateFound.candidate?.cleanTitle()
-}
+fun Document.extractTitle(): String? = (
+    title().nullIfBlank()
+      ?: select("head title").text().nullIfBlank()
+      ?: select("head meta[name=title]").attr("content").nullIfBlank()
+      ?: select("head meta[property=og:title]").attr("content").nullIfBlank()
+      ?: select("head meta[name=twitter:title]").attr("content")
+    )?.cleanTitle()
 
 fun Document.extractCanonicalUrl() = try {
   HeuristicString()
