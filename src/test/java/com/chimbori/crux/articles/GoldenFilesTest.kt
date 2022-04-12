@@ -1,7 +1,7 @@
 package com.chimbori.crux.articles
 
 import com.chimbori.crux.extractFromTestFile
-import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
+import okhttp3.HttpUrl.Companion.toHttpUrl
 import org.junit.Assert.assertArrayEquals
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
@@ -15,13 +15,13 @@ class GoldenFilesTest {
       "http://www.aolnews.com/nation/article/the-few-the-proud-the-marines-getting-a-makeover/19592478",
       "aolnews.html"
     )
-    assertEquals("http://o.aolcdn.com/art/ch_news/aol_favicon.ico".toHttpUrlOrNull()!!, article.faviconUrl)
+    assertEquals("http://o.aolcdn.com/art/ch_news/aol_favicon.ico".toHttpUrl(), article.faviconUrl)
     assertStartsWith(
       "WASHINGTON (Aug. 13) -- Declaring \"the maritime soul of the Marine Corps",
       article.document?.text()
     )
     assertEquals(
-      "http://o.aolcdn.com/photo-hub/news_gallery/6/8/680919/1281734929876.JPEG".toHttpUrlOrNull()!!,
+      "http://o.aolcdn.com/photo-hub/news_gallery/6/8/680919/1281734929876.JPEG".toHttpUrl(),
       article.imageUrl
     )
     assertArrayEquals(
@@ -39,10 +39,10 @@ class GoldenFilesTest {
     assertEquals("BBC News", article.siteName)
     assertEquals("Baby born on Mediterranean rescue ship - BBC News", article.title)
     assertEquals(
-      "http://ichef-1.bbci.co.uk/news/1024/cpsprodpb/146E6/production/_91168638_baby070012-9-20162-1photocreditalvawhitemsf.jpg".toHttpUrlOrNull()!!,
+      "http://ichef-1.bbci.co.uk/news/1024/cpsprodpb/146E6/production/_91168638_baby070012-9-20162-1photocreditalvawhitemsf.jpg".toHttpUrl(),
       article.imageUrl
     )
-    assertEquals("http://www.bbc.co.uk/news/amp/37341871".toHttpUrlOrNull()!!, article.ampUrl)
+    assertEquals("http://www.bbc.co.uk/news/amp/37341871".toHttpUrl(), article.ampUrl)
     assertStartsWith(
       "A Nigerian woman has given birth to a boy on board a rescue ship in the Mediterranean after being plucked from an overcrowded rubber dinghy.",
       article.document?.text()
@@ -55,7 +55,7 @@ class GoldenFilesTest {
     assertEquals("BBC News", article.siteName)
     assertEquals("Baby born on Mediterranean rescue ship", article.title)
     assertEquals(
-      "http://ichef.bbci.co.uk/news/999/cpsprodpb/146E6/production/_91168638_baby070012-9-20162-1photocreditalvawhitemsf.jpg".toHttpUrlOrNull()!!,
+      "http://ichef.bbci.co.uk/news/999/cpsprodpb/146E6/production/_91168638_baby070012-9-20162-1photocreditalvawhitemsf.jpg".toHttpUrl(),
       article.imageUrl
     )
     assertStartsWith(
@@ -83,14 +83,14 @@ class GoldenFilesTest {
       article.document?.child(1)?.text()
     )
     assertEquals(
-      "http://3.bp.blogspot.com/-cyMzveP3IvQ/TaR7f3qkYmI/AAAAAAAAAIk/mrChE-G0b5c/s200/Java.png".toHttpUrlOrNull()!!,
+      "http://3.bp.blogspot.com/-cyMzveP3IvQ/TaR7f3qkYmI/AAAAAAAAAIk/mrChE-G0b5c/s200/Java.png".toHttpUrl(),
       article.images?.get(0)?.srcUrl
     )
     assertEquals(
       "The Brain Dump: Gavin King unveils Red Hat's Java killer successor: The Ceylon Project",
       article.title
     )
-    assertEquals("http://blog.talawah.net/feeds/posts/default?alt=rss".toHttpUrlOrNull()!!, article.feedUrl)
+    assertEquals("http://blog.talawah.net/feeds/posts/default?alt=rss".toHttpUrl(), article.feedUrl)
   }
 
   @Test
@@ -102,7 +102,7 @@ class GoldenFilesTest {
     assertEquals("Bloomberg", article.siteName)
     assertStartsWith("The Chinese entrepreneur and the Peruvian shopkeeper", article.document?.text())
     assertEquals(
-      "http://www.bloomberg.com/apps/data?pid=avimage&iid=iimODmqjtcQU".toHttpUrlOrNull()!!,
+      "http://www.bloomberg.com/apps/data?pid=avimage&iid=iimODmqjtcQU".toHttpUrl(),
       article.imageUrl
     )
   }
@@ -140,7 +140,7 @@ class GoldenFilesTest {
     assertEquals("CNET", article.siteName)
     assertStartsWith("NEW YORK--Verizon Communications is prepping a new", article.document?.text())
     assertEquals(
-      "https://cnet1.cbsistatic.com/img/Bw23T5rupUVnvVPCQQ3KjfO9qic=/670x503/2010/08/18/53b6d52b-f0fa-11e2-8c7c-d4ae52e62bcc/Verizon_iPad_and_live_TV_with_big_TV.JPG".toHttpUrlOrNull()!!,
+      "https://cnet1.cbsistatic.com/img/Bw23T5rupUVnvVPCQQ3KjfO9qic=/670x503/2010/08/18/53b6d52b-f0fa-11e2-8c7c-d4ae52e62bcc/Verizon_iPad_and_live_TV_with_big_TV.JPG".toHttpUrl(),
       article.imageUrl
     )
   }
@@ -159,7 +159,7 @@ class GoldenFilesTest {
   fun testCracked() {
     val article = extractFromTestFile("http://www.cracked.com/blog/the-9-circles-vacation-hell/", "cracked.html")
     assertEquals(
-      "http://s3.crackedcdn.com/phpimages/article/0/6/6/573066_v1.jpg".toHttpUrlOrNull()!!,
+      "http://s3.crackedcdn.com/phpimages/article/0/6/6/573066_v1.jpg".toHttpUrl(),
       article.imageUrl
     )
     assertStartsWith("In theory, everyone likes a nice vacation.", article.document?.text())
@@ -169,7 +169,7 @@ class GoldenFilesTest {
   fun testESPN() {
     val article = extractFromTestFile("http://www.espn.com/espn/commentary/news/story?id=5461430", "espn.html")
     assertStartsWith("If you believe what college football coaches have said about sports", article.document?.text())
-    assertEquals("http://a.espncdn.com/photo/2010/0813/pg2_g_bush3x_300.jpg".toHttpUrlOrNull()!!, article.imageUrl)
+    assertEquals("http://a.espncdn.com/photo/2010/0813/pg2_g_bush3x_300.jpg".toHttpUrl(), article.imageUrl)
   }
 
   @Test
@@ -180,7 +180,7 @@ class GoldenFilesTest {
       article.document?.text()
     )
     assertEquals(
-      "http://a2.espncdn.com/combiner/i?img=%2Fi%2Fheadshots%2Fgolf%2Fplayers%2Ffull%2F780.png".toHttpUrlOrNull()!!,
+      "http://a2.espncdn.com/combiner/i?img=%2Fi%2Fheadshots%2Fgolf%2Fplayers%2Ffull%2F780.png".toHttpUrl(),
       article.imageUrl
     )
   }
@@ -190,7 +190,7 @@ class GoldenFilesTest {
     val article = extractFromTestFile("http://www.economist.com/node/17956885", "economist.html")
     assertStartsWith("FOR beleaguered smokers, the world is an increasingly", article.document?.text())
     assertEquals(
-      "http://www.economist.com/sites/default/files/images/articles/migrated/20110122_stp004.jpg".toHttpUrlOrNull()!!,
+      "http://www.economist.com/sites/default/files/images/articles/migrated/20110122_stp004.jpg".toHttpUrl(),
       article.imageUrl
     )
   }
@@ -216,11 +216,11 @@ class GoldenFilesTest {
       article.document?.text()
     )
     assertEquals(
-      "https://www.blogcdn.com/www.engadget.com/media/2010/08/44ni600.jpg".toHttpUrlOrNull()!!,
+      "https://www.blogcdn.com/www.engadget.com/media/2010/08/44ni600.jpg".toHttpUrl(),
       article.imageUrl
     )
     assertEquals(
-      "https://s.blogsmithmedia.com/www.engadget.com/assets-haa9c2740c98180d07c436859c827e9f1/images/favicon-160x160.png?h=1638b0a8bbe7effa8f85c3ecabb63620".toHttpUrlOrNull()!!,
+      "https://s.blogsmithmedia.com/www.engadget.com/assets-haa9c2740c98180d07c436859c827e9f1/images/favicon-160x160.png?h=1638b0a8bbe7effa8f85c3ecabb63620".toHttpUrl(),
       article.faviconUrl
     )
   }
@@ -229,7 +229,7 @@ class GoldenFilesTest {
   fun testEspn3WithFlashVideo() {
     val article = extractFromTestFile("http://sports.espn.go.com/nfl/news/story?id=5971053", "espn3.html")
     assertStartsWith("PHILADELPHIA -- Michael Vick missed practice Thursday", article.document?.text())
-    assertEquals("http://a.espncdn.com/i/espn/espn_logos/espn_red.png".toHttpUrlOrNull()!!, article.imageUrl)
+    assertEquals("http://a.espncdn.com/i/espn/espn_logos/espn_red.png".toHttpUrl(), article.imageUrl)
     assertEquals(
       "Michael Vick of Philadelphia Eagles misses practice, unlikely to play vs. Dallas Cowboys - ESPN",
       article.title
@@ -270,7 +270,7 @@ class GoldenFilesTest {
       article.document?.text()
     )
     assertEquals(
-      "http://a57.foxnews.com/images.foxnews.com/content/fox-news/politics/2010/08/14/russias-nuclear-help-iran-stirs-questions-improved-relations/_jcr_content/par/featured-media/media-0.img.jpg/0/0/1446837847097.jpg?ve=1".toHttpUrlOrNull()!!,
+      "http://a57.foxnews.com/images.foxnews.com/content/fox-news/politics/2010/08/14/russias-nuclear-help-iran-stirs-questions-improved-relations/_jcr_content/par/featured-media/media-0.img.jpg/0/0/1446837847097.jpg?ve=1".toHttpUrl(),
       article.imageUrl
     )
   }
@@ -292,7 +292,7 @@ class GoldenFilesTest {
       "galtime.com.html"
     )
     assertEquals(
-      "http://vnetcdn.dtsph.com/files/vnet3/imagecache/opengraph_ogimage/story-images/Kris%20Humphries%20Top%20Bar.JPG".toHttpUrlOrNull()!!,
+      "http://vnetcdn.dtsph.com/files/vnet3/imagecache/opengraph_ogimage/story-images/Kris%20Humphries%20Top%20Bar.JPG".toHttpUrl(),
       article.imageUrl
     )
   }
@@ -303,7 +303,7 @@ class GoldenFilesTest {
       extractFromTestFile("http://gigaom.com/apple/apples-next-macbook-an-800-mac-for-the-masses/", "gigaom.html")
     assertStartsWith("The MacBook Air is a bold move forward ", article.document?.text())
     assertEquals(
-      "http://gigapple.files.wordpress.com/2010/10/macbook-feature.png?w=604".toHttpUrlOrNull()!!,
+      "http://gigapple.files.wordpress.com/2010/10/macbook-feature.png?w=604".toHttpUrl(),
       article.imageUrl
     )
   }
@@ -315,7 +315,7 @@ class GoldenFilesTest {
     assertEquals("Gizmodo Australia", article.siteName)
     assertStartsWith("You love to punch your arms through the air", article.document?.text())
     assertEquals(
-      "http://cache.gawkerassets.com/assets/images/9/2010/08/500x_fighters_uncaged__screenshot_3b__jawbreaker.jpg".toHttpUrlOrNull()!!,
+      "http://cache.gawkerassets.com/assets/images/9/2010/08/500x_fighters_uncaged__screenshot_3b__jawbreaker.jpg".toHttpUrl(),
       article.images?.get(0)?.srcUrl
     )
   }
@@ -328,7 +328,7 @@ class GoldenFilesTest {
       article.document?.text()
     )
     assertEquals(
-      "http://scr3.golem.de/screenshots/1104/Firefox-Aurora/thumb480/aurora-nighly-beta-logos.png".toHttpUrlOrNull()!!,
+      "http://scr3.golem.de/screenshots/1104/Firefox-Aurora/thumb480/aurora-nighly-beta-logos.png".toHttpUrl(),
       article.images?.get(0)?.srcUrl
     )
     assertEquals("Mozilla: Vorabversionen von Firefox 5 und 6 veröffentlicht - Golem.de", article.title)
@@ -339,7 +339,7 @@ class GoldenFilesTest {
     val article = extractFromTestFile("https://www.google.com/", "google_tablet.html")
     assertEquals("Google", article.title)
     assertEquals(
-      "https://www.google.com/images/branding/googleg/2x/googleg_standard_color_76dp.png".toHttpUrlOrNull()!!,
+      "https://www.google.com/images/branding/googleg/2x/googleg_standard_color_76dp.png".toHttpUrl(),
       article.faviconUrl
     )
   }
@@ -400,7 +400,7 @@ class GoldenFilesTest {
       "heise.html"
     )
     assertEquals(
-      "http://m.f.ix.de/scale/geometry/250/q50/imgs/18/1/7/8/2/8/5/5/b6e69ac13bb564dcaba745f4b419e23f_edited_105951127_8168730ae9-255ed03a302fdb50.jpeg@jpg".toHttpUrlOrNull()!!,
+      "http://m.f.ix.de/scale/geometry/250/q50/imgs/18/1/7/8/2/8/5/5/b6e69ac13bb564dcaba745f4b419e23f_edited_105951127_8168730ae9-255ed03a302fdb50.jpeg@jpg".toHttpUrl(),
       article.images?.get(0)?.srcUrl
     )
     assertEquals("Internet Explorer 9 jetzt mit schnellster JavaScript-Engine", article.title)
@@ -421,7 +421,7 @@ class GoldenFilesTest {
       article.title
     )
     assertStartsWith("A top regional Federal Reserve official sharply", article.document?.text())
-    assertEquals("http://i.huffpost.com/gen/157611/thumbs/s-FED-large.jpg".toHttpUrlOrNull()!!, article.imageUrl)
+    assertEquals("http://i.huffpost.com/gen/157611/thumbs/s-FED-large.jpg".toHttpUrl(), article.imageUrl)
   }
 
   @Test
@@ -461,7 +461,7 @@ class GoldenFilesTest {
     )
     assertStartsWith("If you find yourself with lots of leftover wood", article.document?.text())
     assertEquals(
-      "https://i.kinja-img.com/gawker-media/image/upload/s--9OsTlIZO--/c_fill,fl_progressive,g_center,h_358,q_80,w_636/18ixs0cqpu927jpg.jpg".toHttpUrlOrNull()!!,
+      "https://i.kinja-img.com/gawker-media/image/upload/s--9OsTlIZO--/c_fill,fl_progressive,g_center,h_358,q_80,w_636/18ixs0cqpu927jpg.jpg".toHttpUrl(),
       article.imageUrl
     )
   }
@@ -481,7 +481,7 @@ class GoldenFilesTest {
     val article =
       extractFromTestFile("http://mashable.com/2010/08/18/how-tonot-to-ask-someone-out-online/", "mashable.html")
     assertStartsWith("Imagine, if you will, a crowded dance floor", article.document?.text())
-    assertEquals("http://9.mshcdn.com/wp-content/uploads/2010/07/love.jpg".toHttpUrlOrNull()!!, article.imageUrl)
+    assertEquals("http://9.mshcdn.com/wp-content/uploads/2010/07/love.jpg".toHttpUrl(), article.imageUrl)
   }
 
   /**
@@ -503,7 +503,7 @@ class GoldenFilesTest {
       article.document?.html()
     )
     assertEquals(
-      "https://i.amz.mshcdn.com/r831Qn9cn1G7A9q2F3-1PH1VIyw=/640x360/2015%2F04%2F24%2Fda%2Fscottkellyr.3f2af.jpg".toHttpUrlOrNull()!!,
+      "https://i.amz.mshcdn.com/r831Qn9cn1G7A9q2F3-1PH1VIyw=/640x360/2015%2F04%2F24%2Fda%2Fscottkellyr.3f2af.jpg".toHttpUrl(),
       article.imageUrl
     )
   }
@@ -537,7 +537,7 @@ class GoldenFilesTest {
       article.document?.text()?.endsWith("\"How Four Drinking Buddies Saved Brazil.\"")
     )
     assertEquals(
-      "http://media.npr.org/assets/img/2010/10/04/real_wide.jpg?t=1286218782&s=3".toHttpUrlOrNull()!!,
+      "http://media.npr.org/assets/img/2010/10/04/real_wide.jpg?t=1286218782&s=3".toHttpUrl(),
       article.images?.get(0)?.srcUrl
     )
     assertEquals(true, article.keywords?.isEmpty())
@@ -551,7 +551,7 @@ class GoldenFilesTest {
     )
     assertEquals("DealBook", article.siteName)
     assertEquals(
-      "http://graphics8.nytimes.com/images/2011/04/12/business/dbpix-raj-rajaratnam-1302571800091/dbpix-raj-rajaratnam-1302571800091-tmagSF.jpg".toHttpUrlOrNull()!!,
+      "http://graphics8.nytimes.com/images/2011/04/12/business/dbpix-raj-rajaratnam-1302571800091/dbpix-raj-rajaratnam-1302571800091-tmagSF.jpg".toHttpUrl(),
       article.images?.get(0)?.srcUrl
     )
     assertStartsWith("I wouldn’t want to be Raj Rajaratnam’s lawyer right now.", article.document?.text())
@@ -565,7 +565,7 @@ class GoldenFilesTest {
       article.document?.text()
     )
     assertEquals(
-      "https://cdn1.nyt.com/images/2010/12/22/world/22start-span/Start-articleLarge.jpg".toHttpUrlOrNull()!!,
+      "https://cdn1.nyt.com/images/2010/12/22/world/22start-span/Start-articleLarge.jpg".toHttpUrl(),
       article.images?.get(0)?.srcUrl
     )
   }
@@ -602,7 +602,7 @@ class GoldenFilesTest {
       article.title
     )
     assertEquals(
-      "http://www.newyorker.com/wp-content/uploads/2015/05/Borowitz-Earth-Endangered-by-Fact-Resistant-Humans-1200-630-12152424.jpg".toHttpUrlOrNull()!!,
+      "http://www.newyorker.com/wp-content/uploads/2015/05/Borowitz-Earth-Endangered-by-Fact-Resistant-Humans-1200-630-12152424.jpg".toHttpUrl(),
       article.imageUrl
     )
     assertStartsWith(
@@ -620,7 +620,7 @@ class GoldenFilesTest {
       article.document?.text()
     )
     assertEquals(
-      "http://s.newsweek.com/sites/www.newsweek.com/files/2016/09/13/marieke-vervoort.jpg".toHttpUrlOrNull()!!,
+      "http://s.newsweek.com/sites/www.newsweek.com/files/2016/09/13/marieke-vervoort.jpg".toHttpUrl(),
       article.imageUrl
     )
   }
@@ -642,7 +642,7 @@ class GoldenFilesTest {
     val article = extractFromTestFile("http://www.politico.com/news/stories/1010/43352.html", "politico.html")
     assertStartsWith("If the newest Census Bureau estimates stay close to form", article.document?.text())
     assertEquals(
-      "http://images.politico.com/global/news/100927_obama22_ap_328.jpg".toHttpUrlOrNull()!!,
+      "http://images.politico.com/global/news/100927_obama22_ap_328.jpg".toHttpUrl(),
       article.imageUrl
     )
   }
@@ -655,7 +655,7 @@ class GoldenFilesTest {
     )
     assertEquals("#121212", article.themeColor)
     assertEquals(
-      "http://15809-presscdn-0-93.pagely.netdna-cdn.com/wp-content/uploads/iStock_83628999_SMALL-e1473787242221.jpg".toHttpUrlOrNull()!!,
+      "http://15809-presscdn-0-93.pagely.netdna-cdn.com/wp-content/uploads/iStock_83628999_SMALL-e1473787242221.jpg".toHttpUrl(),
       article.imageUrl
     )
     assertStartsWith(
@@ -671,7 +671,7 @@ class GoldenFilesTest {
       "reddit.html"
     )
     assertEquals(
-      "https://www.reddit.com/r/androidapps/comments/4nle7s/dev_hermit_has_a_new_ad_blocker_50_off_premium/.rss".toHttpUrlOrNull()!!,
+      "https://www.reddit.com/r/androidapps/comments/4nle7s/dev_hermit_has_a_new_ad_blocker_50_off_premium/.rss".toHttpUrl(),
       article.feedUrl
     )
   }
@@ -706,7 +706,7 @@ class GoldenFilesTest {
     )
     assertEquals("Knight trading loss shows cracks in equity markets", article.title)
     assertEquals(
-      "http://s1.reutersmedia.net/resources/r/?m=02&d=20120803&t=2&i=637797752&w=130&fh=&fw=&ll=&pl=&r=CBRE872074Y00".toHttpUrlOrNull()!!,
+      "http://s1.reutersmedia.net/resources/r/?m=02&d=20120803&t=2&i=637797752&w=130&fh=&fw=&ll=&pl=&r=CBRE872074Y00".toHttpUrl(),
       article.imageUrl
     )
     assertStartsWith(
@@ -723,7 +723,7 @@ class GoldenFilesTest {
       article.document?.text()
     )
     assertEquals("Japanese rally against nuclear power industry", article.title)
-    assertEquals("http://en.rian.ru/favicon.ico".toHttpUrlOrNull()!!, article.faviconUrl)
+    assertEquals("http://en.rian.ru/favicon.ico".toHttpUrl(), article.faviconUrl)
     assertEquals(true, article.keywords?.isEmpty())
   }
 
@@ -747,7 +747,7 @@ class GoldenFilesTest {
     )
     assertEquals("Everyday BPA Exposure Decreases Human Semen Quality: Scientific American", article.title)
     assertEquals(
-      "http://www.scientificamerican.com/media/inline/bpa-semen-quality_1.jpg".toHttpUrlOrNull()!!,
+      "http://www.scientificamerican.com/media/inline/bpa-semen-quality_1.jpg".toHttpUrl(),
       article.images?.get(0)?.srcUrl
     )
     assertStartsWith("The common industrial chemical bisphenol A (BPA) ", article.document?.text())
@@ -760,7 +760,7 @@ class GoldenFilesTest {
       "sfgate.html"
     )
     assertStartsWith("Fewer homes in California and", article.document?.text())
-    assertEquals("http://ww4.hdnux.com/photos/11/11/11/2396767/11/rawImage.jpg".toHttpUrlOrNull()!!, article.imageUrl)
+    assertEquals("http://ww4.hdnux.com/photos/11/11/11/2396767/11/rawImage.jpg".toHttpUrl(), article.imageUrl)
   }
 
   @Test
@@ -771,7 +771,7 @@ class GoldenFilesTest {
     )
     assertStartsWith("New Kids On The Block singer Jonathan Knight has publicly", article.document?.text())
     assertEquals(
-      "http://www.shockya.com/news/wp-content/uploads/jonathan_knight_new_kids_gay.jpg".toHttpUrlOrNull()!!,
+      "http://www.shockya.com/news/wp-content/uploads/jonathan_knight_new_kids_gay.jpg".toHttpUrl(),
       article.images?.get(0)?.srcUrl
     )
   }
@@ -782,7 +782,7 @@ class GoldenFilesTest {
       extractFromTestFile("http://www.slamonline.com/online/nba/2010/10/nba-schoolyard-rankings/", "slamonline.html")
     assertEquals("SLAM ONLINE | » NBA Schoolyard Rankings", article.title)
     assertEquals(
-      "http://www.slamonline.com/online/wp-content/uploads/2010/10/celtics.jpg".toHttpUrlOrNull()!!,
+      "http://www.slamonline.com/online/wp-content/uploads/2010/10/celtics.jpg".toHttpUrl(),
       article.images?.get(0)?.srcUrl
     )
     assertStartsWith("Thursday, October 28th, 2010 at 3:32 pm", article.document?.text())
@@ -811,7 +811,7 @@ class GoldenFilesTest {
       "ALAMEDA, Calif. — The Oakland Raiders informed coach Tom Cable on Tuesday that they will not bring him back",
       article.document?.text()
     )
-    assertEquals("http://dy.snimg.com/story-image/0/69/174475/14072-650-366.jpg".toHttpUrlOrNull()!!, article.imageUrl)
+    assertEquals("http://dy.snimg.com/story-image/0/69/174475/14072-650-366.jpg".toHttpUrl(), article.imageUrl)
     assertEquals("Raiders cut ties with Cable - NFL - Sporting News", article.title)
   }
 
@@ -826,10 +826,10 @@ class GoldenFilesTest {
       article.document?.text()
     )
     assertEquals(
-      "http://windows.api.si.com/s3/files/styles/inline_gallery_desktop/public/2016/09/08/shaquille-o-neal-hall-of-fame-lakers-magic-lsu.jpg?itok=oupTSSJY".toHttpUrlOrNull()!!,
+      "http://windows.api.si.com/s3/files/styles/inline_gallery_desktop/public/2016/09/08/shaquille-o-neal-hall-of-fame-lakers-magic-lsu.jpg?itok=oupTSSJY".toHttpUrl(),
       article.imageUrl
     )
-    assertEquals("http://www.si.com/img/favicons/favicon-192.png".toHttpUrlOrNull()!!, article.faviconUrl)
+    assertEquals("http://www.si.com/img/favicons/favicon-192.png".toHttpUrl(), article.faviconUrl)
   }
 
   @Test
@@ -839,7 +839,7 @@ class GoldenFilesTest {
     assertStartsWith("I think I've invested some time for both frameworks", article.document?.text())
     assertStartsWith("java - wicket vs Vaadin - Stack Overflow", article.title)
     assertEquals(
-      "http://cdn.sstatic.net/Sites/stackoverflow/img/apple-touch-icon@2.png?v=73d79a89bded&a".toHttpUrlOrNull()!!,
+      "http://cdn.sstatic.net/Sites/stackoverflow/img/apple-touch-icon@2.png?v=73d79a89bded&a".toHttpUrl(),
       article.imageUrl
     )
   }
@@ -863,7 +863,7 @@ class GoldenFilesTest {
       article.title
     )
     assertEquals(
-      "https://s0.wp.com/wp-content/themes/vip/techcrunch-2013/assets/images/techcrunch.opengraph.default.png".toHttpUrlOrNull()!!,
+      "https://s0.wp.com/wp-content/themes/vip/techcrunch-2013/assets/images/techcrunch.opengraph.default.png".toHttpUrl(),
       article.imageUrl
     )
     assertStartsWith(
@@ -880,7 +880,7 @@ class GoldenFilesTest {
     )
     assertEquals("Gantto Takes On Microsoft Project With Web-Based Project Management Application", article.title)
     assertStartsWith("Y Combinator-backed Gantto is launching", article.document?.text())
-    assertEquals("http://tctechcrunch.files.wordpress.com/2010/08/gantto.jpg".toHttpUrlOrNull()!!, article.imageUrl)
+    assertEquals("http://tctechcrunch.files.wordpress.com/2010/08/gantto.jpg".toHttpUrl(), article.imageUrl)
   }
 
   @Test
@@ -894,7 +894,7 @@ class GoldenFilesTest {
       article.document?.text()
     )
     assertEquals(
-      "https://cdn.theatlantic.com/assets/media/img/mt/2016/09/AP_16252467700939/facebook.jpg?1473782708".toHttpUrlOrNull()!!,
+      "https://cdn.theatlantic.com/assets/media/img/mt/2016/09/AP_16252467700939/facebook.jpg?1473782708".toHttpUrl(),
       article.imageUrl
     )
   }
@@ -907,7 +907,7 @@ class GoldenFilesTest {
     )
     assertStartsWith("Legendary Kennedy speechwriter Ted Sorensen passed", article.document?.text())
     assertEquals(
-      "http://www.tdbimg.com/resizeimage/YTo0OntzOjM6ImltZyI7czo2MToiMjAxMC8xMS8wMS9pbWctYnMtYm90dG9tLS0ta2F0ei10ZWQtc29yZW5zZW5fMTYzMjI4NjEwMzUxLmpwZyI7czo1OiJ3aWR0aCI7aTo1MDtzOjY6ImhlaWdodCI7aTo1MDtzOjY6InJhbmRvbSI7czoxOiIxIjt9.jpg".toHttpUrlOrNull()!!,
+      "http://www.tdbimg.com/resizeimage/YTo0OntzOjM6ImltZyI7czo2MToiMjAxMC8xMS8wMS9pbWctYnMtYm90dG9tLS0ta2F0ei10ZWQtc29yZW5zZW5fMTYzMjI4NjEwMzUxLmpwZyI7czo1OiJ3aWR0aCI7aTo1MDtzOjY6ImhlaWdodCI7aTo1MDtzOjY6InJhbmRvbSI7czoxOiIxIjt9.jpg".toHttpUrl(),
       article.imageUrl
     )
   }
@@ -920,7 +920,7 @@ class GoldenFilesTest {
     )
     assertStartsWith("Rachel Dratch had been keeping the identity of her baby daddy ", article.document?.text())
     assertEquals(
-      "http://static.thefrisky.com/uploads/2010/10/28/rachel_dratch_102810_m.jpg".toHttpUrlOrNull()!!,
+      "http://static.thefrisky.com/uploads/2010/10/28/rachel_dratch_102810_m.jpg".toHttpUrl(),
       article.imageUrl
     )
     assertEquals("Rachel Dratch Met Her Baby Daddy At A Bar - The Frisky", article.title)
@@ -936,15 +936,15 @@ class GoldenFilesTest {
     assertEquals(3, article.images?.size)
     // The first link is absolute, so the domain is correctly specified.
     assertEquals(
-      "http://thevacationgals.com/wp-content/uploads/2010/11/Gemmel-Family-Reunion-at-a-Vacation-Rental-Home1-300x225.jpg".toHttpUrlOrNull()!!,
+      "http://thevacationgals.com/wp-content/uploads/2010/11/Gemmel-Family-Reunion-at-a-Vacation-Rental-Home1-300x225.jpg".toHttpUrl(),
       article.images?.get(0)?.srcUrl
     )
     // The second link has a relative path, and the canonical URL is incorrectly specified as a local hostname, so although the URL is inaccessible, the parsing is correct.
     assertEquals(
-      "http://vacationrentalhomesfamilyreunions/wp-content/uploads/2010/11/The-Gemmel-Family-Does-a-Gilligans-Island-Theme-Family-Reunion-Vacation-Sarah-Gemmel-300x225.jpg".toHttpUrlOrNull()!!,
+      "http://vacationrentalhomesfamilyreunions/wp-content/uploads/2010/11/The-Gemmel-Family-Does-a-Gilligans-Island-Theme-Family-Reunion-Vacation-Sarah-Gemmel-300x225.jpg".toHttpUrl(),
       article.images?.get(1)?.srcUrl
     )
-    assertEquals("http://www.linkwithin.com/pixel.png".toHttpUrlOrNull()!!, article.images?.get(2)?.srcUrl)
+    assertEquals("http://www.linkwithin.com/pixel.png".toHttpUrl(), article.images?.get(2)?.srcUrl)
   }
 
   @Test
@@ -953,7 +953,7 @@ class GoldenFilesTest {
     assertStartsWith("This month, the federal government released", article.document?.child(0)?.text())
     assertEquals(
       article.document?.childNodes().toString(),
-      "http://img.timeinc.net/time/daily/2010/1008/360_bp_oil_spill_0817.jpg".toHttpUrlOrNull()!!,
+      "http://img.timeinc.net/time/daily/2010/1008/360_bp_oil_spill_0817.jpg".toHttpUrl(),
       article.imageUrl
     )
   }
@@ -998,7 +998,7 @@ class GoldenFilesTest {
     )
     assertEquals("Twitter Engineering: Twitter Search is Now 3x Faster", article.title)
     assertEquals(
-      "http://4.bp.blogspot.com/-CmXJmr9UAbA/TZy6AsT72fI/AAAAAAAAAAs/aaF5AEzC-e4/s400/Blender_Tsunami.jpg".toHttpUrlOrNull()!!,
+      "http://4.bp.blogspot.com/-CmXJmr9UAbA/TZy6AsT72fI/AAAAAAAAAAs/aaF5AEzC-e4/s400/Blender_Tsunami.jpg".toHttpUrl(),
       article.images?.get(0)?.srcUrl
     )
     assertStartsWith(
@@ -1015,7 +1015,7 @@ class GoldenFilesTest {
     )
     assertStartsWith("I had the chance to interview LCROSS", article.document?.text())
     assertEquals(
-      "http://www.universetoday.com/wp-content/uploads/2009/10/lcross-impact_01_01.jpg".toHttpUrlOrNull()!!,
+      "http://www.universetoday.com/wp-content/uploads/2009/10/lcross-impact_01_01.jpg".toHttpUrl(),
       article.images?.get(0)?.srcUrl
     )
     assertEquals("Podcast: More From Tony Colaprete on LCROSS", article.title)
@@ -1032,7 +1032,7 @@ class GoldenFilesTest {
       article.document?.text()
     )
     assertEquals(
-      "http://i.usatoday.net/communitymanager/_photos/drive-on/2010/08/18/cruzex-wide-community.jpg".toHttpUrlOrNull()!!,
+      "http://i.usatoday.net/communitymanager/_photos/drive-on/2010/08/18/cruzex-wide-community.jpg".toHttpUrl(),
       article.images?.get(0)?.srcUrl
     )
   }
@@ -1048,7 +1048,7 @@ class GoldenFilesTest {
       article.document?.text()
     )
     assertEquals(
-      "http://i.usatoday.net/communitymanager/_photos/the-huddle/2010/08/18/favrespeaksx-inset-community.jpg".toHttpUrlOrNull()!!,
+      "http://i.usatoday.net/communitymanager/_photos/the-huddle/2010/08/18/favrespeaksx-inset-community.jpg".toHttpUrl(),
       article.images?.get(0)?.srcUrl
     )
   }
@@ -1061,7 +1061,7 @@ class GoldenFilesTest {
     )
     assertStartsWith("Facebook just confirmed the rumors", article.document?.text())
     assertEquals(
-      "http://cdn.venturebeat.com/wp-content/uploads/2010/08/mark-zuckerberg-facebook-places.jpg".toHttpUrlOrNull()!!,
+      "http://cdn.venturebeat.com/wp-content/uploads/2010/08/mark-zuckerberg-facebook-places.jpg".toHttpUrl(),
       article.images?.get(0)?.srcUrl
     )
   }
@@ -1075,7 +1075,7 @@ class GoldenFilesTest {
       article.document?.text()
     )
     assertEquals(
-      "https://si.wsj.net/public/resources/images/OB-JO759_0814st_D_20100814143158.jpg".toHttpUrlOrNull()!!,
+      "https://si.wsj.net/public/resources/images/OB-JO759_0814st_D_20100814143158.jpg".toHttpUrl(),
       article.imageUrl
     )
   }
@@ -1095,7 +1095,7 @@ class GoldenFilesTest {
       article.document?.text()
     )
     assertEquals(
-      "https://img.washingtonpost.com/rf/image_1484w/2010-2019/WashingtonPost/2016/09/09/Style/Images/hidden-figures-DF-04856_R2_rgb.jpg".toHttpUrlOrNull()!!,
+      "https://img.washingtonpost.com/rf/image_1484w/2010-2019/WashingtonPost/2016/09/09/Style/Images/hidden-figures-DF-04856_R2_rgb.jpg".toHttpUrl(),
       article.imageUrl
     )
   }
@@ -1112,10 +1112,10 @@ class GoldenFilesTest {
       article.document?.child(0)?.html()
     )
     assertEquals(
-      "http://upload.wikimedia.org/wikipedia/commons/thumb/4/42/Pristeroognathus_DB.jpg/240px-Pristeroognathus_DB.jpg".toHttpUrlOrNull()!!,
+      "http://upload.wikimedia.org/wikipedia/commons/thumb/4/42/Pristeroognathus_DB.jpg/240px-Pristeroognathus_DB.jpg".toHttpUrl(),
       article.images?.get(0)?.srcUrl
     )
-    assertEquals("http://en.wikipedia.org/apple-touch-icon.png".toHttpUrlOrNull()!!, article.faviconUrl)
+    assertEquals("http://en.wikipedia.org/apple-touch-icon.png".toHttpUrl(), article.faviconUrl)
   }
 
   @Test
@@ -1152,10 +1152,10 @@ class GoldenFilesTest {
     assertStartsWith("On November 25, 1980, professional boxing", article.document?.text())
     assertEquals("Stress Hormones Could Predict Boxing Dominance", article.title)
     assertEquals(
-      "http://www.wired.com/playbook/wp-content/uploads/2010/08/fight_f-660x441.jpg".toHttpUrlOrNull()!!,
+      "http://www.wired.com/playbook/wp-content/uploads/2010/08/fight_f-660x441.jpg".toHttpUrl(),
       article.images?.get(0)?.srcUrl
     )
-    assertEquals("http://blog.wired.com/gadgets/files/apple-touch-icon.png".toHttpUrlOrNull()!!, article.faviconUrl)
+    assertEquals("http://blog.wired.com/gadgets/files/apple-touch-icon.png".toHttpUrl(), article.faviconUrl)
   }
 
   @Test
@@ -1226,9 +1226,9 @@ class GoldenFilesTest {
       article.document?.text()
     )
     assertEquals("YouTube - Metallica - Master of the Puppets 8-bit", article.title)
-    assertEquals("http://i4.ytimg.com/vi/wlupmjrfaB4/default.jpg".toHttpUrlOrNull()!!, article.imageUrl)
-    assertEquals("http://www.youtube.com/v/wlupmjrfaB4?version=3".toHttpUrlOrNull()!!, article.videoUrl)
-    assertEquals("http://s.ytimg.com/yt/favicon-vflZlzSbU.ico".toHttpUrlOrNull()!!, article.faviconUrl)
+    assertEquals("http://i4.ytimg.com/vi/wlupmjrfaB4/default.jpg".toHttpUrl(), article.imageUrl)
+    assertEquals("http://www.youtube.com/v/wlupmjrfaB4?version=3".toHttpUrl(), article.videoUrl)
+    assertEquals("http://s.ytimg.com/yt/favicon-vflZlzSbU.ico".toHttpUrl(), article.faviconUrl)
   }
 
   companion object {

@@ -65,13 +65,13 @@ fun HttpUrl.resolveRedirects(): HttpUrl {
 private val REDIRECTORS = listOf(
   object : RedirectPattern {  // Facebook.
     override fun matches(url: HttpUrl) = url.host.endsWith(".facebook.com") && url.encodedPath == "/l.php"
-    override fun resolve(url: HttpUrl) = url.queryParameter("u")
-      ?.toHttpUrlOrNull() ?: url
+    override fun resolve(url: HttpUrl) = url.queryParameter("u")?.toHttpUrlOrNull()
+      ?: url
   },
   object : RedirectPattern { // Google.
     override fun matches(url: HttpUrl) = url.host.endsWith(".google.com") && url.encodedPath == "/url"
-    override fun resolve(url: HttpUrl) = (url.queryParameter("q") ?: url.queryParameter("url"))
-      ?.toHttpUrlOrNull() ?: url
+    override fun resolve(url: HttpUrl) = (url.queryParameter("q") ?: url.queryParameter("url"))?.toHttpUrlOrNull()
+      ?: url
   }
 )
 

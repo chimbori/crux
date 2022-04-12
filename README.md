@@ -115,7 +115,7 @@ not be able to resolve redirectors that perform a HTTP 301 redirect.
 
 #### Kotlin
 ```kotlin
-val url = "https://example.com/article.html".toHttpUrlOrNull()
+val url = "https://example.com/article.html".toHttpUrl()
 url?.resolveRedirects()
 url?.isLikelyArticle()  // Returns true.
 url?.isLikelyImage()  // Returns false.
