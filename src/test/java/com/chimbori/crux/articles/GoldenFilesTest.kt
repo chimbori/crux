@@ -732,158 +732,167 @@ class GoldenFilesTest {
 
   @Test
   fun testScience() {
-    val article = fromFile(
+    fromFile(
       "http://news.sciencemag.org/sciencenow/2011/04/early-birds-smelled-good.html",
       "sciencemag.html"
-    )
-    assertStartsWith(
-      "About 65 million years ago, most of the dinosaurs and many other animals and plants were wiped off Earth, probably due to an asteroid hitting our planet. Researchers have long debated how and why some ",
-      article.document?.text()
-    )
+    ).run {
+      assertStartsWith(
+        "About 65 million years ago, most of the dinosaurs and many other animals and plants were wiped off Earth, probably due to an asteroid hitting our planet. Researchers have long debated how and why some ",
+        document?.text()
+      )
+    }
   }
 
   @Test
   fun testScientificDaily() {
-    val article = fromFile(
+    fromFile(
       "http://www.scientificamerican.com/article.cfm?id=bpa-semen-quality",
       "scientificamerican.html"
-    )
-    assertEquals("Everyday BPA Exposure Decreases Human Semen Quality: Scientific American", article.title)
-    assertEquals(
-      "http://www.scientificamerican.com/media/inline/bpa-semen-quality_1.jpg".toHttpUrl(),
-      article.images?.get(0)?.srcUrl
-    )
-    assertStartsWith("The common industrial chemical bisphenol A (BPA) ", article.document?.text())
+    ).run {
+      assertEquals("Everyday BPA Exposure Decreases Human Semen Quality: Scientific American", title)
+      assertEquals(
+        "http://www.scientificamerican.com/media/inline/bpa-semen-quality_1.jpg".toHttpUrl(),
+        images?.get(0)?.srcUrl
+      )
+      assertStartsWith("The common industrial chemical bisphenol A (BPA) ", document?.text())
+    }
   }
 
   @Test
   fun testSfGate() {
-    val article = fromFile(
+    fromFile(
       "http://www.sfgate.com/business/article/Foreclosure-activity-dips-in-California-Bay-Area-3248321.php",
       "sfgate.html"
-    )
-    assertStartsWith("Fewer homes in California and", article.document?.text())
-    assertEquals("http://ww4.hdnux.com/photos/11/11/11/2396767/11/rawImage.jpg".toHttpUrl(), article.imageUrl)
+    ).run {
+      assertStartsWith("Fewer homes in California and", document?.text())
+      assertEquals("http://ww4.hdnux.com/photos/11/11/11/2396767/11/rawImage.jpg".toHttpUrl(), imageUrl)
+    }
   }
 
   @Test
   fun testShockYa() {
-    val article = fromFile(
+    fromFile(
       "http://www.shockya.com/news/2011/01/30/daily-shock-jonathan-knight-of-new-kids-on-the-block-publicly-reveals-hes-gay/",
       "shockya.html"
-    )
-    assertStartsWith("New Kids On The Block singer Jonathan Knight has publicly", article.document?.text())
-    assertEquals(
-      "http://www.shockya.com/news/wp-content/uploads/jonathan_knight_new_kids_gay.jpg".toHttpUrl(),
-      article.images?.get(0)?.srcUrl
-    )
+    ).run {
+      assertStartsWith("New Kids On The Block singer Jonathan Knight has publicly", document?.text())
+      assertEquals(
+        "http://www.shockya.com/news/wp-content/uploads/jonathan_knight_new_kids_gay.jpg".toHttpUrl(),
+        images?.get(0)?.srcUrl
+      )
+    }
   }
 
   @Test
   fun testSlamMagazine() {
-    val article =
-      fromFile("http://www.slamonline.com/online/nba/2010/10/nba-schoolyard-rankings/", "slamonline.html")
-    assertEquals("SLAM ONLINE | » NBA Schoolyard Rankings", article.title)
-    assertEquals(
-      "http://www.slamonline.com/online/wp-content/uploads/2010/10/celtics.jpg".toHttpUrl(),
-      article.images?.get(0)?.srcUrl
-    )
-    assertStartsWith("Thursday, October 28th, 2010 at 3:32 pm", article.document?.text())
+    fromFile("http://www.slamonline.com/online/nba/2010/10/nba-schoolyard-rankings/", "slamonline.html").run {
+      assertEquals("SLAM ONLINE | » NBA Schoolyard Rankings", title)
+      assertEquals(
+        "http://www.slamonline.com/online/wp-content/uploads/2010/10/celtics.jpg".toHttpUrl(),
+        images?.get(0)?.srcUrl
+      )
+      assertStartsWith("Thursday, October 28th, 2010 at 3:32 pm", document?.text())
+    }
   }
 
   @Test
   fun testSpiegel() {
-    val article = fromFile(
+    fromFile(
       "http://www.spiegel.de/netzwelt/gadgets/retro-pc-commodore-reaktiviert-den-c64-a-755090.html",
       "spiegel.html",
       charset = "iso-8859-1"
-    )
-    assertStartsWith(
-      "Da ist er wieder, der C64: Eigentlich längst ein Relikt der Technikgeschichte, soll der ",
-      article.document?.text()
-    )
+    ).run {
+      assertStartsWith(
+        "Da ist er wieder, der C64: Eigentlich längst ein Relikt der Technikgeschichte, soll der ",
+        document?.text()
+      )
+    }
   }
 
   @Test
   fun testSportingNews() {
-    val article = fromFile(
+    fromFile(
       "http://www.sportingnews.com/nfl/feed/2011-01/nfl-coaches/story/raiders-cut-ties-with-cable",
       "sportingnews.html"
-    )
-    assertStartsWith(
-      "ALAMEDA, Calif. — The Oakland Raiders informed coach Tom Cable on Tuesday that they will not bring him back",
-      article.document?.text()
-    )
-    assertEquals("http://dy.snimg.com/story-image/0/69/174475/14072-650-366.jpg".toHttpUrl(), article.imageUrl)
-    assertEquals("Raiders cut ties with Cable - NFL - Sporting News", article.title)
+    ).run {
+      assertStartsWith(
+        "ALAMEDA, Calif. — The Oakland Raiders informed coach Tom Cable on Tuesday that they will not bring him back",
+        document?.text()
+      )
+      assertEquals("http://dy.snimg.com/story-image/0/69/174475/14072-650-366.jpg".toHttpUrl(), imageUrl)
+      assertEquals("Raiders cut ties with Cable - NFL - Sporting News", title)
+    }
   }
 
   @Test
   fun testSportsIllustrated() {
-    val article = fromFile(
+    fromFile(
       "http://www.si.com/nba/2016/09/07/shaq-basketball-hall-of-fame-lakers-magic-heat-lsu-tigers",
       "sportsillustrated.html"
-    )
-    assertStartsWith(
-      "Way back in 1994, Shaquille O’Neal, who will be inducted into the Naismith Basketball Hall of Fame on Friday, was asked about Knicks center Patrick Ewing.",
-      article.document?.text()
-    )
-    assertEquals(
-      "http://windows.api.si.com/s3/files/styles/inline_gallery_desktop/public/2016/09/08/shaquille-o-neal-hall-of-fame-lakers-magic-lsu.jpg?itok=oupTSSJY".toHttpUrl(),
-      article.imageUrl
-    )
-    assertEquals("http://www.si.com/img/favicons/favicon-192.png".toHttpUrl(), article.faviconUrl)
+    ).run {
+      assertStartsWith(
+        "Way back in 1994, Shaquille O’Neal, who will be inducted into the Naismith Basketball Hall of Fame on Friday, was asked about Knicks center Patrick Ewing.",
+        document?.text()
+      )
+      assertEquals(
+        "http://windows.api.si.com/s3/files/styles/inline_gallery_desktop/public/2016/09/08/shaquille-o-neal-hall-of-fame-lakers-magic-lsu.jpg?itok=oupTSSJY".toHttpUrl(),
+        imageUrl
+      )
+      assertEquals("http://www.si.com/img/favicons/favicon-192.png".toHttpUrl(), faviconUrl)
+    }
   }
 
   @Test
   fun testStackOverflow() {
-    val article =
-      fromFile("http://stackoverflow.com/questions/3553693/wicket-vs-vaadin/3660938", "stackoverflow.html")
-    assertStartsWith("I think I've invested some time for both frameworks", article.document?.text())
-    assertStartsWith("java - wicket vs Vaadin - Stack Overflow", article.title)
-    assertEquals(
-      "http://cdn.sstatic.net/Sites/stackoverflow/img/apple-touch-icon@2.png?v=73d79a89bded&a".toHttpUrl(),
-      article.imageUrl
-    )
+    fromFile("http://stackoverflow.com/questions/3553693/wicket-vs-vaadin/3660938", "stackoverflow.html").run {
+      assertStartsWith("I think I've invested some time for both frameworks", document?.text())
+      assertStartsWith("java - wicket vs Vaadin - Stack Overflow", title)
+      assertEquals(
+        "http://cdn.sstatic.net/Sites/stackoverflow/img/apple-touch-icon@2.png?v=73d79a89bded&a".toHttpUrl(),
+        imageUrl
+      )
+    }
   }
 
   @Test
   fun testTazBlog() {
-    val article =
-      fromFile("http://www.taz.de/1/politik/asien/artikel/1/anti-atomkraft-nein-danke/", "taz.html")
-    assertStartsWith(
-      "Protestkultur in Japan nach der Katastrophe Absolute Minderheit: Im Shiba-Park in Tokio",
-      article.document?.text()
-    )
-    assertEquals("Protestkultur in Japan nach der Katastrophe: Anti-Atomkraft? Nein danke! - taz.de", article.title)
+    fromFile("http://www.taz.de/1/politik/asien/artikel/1/anti-atomkraft-nein-danke/", "taz.html").run {
+      assertStartsWith(
+        "Protestkultur in Japan nach der Katastrophe Absolute Minderheit: Im Shiba-Park in Tokio",
+        document?.text()
+      )
+      assertEquals("Protestkultur in Japan nach der Katastrophe: Anti-Atomkraft? Nein danke! - taz.de", title)
+    }
   }
 
   @Test
   fun testTechCrunch() {
-    val article = fromFile("http://techcrunch.com/2011/04/04/twitter-advanced-search/", "techcrunch.html")
-    assertEquals(
-      "Twitter Finally Brings Advanced Search Out Of Purgatory; Updates Discovery Algorithms",
-      article.title
-    )
-    assertEquals(
-      "https://s0.wp.com/wp-content/themes/vip/techcrunch-2013/assets/images/techcrunch.opengraph.default.png".toHttpUrl(),
-      article.imageUrl
-    )
-    assertStartsWith(
-      "A couple weeks ago, we wrote a post wishing Twitter a happy fifth birthday, but also noting ",
-      article.document?.text()
-    )
+    fromFile("http://techcrunch.com/2011/04/04/twitter-advanced-search/", "techcrunch.html").run {
+      assertEquals(
+        "Twitter Finally Brings Advanced Search Out Of Purgatory; Updates Discovery Algorithms",
+        title
+      )
+      assertEquals(
+        "https://s0.wp.com/wp-content/themes/vip/techcrunch-2013/assets/images/techcrunch.opengraph.default.png".toHttpUrl(),
+        imageUrl
+      )
+      assertStartsWith(
+        "A couple weeks ago, we wrote a post wishing Twitter a happy fifth birthday, but also noting ",
+        document?.text()
+      )
+    }
   }
 
   @Test
   fun testTechCrunch2() {
-    val article = fromFile(
+    fromFile(
       "http://techcrunch.com/2010/08/13/gantto-takes-on-microsoft-project-with-web-based-project-management-application/",
       "techcrunch2.html"
-    )
-    assertEquals("Gantto Takes On Microsoft Project With Web-Based Project Management Application", article.title)
-    assertStartsWith("Y Combinator-backed Gantto is launching", article.document?.text())
-    assertEquals("http://tctechcrunch.files.wordpress.com/2010/08/gantto.jpg".toHttpUrl(), article.imageUrl)
+    ).run {
+      assertEquals("Gantto Takes On Microsoft Project With Web-Based Project Management Application", title)
+      assertStartsWith("Y Combinator-backed Gantto is launching", document?.text())
+      assertEquals("http://tctechcrunch.files.wordpress.com/2010/08/gantto.jpg".toHttpUrl(), imageUrl)
+    }
   }
 
   @Test
