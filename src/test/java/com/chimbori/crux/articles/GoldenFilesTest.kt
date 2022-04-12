@@ -5,6 +5,7 @@ import okhttp3.HttpUrl.Companion.toHttpUrl
 import org.junit.Assert.assertArrayEquals
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
+import org.junit.Assert.assertTrue
 import org.junit.Assert.fail
 import org.junit.Test
 
@@ -510,131 +511,130 @@ class GoldenFilesTest {
 
   @Test
   fun testNews24() {
-    val article = fromFile(
+    fromFile(
       "https://www.news24.com/World/News/watch-indonesia-frees-bali-nine-drug-smuggler-lawrence-from-prison-20181121",
       "news24.html"
-    )
-    assertEquals("WATCH: Indonesia frees Bali Nine drug smuggler Lawrence from prison", article.title);
-    assertStartsWith(
-      "The first member of the \"Bali Nine\" heroin-trafficking gang was released from prison on Wednesday after serving 13 years, in a case that caused a huge diplomatic rift between Indonesia and Australia.",
-      article.document?.text()
-    );
+    ).run {
+      assertEquals("WATCH: Indonesia frees Bali Nine drug smuggler Lawrence from prison", title);
+      assertStartsWith(
+        "The first member of the \"Bali Nine\" heroin-trafficking gang was released from prison on Wednesday after serving 13 years, in a case that caused a huge diplomatic rift between Indonesia and Australia.",
+        document?.text()
+      )
+    }
   }
 
   @Test
   fun testNPR() {
-    val article =
-      fromFile("http://www.npr.org/blogs/money/2010/10/04/130329523/how-fake-money-saved-brazil", "npr.html")
-    assertEquals("How Fake Money Saved Brazil : Planet Money : NPR", article.title)
-    assertEquals(null, article.siteName)
-    assertStartsWith(
-      "This is a story about how an economist and his buddies tricked the people of Brazil into saving the country from rampant inflation. They had a crazy, unlikely plan, and it worked. Twenty years ago, Brazil's",
-      article.document?.text()
-    )
-    assertEquals(
-      article.document?.text(),
-      true,
-      article.document?.text()?.endsWith("\"How Four Drinking Buddies Saved Brazil.\"")
-    )
-    assertEquals(
-      "http://media.npr.org/assets/img/2010/10/04/real_wide.jpg?t=1286218782&s=3".toHttpUrl(),
-      article.images?.get(0)?.srcUrl
-    )
-    assertEquals(true, article.keywords?.isEmpty())
+    fromFile("http://www.npr.org/blogs/money/2010/10/04/130329523/how-fake-money-saved-brazil", "npr.html").run {
+      assertEquals("How Fake Money Saved Brazil : Planet Money : NPR", title)
+      assertEquals(null, siteName)
+      assertStartsWith(
+        "This is a story about how an economist and his buddies tricked the people of Brazil into saving the country from rampant inflation. They had a crazy, unlikely plan, and it worked. Twenty years ago, Brazil's",
+        document?.text()
+      )
+      assertTrue(document?.text()?.endsWith("\"How Four Drinking Buddies Saved Brazil.\"") == true)
+      assertEquals(
+        "http://media.npr.org/assets/img/2010/10/04/real_wide.jpg?t=1286218782&s=3".toHttpUrl(),
+        images?.get(0)?.srcUrl
+      )
+      assertTrue(keywords?.isEmpty() == true)
+    }
   }
 
   @Test
   fun testNYT() {
-    val article = fromFile(
+    fromFile(
       "http://dealbook.nytimes.com/2011/04/11/for-defense-in-galleon-trial-no-time-to-rest/",
       "nyt.html"
-    )
-    assertEquals("DealBook", article.siteName)
-    assertEquals(
-      "http://graphics8.nytimes.com/images/2011/04/12/business/dbpix-raj-rajaratnam-1302571800091/dbpix-raj-rajaratnam-1302571800091-tmagSF.jpg".toHttpUrl(),
-      article.images?.get(0)?.srcUrl
-    )
-    assertStartsWith("I wouldn’t want to be Raj Rajaratnam’s lawyer right now.", article.document?.text())
+    ).run {
+      assertEquals("DealBook", siteName)
+      assertEquals(
+        "http://graphics8.nytimes.com/images/2011/04/12/business/dbpix-raj-rajaratnam-1302571800091/dbpix-raj-rajaratnam-1302571800091-tmagSF.jpg".toHttpUrl(),
+        images?.get(0)?.srcUrl
+      )
+      assertStartsWith("I wouldn’t want to be Raj Rajaratnam’s lawyer right now.", document?.text())
+    }
   }
 
   @Test
   fun testNYT2() {
-    val article = fromFile("http://www.nytimes.com/2010/12/22/world/europe/22start.html", "nyt2.html")
-    assertStartsWith(
-      "WASHINGTON — An arms control treaty paring back American and Russian nuclear arsenals won a decisive vote in the Senate on Tuesday",
-      article.document?.text()
-    )
-    assertEquals(
-      "https://cdn1.nyt.com/images/2010/12/22/world/22start-span/Start-articleLarge.jpg".toHttpUrl(),
-      article.images?.get(0)?.srcUrl
-    )
+    fromFile("http://www.nytimes.com/2010/12/22/world/europe/22start.html", "nyt2.html").run {
+      assertStartsWith(
+        "WASHINGTON — An arms control treaty paring back American and Russian nuclear arsenals won a decisive vote in the Senate on Tuesday",
+        document?.text()
+      )
+      assertEquals(
+        "https://cdn1.nyt.com/images/2010/12/22/world/22start-span/Start-articleLarge.jpg".toHttpUrl(),
+        images?.get(0)?.srcUrl
+      )
+    }
   }
 
   @Test
   fun testNYTCooking() {
-    val article =
-      fromFile("https://cooking.nytimes.com/recipes/1018068-chicken-paprikash", "nyt-cooking.html")
-    assertEquals("Chicken Paprikash Recipe - NYT Cooking", article.title)
-    assertEquals("NYT Cooking", article.siteName)
-    assertStartsWith(
-      "Spices lose their flavor over time but few as quickly as paprika, which starts out tasting of pepper and sunshine",
-      article.document?.text()
-    )
+    fromFile("https://cooking.nytimes.com/recipes/1018068-chicken-paprikash", "nyt-cooking.html").run {
+      assertEquals("Chicken Paprikash Recipe - NYT Cooking", title)
+      assertEquals("NYT Cooking", siteName)
+      assertStartsWith(
+        "Spices lose their flavor over time but few as quickly as paprika, which starts out tasting of pepper and sunshine",
+        document?.text()
+      )
+    }
   }
 
   @Test
   fun testNature() {
-    val article = fromFile("http://www.nature.com/news/2011/110411/full/472146a.html", "nature.html")
-    assertStartsWith(
-      "As the immediate threat from Fukushima Daiichi's damaged nuclear reactors recedes, engineers and scientists are",
-      article.document?.text()
-    )
+    fromFile("http://www.nature.com/news/2011/110411/full/472146a.html", "nature.html").run {
+      assertStartsWith(
+        "As the immediate threat from Fukushima Daiichi's damaged nuclear reactors recedes, engineers and scientists are",
+        document?.text()
+      )
+    }
   }
 
   @Test
   fun testNewYorker() {
-    val article = fromFile(
+    fromFile(
       "http://www.newyorker.com/humor/borowitz-report/scientists-earth-endangered-by-new-strain-of-fact-resistant-humans",
       "newyorker.html"
-    )
-    assertEquals(
-      "Scientists: Earth Endangered by New Strain of Fact-Resistant Humans - The New Yorker",
-      article.title
-    )
-    assertEquals(
-      "http://www.newyorker.com/wp-content/uploads/2015/05/Borowitz-Earth-Endangered-by-Fact-Resistant-Humans-1200-630-12152424.jpg".toHttpUrl(),
-      article.imageUrl
-    )
-    assertStartsWith(
-      "MINNEAPOLIS (The Borowitz Report)—Scientists have discovered a powerful new strain of fact-resistant humans who are threatening the ability of Earth to sustain life",
-      article.document?.text()
-    )
+    ).run {
+      assertEquals("Scientists: Earth Endangered by New Strain of Fact-Resistant Humans - The New Yorker", title)
+      assertEquals(
+        "http://www.newyorker.com/wp-content/uploads/2015/05/Borowitz-Earth-Endangered-by-Fact-Resistant-Humans-1200-630-12152424.jpg".toHttpUrl(),
+        imageUrl
+      )
+      assertStartsWith(
+        "MINNEAPOLIS (The Borowitz Report)—Scientists have discovered a powerful new strain of fact-resistant humans who are threatening the ability of Earth to sustain life",
+        document?.text()
+      )
+    }
   }
 
   @Test
   fun testNewsweek() {
-    val article =
-      fromFile("http://www.newsweek.com/sport-rio-2016-paralympics-euthanasia-497932", "newsweek.html")
-    assertStartsWith(
-      "The Paralymics podium is a stage on which to get your voice heard, and Belgium’s Marieke Vervoort is doing just that.",
-      article.document?.text()
-    )
-    assertEquals(
-      "http://s.newsweek.com/sites/www.newsweek.com/files/2016/09/13/marieke-vervoort.jpg".toHttpUrl(),
-      article.imageUrl
-    )
+    fromFile("http://www.newsweek.com/sport-rio-2016-paralympics-euthanasia-497932", "newsweek.html").run {
+      assertStartsWith(
+        "The Paralymics podium is a stage on which to get your voice heard, and Belgium’s Marieke Vervoort is doing just that.",
+        document?.text()
+      )
+      assertEquals(
+        "http://s.newsweek.com/sites/www.newsweek.com/files/2016/09/13/marieke-vervoort.jpg".toHttpUrl(),
+        imageUrl
+      )
+    }
   }
 
   @Test
   fun testNinjaTraderBlog() {
-    val article = fromFile(
+    fromFile(
       "http://www.ninjatraderblog.com/im/2010/10/seo-marketing-facts-about-google-instant-and-ranking-your-website/",
       "ninjatraderblog.html"
-    )
-    assertStartsWith(
-      "SEO Marketing- Facts About Google Instant And Ranking Your Website Many users around the world Google their queries",
-      article.document?.text()
-    )
+    ).run {
+      assertStartsWith(
+        "SEO Marketing- Facts About Google Instant And Ranking Your Website Many users around the world Google their queries",
+        document?.text()
+      )
+    }
   }
 
   @Test
