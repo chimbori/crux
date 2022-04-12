@@ -33,7 +33,7 @@ fun Document.extractSiteName(): String? = (
       ?: select("head meta[name=application-name]").attr("content").nullIfBlank()
     )?.removeWhiteSpace()
 
-fun Document.extractThemeColor() = select("meta[name=theme-color]").attr("content")
+fun Document.extractThemeColor(): String? = select("meta[name=theme-color]").attr("content")
 
 fun Document.extractKeywords(): List<String> {
   var content = select("head meta[name=keywords]").attr("content").removeWhiteSpace()
