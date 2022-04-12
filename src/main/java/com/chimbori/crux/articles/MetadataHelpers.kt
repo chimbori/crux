@@ -11,7 +11,7 @@ fun Document.extractTitle(): String? = (
       ?: select("head title").text().nullIfBlank()
       ?: select("head meta[name=title]").attr("content").nullIfBlank()
       ?: select("head meta[property=og:title]").attr("content").nullIfBlank()
-      ?: select("head meta[name=twitter:title]").attr("content")
+      ?: select("head meta[name=twitter:title]").attr("content").nullIfBlank()
     )?.cleanTitle()
 
 fun Document.extractCanonicalUrl(): String? = (
@@ -31,7 +31,8 @@ fun Document.extractSiteName(): String? = (
       ?: select("head meta[name=application-name]").attr("content").nullIfBlank()
     )?.removeWhiteSpace()
 
-fun Document.extractThemeColor(): String? = select("meta[name=theme-color]").attr("content")
+fun Document.extractThemeColor(): String? =
+  select("meta[name=theme-color]").attr("content").nullIfBlank()
 
 fun Document.extractKeywords(): List<String> =
   select("head meta[name=keywords]").attr("content")
@@ -56,13 +57,13 @@ fun Document.extractImageUrl(baseUrl: HttpUrl): HttpUrl? = (
       ?: select("head meta[name=thumbnail]").attr("content").nullIfBlank()
     )?.let { baseUrl.resolve(it) }
 
-fun Document.extractAmpUrl(baseUrl: HttpUrl): HttpUrl? =
-  select("link[rel=amphtml]").attr("href").nullIfBlank()?.let { baseUrl.resolve(it) }
-
 fun Document.extractFeedUrl(baseUrl: HttpUrl): HttpUrl? = (
     select("link[rel=alternate]").select("link[type=application/rss+xml]").attr("href").nullIfBlank()
       ?: select("link[rel=alternate]").select("link[type=application/atom+xml]").attr("href").nullIfBlank()
     )?.let { baseUrl.resolve(it) }
+
+fun Document.extractAmpUrl(baseUrl: HttpUrl): HttpUrl? =
+  select("link[rel=amphtml]").attr("href").nullIfBlank()?.let { baseUrl.resolve(it) }
 
 fun Document.extractVideoUrl(baseUrl: HttpUrl): HttpUrl? =
   select("head meta[property=og:video]").attr("content").nullIfBlank()
