@@ -1,6 +1,6 @@
 package com.chimbori.crux.articles
 
-import com.chimbori.crux.extractFromTestFile
+import com.chimbori.crux.fromFile
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import org.junit.Assert.assertArrayEquals
 import org.junit.Assert.assertEquals
@@ -11,31 +11,25 @@ import org.junit.Test
 class GoldenFilesTest {
   @Test
   fun testAOLNews() {
-    val article = extractFromTestFile(
+    fromFile(
       "http://www.aolnews.com/nation/article/the-few-the-proud-the-marines-getting-a-makeover/19592478",
       "aolnews.html"
-    )
-    assertEquals("http://o.aolcdn.com/art/ch_news/aol_favicon.ico".toHttpUrl(), article.faviconUrl)
-    assertStartsWith(
-      "WASHINGTON (Aug. 13) -- Declaring \"the maritime soul of the Marine Corps",
-      article.document?.text()
-    )
-    assertEquals(
-      "http://o.aolcdn.com/photo-hub/news_gallery/6/8/680919/1281734929876.JPEG".toHttpUrl(),
-      article.imageUrl
-    )
-    assertArrayEquals(
-      listOf(
-        "news", "update", "breaking", "nation", "U.S.", "elections", "world", "entertainment", "sports", "business",
-        "weird news", "health", "science", "latest news articles", "breaking news", "current news", "top news"
-      ).toTypedArray(),
-      article.keywords?.toTypedArray()
-    )
+    ).run {
+      assertEquals("http://o.aolcdn.com/art/ch_news/aol_favicon.ico".toHttpUrl(), faviconUrl)
+      assertStartsWith("WASHINGTON (Aug. 13) -- Declaring \"the maritime soul of the Marine Corps", document?.text())
+      assertEquals("http://o.aolcdn.com/photo-hub/news_gallery/6/8/680919/1281734929876.JPEG".toHttpUrl(), imageUrl)
+      assertArrayEquals(
+        listOf(
+          "news", "update", "breaking", "nation", "U.S.", "elections", "world", "entertainment", "sports", "business",
+          "weird news", "health", "science", "latest news articles", "breaking news", "current news", "top news"
+        ).toTypedArray(), keywords?.toTypedArray()
+      )
+    }
   }
 
   @Test
   fun testBBC() {
-    val article = extractFromTestFile("http://www.bbc.co.uk/news/world-latin-america-21226565", "bbc.html")
+    val article = fromFile("http://www.bbc.co.uk/news/world-latin-america-21226565", "bbc.html")
     assertEquals("BBC News", article.siteName)
     assertEquals("Baby born on Mediterranean rescue ship - BBC News", article.title)
     assertEquals("http://www.bbc.com/news/world-africa-37341871".toHttpUrl(), article.canonicalUrl)
@@ -52,7 +46,7 @@ class GoldenFilesTest {
 
   @Test
   fun testBBC_AMP() {
-    val article = extractFromTestFile("http://www.bbc.co.uk/news/amp/37341871", "bbc-amp.html")
+    val article = fromFile("http://www.bbc.co.uk/news/amp/37341871", "bbc-amp.html")
     assertEquals("BBC News", article.siteName)
     assertEquals("Baby born on Mediterranean rescue ship", article.title)
     assertEquals(
@@ -68,7 +62,7 @@ class GoldenFilesTest {
   @Test
   fun testBenjaminStein() {
     val article =
-      extractFromTestFile("http://benjaminste.in/post/1223476561/hey-guys-whatcha-doing", "benjaminstein.html")
+      fromFile("http://benjaminste.in/post/1223476561/hey-guys-whatcha-doing", "benjaminstein.html")
     assertEquals("BenjaminSte.in - Hey guys, whatcha doing?", article.title)
     assertStartsWith("This month is the 15th anniversary of my last CD.", article.document?.text())
     assertEquals(true, article.keywords?.isEmpty())
@@ -77,7 +71,7 @@ class GoldenFilesTest {
   @Test
   fun testBlogger() {
     val article =
-      extractFromTestFile("http://blog.talawah.net/2011/04/gavin-king-unviels-red-hats-top-secret.html", "blogger.html")
+      fromFile("http://blog.talawah.net/2011/04/gavin-king-unviels-red-hats-top-secret.html", "blogger.html")
     assertStartsWith("Gavin King unveils Red Hat's Java successor: The Ceylon Project", article.document?.text())
     assertStartsWith(
       "Gavin King of Red Hat/Hibernate/Seam fame recently unveiled the top secret project that he has been working on over the past two years",
@@ -96,7 +90,7 @@ class GoldenFilesTest {
 
   @Test
   fun testBloomberg() {
-    val article = extractFromTestFile(
+    val article = fromFile(
       "http://www.bloomberg.com/news/2010-11-01/china-becomes-boss-in-peru-on-50-billion-mountain-bought-for-810-million.html",
       "bloomberg.html"
     )
@@ -111,7 +105,7 @@ class GoldenFilesTest {
   @Test
   fun testBoingBoing() {
     val article =
-      extractFromTestFile("http://www.boingboing.net/2010/08/18/dr-laura-criticism-o.html", "boingboing.html")
+      fromFile("http://www.boingboing.net/2010/08/18/dr-laura-criticism-o.html", "boingboing.html")
     assertStartsWith(
       "Dr. Laura: criticism of me infringes my first amendment rights Dr. Laura Schlessinger is leaving radio to regain her \"first amendment\" rights on the internet.",
       article.document?.text()
@@ -120,7 +114,7 @@ class GoldenFilesTest {
 
   @Test
   fun testBrOnline() {
-    val article = extractFromTestFile(
+    val article = fromFile(
       "http://www.br-online.de/br-klassik/programmtipps/highlight-bayreuth-tannhaeuser-festspielzeit-2011-ID1309895438808.xml",
       "br-online.html",
       charset = "iso-8859-15"
@@ -137,7 +131,7 @@ class GoldenFilesTest {
 
   @Test
   fun testCNet() {
-    val article = extractFromTestFile("http://www.cnet.com/news/verizon-shows-off-ipad-tv-app-and-more/", "cnet.html")
+    val article = fromFile("http://www.cnet.com/news/verizon-shows-off-ipad-tv-app-and-more/", "cnet.html")
     assertEquals("CNET", article.siteName)
     assertEquals("http://www.cnet.com/news/verizon-shows-off-ipad-tv-app-and-more/".toHttpUrl(), article.canonicalUrl)
     assertStartsWith("NEW YORK--Verizon Communications is prepping a new", article.document?.text())
@@ -149,7 +143,7 @@ class GoldenFilesTest {
 
   @Test
   fun testCaltonCaldwell() {
-    val article = extractFromTestFile("http://daltoncaldwell.com/dear-mark-zuckerberg", "daltoncaldwell.html")
+    val article = fromFile("http://daltoncaldwell.com/dear-mark-zuckerberg", "daltoncaldwell.html")
     assertEquals("Dear Mark Zuckerberg by Dalton Caldwell", article.title)
     assertStartsWith(
       "On June 13, 2012, at 4:30 p.m., I attended a meeting at Facebook HQ in Menlo Park, California.",
@@ -159,7 +153,7 @@ class GoldenFilesTest {
 
   @Test
   fun testCracked() {
-    val article = extractFromTestFile("http://www.cracked.com/blog/the-9-circles-vacation-hell/", "cracked.html")
+    val article = fromFile("http://www.cracked.com/blog/the-9-circles-vacation-hell/", "cracked.html")
     assertEquals(
       "http://s3.crackedcdn.com/phpimages/article/0/6/6/573066_v1.jpg".toHttpUrl(),
       article.imageUrl
@@ -169,14 +163,14 @@ class GoldenFilesTest {
 
   @Test
   fun testESPN() {
-    val article = extractFromTestFile("http://www.espn.com/espn/commentary/news/story?id=5461430", "espn.html")
+    val article = fromFile("http://www.espn.com/espn/commentary/news/story?id=5461430", "espn.html")
     assertStartsWith("If you believe what college football coaches have said about sports", article.document?.text())
     assertEquals("http://a.espncdn.com/photo/2010/0813/pg2_g_bush3x_300.jpg".toHttpUrl(), article.imageUrl)
   }
 
   @Test
   fun testESPN2() {
-    val article = extractFromTestFile("http://www.espn.com/golf/pgachampionship10/news/story?id=5463456", "espn2.html")
+    val article = fromFile("http://www.espn.com/golf/pgachampionship10/news/story?id=5463456", "espn2.html")
     assertStartsWith(
       "SHEBOYGAN, Wis. -- The only number that matters at the PGA Championship is on the scorecard, not the birth certificate.",
       article.document?.text()
@@ -189,7 +183,7 @@ class GoldenFilesTest {
 
   @Test
   fun testEconomist() {
-    val article = extractFromTestFile("http://www.economist.com/node/17956885", "economist.html")
+    val article = fromFile("http://www.economist.com/node/17956885", "economist.html")
     assertStartsWith("FOR beleaguered smokers, the world is an increasingly", article.document?.text())
     assertEquals(
       "http://www.economist.com/sites/default/files/images/articles/migrated/20110122_stp004.jpg".toHttpUrl(),
@@ -199,7 +193,7 @@ class GoldenFilesTest {
 
   @Test
   fun testEhow() {
-    val article = extractFromTestFile("http://www.ehow.com/how_5122199_eat-fresh-figs.html", "ehow.html")
+    val article = fromFile("http://www.ehow.com/how_5122199_eat-fresh-figs.html", "ehow.html")
     assertEquals("How to Eat Fresh Figs", article.title)
     assertStartsWith(
       "While dried figs are more commonly featured in recipes, fresh figs are an absolute treat.",
@@ -209,7 +203,7 @@ class GoldenFilesTest {
 
   @Test
   fun testEngadget() {
-    val article = extractFromTestFile(
+    val article = fromFile(
       "http://www.engadget.com/2010/08/18/verizon-fios-set-top-boxes-getting-a-new-hd-guide-external-stor/",
       "engadget.html"
     )
@@ -229,7 +223,7 @@ class GoldenFilesTest {
 
   @Test
   fun testEspn3WithFlashVideo() {
-    val article = extractFromTestFile("http://sports.espn.go.com/nfl/news/story?id=5971053", "espn3.html")
+    val article = fromFile("http://sports.espn.go.com/nfl/news/story?id=5971053", "espn3.html")
     assertStartsWith("PHILADELPHIA -- Michael Vick missed practice Thursday", article.document?.text())
     assertEquals("http://a.espncdn.com/i/espn/espn_logos/espn_red.png".toHttpUrl(), article.imageUrl)
     assertEquals(
@@ -240,7 +234,7 @@ class GoldenFilesTest {
 
   @Test
   fun testFolhaUolComBr() {
-    val article = extractFromTestFile(
+    val article = fromFile(
       "http://m.folha.uol.com.br/ciencia/2017/01/1854055-no-futuro-as-pessoas-nao-morrerao-por-envelhecimento-diz-cientista.shtml?mobile",
       "folha_uol_com_br.html",
       charset = "windows-1252"
@@ -263,7 +257,7 @@ class GoldenFilesTest {
 
   @Test
   fun testFoxNews() {
-    val article = extractFromTestFile(
+    val article = fromFile(
       "http://www.foxnews.com/politics/2010/08/14/russias-nuclear-help-iran-stirs-questions-improved-relations/",
       "foxnews.html"
     )
@@ -279,7 +273,7 @@ class GoldenFilesTest {
 
   @Test
   fun testFoxSports() {
-    val article = extractFromTestFile(
+    val article = fromFile(
       "http://msn.foxsports.com/nfl/story/Tom-Cable-fired-contract-option-Oakland-Raiders-coach-010411",
       "foxsports.html"
     )
@@ -289,7 +283,7 @@ class GoldenFilesTest {
 
   @Test
   fun testGaltimeWhereUrlContainsSpaces() {
-    val article = extractFromTestFile(
+    val article = fromFile(
       "http://galtime.com/article/entertainment/37/22938/kris-humphries-avoids-kim-talk-gma",
       "galtime.com.html"
     )
@@ -302,7 +296,7 @@ class GoldenFilesTest {
   @Test
   fun testGigaOm() {
     val article =
-      extractFromTestFile("http://gigaom.com/apple/apples-next-macbook-an-800-mac-for-the-masses/", "gigaom.html")
+      fromFile("http://gigaom.com/apple/apples-next-macbook-an-800-mac-for-the-masses/", "gigaom.html")
     assertStartsWith("The MacBook Air is a bold move forward ", article.document?.text())
     assertEquals(
       "http://gigapple.files.wordpress.com/2010/10/macbook-feature.png?w=604".toHttpUrl(),
@@ -313,7 +307,7 @@ class GoldenFilesTest {
   @Test
   fun testGizmodo() {
     val article =
-      extractFromTestFile("http://www.gizmodo.com.au/2010/08/xbox-kinect-gets-its-fight-club/", "gizmodo.html")
+      fromFile("http://www.gizmodo.com.au/2010/08/xbox-kinect-gets-its-fight-club/", "gizmodo.html")
     assertEquals("Gizmodo Australia", article.siteName)
     assertStartsWith("You love to punch your arms through the air", article.document?.text())
     assertEquals(
@@ -324,7 +318,7 @@ class GoldenFilesTest {
 
   @Test
   fun testGolem() {
-    val article = extractFromTestFile("http://www.golem.de/1104/82797.html", "golem.html")
+    val article = fromFile("http://www.golem.de/1104/82797.html", "golem.html")
     assertStartsWith(
       "Unter dem Namen \"Aurora\" hat Firefox einen neuen Kanal mit Vorabversionen von Firefox eingerichtet.",
       article.document?.text()
@@ -338,7 +332,7 @@ class GoldenFilesTest {
 
   @Test
   fun testGoogleComTablet() {
-    val article = extractFromTestFile("https://www.google.com/", "google_tablet.html")
+    val article = fromFile("https://www.google.com/", "google_tablet.html")
     assertEquals("Google", article.title)
     assertEquals(
       "https://www.google.com/images/branding/googleg/2x/googleg_standard_color_76dp.png".toHttpUrl(),
@@ -348,7 +342,7 @@ class GoldenFilesTest {
 
   @Test
   fun testGuardianAmpPage() {
-    val article = extractFromTestFile(
+    val article = fromFile(
       "https://cdn.ampproject.org/c/s/amp.theguardian.com/business/2016/nov/07/world-stock-markets-surge-clinton-us-election",
       "guardian-amp.html"
     )
@@ -361,14 +355,14 @@ class GoldenFilesTest {
 
   @Test
   fun testHackerNews() {
-    val article = extractFromTestFile("https://news.ycombinator.com/", "hackernews.html")
+    val article = fromFile("https://news.ycombinator.com/", "hackernews.html")
     assertEquals("Hacker News", article.title)
     assertEquals(null, article.description)
   }
 
   @Test
   fun testHackerNoon() {
-    val article = extractFromTestFile(
+    val article = fromFile(
       "https://hackernoon.com/design-thinking-lessons-from-our-cats-9a43fd71457a",
       "hackernoon.html"
     )
@@ -397,7 +391,7 @@ class GoldenFilesTest {
 
   @Test
   fun testHeise() {
-    val article = extractFromTestFile(
+    val article = fromFile(
       "http://www.heise.de/newsticker/meldung/Internet-Explorer-9-jetzt-mit-schnellster-JavaScript-Engine-1138062.html",
       "heise.html"
     )
@@ -414,7 +408,7 @@ class GoldenFilesTest {
 
   @Test
   fun testHuffingtonPost() {
-    val article = extractFromTestFile(
+    val article = fromFile(
       "http://www.huffingtonpost.com/2010/08/13/federal-reserve-pursuing_n_681540.html",
       "huffingtonpost.html"
     )
@@ -428,13 +422,13 @@ class GoldenFilesTest {
 
   @Test
   fun testI4Online() {
-    val article = extractFromTestFile("https://i4online.com", "i4online.html")
+    val article = fromFile("https://i4online.com", "i4online.html")
     assertStartsWith("Just one week to go and everything is set for the summer Forum 2013", article.document?.text())
   }
 
   @Test
   fun testITunes() {
-    val article = extractFromTestFile("http://itunes.apple.com/us/album/21/id420075073", "itunes.html")
+    val article = fromFile("http://itunes.apple.com/us/album/21/id420075073", "itunes.html")
     assertStartsWith(
       "What else can be said of this album other than that it is simply amazing? Adele's voice is powerful, vulnerable, assured, and heartbreaking all in one fell swoop.",
       article.document?.text()
@@ -445,7 +439,7 @@ class GoldenFilesTest {
 
   @Test
   fun testKhaamaPress() {
-    val article = extractFromTestFile(
+    val article = fromFile(
       "http://www.khaama.com/over-100-school-girls-poisoned-in-western-afghanistan-0737",
       "khaama.html"
     )
@@ -457,7 +451,7 @@ class GoldenFilesTest {
 
   @Test
   fun testLifehacker() {
-    val article = extractFromTestFile(
+    val article = fromFile(
       "http://lifehacker.com/5659837/build-a-rocket-stove-to-heat-your-home-with-wood-scraps",
       "lifehacker.html"
     )
@@ -470,7 +464,7 @@ class GoldenFilesTest {
 
   @Test
   fun testMSNBC() {
-    val article = extractFromTestFile("http://www.msnbc.msn.com/id/41207891/ns/world_news-europe/", "msnbc.html")
+    val article = fromFile("http://www.msnbc.msn.com/id/41207891/ns/world_news-europe/", "msnbc.html")
     assertStartsWith(
       "DUBLIN — Prime Minister Brian Cowen announced Saturday that he has resigned as leader of Ireland's dominant Fianna Fail party",
       article.document?.text()
@@ -481,7 +475,7 @@ class GoldenFilesTest {
   @Test
   fun testMashable() {
     val article =
-      extractFromTestFile("http://mashable.com/2010/08/18/how-tonot-to-ask-someone-out-online/", "mashable.html")
+      fromFile("http://mashable.com/2010/08/18/how-tonot-to-ask-someone-out-online/", "mashable.html")
     assertStartsWith("Imagine, if you will, a crowded dance floor", article.document?.text())
     assertEquals("http://9.mshcdn.com/wp-content/uploads/2010/07/love.jpg".toHttpUrl(), article.imageUrl)
   }
@@ -494,7 +488,7 @@ class GoldenFilesTest {
   @Test
   fun testMashable2() {
     val article =
-      extractFromTestFile("https://mashable.com/2015/04/24/astronaut-scott-kelly-room-photo/", "mashable2.html")
+      fromFile("https://mashable.com/2015/04/24/astronaut-scott-kelly-room-photo/", "mashable2.html")
     assertStartsWith("NASA astronaut Scott Kelly", article.document?.text())
     assertContains(
       "<a href=\"https://twitter.com/StationCDRKelly/status/591594008046084096\">",
@@ -512,7 +506,7 @@ class GoldenFilesTest {
 
   @Test
   fun testNews24() {
-    val article = extractFromTestFile(
+    val article = fromFile(
       "https://www.news24.com/World/News/watch-indonesia-frees-bali-nine-drug-smuggler-lawrence-from-prison-20181121",
       "news24.html"
     )
@@ -526,7 +520,7 @@ class GoldenFilesTest {
   @Test
   fun testNPR() {
     val article =
-      extractFromTestFile("http://www.npr.org/blogs/money/2010/10/04/130329523/how-fake-money-saved-brazil", "npr.html")
+      fromFile("http://www.npr.org/blogs/money/2010/10/04/130329523/how-fake-money-saved-brazil", "npr.html")
     assertEquals("How Fake Money Saved Brazil : Planet Money : NPR", article.title)
     assertEquals(null, article.siteName)
     assertStartsWith(
@@ -547,7 +541,7 @@ class GoldenFilesTest {
 
   @Test
   fun testNYT() {
-    val article = extractFromTestFile(
+    val article = fromFile(
       "http://dealbook.nytimes.com/2011/04/11/for-defense-in-galleon-trial-no-time-to-rest/",
       "nyt.html"
     )
@@ -561,7 +555,7 @@ class GoldenFilesTest {
 
   @Test
   fun testNYT2() {
-    val article = extractFromTestFile("http://www.nytimes.com/2010/12/22/world/europe/22start.html", "nyt2.html")
+    val article = fromFile("http://www.nytimes.com/2010/12/22/world/europe/22start.html", "nyt2.html")
     assertStartsWith(
       "WASHINGTON — An arms control treaty paring back American and Russian nuclear arsenals won a decisive vote in the Senate on Tuesday",
       article.document?.text()
@@ -575,7 +569,7 @@ class GoldenFilesTest {
   @Test
   fun testNYTCooking() {
     val article =
-      extractFromTestFile("https://cooking.nytimes.com/recipes/1018068-chicken-paprikash", "nyt-cooking.html")
+      fromFile("https://cooking.nytimes.com/recipes/1018068-chicken-paprikash", "nyt-cooking.html")
     assertEquals("Chicken Paprikash Recipe - NYT Cooking", article.title)
     assertEquals("NYT Cooking", article.siteName)
     assertStartsWith(
@@ -586,7 +580,7 @@ class GoldenFilesTest {
 
   @Test
   fun testNature() {
-    val article = extractFromTestFile("http://www.nature.com/news/2011/110411/full/472146a.html", "nature.html")
+    val article = fromFile("http://www.nature.com/news/2011/110411/full/472146a.html", "nature.html")
     assertStartsWith(
       "As the immediate threat from Fukushima Daiichi's damaged nuclear reactors recedes, engineers and scientists are",
       article.document?.text()
@@ -595,7 +589,7 @@ class GoldenFilesTest {
 
   @Test
   fun testNewYorker() {
-    val article = extractFromTestFile(
+    val article = fromFile(
       "http://www.newyorker.com/humor/borowitz-report/scientists-earth-endangered-by-new-strain-of-fact-resistant-humans",
       "newyorker.html"
     )
@@ -616,7 +610,7 @@ class GoldenFilesTest {
   @Test
   fun testNewsweek() {
     val article =
-      extractFromTestFile("http://www.newsweek.com/sport-rio-2016-paralympics-euthanasia-497932", "newsweek.html")
+      fromFile("http://www.newsweek.com/sport-rio-2016-paralympics-euthanasia-497932", "newsweek.html")
     assertStartsWith(
       "The Paralymics podium is a stage on which to get your voice heard, and Belgium’s Marieke Vervoort is doing just that.",
       article.document?.text()
@@ -629,7 +623,7 @@ class GoldenFilesTest {
 
   @Test
   fun testNinjaTraderBlog() {
-    val article = extractFromTestFile(
+    val article = fromFile(
       "http://www.ninjatraderblog.com/im/2010/10/seo-marketing-facts-about-google-instant-and-ranking-your-website/",
       "ninjatraderblog.html"
     )
@@ -641,7 +635,7 @@ class GoldenFilesTest {
 
   @Test
   fun testPolitico() {
-    val article = extractFromTestFile("http://www.politico.com/news/stories/1010/43352.html", "politico.html")
+    val article = fromFile("http://www.politico.com/news/stories/1010/43352.html", "politico.html")
     assertStartsWith("If the newest Census Bureau estimates stay close to form", article.document?.text())
     assertEquals(
       "http://images.politico.com/global/news/100927_obama22_ap_328.jpg".toHttpUrl(),
@@ -651,7 +645,7 @@ class GoldenFilesTest {
 
   @Test
   fun testReadWriteWeb() {
-    val article = extractFromTestFile(
+    val article = fromFile(
       "http://readwrite.com/2016/09/13/san-francisco-uc-berkeley-keep-smart-transit-city-plan-rolling-cl4/",
       "readwriteweb.html"
     )
@@ -668,7 +662,7 @@ class GoldenFilesTest {
 
   @Test
   fun testRedditAtomFeed() {
-    val article = extractFromTestFile(
+    val article = fromFile(
       "https://www.reddit.com/r/androidapps/comments/4nle7s/dev_hermit_has_a_new_ad_blocker_50_off_premium/",
       "reddit.html"
     )
@@ -680,7 +674,7 @@ class GoldenFilesTest {
 
   @Test
   fun testRetractionWatch() {
-    val article = extractFromTestFile(
+    val article = fromFile(
       "http://retractionwatch.com/2017/04/26/troubling-new-way-evade-plagiarism-detection-software-tell-used/",
       "retraction_watch.html"
     )
@@ -702,7 +696,7 @@ class GoldenFilesTest {
 
   @Test
   fun testReuters() {
-    val article = extractFromTestFile(
+    val article = fromFile(
       "http://www.reuters.com/article/us-knightcapital-trading-technology-idUSBRE87203X20120803",
       "reuters.html"
     )
@@ -719,7 +713,7 @@ class GoldenFilesTest {
 
   @Test
   fun testRian() {
-    val article = extractFromTestFile("http://en.rian.ru/world/20110410/163458489.html", "rian.html")
+    val article = fromFile("http://en.rian.ru/world/20110410/163458489.html", "rian.html")
     assertStartsWith(
       "About 15,000 people took to the streets in Tokyo on Sunday to protest against th",
       article.document?.text()
@@ -731,7 +725,7 @@ class GoldenFilesTest {
 
   @Test
   fun testScience() {
-    val article = extractFromTestFile(
+    val article = fromFile(
       "http://news.sciencemag.org/sciencenow/2011/04/early-birds-smelled-good.html",
       "sciencemag.html"
     )
@@ -743,7 +737,7 @@ class GoldenFilesTest {
 
   @Test
   fun testScientificDaily() {
-    val article = extractFromTestFile(
+    val article = fromFile(
       "http://www.scientificamerican.com/article.cfm?id=bpa-semen-quality",
       "scientificamerican.html"
     )
@@ -757,7 +751,7 @@ class GoldenFilesTest {
 
   @Test
   fun testSfGate() {
-    val article = extractFromTestFile(
+    val article = fromFile(
       "http://www.sfgate.com/business/article/Foreclosure-activity-dips-in-California-Bay-Area-3248321.php",
       "sfgate.html"
     )
@@ -767,7 +761,7 @@ class GoldenFilesTest {
 
   @Test
   fun testShockYa() {
-    val article = extractFromTestFile(
+    val article = fromFile(
       "http://www.shockya.com/news/2011/01/30/daily-shock-jonathan-knight-of-new-kids-on-the-block-publicly-reveals-hes-gay/",
       "shockya.html"
     )
@@ -781,7 +775,7 @@ class GoldenFilesTest {
   @Test
   fun testSlamMagazine() {
     val article =
-      extractFromTestFile("http://www.slamonline.com/online/nba/2010/10/nba-schoolyard-rankings/", "slamonline.html")
+      fromFile("http://www.slamonline.com/online/nba/2010/10/nba-schoolyard-rankings/", "slamonline.html")
     assertEquals("SLAM ONLINE | » NBA Schoolyard Rankings", article.title)
     assertEquals(
       "http://www.slamonline.com/online/wp-content/uploads/2010/10/celtics.jpg".toHttpUrl(),
@@ -792,7 +786,7 @@ class GoldenFilesTest {
 
   @Test
   fun testSpiegel() {
-    val article = extractFromTestFile(
+    val article = fromFile(
       "http://www.spiegel.de/netzwelt/gadgets/retro-pc-commodore-reaktiviert-den-c64-a-755090.html",
       "spiegel.html",
       charset = "iso-8859-1"
@@ -805,7 +799,7 @@ class GoldenFilesTest {
 
   @Test
   fun testSportingNews() {
-    val article = extractFromTestFile(
+    val article = fromFile(
       "http://www.sportingnews.com/nfl/feed/2011-01/nfl-coaches/story/raiders-cut-ties-with-cable",
       "sportingnews.html"
     )
@@ -819,7 +813,7 @@ class GoldenFilesTest {
 
   @Test
   fun testSportsIllustrated() {
-    val article = extractFromTestFile(
+    val article = fromFile(
       "http://www.si.com/nba/2016/09/07/shaq-basketball-hall-of-fame-lakers-magic-heat-lsu-tigers",
       "sportsillustrated.html"
     )
@@ -837,7 +831,7 @@ class GoldenFilesTest {
   @Test
   fun testStackOverflow() {
     val article =
-      extractFromTestFile("http://stackoverflow.com/questions/3553693/wicket-vs-vaadin/3660938", "stackoverflow.html")
+      fromFile("http://stackoverflow.com/questions/3553693/wicket-vs-vaadin/3660938", "stackoverflow.html")
     assertStartsWith("I think I've invested some time for both frameworks", article.document?.text())
     assertStartsWith("java - wicket vs Vaadin - Stack Overflow", article.title)
     assertEquals(
@@ -849,7 +843,7 @@ class GoldenFilesTest {
   @Test
   fun testTazBlog() {
     val article =
-      extractFromTestFile("http://www.taz.de/1/politik/asien/artikel/1/anti-atomkraft-nein-danke/", "taz.html")
+      fromFile("http://www.taz.de/1/politik/asien/artikel/1/anti-atomkraft-nein-danke/", "taz.html")
     assertStartsWith(
       "Protestkultur in Japan nach der Katastrophe Absolute Minderheit: Im Shiba-Park in Tokio",
       article.document?.text()
@@ -859,7 +853,7 @@ class GoldenFilesTest {
 
   @Test
   fun testTechCrunch() {
-    val article = extractFromTestFile("http://techcrunch.com/2011/04/04/twitter-advanced-search/", "techcrunch.html")
+    val article = fromFile("http://techcrunch.com/2011/04/04/twitter-advanced-search/", "techcrunch.html")
     assertEquals(
       "Twitter Finally Brings Advanced Search Out Of Purgatory; Updates Discovery Algorithms",
       article.title
@@ -876,7 +870,7 @@ class GoldenFilesTest {
 
   @Test
   fun testTechCrunch2() {
-    val article = extractFromTestFile(
+    val article = fromFile(
       "http://techcrunch.com/2010/08/13/gantto-takes-on-microsoft-project-with-web-based-project-management-application/",
       "techcrunch2.html"
     )
@@ -887,7 +881,7 @@ class GoldenFilesTest {
 
   @Test
   fun testTheAtlantic() {
-    val article = extractFromTestFile(
+    val article = fromFile(
       "http://www.theatlantic.com/business/archive/2016/09/census-poverty-economy-terrible/499793/",
       "theatlantic.html"
     )
@@ -903,7 +897,7 @@ class GoldenFilesTest {
 
   @Test
   fun testTheDailyBeast() {
-    val article = extractFromTestFile(
+    val article = fromFile(
       "http://www.thedailybeast.com/blogs-and-stories/2010-11-01/ted-sorensen-speechwriter-behind-jfks-best-jokes/?cid=topic:featured1",
       "thedailybeast.html"
     )
@@ -916,7 +910,7 @@ class GoldenFilesTest {
 
   @Test
   fun testTheFrisky() {
-    val article = extractFromTestFile(
+    val article = fromFile(
       "http://www.thefrisky.com/2010-10-28/rachel-dratch-met-her-baby-daddy-in-a-bar/",
       "thefrisky.html"
     )
@@ -930,7 +924,7 @@ class GoldenFilesTest {
 
   @Test
   fun testTheVacationGals() {
-    val article = extractFromTestFile(
+    val article = fromFile(
       "http://thevacationgals.com/vacation-rental-homes-are-a-family-reunion-necessity/",
       "thevacationgals.html"
     )
@@ -951,7 +945,7 @@ class GoldenFilesTest {
 
   @Test
   fun testTimeMagazine() {
-    val article = extractFromTestFile("http://content.time.com/time/health/article/0,8599,2011497,00.html", "time.html")
+    val article = fromFile("http://content.time.com/time/health/article/0,8599,2011497,00.html", "time.html")
     assertStartsWith("This month, the federal government released", article.document?.child(0)?.text())
     assertEquals(
       article.document?.childNodes().toString(),
@@ -963,7 +957,7 @@ class GoldenFilesTest {
   @Test
   fun testTraindom() {
     val article =
-      extractFromTestFile("http://blog.traindom.com/places-where-to-submit-your-startup-for-coverage/", "traindom.html")
+      fromFile("http://blog.traindom.com/places-where-to-submit-your-startup-for-coverage/", "traindom.html")
     assertEquals("36 places where you can submit your startup for some coverage", article.title)
     assertArrayEquals(
       listOf("blog coverage", "get coverage", "startup review", "startups", "submit startup").toTypedArray(),
@@ -974,7 +968,7 @@ class GoldenFilesTest {
 
   @Test
   fun testTwitpic() {
-    val article = extractFromTestFile("http://twitpic.com/4k1ku3", "twitpic.html")
+    val article = fromFile("http://twitpic.com/4k1ku3", "twitpic.html")
     assertEquals("It’s hard to be a dinosaur. on Twitpic", article.title)
     assertStartsWith(
       "Lazypicture from youtube made a video about this book! It cracked me up!!",
@@ -984,7 +978,7 @@ class GoldenFilesTest {
 
   @Test
   fun testTwitpic2() {
-    val article = extractFromTestFile("http://twitpic.com/4kuem8", "twitpic2.html")
+    val article = fromFile("http://twitpic.com/4kuem8", "twitpic2.html")
     assertEquals("*Not* what you want to see on the fetal monitor when your wif... on Twitpic", article.title)
     assertStartsWith(
       "*Not* what you want to see on the fetal monitor when your wife begins to push.",
@@ -994,7 +988,7 @@ class GoldenFilesTest {
 
   @Test
   fun testTwitterBlog() {
-    val article = extractFromTestFile(
+    val article = fromFile(
       "http://engineering.twitter.com/2011/04/twitter-search-is-now-3x-faster_1656.html",
       "twitter.html"
     )
@@ -1011,7 +1005,7 @@ class GoldenFilesTest {
 
   @Test
   fun testUniverseToday() {
-    val article = extractFromTestFile(
+    val article = fromFile(
       "http://www.universetoday.com/76881/podcast-more-from-tony-colaprete-on-lcross/",
       "universetoday.html"
     )
@@ -1025,7 +1019,7 @@ class GoldenFilesTest {
 
   @Test
   fun testUsaToday2() {
-    val article = extractFromTestFile(
+    val article = fromFile(
       "http://content.usatoday.com/communities/driveon/post/2010/08/gm-finally-files-for-ipo/1",
       "usatoday2.html"
     )
@@ -1041,7 +1035,7 @@ class GoldenFilesTest {
 
   @Test
   fun testUsatoday() {
-    val article = extractFromTestFile(
+    val article = fromFile(
       "http://content.usatoday.com/communities/thehuddle/post/2010/08/brett-favre-practices-set-to-speak-about-return-to-minnesota-vikings/1",
       "usatoday.html"
     )
@@ -1057,7 +1051,7 @@ class GoldenFilesTest {
 
   @Test
   fun testVentureBeat() {
-    val article = extractFromTestFile(
+    val article = fromFile(
       "http://social.venturebeat.com/2010/08/18/facebook-reveals-the-details-behind-places/",
       "venturebeat.html"
     )
@@ -1071,7 +1065,7 @@ class GoldenFilesTest {
   @Test
   fun testWallStreetJournal() {
     val article =
-      extractFromTestFile("http://www.wsj.com/articles/SB10001424052748704532204575397061414483040", "wsj.html")
+      fromFile("http://www.wsj.com/articles/SB10001424052748704532204575397061414483040", "wsj.html")
     assertStartsWith(
       "The Obama administration has paid out less than a third of the nearly $230 billion",
       article.document?.text()
@@ -1084,7 +1078,7 @@ class GoldenFilesTest {
 
   @Test
   fun testWashingtonPost() {
-    val article = extractFromTestFile(
+    val article = fromFile(
       "https://www.washingtonpost.com/lifestyle/style/the-nearly-forgotten-story-of-the-black-women-who-helped-land-a-man-on-the-moon/2016/09/12/95f2d356-7504-11e6-8149-b8d05321db62_story.html",
       "washingtonpost.html"
     )
@@ -1104,7 +1098,7 @@ class GoldenFilesTest {
 
   @Test
   fun testWikipedia() {
-    val article = extractFromTestFile("http://en.wikipedia.org/wiki/Therapsids", "wikipedia.html")
+    val article = fromFile("http://en.wikipedia.org/wiki/Therapsids", "wikipedia.html")
     assertStartsWith(
       "Therapsida is a group of the most advanced reptile-grade synapsids, and the ancestors of mammals",
       article.document?.text()
@@ -1122,7 +1116,7 @@ class GoldenFilesTest {
 
   @Test
   fun testWikipediaDarwin() {
-    val article = extractFromTestFile("https://en.wikipedia.org/wiki/Charles_Darwin", "wikipedia_darwin.html")
+    val article = fromFile("https://en.wikipedia.org/wiki/Charles_Darwin", "wikipedia_darwin.html")
     assertEquals("Charles Darwin - Wikipedia", article.title)
     assertStartsWith(
       "For other people named Charles Darwin, see Charles Darwin (disambiguation).",
@@ -1132,7 +1126,7 @@ class GoldenFilesTest {
 
   @Test
   fun testWikipediaGalileo() {
-    val article = extractFromTestFile("https://en.wikipedia.org/wiki/Galileo_Galilei", "wikipedia_galileo.html")
+    val article = fromFile("https://en.wikipedia.org/wiki/Galileo_Galilei", "wikipedia_galileo.html")
     assertStartsWith(
       "\"Galileo\" redirects here. For other uses, see Galileo (disambiguation) and Galileo Galilei (disambiguation).",
       article.document?.text()
@@ -1141,7 +1135,7 @@ class GoldenFilesTest {
 
   @Test
   fun testWikipediaOktoberfest() {
-    val article = extractFromTestFile("https://de.m.wikipedia.org/wiki/Oktoberfest", "wikipedia_oktoberfest.html")
+    val article = fromFile("https://de.m.wikipedia.org/wiki/Oktoberfest", "wikipedia_oktoberfest.html")
     assertStartsWith(
       "Das erste Oktoberfest Bearbeiten Anlässlich der Hochzeit zwischen Kronprinz Ludwig und Prinzessin Therese am 12. ",
       article.document?.text()
@@ -1150,7 +1144,7 @@ class GoldenFilesTest {
 
   @Test
   fun testWired() {
-    val article = extractFromTestFile("http://www.wired.com/playbook/2010/08/stress-hormones-boxing/", "wired.html")
+    val article = fromFile("http://www.wired.com/playbook/2010/08/stress-hormones-boxing/", "wired.html")
     assertStartsWith("On November 25, 1980, professional boxing", article.document?.text())
     assertEquals("Stress Hormones Could Predict Boxing Dominance", article.title)
     assertEquals(
@@ -1163,7 +1157,7 @@ class GoldenFilesTest {
   @Test
   fun testWiredBitcoin() {
     val article =
-      extractFromTestFile("https://www.wired.com/story/bitcoin-will-burn-planet-down-how-fast/", "wired-bitcoin.html")
+      fromFile("https://www.wired.com/story/bitcoin-will-burn-planet-down-how-fast/", "wired-bitcoin.html")
     assertStartsWith("Max Krause was thinking of buying some bitcoin, as one does.", article.document?.text())
     assertEquals("Bitcoin Will Burn the Planet Down. The Question: How Fast?", article.title)
   }
@@ -1171,7 +1165,7 @@ class GoldenFilesTest {
   @Test
   fun testWiredScience() {
     val article =
-      extractFromTestFile("https://www.wired.com/2017/04/dangerous-volcano-can-tricky-thing-pin/", "wired-volcano.html")
+      fromFile("https://www.wired.com/2017/04/dangerous-volcano-can-tricky-thing-pin/", "wired-volcano.html")
     assertEquals("The ‘Most Dangerous’ Volcano Can Be a Tricky Thing to Pin Down", article.title)
     assertStartsWith(
       "I know you’ve all seen lists like this before: what is the “world’s most dangerous volcano“? Most of the time, that discuss devolves quickly into something about “supervolcanoes“, which is very exciting and all because they can generate massive eruptions. However, they are far from being the “most dangerous” volcano.",
@@ -1182,14 +1176,14 @@ class GoldenFilesTest {
 
   @Test
   fun testWordpress() {
-    val article = extractFromTestFile("http://karussell.wordpress.com/", "wordpress.html")
+    val article = fromFile("http://karussell.wordpress.com/", "wordpress.html")
     assertEquals("Twitter API and Me « Find Time for the Karussell", article.title)
     assertStartsWith("I have a love hate relationship with Twitter. As a user I see ", article.document?.text())
   }
 
   @Test
   fun testYCombinator() {
-    val article = extractFromTestFile("http://paulgraham.com/seesv.html", "ycombinator.html")
+    val article = fromFile("http://paulgraham.com/seesv.html", "ycombinator.html")
     assertStartsWith("Want to start a startup? Get funded by Y Combinator.", article.document?.text())
     assertStartsWith(
       "October 2010 • Silicon Valley proper is mostly suburban sprawl.",
@@ -1205,7 +1199,7 @@ class GoldenFilesTest {
 
   @Test
   fun testYomiuri() {
-    val article = extractFromTestFile(
+    val article = fromFile(
       "http://www.yomiuri.co.jp/e-japan/gifu/news/20110410-OYT8T00124.htm",
       "yomiuri.html",
       charset = "Shift_JIS"
@@ -1222,7 +1216,7 @@ class GoldenFilesTest {
 
   @Test
   fun testYouTube() {
-    val article = extractFromTestFile("https://www.youtube.com/watch?v=wlupmjrfaB4", "youtube.html")
+    val article = fromFile("https://www.youtube.com/watch?v=wlupmjrfaB4", "youtube.html")
     assertStartsWith(
       "Master of the Puppets by Metallica. Converted to 8 bit with GSXCC. Original verson can be found us",
       article.document?.text()

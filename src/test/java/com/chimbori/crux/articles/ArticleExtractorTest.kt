@@ -1,6 +1,6 @@
 package com.chimbori.crux.articles
 
-import com.chimbori.crux.extractFromTestFile
+import com.chimbori.crux.fromFile
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -106,12 +106,12 @@ class ArticleExtractorTest {
 
   @Test
   fun testReadingTimeEstimates() {
-    val washingtonPostArticle = extractFromTestFile(
+    val washingtonPostArticle = fromFile(
       "https://www.washingtonpost.com/lifestyle/style/the-nearly-forgotten-story-of-the-black-women-who-helped-land-a-man-on-the-moon/2016/09/12/95f2d356-7504-11e6-8149-b8d05321db62_story.html".toHttpUrl(),
       "washingtonpost.html"
     )
     assertEquals(8, washingtonPostArticle.estimatedReadingTimeMinutes)
-    val galileoArticle = extractFromTestFile(
+    val galileoArticle = fromFile(
       "https://en.wikipedia.org/wiki/Galileo_Galilei".toHttpUrl(), "wikipedia_galileo.html"
     )
     assertEquals(53, galileoArticle.estimatedReadingTimeMinutes)
