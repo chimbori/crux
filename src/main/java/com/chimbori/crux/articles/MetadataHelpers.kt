@@ -1,7 +1,5 @@
 package com.chimbori.crux.articles
 
-import com.chimbori.crux.common.HeuristicString
-import com.chimbori.crux.common.HeuristicString.CandidateFound
 import com.chimbori.crux.common.cleanTitle
 import com.chimbori.crux.common.nullIfBlank
 import com.chimbori.crux.common.removeWhiteSpace
@@ -61,14 +59,10 @@ fun Document.extractImageUrl(baseUrl: HttpUrl): HttpUrl? = (
 fun Document.extractAmpUrl(baseUrl: HttpUrl): HttpUrl? =
   select("link[rel=amphtml]").attr("href").nullIfBlank()?.let { baseUrl.resolve(it) }
 
-fun Document.extractFeedUrl(baseUrl: HttpUrl): HttpUrl? = try {
-  HeuristicString()
-    .or(select("link[rel=alternate]").select("link[type=application/rss+xml]").attr("href"))
-    .or(select("link[rel=alternate]").select("link[type=application/atom+xml]").attr("href"))
-  null
-} catch (candidateFound: CandidateFound) {
-  candidateFound.candidate?.let { baseUrl.resolve(it) }
-}
+fun Document.extractFeedUrl(baseUrl: HttpUrl): HttpUrl? = (
+    select("link[rel=alternate]").select("link[type=application/rss+xml]").attr("href").nullIfBlank()
+      ?: select("link[rel=alternate]").select("link[type=application/atom+xml]").attr("href").nullIfBlank()
+    )?.let { baseUrl.resolve(it) }
 
 fun Document.extractVideoUrl(baseUrl: HttpUrl) =
   baseUrl.resolve(select("head meta[property=og:video]").attr("content"))
