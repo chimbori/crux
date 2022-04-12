@@ -38,6 +38,7 @@ class GoldenFilesTest {
     val article = extractFromTestFile("http://www.bbc.co.uk/news/world-latin-america-21226565", "bbc.html")
     assertEquals("BBC News", article.siteName)
     assertEquals("Baby born on Mediterranean rescue ship - BBC News", article.title)
+    assertEquals("http://www.bbc.com/news/world-africa-37341871".toHttpUrl(), article.canonicalUrl)
     assertEquals(
       "http://ichef-1.bbci.co.uk/news/1024/cpsprodpb/146E6/production/_91168638_baby070012-9-20162-1photocreditalvawhitemsf.jpg".toHttpUrl(),
       article.imageUrl
@@ -138,6 +139,7 @@ class GoldenFilesTest {
   fun testCNet() {
     val article = extractFromTestFile("http://www.cnet.com/news/verizon-shows-off-ipad-tv-app-and-more/", "cnet.html")
     assertEquals("CNET", article.siteName)
+    assertEquals("http://www.cnet.com/news/verizon-shows-off-ipad-tv-app-and-more/".toHttpUrl(), article.canonicalUrl)
     assertStartsWith("NEW YORK--Verizon Communications is prepping a new", article.document?.text())
     assertEquals(
       "https://cnet1.cbsistatic.com/img/Bw23T5rupUVnvVPCQQ3KjfO9qic=/670x503/2010/08/18/53b6d52b-f0fa-11e2-8c7c-d4ae52e62bcc/Verizon_iPad_and_live_TV_with_big_TV.JPG".toHttpUrl(),

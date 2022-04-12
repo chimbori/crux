@@ -16,15 +16,11 @@ fun Document.extractTitle(): String? = (
       ?: select("head meta[name=twitter:title]").attr("content")
     )?.cleanTitle()
 
-fun Document.extractCanonicalUrl() = try {
-  HeuristicString()
-    .or(select("head link[rel=canonical]").attr("href"))
-    .or(select("head meta[property=og:url]").attr("content"))
-    .or(select("head meta[name=twitter:url]").attr("content"))
-  null
-} catch (candidateFound: CandidateFound) {
-  candidateFound.candidate?.removeWhiteSpace()
-}
+fun Document.extractCanonicalUrl(): String? = (
+    select("head link[rel=canonical]").attr("href").nullIfBlank()
+      ?: select("head meta[property=og:url]").attr("content").nullIfBlank()
+      ?: select("head meta[name=twitter:url]").attr("content").nullIfBlank()
+    )?.removeWhiteSpace()
 
 fun Document.extractDescription() = try {
   HeuristicString()
