@@ -1,8 +1,7 @@
 package com.chimbori.crux.links
 
-import com.chimbori.crux.common.HeuristicString
-import com.chimbori.crux.common.HeuristicString.CandidateFound
 import com.chimbori.crux.common.anyChildTagWithAttr
+import com.chimbori.crux.common.nullIfBlank
 import okhttp3.HttpUrl
 import org.jsoup.nodes.Element
 
@@ -17,15 +16,12 @@ class LinkUrlExtractor(private val url: HttpUrl, private val root: Element) {
     private set
 
   fun findLink(): LinkUrlExtractor {
-    try {
-      HeuristicString()
-        .or(root.attr("href"))
-        .or(root.select("*").anyChildTagWithAttr("href"))
-    } catch (candidateFound: CandidateFound) {
-      candidateFound.candidate?.let {
+    (
+        root.attr("href").nullIfBlank()
+          ?: root.select("*").anyChildTagWithAttr("href")
+        )?.let {
         linkUrl = url.resolve(it)
       }
-    }
     return this
   }
 }
