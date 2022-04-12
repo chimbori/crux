@@ -11,29 +11,26 @@ class ArticleExtractorTest {
     val As = "aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa aaa"
     val Bs = "bbb bbb bbb bbb bbb bbb bbb bbb bbb bbb bbb bbb bbb bbb bbb bbb bbb bbb bbb bbb bbb bbb"
     val Cs = "ccc ccc ccc ccc ccc ccc ccc ccc ccc ccc ccc ccc ccc ccc ccc ccc ccc ccc ccc ccc ccc ccc"
-    var article = ArticleExtractor(
-      EXAMPLE_URL,
-      String.format("<html><body><div> %s <p> %s</p>%s </div></body></html>", As, Bs, Cs)
-    ).extractContent().article
+
+    var article = ArticleExtractor(EXAMPLE_URL, "<html><body><div> $As <p> $Bs</p>$Cs </div></body></html>")
+      .extractContent().article
     assertEquals(3, article.document?.childNodeSize())
     assertEquals(As, article.document?.childNode(0)?.outerHtml()?.trim { it <= ' ' })
-    assertEquals(String.format("<p> %s</p>", Bs), article.document?.childNode(1)?.outerHtml()?.trim { it <= ' ' })
+    assertEquals("<p> $Bs</p>", article.document?.childNode(1)?.outerHtml()?.trim { it <= ' ' })
     assertEquals(Cs, article.document?.childNode(2)?.outerHtml()?.trim { it <= ' ' })
-    article = ArticleExtractor(
-      EXAMPLE_URL,
-      String.format("<html><body><div> %s <p>%s </p>%s</div></body></html>", As, Bs, Cs)
-    ).extractContent().article
+
+    article = ArticleExtractor(EXAMPLE_URL, "<html><body><div> $As <p>$Bs </p>$Cs</div></body></html>")
+      .extractContent().article
     assertEquals(3, article.document?.childNodeSize())
     assertEquals(As, article.document?.childNode(0)?.outerHtml()?.trim { it <= ' ' })
-    assertEquals(String.format("<p>%s </p>", Bs), article.document?.childNode(1)?.outerHtml()?.trim { it <= ' ' })
+    assertEquals("<p>$Bs </p>", article.document?.childNode(1)?.outerHtml()?.trim { it <= ' ' })
     assertEquals(Cs, article.document?.childNode(2)?.outerHtml()?.trim { it <= ' ' })
-    article = ArticleExtractor(
-      EXAMPLE_URL,
-      String.format("<html><body><div> %s <p> %s </p>%s</div></body></html>", As, Bs, Cs)
-    ).extractContent().article
+
+    article = ArticleExtractor(EXAMPLE_URL, "<html><body><div> $As <p> $Bs </p>$Cs</div></body></html>")
+      .extractContent().article
     assertEquals(3, article.document?.childNodeSize())
     assertEquals(As, article.document?.childNode(0)?.outerHtml()?.trim { it <= ' ' })
-    assertEquals(String.format("<p> %s </p>", Bs), article.document?.childNode(1)?.outerHtml()?.trim { it <= ' ' })
+    assertEquals("<p> $Bs </p>", article.document?.childNode(1)?.outerHtml()?.trim { it <= ' ' })
     assertEquals(Cs, article.document?.childNode(2)?.outerHtml()?.trim { it <= ' ' })
   }
 
