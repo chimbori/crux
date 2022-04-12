@@ -74,7 +74,7 @@ fun extractImages(baseUrl: HttpUrl, topNode: Element?): List<Article.Image> {
   var maxWeight = 0
   var score = 1.0
   for (imgElement in imgElements) {
-    val image = Article.Image.from(baseUrl, imgElement!!)
+    val image = Article.Image.from(baseUrl, imgElement)
     if (image.srcUrl == null || image.srcUrl?.isAdImage() == true) {
       continue
     }
@@ -83,8 +83,8 @@ fun extractImages(baseUrl: HttpUrl, topNode: Element?): List<Article.Image> {
     image.weight += if (image.srcUrl?.scheme == "data") -50 else 0
     image.weight += if (image.srcUrl?.encodedPath?.endsWith(".gif") == true) -20 else 0
     image.weight += if (image.srcUrl?.encodedPath?.endsWith(".jpg") == true) 5 else 0
-    image.weight += if (image.alt!!.length > 35) 20 else 0
-    image.weight += if (image.title!!.length > 35) 20 else 0
+    image.weight += if ((image.alt?.length ?: 0) > 35) 20 else 0
+    image.weight += if ((image.title?.length ?: 0) > 35) 20 else 0
     image.weight += if (image.noFollow) -40 else 0
     image.weight = (image.weight * score).toInt()
     if (image.weight > maxWeight) {
