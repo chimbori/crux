@@ -22,15 +22,11 @@ fun Document.extractCanonicalUrl(): String? = (
       ?: select("head meta[name=twitter:url]").attr("content").nullIfBlank()
     )?.removeWhiteSpace()
 
-fun Document.extractDescription() = try {
-  HeuristicString()
-    .or(select("head meta[name=description]").attr("content"))
-    .or(select("head meta[property=og:description]").attr("content"))
-    .or(select("head meta[name=twitter:description]").attr("content"))
-  null
-} catch (candidateFound: CandidateFound) {
-  candidateFound.candidate?.removeWhiteSpace()
-}
+fun Document.extractDescription(): String? = (
+    select("head meta[name=description]").attr("content").nullIfBlank()
+      ?: select("head meta[property=og:description]").attr("content").nullIfBlank()
+      ?: select("head meta[name=twitter:description]").attr("content").nullIfBlank()
+    )?.removeWhiteSpace()
 
 fun Document.extractSiteName() = try {
   HeuristicString()
