@@ -64,5 +64,6 @@ fun Document.extractFeedUrl(baseUrl: HttpUrl): HttpUrl? = (
       ?: select("link[rel=alternate]").select("link[type=application/atom+xml]").attr("href").nullIfBlank()
     )?.let { baseUrl.resolve(it) }
 
-fun Document.extractVideoUrl(baseUrl: HttpUrl) =
-  baseUrl.resolve(select("head meta[property=og:video]").attr("content"))
+fun Document.extractVideoUrl(baseUrl: HttpUrl): HttpUrl? =
+  select("head meta[property=og:video]").attr("content").nullIfBlank()
+    ?.let { baseUrl.resolve(it) }
