@@ -336,12 +336,13 @@ class GoldenFilesTest {
 
   @Test
   fun testGoogleComTablet() {
-    val article = fromFile("https://www.google.com/", "google_tablet.html")
-    assertEquals("Google", article.title)
-    assertEquals(
-      "https://www.google.com/images/branding/googleg/2x/googleg_standard_color_76dp.png".toHttpUrl(),
-      article.faviconUrl
-    )
+    fromFile("https://www.google.com/", "google_tablet.html").run {
+      assertEquals("Google", title)
+      assertEquals(
+        "https://www.google.com/images/branding/googleg/2x/googleg_standard_color_76dp.png".toHttpUrl(),
+        faviconUrl
+      )
+    }
   }
 
   @Test
@@ -1138,115 +1139,114 @@ class GoldenFilesTest {
 
   @Test
   fun testWikipediaDarwin() {
-    val article = fromFile("https://en.wikipedia.org/wiki/Charles_Darwin", "wikipedia_darwin.html")
-    assertEquals("Charles Darwin - Wikipedia", article.title)
-    assertStartsWith(
-      "For other people named Charles Darwin, see Charles Darwin (disambiguation).",
-      article.document?.text()
-    )
+    fromFile("https://en.wikipedia.org/wiki/Charles_Darwin", "wikipedia_darwin.html").run {
+      assertEquals("Charles Darwin - Wikipedia", title)
+      assertStartsWith("For other people named Charles Darwin, see Charles Darwin (disambiguation).", document?.text())
+    }
   }
 
   @Test
   fun testWikipediaGalileo() {
-    val article = fromFile("https://en.wikipedia.org/wiki/Galileo_Galilei", "wikipedia_galileo.html")
-    assertStartsWith(
-      "\"Galileo\" redirects here. For other uses, see Galileo (disambiguation) and Galileo Galilei (disambiguation).",
-      article.document?.text()
-    )
+    fromFile("https://en.wikipedia.org/wiki/Galileo_Galilei", "wikipedia_galileo.html").run {
+      assertStartsWith(
+        "\"Galileo\" redirects here. For other uses, see Galileo (disambiguation) and Galileo Galilei (disambiguation).",
+        document?.text()
+      )
+    }
   }
 
   @Test
   fun testWikipediaOktoberfest() {
-    val article = fromFile("https://de.m.wikipedia.org/wiki/Oktoberfest", "wikipedia_oktoberfest.html")
-    assertStartsWith(
-      "Das erste Oktoberfest Bearbeiten Anlässlich der Hochzeit zwischen Kronprinz Ludwig und Prinzessin Therese am 12. ",
-      article.document?.text()
-    )
+    fromFile("https://de.m.wikipedia.org/wiki/Oktoberfest", "wikipedia_oktoberfest.html").run {
+      assertStartsWith(
+        "Das erste Oktoberfest Bearbeiten Anlässlich der Hochzeit zwischen Kronprinz Ludwig und Prinzessin Therese am 12. ",
+        document?.text()
+      )
+    }
   }
 
   @Test
   fun testWired() {
-    val article = fromFile("http://www.wired.com/playbook/2010/08/stress-hormones-boxing/", "wired.html")
-    assertStartsWith("On November 25, 1980, professional boxing", article.document?.text())
-    assertEquals("Stress Hormones Could Predict Boxing Dominance", article.title)
-    assertEquals(
-      "http://www.wired.com/playbook/wp-content/uploads/2010/08/fight_f-660x441.jpg".toHttpUrl(),
-      article.images?.get(0)?.srcUrl
-    )
-    assertEquals("http://blog.wired.com/gadgets/files/apple-touch-icon.png".toHttpUrl(), article.faviconUrl)
+    fromFile("http://www.wired.com/playbook/2010/08/stress-hormones-boxing/", "wired.html").run {
+      assertStartsWith("On November 25, 1980, professional boxing", document?.text())
+      assertEquals("Stress Hormones Could Predict Boxing Dominance", title)
+      assertEquals(
+        "http://www.wired.com/playbook/wp-content/uploads/2010/08/fight_f-660x441.jpg".toHttpUrl(),
+        images?.get(0)?.srcUrl
+      )
+      assertEquals("http://blog.wired.com/gadgets/files/apple-touch-icon.png".toHttpUrl(), faviconUrl)
+    }
   }
 
   @Test
   fun testWiredBitcoin() {
-    val article =
-      fromFile("https://www.wired.com/story/bitcoin-will-burn-planet-down-how-fast/", "wired-bitcoin.html")
-    assertStartsWith("Max Krause was thinking of buying some bitcoin, as one does.", article.document?.text())
-    assertEquals("Bitcoin Will Burn the Planet Down. The Question: How Fast?", article.title)
+    fromFile("https://www.wired.com/story/bitcoin-will-burn-planet-down-how-fast/", "wired-bitcoin.html").run {
+      assertStartsWith("Max Krause was thinking of buying some bitcoin, as one does.", document?.text())
+      assertEquals("Bitcoin Will Burn the Planet Down. The Question: How Fast?", title)
+    }
   }
 
   @Test
   fun testWiredScience() {
-    val article =
-      fromFile("https://www.wired.com/2017/04/dangerous-volcano-can-tricky-thing-pin/", "wired-volcano.html")
-    assertEquals("The ‘Most Dangerous’ Volcano Can Be a Tricky Thing to Pin Down", article.title)
-    assertStartsWith(
-      "I know you’ve all seen lists like this before: what is the “world’s most dangerous volcano“? Most of the time, that discuss devolves quickly into something about “supervolcanoes“, which is very exciting and all because they can generate massive eruptions. However, they are far from being the “most dangerous” volcano.",
-      article.document?.text()
-    )
-    assertContains("What is the volcano’s eruptive history?", article.document?.text())
+    fromFile("https://www.wired.com/2017/04/dangerous-volcano-can-tricky-thing-pin/", "wired-volcano.html").run {
+      assertEquals("The ‘Most Dangerous’ Volcano Can Be a Tricky Thing to Pin Down", title)
+      assertStartsWith(
+        "I know you’ve all seen lists like this before: what is the “world’s most dangerous volcano“? Most of the time, that discuss devolves quickly into something about “supervolcanoes“, which is very exciting and all because they can generate massive eruptions. However, they are far from being the “most dangerous” volcano.",
+        document?.text()
+      )
+      assertContains("What is the volcano’s eruptive history?", document?.text())
+    }
   }
 
   @Test
   fun testWordpress() {
-    val article = fromFile("http://karussell.wordpress.com/", "wordpress.html")
-    assertEquals("Twitter API and Me « Find Time for the Karussell", article.title)
-    assertStartsWith("I have a love hate relationship with Twitter. As a user I see ", article.document?.text())
+    fromFile("http://karussell.wordpress.com/", "wordpress.html").run {
+      assertEquals("Twitter API and Me « Find Time for the Karussell", title)
+      assertStartsWith("I have a love hate relationship with Twitter. As a user I see ", document?.text())
+    }
   }
 
   @Test
   fun testYCombinator() {
-    val article = fromFile("http://paulgraham.com/seesv.html", "ycombinator.html")
-    assertStartsWith("Want to start a startup? Get funded by Y Combinator.", article.document?.text())
-    assertStartsWith(
-      "October 2010 • Silicon Valley proper is mostly suburban sprawl.",
-      article.document?.child(1)?.text()
-    )
-    assertEquals(
-      article.document?.text(),
-      true,
-      article.document?.text()?.endsWith(" and Jessica Livingston for reading drafts of this. •")
-    )
-    assertEquals(true, article.keywords?.isEmpty())
+    fromFile("http://paulgraham.com/seesv.html", "ycombinator.html").run {
+      assertStartsWith("Want to start a startup? Get funded by Y Combinator.", document?.text())
+      assertStartsWith(
+        "October 2010 • Silicon Valley proper is mostly suburban sprawl.",
+        document?.child(1)?.text()
+      )
+      assertTrue(document?.text()?.endsWith(" and Jessica Livingston for reading drafts of this. •") == true)
+      assertEquals(true, keywords?.isEmpty())
+    }
   }
 
   @Test
   fun testYomiuri() {
-    val article = fromFile(
+    fromFile(
       "http://www.yomiuri.co.jp/e-japan/gifu/news/20110410-OYT8T00124.htm",
       "yomiuri.html",
       charset = "Shift_JIS"
-    )
-    assertEquals("色とりどりのチューリップ : 岐阜 : 地域 : YOMIURI ONLINE（読売新聞）", article.title)
-    assertEquals(
-      "yomiuri:" + article.document?.text(),
-      true,
-      article.document?.text()
-        ?.contains("海津市海津町の国営木曽三川公園で、チューリップが見頃を迎えている。２０日までは「チューリップ祭」が開かれており、大勢の人たちが多彩な色や形を鑑賞している＝写真＝")
-    )
-    assertArrayEquals(listOf("読売新聞", "地域").toTypedArray(), article.keywords?.toTypedArray())
+    ).run {
+      assertEquals("色とりどりのチューリップ : 岐阜 : 地域 : YOMIURI ONLINE（読売新聞）", title)
+      assertContains(
+        "海津市海津町の国営木曽三川公園で、チューリップが見頃を迎えている。２０日までは「チューリップ祭」が開かれており、大勢の人たちが多彩な色や形を鑑賞している＝写真＝",
+        document?.text()
+      )
+      assertArrayEquals(listOf("読売新聞", "地域").toTypedArray(), keywords?.toTypedArray())
+    }
   }
 
   @Test
   fun testYouTube() {
-    val article = fromFile("https://www.youtube.com/watch?v=wlupmjrfaB4", "youtube.html")
-    assertStartsWith(
-      "Master of the Puppets by Metallica. Converted to 8 bit with GSXCC. Original verson can be found us",
-      article.document?.text()
-    )
-    assertEquals("YouTube - Metallica - Master of the Puppets 8-bit", article.title)
-    assertEquals("http://i4.ytimg.com/vi/wlupmjrfaB4/default.jpg".toHttpUrl(), article.imageUrl)
-    assertEquals("http://www.youtube.com/v/wlupmjrfaB4?version=3".toHttpUrl(), article.videoUrl)
-    assertEquals("http://s.ytimg.com/yt/favicon-vflZlzSbU.ico".toHttpUrl(), article.faviconUrl)
+    fromFile("https://www.youtube.com/watch?v=wlupmjrfaB4", "youtube.html").run {
+      assertStartsWith(
+        "Master of the Puppets by Metallica. Converted to 8 bit with GSXCC. Original verson can be found us",
+        document?.text()
+      )
+      assertEquals("YouTube - Metallica - Master of the Puppets 8-bit", title)
+      assertEquals("http://i4.ytimg.com/vi/wlupmjrfaB4/default.jpg".toHttpUrl(), imageUrl)
+      assertEquals("http://www.youtube.com/v/wlupmjrfaB4?version=3".toHttpUrl(), videoUrl)
+      assertEquals("http://s.ytimg.com/yt/favicon-vflZlzSbU.ico".toHttpUrl(), faviconUrl)
+    }
   }
 
   companion object {
