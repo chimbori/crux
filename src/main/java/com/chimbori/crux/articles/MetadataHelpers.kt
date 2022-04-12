@@ -28,14 +28,10 @@ fun Document.extractDescription(): String? = (
       ?: select("head meta[name=twitter:description]").attr("content").nullIfBlank()
     )?.removeWhiteSpace()
 
-fun Document.extractSiteName() = try {
-  HeuristicString()
-    .or(select("head meta[property=og:site_name]").attr("content"))
-    .or(select("head meta[name=application-name]").attr("content"))
-  null
-} catch (candidateFound: CandidateFound) {
-  candidateFound.candidate?.removeWhiteSpace()
-}
+fun Document.extractSiteName(): String? = (
+    select("head meta[property=og:site_name]").attr("content").nullIfBlank()
+      ?: select("head meta[name=application-name]").attr("content").nullIfBlank()
+    )?.removeWhiteSpace()
 
 fun Document.extractThemeColor() = select("meta[name=theme-color]").attr("content")
 
