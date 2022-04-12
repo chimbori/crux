@@ -427,62 +427,67 @@ class GoldenFilesTest {
 
   @Test
   fun testI4Online() {
-    val article = fromFile("https://i4online.com", "i4online.html")
-    assertStartsWith("Just one week to go and everything is set for the summer Forum 2013", article.document?.text())
+    fromFile("https://i4online.com", "i4online.html").run {
+      assertStartsWith("Just one week to go and everything is set for the summer Forum 2013", document?.text())
+    }
   }
 
   @Test
   fun testITunes() {
-    val article = fromFile("http://itunes.apple.com/us/album/21/id420075073", "itunes.html")
-    assertStartsWith(
-      "What else can be said of this album other than that it is simply amazing? Adele's voice is powerful, vulnerable, assured, and heartbreaking all in one fell swoop.",
-      article.document?.text()
-    )
-    assertStartsWith("Preview songs from 21 by ADELE", article.description)
-    assertNull(article.faviconUrl)
+    fromFile("http://itunes.apple.com/us/album/21/id420075073", "itunes.html").run {
+      assertStartsWith(
+        "What else can be said of this album other than that it is simply amazing? Adele's voice is powerful, vulnerable, assured, and heartbreaking all in one fell swoop.",
+        document?.text()
+      )
+      assertStartsWith("Preview songs from 21 by ADELE", description)
+      assertNull(faviconUrl)
+    }
   }
 
   @Test
   fun testKhaamaPress() {
-    val article = fromFile(
+    fromFile(
       "http://www.khaama.com/over-100-school-girls-poisoned-in-western-afghanistan-0737",
       "khaama.html"
-    )
-    assertStartsWith(
-      "Over 100 school girls have been poisoned in western Farah province of Afghanistan during the school hours.",
-      article.document?.text()
-    )
+    ).run {
+      assertStartsWith(
+        "Over 100 school girls have been poisoned in western Farah province of Afghanistan during the school hours.",
+        document?.text()
+      )
+    }
   }
 
   @Test
   fun testLifehacker() {
-    val article = fromFile(
+    fromFile(
       "http://lifehacker.com/5659837/build-a-rocket-stove-to-heat-your-home-with-wood-scraps",
       "lifehacker.html"
-    )
-    assertStartsWith("If you find yourself with lots of leftover wood", article.document?.text())
-    assertEquals(
-      "https://i.kinja-img.com/gawker-media/image/upload/s--9OsTlIZO--/c_fill,fl_progressive,g_center,h_358,q_80,w_636/18ixs0cqpu927jpg.jpg".toHttpUrl(),
-      article.imageUrl
-    )
+    ).run {
+      assertStartsWith("If you find yourself with lots of leftover wood", document?.text())
+      assertEquals(
+        "https://i.kinja-img.com/gawker-media/image/upload/s--9OsTlIZO--/c_fill,fl_progressive,g_center,h_358,q_80,w_636/18ixs0cqpu927jpg.jpg".toHttpUrl(),
+        imageUrl
+      )
+    }
   }
 
   @Test
   fun testMSNBC() {
-    val article = fromFile("http://www.msnbc.msn.com/id/41207891/ns/world_news-europe/", "msnbc.html")
-    assertStartsWith(
-      "DUBLIN — Prime Minister Brian Cowen announced Saturday that he has resigned as leader of Ireland's dominant Fianna Fail party",
-      article.document?.text()
-    )
-    assertEquals("Irish premier resigns as party leader, stays as PM - Europe", article.title)
+    fromFile("http://www.msnbc.msn.com/id/41207891/ns/world_news-europe/", "msnbc.html").run {
+      assertStartsWith(
+        "DUBLIN — Prime Minister Brian Cowen announced Saturday that he has resigned as leader of Ireland's dominant Fianna Fail party",
+        document?.text()
+      )
+      assertEquals("Irish premier resigns as party leader, stays as PM - Europe", title)
+    }
   }
 
   @Test
   fun testMashable() {
-    val article =
-      fromFile("http://mashable.com/2010/08/18/how-tonot-to-ask-someone-out-online/", "mashable.html")
-    assertStartsWith("Imagine, if you will, a crowded dance floor", article.document?.text())
-    assertEquals("http://9.mshcdn.com/wp-content/uploads/2010/07/love.jpg".toHttpUrl(), article.imageUrl)
+    fromFile("http://mashable.com/2010/08/18/how-tonot-to-ask-someone-out-online/", "mashable.html").run {
+      assertStartsWith("Imagine, if you will, a crowded dance floor", document?.text())
+      assertEquals("http://9.mshcdn.com/wp-content/uploads/2010/07/love.jpg".toHttpUrl(), imageUrl)
+    }
   }
 
   /**
@@ -492,21 +497,15 @@ class GoldenFilesTest {
   </a> */
   @Test
   fun testMashable2() {
-    val article =
-      fromFile("https://mashable.com/2015/04/24/astronaut-scott-kelly-room-photo/", "mashable2.html")
-    assertStartsWith("NASA astronaut Scott Kelly", article.document?.text())
-    assertContains(
-      "<a href=\"https://twitter.com/StationCDRKelly/status/591594008046084096\">",
-      article.document?.html()
-    )
-    assertContains(
-      "<a href=\"https://twitter.com/StationCDRKelly/status/591334283081560064\">",
-      article.document?.html()
-    )
-    assertEquals(
-      "https://i.amz.mshcdn.com/r831Qn9cn1G7A9q2F3-1PH1VIyw=/640x360/2015%2F04%2F24%2Fda%2Fscottkellyr.3f2af.jpg".toHttpUrl(),
-      article.imageUrl
-    )
+    fromFile("https://mashable.com/2015/04/24/astronaut-scott-kelly-room-photo/", "mashable2.html").run {
+      assertStartsWith("NASA astronaut Scott Kelly", document?.text())
+      assertContains("<a href=\"https://twitter.com/StationCDRKelly/status/591594008046084096\">", document?.html())
+      assertContains("<a href=\"https://twitter.com/StationCDRKelly/status/591334283081560064\">", document?.html())
+      assertEquals(
+        "https://i.amz.mshcdn.com/r831Qn9cn1G7A9q2F3-1PH1VIyw=/640x360/2015%2F04%2F24%2Fda%2Fscottkellyr.3f2af.jpg".toHttpUrl(),
+        imageUrl
+      )
+    }
   }
 
   @Test
