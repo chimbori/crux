@@ -35,16 +35,13 @@ fun Document.extractSiteName(): String? = (
 
 fun Document.extractThemeColor(): String? = select("meta[name=theme-color]").attr("content")
 
-fun Document.extractKeywords(): List<String> {
-  var content = select("head meta[name=keywords]").attr("content").removeWhiteSpace()
-  if (content.startsWith("[") && content.endsWith("]")) {
-    content = content.substring(1, content.length - 1)
-  }
-  val split = content.split("\\s*,\\s*".toRegex())
-  return if (split.size > 1 || split.isNotEmpty() && split[0] != "") {
-    split
-  } else emptyList()
-}
+fun Document.extractKeywords(): List<String> =
+  select("head meta[name=keywords]").attr("content")
+    .removeWhiteSpace()
+    .removePrefix("[")
+    .removeSuffix("]")
+    .split("\\s*,\\s*".toRegex())
+    .filter { it.isNotBlank() }
 
 fun Document.extractFaviconUrl(baseUrl: HttpUrl) = try {
   HeuristicString()
