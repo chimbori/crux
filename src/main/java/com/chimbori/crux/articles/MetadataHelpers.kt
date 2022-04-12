@@ -58,13 +58,8 @@ fun Document.extractImageUrl(baseUrl: HttpUrl): HttpUrl? = (
       ?: select("head meta[name=thumbnail]").attr("content").nullIfBlank()
     )?.let { baseUrl.resolve(it) }
 
-fun Document.extractAmpUrl(baseUrl: HttpUrl) = try {
-  HeuristicString()
-    .or(select("link[rel=amphtml]").attr("href"))
-  null
-} catch (candidateFound: CandidateFound) {
-  candidateFound.candidate?.let { baseUrl.resolve(it) }
-}
+fun Document.extractAmpUrl(baseUrl: HttpUrl): HttpUrl? =
+  select("link[rel=amphtml]").attr("href").nullIfBlank()?.let { baseUrl.resolve(it) }
 
 fun Document.extractFeedUrl(baseUrl: HttpUrl): HttpUrl? = try {
   HeuristicString()
