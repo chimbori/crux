@@ -2,9 +2,8 @@
 
 package com.chimbori.crux.images
 
-import com.chimbori.crux.common.HeuristicString
-import com.chimbori.crux.common.HeuristicString.CandidateFound
 import com.chimbori.crux.common.anyChildTagWithAttr
+import com.chimbori.crux.common.nullIfBlank
 import java.util.regex.Pattern
 import okhttp3.HttpUrl
 import org.apache.commons.lang3.StringEscapeUtils.unescapeHtml4
@@ -23,21 +22,16 @@ class ImageUrlExtractor(private val url: HttpUrl, private val root: Element) {
     private set
 
   fun findImage(): ImageUrlExtractor {
-    try {
-      HeuristicString()
-        .or(root.attr("src"))
-        .or(root.attr("data-src"))
-        .or(root.select("img").anyChildTagWithAttr("src"))
-        .or(root.select("img").anyChildTagWithAttr("data-src"))
-        .or(root.select("*").anyChildTagWithAttr("src"))
-        .or(root.select("*").anyChildTagWithAttr("data-src"))
-        .or(parseImageUrlFromStyleAttr(root.select("[role=img]")))
-        .or(parseImageUrlFromStyleAttr(root.select("*")))
-    } catch (candidateFound: CandidateFound) {
-      candidateFound.candidate?.let {
-        imageUrl = url.resolve(it)
-      }
-    }
+    (
+        root.attr("src").nullIfBlank()
+          ?: root.attr("data-src").nullIfBlank()
+          ?: root.select("img").anyChildTagWithAttr("src")
+          ?: root.select("img").anyChildTagWithAttr("data-src")
+          ?: root.select("*").anyChildTagWithAttr("src")
+          ?: root.select("*").anyChildTagWithAttr("data-src")
+          ?: parseImageUrlFromStyleAttr(root.select("[role=img]"))
+          ?: parseImageUrlFromStyleAttr(root.select("*"))
+        )?.let { imageUrl = url.resolve(it) }
     return this
   }
 
