@@ -113,11 +113,11 @@ class ArticleExtractorTest {
       "https://www.washingtonpost.com/lifestyle/style/the-nearly-forgotten-story-of-the-black-women-who-helped-land-a-man-on-the-moon/2016/09/12/95f2d356-7504-11e6-8149-b8d05321db62_story.html".toHttpUrlOrNull()!!,
       "washingtonpost.html"
     )
-    assertEquals(8, washingtonPostArticle!!.estimatedReadingTimeMinutes)
+    assertEquals(8, washingtonPostArticle.estimatedReadingTimeMinutes)
     val galileoArticle = extractFromTestFile(
       "https://en.wikipedia.org/wiki/Galileo_Galilei".toHttpUrlOrNull()!!, "wikipedia_galileo.html"
     )
-    assertEquals(53, galileoArticle!!.estimatedReadingTimeMinutes)
+    assertEquals(53, galileoArticle.estimatedReadingTimeMinutes)
   }
 
   companion object {

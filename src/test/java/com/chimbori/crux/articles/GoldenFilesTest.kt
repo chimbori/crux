@@ -15,7 +15,7 @@ class GoldenFilesTest {
       "http://www.aolnews.com/nation/article/the-few-the-proud-the-marines-getting-a-makeover/19592478",
       "aolnews.html"
     )
-    assertEquals("http://o.aolcdn.com/art/ch_news/aol_favicon.ico".toHttpUrlOrNull()!!, article!!.faviconUrl)
+    assertEquals("http://o.aolcdn.com/art/ch_news/aol_favicon.ico".toHttpUrlOrNull()!!, article.faviconUrl)
     assertStartsWith(
       "WASHINGTON (Aug. 13) -- Declaring \"the maritime soul of the Marine Corps",
       article.document?.text()
@@ -36,7 +36,7 @@ class GoldenFilesTest {
   @Test
   fun testBBC() {
     val article = extractFromTestFile("http://www.bbc.co.uk/news/world-latin-america-21226565", "bbc.html")
-    assertEquals("BBC News", article!!.siteName)
+    assertEquals("BBC News", article.siteName)
     assertEquals("Baby born on Mediterranean rescue ship - BBC News", article.title)
     assertEquals(
       "http://ichef-1.bbci.co.uk/news/1024/cpsprodpb/146E6/production/_91168638_baby070012-9-20162-1photocreditalvawhitemsf.jpg".toHttpUrlOrNull()!!,
@@ -52,7 +52,7 @@ class GoldenFilesTest {
   @Test
   fun testBBC_AMP() {
     val article = extractFromTestFile("http://www.bbc.co.uk/news/amp/37341871", "bbc-amp.html")
-    assertEquals("BBC News", article!!.siteName)
+    assertEquals("BBC News", article.siteName)
     assertEquals("Baby born on Mediterranean rescue ship", article.title)
     assertEquals(
       "http://ichef.bbci.co.uk/news/999/cpsprodpb/146E6/production/_91168638_baby070012-9-20162-1photocreditalvawhitemsf.jpg".toHttpUrlOrNull()!!,
@@ -68,7 +68,7 @@ class GoldenFilesTest {
   fun testBenjaminStein() {
     val article =
       extractFromTestFile("http://benjaminste.in/post/1223476561/hey-guys-whatcha-doing", "benjaminstein.html")
-    assertEquals("BenjaminSte.in - Hey guys, whatcha doing?", article!!.title)
+    assertEquals("BenjaminSte.in - Hey guys, whatcha doing?", article.title)
     assertStartsWith("This month is the 15th anniversary of my last CD.", article.document?.text())
     assertEquals(true, article.keywords?.isEmpty())
   }
@@ -77,7 +77,7 @@ class GoldenFilesTest {
   fun testBlogger() {
     val article =
       extractFromTestFile("http://blog.talawah.net/2011/04/gavin-king-unviels-red-hats-top-secret.html", "blogger.html")
-    assertStartsWith("Gavin King unveils Red Hat's Java successor: The Ceylon Project", article!!.document?.text())
+    assertStartsWith("Gavin King unveils Red Hat's Java successor: The Ceylon Project", article.document?.text())
     assertStartsWith(
       "Gavin King of Red Hat/Hibernate/Seam fame recently unveiled the top secret project that he has been working on over the past two years",
       article.document?.child(1)?.text()
@@ -99,7 +99,7 @@ class GoldenFilesTest {
       "http://www.bloomberg.com/news/2010-11-01/china-becomes-boss-in-peru-on-50-billion-mountain-bought-for-810-million.html",
       "bloomberg.html"
     )
-    assertEquals("Bloomberg", article!!.siteName)
+    assertEquals("Bloomberg", article.siteName)
     assertStartsWith("The Chinese entrepreneur and the Peruvian shopkeeper", article.document?.text())
     assertEquals(
       "http://www.bloomberg.com/apps/data?pid=avimage&iid=iimODmqjtcQU".toHttpUrlOrNull()!!,
@@ -113,7 +113,7 @@ class GoldenFilesTest {
       extractFromTestFile("http://www.boingboing.net/2010/08/18/dr-laura-criticism-o.html", "boingboing.html")
     assertStartsWith(
       "Dr. Laura: criticism of me infringes my first amendment rights Dr. Laura Schlessinger is leaving radio to regain her \"first amendment\" rights on the internet.",
-      article!!.document?.text()
+      article.document?.text()
     )
   }
 
@@ -126,7 +126,7 @@ class GoldenFilesTest {
     )
     assertStartsWith(
       "Wenn ein Dirigent, der Alte Musik liebt, erstmals eine "
-          + "Neuproduktion bei den Bayreuther Richard-Wagner-Festspielen übernimmt,", article!!.document?.text()
+          + "Neuproduktion bei den Bayreuther Richard-Wagner-Festspielen übernimmt,", article.document?.text()
     )
     assertEquals(
       "Eröffnung der 100. Bayreuther Festspiele: Alles neu beim \"Tannhäuser\"",
@@ -137,7 +137,7 @@ class GoldenFilesTest {
   @Test
   fun testCNet() {
     val article = extractFromTestFile("http://www.cnet.com/news/verizon-shows-off-ipad-tv-app-and-more/", "cnet.html")
-    assertEquals("CNET", article!!.siteName)
+    assertEquals("CNET", article.siteName)
     assertStartsWith("NEW YORK--Verizon Communications is prepping a new", article.document?.text())
     assertEquals(
       "https://cnet1.cbsistatic.com/img/Bw23T5rupUVnvVPCQQ3KjfO9qic=/670x503/2010/08/18/53b6d52b-f0fa-11e2-8c7c-d4ae52e62bcc/Verizon_iPad_and_live_TV_with_big_TV.JPG".toHttpUrlOrNull()!!,
@@ -148,7 +148,7 @@ class GoldenFilesTest {
   @Test
   fun testCaltonCaldwell() {
     val article = extractFromTestFile("http://daltoncaldwell.com/dear-mark-zuckerberg", "daltoncaldwell.html")
-    assertEquals("Dear Mark Zuckerberg by Dalton Caldwell", article!!.title)
+    assertEquals("Dear Mark Zuckerberg by Dalton Caldwell", article.title)
     assertStartsWith(
       "On June 13, 2012, at 4:30 p.m., I attended a meeting at Facebook HQ in Menlo Park, California.",
       article.document?.text()
@@ -160,7 +160,7 @@ class GoldenFilesTest {
     val article = extractFromTestFile("http://www.cracked.com/blog/the-9-circles-vacation-hell/", "cracked.html")
     assertEquals(
       "http://s3.crackedcdn.com/phpimages/article/0/6/6/573066_v1.jpg".toHttpUrlOrNull()!!,
-      article!!.imageUrl
+      article.imageUrl
     )
     assertStartsWith("In theory, everyone likes a nice vacation.", article.document?.text())
   }
@@ -168,7 +168,7 @@ class GoldenFilesTest {
   @Test
   fun testESPN() {
     val article = extractFromTestFile("http://www.espn.com/espn/commentary/news/story?id=5461430", "espn.html")
-    assertStartsWith("If you believe what college football coaches have said about sports", article!!.document?.text())
+    assertStartsWith("If you believe what college football coaches have said about sports", article.document?.text())
     assertEquals("http://a.espncdn.com/photo/2010/0813/pg2_g_bush3x_300.jpg".toHttpUrlOrNull()!!, article.imageUrl)
   }
 
@@ -177,7 +177,7 @@ class GoldenFilesTest {
     val article = extractFromTestFile("http://www.espn.com/golf/pgachampionship10/news/story?id=5463456", "espn2.html")
     assertStartsWith(
       "SHEBOYGAN, Wis. -- The only number that matters at the PGA Championship is on the scorecard, not the birth certificate.",
-      article!!.document?.text()
+      article.document?.text()
     )
     assertEquals(
       "http://a2.espncdn.com/combiner/i?img=%2Fi%2Fheadshots%2Fgolf%2Fplayers%2Ffull%2F780.png".toHttpUrlOrNull()!!,
@@ -188,7 +188,7 @@ class GoldenFilesTest {
   @Test
   fun testEconomist() {
     val article = extractFromTestFile("http://www.economist.com/node/17956885", "economist.html")
-    assertStartsWith("FOR beleaguered smokers, the world is an increasingly", article!!.document?.text())
+    assertStartsWith("FOR beleaguered smokers, the world is an increasingly", article.document?.text())
     assertEquals(
       "http://www.economist.com/sites/default/files/images/articles/migrated/20110122_stp004.jpg".toHttpUrlOrNull()!!,
       article.imageUrl
@@ -198,7 +198,7 @@ class GoldenFilesTest {
   @Test
   fun testEhow() {
     val article = extractFromTestFile("http://www.ehow.com/how_5122199_eat-fresh-figs.html", "ehow.html")
-    assertEquals("How to Eat Fresh Figs", article!!.title)
+    assertEquals("How to Eat Fresh Figs", article.title)
     assertStartsWith(
       "While dried figs are more commonly featured in recipes, fresh figs are an absolute treat.",
       article.document?.text()
@@ -213,7 +213,7 @@ class GoldenFilesTest {
     )
     assertStartsWith(
       "Streaming and downloading TV content to mobiles is nice, but we enjoy watching TV... on the TV",
-      article!!.document?.text()
+      article.document?.text()
     )
     assertEquals(
       "https://www.blogcdn.com/www.engadget.com/media/2010/08/44ni600.jpg".toHttpUrlOrNull()!!,
@@ -228,7 +228,7 @@ class GoldenFilesTest {
   @Test
   fun testEspn3WithFlashVideo() {
     val article = extractFromTestFile("http://sports.espn.go.com/nfl/news/story?id=5971053", "espn3.html")
-    assertStartsWith("PHILADELPHIA -- Michael Vick missed practice Thursday", article!!.document?.text())
+    assertStartsWith("PHILADELPHIA -- Michael Vick missed practice Thursday", article.document?.text())
     assertEquals("http://a.espncdn.com/i/espn/espn_logos/espn_red.png".toHttpUrlOrNull()!!, article.imageUrl)
     assertEquals(
       "Michael Vick of Philadelphia Eagles misses practice, unlikely to play vs. Dallas Cowboys - ESPN",
@@ -245,7 +245,7 @@ class GoldenFilesTest {
     )
     assertEquals(
       "No futuro, as pessoas não morrerão por envelhecimento, diz cientista - 30/01/2017 - Ciência - Folha de S.Paulo",
-      article!!.title
+      article.title
     )
     assertStartsWith(
       "Aubrey de Grey, 53, quer curar o envelhecimento. Sim, para esse pesquisador inglês, formado em ciências da computação na Universidade de Cambridge, envelhecer é uma doença tal como a malária –ou ainda pior, por vitimar muito mais pessoas– que pode ser perfeitamente evitável.",
@@ -267,7 +267,7 @@ class GoldenFilesTest {
     )
     assertStartsWith(
       "Russia's announcement that it will help Iran get nuclear fuel is raising questions about what President Obama calls the \"better-than- ever\" relationship",
-      article!!.document?.text()
+      article.document?.text()
     )
     assertEquals(
       "http://a57.foxnews.com/images.foxnews.com/content/fox-news/politics/2010/08/14/russias-nuclear-help-iran-stirs-questions-improved-relations/_jcr_content/par/featured-media/media-0.img.jpg/0/0/1446837847097.jpg?ve=1".toHttpUrlOrNull()!!,
@@ -281,7 +281,7 @@ class GoldenFilesTest {
       "http://msn.foxsports.com/nfl/story/Tom-Cable-fired-contract-option-Oakland-Raiders-coach-010411",
       "foxsports.html"
     )
-    assertStartsWith("The Oakland Raiders informed coach Tom Cable", article!!.document?.text())
+    assertStartsWith("The Oakland Raiders informed coach Tom Cable", article.document?.text())
     assertEquals("Oakland Raiders won't bring Tom Cable back as coach - NFL News", article.title)
   }
 
@@ -293,7 +293,7 @@ class GoldenFilesTest {
     )
     assertEquals(
       "http://vnetcdn.dtsph.com/files/vnet3/imagecache/opengraph_ogimage/story-images/Kris%20Humphries%20Top%20Bar.JPG".toHttpUrlOrNull()!!,
-      article!!.imageUrl
+      article.imageUrl
     )
   }
 
@@ -301,7 +301,7 @@ class GoldenFilesTest {
   fun testGigaOm() {
     val article =
       extractFromTestFile("http://gigaom.com/apple/apples-next-macbook-an-800-mac-for-the-masses/", "gigaom.html")
-    assertStartsWith("The MacBook Air is a bold move forward ", article!!.document?.text())
+    assertStartsWith("The MacBook Air is a bold move forward ", article.document?.text())
     assertEquals(
       "http://gigapple.files.wordpress.com/2010/10/macbook-feature.png?w=604".toHttpUrlOrNull()!!,
       article.imageUrl
@@ -312,7 +312,7 @@ class GoldenFilesTest {
   fun testGizmodo() {
     val article =
       extractFromTestFile("http://www.gizmodo.com.au/2010/08/xbox-kinect-gets-its-fight-club/", "gizmodo.html")
-    assertEquals("Gizmodo Australia", article!!.siteName)
+    assertEquals("Gizmodo Australia", article.siteName)
     assertStartsWith("You love to punch your arms through the air", article.document?.text())
     assertEquals(
       "http://cache.gawkerassets.com/assets/images/9/2010/08/500x_fighters_uncaged__screenshot_3b__jawbreaker.jpg".toHttpUrlOrNull()!!,
@@ -325,7 +325,7 @@ class GoldenFilesTest {
     val article = extractFromTestFile("http://www.golem.de/1104/82797.html", "golem.html")
     assertStartsWith(
       "Unter dem Namen \"Aurora\" hat Firefox einen neuen Kanal mit Vorabversionen von Firefox eingerichtet.",
-      article!!.document?.text()
+      article.document?.text()
     )
     assertEquals(
       "http://scr3.golem.de/screenshots/1104/Firefox-Aurora/thumb480/aurora-nighly-beta-logos.png".toHttpUrlOrNull()!!,
@@ -337,7 +337,7 @@ class GoldenFilesTest {
   @Test
   fun testGoogleComTablet() {
     val article = extractFromTestFile("https://www.google.com/", "google_tablet.html")
-    assertEquals("Google", article!!.title)
+    assertEquals("Google", article.title)
     assertEquals(
       "https://www.google.com/images/branding/googleg/2x/googleg_standard_color_76dp.png".toHttpUrlOrNull()!!,
       article.faviconUrl
@@ -350,7 +350,7 @@ class GoldenFilesTest {
       "https://cdn.ampproject.org/c/s/amp.theguardian.com/business/2016/nov/07/world-stock-markets-surge-clinton-us-election",
       "guardian-amp.html"
     )
-    assertEquals("World stock markets surge amid confidence Clinton will win US election", article!!.title)
+    assertEquals("World stock markets surge amid confidence Clinton will win US election", article.title)
     assertEquals(
       "The three main US indices were almost 2% higher by noon, following strong gains in markets across the world ahead of the presidential election",
       article.description
@@ -360,7 +360,7 @@ class GoldenFilesTest {
   @Test
   fun testHackerNews() {
     val article = extractFromTestFile("https://news.ycombinator.com/", "hackernews.html")
-    assertEquals("Hacker News", article!!.title)
+    assertEquals("Hacker News", article.title)
     assertEquals(null, article.description)
   }
 
@@ -370,7 +370,7 @@ class GoldenFilesTest {
       "https://hackernoon.com/design-thinking-lessons-from-our-cats-9a43fd71457a",
       "hackernoon.html"
     )
-    assertEquals("Design thinking lessons from our cats – Hacker Noon", article!!.title)
+    assertEquals("Design thinking lessons from our cats – Hacker Noon", article.title)
     assertStartsWith(
       "We can all agree that cats spend the vast majority of their time thinking through complex problems in innovative ways.",
       article.document?.text()
@@ -401,7 +401,7 @@ class GoldenFilesTest {
     )
     assertEquals(
       "http://m.f.ix.de/scale/geometry/250/q50/imgs/18/1/7/8/2/8/5/5/b6e69ac13bb564dcaba745f4b419e23f_edited_105951127_8168730ae9-255ed03a302fdb50.jpeg@jpg".toHttpUrlOrNull()!!,
-      article!!.images?.get(0)?.srcUrl
+      article.images?.get(0)?.srcUrl
     )
     assertEquals("Internet Explorer 9 jetzt mit schnellster JavaScript-Engine", article.title)
     assertStartsWith(
@@ -418,7 +418,7 @@ class GoldenFilesTest {
     )
     assertEquals(
       "Federal Reserve's Low Rate Policy Is A 'Dangerous Gamble,' Says Top Central Bank Official",
-      article!!.title
+      article.title
     )
     assertStartsWith("A top regional Federal Reserve official sharply", article.document?.text())
     assertEquals("http://i.huffpost.com/gen/157611/thumbs/s-FED-large.jpg".toHttpUrlOrNull()!!, article.imageUrl)
@@ -427,7 +427,7 @@ class GoldenFilesTest {
   @Test
   fun testI4Online() {
     val article = extractFromTestFile("https://i4online.com", "i4online.html")
-    assertStartsWith("Just one week to go and everything is set for the summer Forum 2013", article!!.document?.text())
+    assertStartsWith("Just one week to go and everything is set for the summer Forum 2013", article.document?.text())
   }
 
   @Test
@@ -435,7 +435,7 @@ class GoldenFilesTest {
     val article = extractFromTestFile("http://itunes.apple.com/us/album/21/id420075073", "itunes.html")
     assertStartsWith(
       "What else can be said of this album other than that it is simply amazing? Adele's voice is powerful, vulnerable, assured, and heartbreaking all in one fell swoop.",
-      article!!.document?.text()
+      article.document?.text()
     )
     assertStartsWith("Preview songs from 21 by ADELE", article.description)
     assertNull(article.faviconUrl)
@@ -449,7 +449,7 @@ class GoldenFilesTest {
     )
     assertStartsWith(
       "Over 100 school girls have been poisoned in western Farah province of Afghanistan during the school hours.",
-      article!!.document?.text()
+      article.document?.text()
     )
   }
 
@@ -459,7 +459,7 @@ class GoldenFilesTest {
       "http://lifehacker.com/5659837/build-a-rocket-stove-to-heat-your-home-with-wood-scraps",
       "lifehacker.html"
     )
-    assertStartsWith("If you find yourself with lots of leftover wood", article!!.document?.text())
+    assertStartsWith("If you find yourself with lots of leftover wood", article.document?.text())
     assertEquals(
       "https://i.kinja-img.com/gawker-media/image/upload/s--9OsTlIZO--/c_fill,fl_progressive,g_center,h_358,q_80,w_636/18ixs0cqpu927jpg.jpg".toHttpUrlOrNull()!!,
       article.imageUrl
@@ -471,7 +471,7 @@ class GoldenFilesTest {
     val article = extractFromTestFile("http://www.msnbc.msn.com/id/41207891/ns/world_news-europe/", "msnbc.html")
     assertStartsWith(
       "DUBLIN — Prime Minister Brian Cowen announced Saturday that he has resigned as leader of Ireland's dominant Fianna Fail party",
-      article!!.document?.text()
+      article.document?.text()
     )
     assertEquals("Irish premier resigns as party leader, stays as PM - Europe", article.title)
   }
@@ -480,7 +480,7 @@ class GoldenFilesTest {
   fun testMashable() {
     val article =
       extractFromTestFile("http://mashable.com/2010/08/18/how-tonot-to-ask-someone-out-online/", "mashable.html")
-    assertStartsWith("Imagine, if you will, a crowded dance floor", article!!.document?.text())
+    assertStartsWith("Imagine, if you will, a crowded dance floor", article.document?.text())
     assertEquals("http://9.mshcdn.com/wp-content/uploads/2010/07/love.jpg".toHttpUrlOrNull()!!, article.imageUrl)
   }
 
@@ -493,7 +493,7 @@ class GoldenFilesTest {
   fun testMashable2() {
     val article =
       extractFromTestFile("https://mashable.com/2015/04/24/astronaut-scott-kelly-room-photo/", "mashable2.html")
-    assertStartsWith("NASA astronaut Scott Kelly", article!!.document?.text())
+    assertStartsWith("NASA astronaut Scott Kelly", article.document?.text())
     assertContains(
       "<a href=\"https://twitter.com/StationCDRKelly/status/591594008046084096\">",
       article.document?.html()
@@ -514,7 +514,7 @@ class GoldenFilesTest {
       "https://www.news24.com/World/News/watch-indonesia-frees-bali-nine-drug-smuggler-lawrence-from-prison-20181121",
       "news24.html"
     )
-    assertEquals("WATCH: Indonesia frees Bali Nine drug smuggler Lawrence from prison", article!!.title);
+    assertEquals("WATCH: Indonesia frees Bali Nine drug smuggler Lawrence from prison", article.title);
     assertStartsWith(
       "The first member of the \"Bali Nine\" heroin-trafficking gang was released from prison on Wednesday after serving 13 years, in a case that caused a huge diplomatic rift between Indonesia and Australia.",
       article.document?.text()
@@ -525,7 +525,7 @@ class GoldenFilesTest {
   fun testNPR() {
     val article =
       extractFromTestFile("http://www.npr.org/blogs/money/2010/10/04/130329523/how-fake-money-saved-brazil", "npr.html")
-    assertEquals("How Fake Money Saved Brazil : Planet Money : NPR", article!!.title)
+    assertEquals("How Fake Money Saved Brazil : Planet Money : NPR", article.title)
     assertEquals(null, article.siteName)
     assertStartsWith(
       "This is a story about how an economist and his buddies tricked the people of Brazil into saving the country from rampant inflation. They had a crazy, unlikely plan, and it worked. Twenty years ago, Brazil's",
@@ -549,7 +549,7 @@ class GoldenFilesTest {
       "http://dealbook.nytimes.com/2011/04/11/for-defense-in-galleon-trial-no-time-to-rest/",
       "nyt.html"
     )
-    assertEquals("DealBook", article!!.siteName)
+    assertEquals("DealBook", article.siteName)
     assertEquals(
       "http://graphics8.nytimes.com/images/2011/04/12/business/dbpix-raj-rajaratnam-1302571800091/dbpix-raj-rajaratnam-1302571800091-tmagSF.jpg".toHttpUrlOrNull()!!,
       article.images?.get(0)?.srcUrl
@@ -562,7 +562,7 @@ class GoldenFilesTest {
     val article = extractFromTestFile("http://www.nytimes.com/2010/12/22/world/europe/22start.html", "nyt2.html")
     assertStartsWith(
       "WASHINGTON — An arms control treaty paring back American and Russian nuclear arsenals won a decisive vote in the Senate on Tuesday",
-      article!!.document?.text()
+      article.document?.text()
     )
     assertEquals(
       "https://cdn1.nyt.com/images/2010/12/22/world/22start-span/Start-articleLarge.jpg".toHttpUrlOrNull()!!,
@@ -574,7 +574,7 @@ class GoldenFilesTest {
   fun testNYTCooking() {
     val article =
       extractFromTestFile("https://cooking.nytimes.com/recipes/1018068-chicken-paprikash", "nyt-cooking.html")
-    assertEquals("Chicken Paprikash Recipe - NYT Cooking", article!!.title)
+    assertEquals("Chicken Paprikash Recipe - NYT Cooking", article.title)
     assertEquals("NYT Cooking", article.siteName)
     assertStartsWith(
       "Spices lose their flavor over time but few as quickly as paprika, which starts out tasting of pepper and sunshine",
@@ -587,7 +587,7 @@ class GoldenFilesTest {
     val article = extractFromTestFile("http://www.nature.com/news/2011/110411/full/472146a.html", "nature.html")
     assertStartsWith(
       "As the immediate threat from Fukushima Daiichi's damaged nuclear reactors recedes, engineers and scientists are",
-      article!!.document?.text()
+      article.document?.text()
     )
   }
 
@@ -599,7 +599,7 @@ class GoldenFilesTest {
     )
     assertEquals(
       "Scientists: Earth Endangered by New Strain of Fact-Resistant Humans - The New Yorker",
-      article!!.title
+      article.title
     )
     assertEquals(
       "http://www.newyorker.com/wp-content/uploads/2015/05/Borowitz-Earth-Endangered-by-Fact-Resistant-Humans-1200-630-12152424.jpg".toHttpUrlOrNull()!!,
@@ -617,7 +617,7 @@ class GoldenFilesTest {
       extractFromTestFile("http://www.newsweek.com/sport-rio-2016-paralympics-euthanasia-497932", "newsweek.html")
     assertStartsWith(
       "The Paralymics podium is a stage on which to get your voice heard, and Belgium’s Marieke Vervoort is doing just that.",
-      article!!.document?.text()
+      article.document?.text()
     )
     assertEquals(
       "http://s.newsweek.com/sites/www.newsweek.com/files/2016/09/13/marieke-vervoort.jpg".toHttpUrlOrNull()!!,
@@ -633,14 +633,14 @@ class GoldenFilesTest {
     )
     assertStartsWith(
       "SEO Marketing- Facts About Google Instant And Ranking Your Website Many users around the world Google their queries",
-      article!!.document?.text()
+      article.document?.text()
     )
   }
 
   @Test
   fun testPolitico() {
     val article = extractFromTestFile("http://www.politico.com/news/stories/1010/43352.html", "politico.html")
-    assertStartsWith("If the newest Census Bureau estimates stay close to form", article!!.document?.text())
+    assertStartsWith("If the newest Census Bureau estimates stay close to form", article.document?.text())
     assertEquals(
       "http://images.politico.com/global/news/100927_obama22_ap_328.jpg".toHttpUrlOrNull()!!,
       article.imageUrl
@@ -653,7 +653,7 @@ class GoldenFilesTest {
       "http://readwrite.com/2016/09/13/san-francisco-uc-berkeley-keep-smart-transit-city-plan-rolling-cl4/",
       "readwriteweb.html"
     )
-    assertEquals("#121212", article!!.themeColor)
+    assertEquals("#121212", article.themeColor)
     assertEquals(
       "http://15809-presscdn-0-93.pagely.netdna-cdn.com/wp-content/uploads/iStock_83628999_SMALL-e1473787242221.jpg".toHttpUrlOrNull()!!,
       article.imageUrl
@@ -672,7 +672,7 @@ class GoldenFilesTest {
     )
     assertEquals(
       "https://www.reddit.com/r/androidapps/comments/4nle7s/dev_hermit_has_a_new_ad_blocker_50_off_premium/.rss".toHttpUrlOrNull()!!,
-      article!!.feedUrl
+      article.feedUrl
     )
   }
 
@@ -684,7 +684,7 @@ class GoldenFilesTest {
     )
     assertEquals(
       "A troubling new way to evade plagiarism detection software. (And how to tell if it's been used.) - Retraction Watch at Retraction Watch",
-      article!!.title
+      article.title
     )
     assertStartsWith(
       "Recently, at the end of a tutorial, a student asked Ann Rogerson a question she’d never heard before: Was it okay to use paraphrasing tools to write up assignments?",
@@ -704,7 +704,7 @@ class GoldenFilesTest {
       "http://www.reuters.com/article/us-knightcapital-trading-technology-idUSBRE87203X20120803",
       "reuters.html"
     )
-    assertEquals("Knight trading loss shows cracks in equity markets", article!!.title)
+    assertEquals("Knight trading loss shows cracks in equity markets", article.title)
     assertEquals(
       "http://s1.reutersmedia.net/resources/r/?m=02&d=20120803&t=2&i=637797752&w=130&fh=&fw=&ll=&pl=&r=CBRE872074Y00".toHttpUrlOrNull()!!,
       article.imageUrl
@@ -720,7 +720,7 @@ class GoldenFilesTest {
     val article = extractFromTestFile("http://en.rian.ru/world/20110410/163458489.html", "rian.html")
     assertStartsWith(
       "About 15,000 people took to the streets in Tokyo on Sunday to protest against th",
-      article!!.document?.text()
+      article.document?.text()
     )
     assertEquals("Japanese rally against nuclear power industry", article.title)
     assertEquals("http://en.rian.ru/favicon.ico".toHttpUrlOrNull()!!, article.faviconUrl)
@@ -735,7 +735,7 @@ class GoldenFilesTest {
     )
     assertStartsWith(
       "About 65 million years ago, most of the dinosaurs and many other animals and plants were wiped off Earth, probably due to an asteroid hitting our planet. Researchers have long debated how and why some ",
-      article!!.document?.text()
+      article.document?.text()
     )
   }
 
@@ -745,7 +745,7 @@ class GoldenFilesTest {
       "http://www.scientificamerican.com/article.cfm?id=bpa-semen-quality",
       "scientificamerican.html"
     )
-    assertEquals("Everyday BPA Exposure Decreases Human Semen Quality: Scientific American", article!!.title)
+    assertEquals("Everyday BPA Exposure Decreases Human Semen Quality: Scientific American", article.title)
     assertEquals(
       "http://www.scientificamerican.com/media/inline/bpa-semen-quality_1.jpg".toHttpUrlOrNull()!!,
       article.images?.get(0)?.srcUrl
@@ -759,7 +759,7 @@ class GoldenFilesTest {
       "http://www.sfgate.com/business/article/Foreclosure-activity-dips-in-California-Bay-Area-3248321.php",
       "sfgate.html"
     )
-    assertStartsWith("Fewer homes in California and", article!!.document?.text())
+    assertStartsWith("Fewer homes in California and", article.document?.text())
     assertEquals("http://ww4.hdnux.com/photos/11/11/11/2396767/11/rawImage.jpg".toHttpUrlOrNull()!!, article.imageUrl)
   }
 
@@ -769,7 +769,7 @@ class GoldenFilesTest {
       "http://www.shockya.com/news/2011/01/30/daily-shock-jonathan-knight-of-new-kids-on-the-block-publicly-reveals-hes-gay/",
       "shockya.html"
     )
-    assertStartsWith("New Kids On The Block singer Jonathan Knight has publicly", article!!.document?.text())
+    assertStartsWith("New Kids On The Block singer Jonathan Knight has publicly", article.document?.text())
     assertEquals(
       "http://www.shockya.com/news/wp-content/uploads/jonathan_knight_new_kids_gay.jpg".toHttpUrlOrNull()!!,
       article.images?.get(0)?.srcUrl
@@ -780,7 +780,7 @@ class GoldenFilesTest {
   fun testSlamMagazine() {
     val article =
       extractFromTestFile("http://www.slamonline.com/online/nba/2010/10/nba-schoolyard-rankings/", "slamonline.html")
-    assertEquals("SLAM ONLINE | » NBA Schoolyard Rankings", article!!.title)
+    assertEquals("SLAM ONLINE | » NBA Schoolyard Rankings", article.title)
     assertEquals(
       "http://www.slamonline.com/online/wp-content/uploads/2010/10/celtics.jpg".toHttpUrlOrNull()!!,
       article.images?.get(0)?.srcUrl
@@ -797,7 +797,7 @@ class GoldenFilesTest {
     )
     assertStartsWith(
       "Da ist er wieder, der C64: Eigentlich längst ein Relikt der Technikgeschichte, soll der ",
-      article!!.document?.text()
+      article.document?.text()
     )
   }
 
@@ -809,7 +809,7 @@ class GoldenFilesTest {
     )
     assertStartsWith(
       "ALAMEDA, Calif. — The Oakland Raiders informed coach Tom Cable on Tuesday that they will not bring him back",
-      article!!.document?.text()
+      article.document?.text()
     )
     assertEquals("http://dy.snimg.com/story-image/0/69/174475/14072-650-366.jpg".toHttpUrlOrNull()!!, article.imageUrl)
     assertEquals("Raiders cut ties with Cable - NFL - Sporting News", article.title)
@@ -823,7 +823,7 @@ class GoldenFilesTest {
     )
     assertStartsWith(
       "Way back in 1994, Shaquille O’Neal, who will be inducted into the Naismith Basketball Hall of Fame on Friday, was asked about Knicks center Patrick Ewing.",
-      article!!.document?.text()
+      article.document?.text()
     )
     assertEquals(
       "http://windows.api.si.com/s3/files/styles/inline_gallery_desktop/public/2016/09/08/shaquille-o-neal-hall-of-fame-lakers-magic-lsu.jpg?itok=oupTSSJY".toHttpUrlOrNull()!!,
@@ -836,7 +836,7 @@ class GoldenFilesTest {
   fun testStackOverflow() {
     val article =
       extractFromTestFile("http://stackoverflow.com/questions/3553693/wicket-vs-vaadin/3660938", "stackoverflow.html")
-    assertStartsWith("I think I've invested some time for both frameworks", article!!.document?.text())
+    assertStartsWith("I think I've invested some time for both frameworks", article.document?.text())
     assertStartsWith("java - wicket vs Vaadin - Stack Overflow", article.title)
     assertEquals(
       "http://cdn.sstatic.net/Sites/stackoverflow/img/apple-touch-icon@2.png?v=73d79a89bded&a".toHttpUrlOrNull()!!,
@@ -850,7 +850,7 @@ class GoldenFilesTest {
       extractFromTestFile("http://www.taz.de/1/politik/asien/artikel/1/anti-atomkraft-nein-danke/", "taz.html")
     assertStartsWith(
       "Protestkultur in Japan nach der Katastrophe Absolute Minderheit: Im Shiba-Park in Tokio",
-      article!!.document?.text()
+      article.document?.text()
     )
     assertEquals("Protestkultur in Japan nach der Katastrophe: Anti-Atomkraft? Nein danke! - taz.de", article.title)
   }
@@ -860,7 +860,7 @@ class GoldenFilesTest {
     val article = extractFromTestFile("http://techcrunch.com/2011/04/04/twitter-advanced-search/", "techcrunch.html")
     assertEquals(
       "Twitter Finally Brings Advanced Search Out Of Purgatory; Updates Discovery Algorithms",
-      article!!.title
+      article.title
     )
     assertEquals(
       "https://s0.wp.com/wp-content/themes/vip/techcrunch-2013/assets/images/techcrunch.opengraph.default.png".toHttpUrlOrNull()!!,
@@ -878,7 +878,7 @@ class GoldenFilesTest {
       "http://techcrunch.com/2010/08/13/gantto-takes-on-microsoft-project-with-web-based-project-management-application/",
       "techcrunch2.html"
     )
-    assertEquals("Gantto Takes On Microsoft Project With Web-Based Project Management Application", article!!.title)
+    assertEquals("Gantto Takes On Microsoft Project With Web-Based Project Management Application", article.title)
     assertStartsWith("Y Combinator-backed Gantto is launching", article.document?.text())
     assertEquals("http://tctechcrunch.files.wordpress.com/2010/08/gantto.jpg".toHttpUrlOrNull()!!, article.imageUrl)
   }
@@ -891,7 +891,7 @@ class GoldenFilesTest {
     )
     assertStartsWith(
       "In 2015, median household income increased for the first time in nearly a decade. On its face, that alone is progress.",
-      article!!.document?.text()
+      article.document?.text()
     )
     assertEquals(
       "https://cdn.theatlantic.com/assets/media/img/mt/2016/09/AP_16252467700939/facebook.jpg?1473782708".toHttpUrlOrNull()!!,
@@ -905,7 +905,7 @@ class GoldenFilesTest {
       "http://www.thedailybeast.com/blogs-and-stories/2010-11-01/ted-sorensen-speechwriter-behind-jfks-best-jokes/?cid=topic:featured1",
       "thedailybeast.html"
     )
-    assertStartsWith("Legendary Kennedy speechwriter Ted Sorensen passed", article!!.document?.text())
+    assertStartsWith("Legendary Kennedy speechwriter Ted Sorensen passed", article.document?.text())
     assertEquals(
       "http://www.tdbimg.com/resizeimage/YTo0OntzOjM6ImltZyI7czo2MToiMjAxMC8xMS8wMS9pbWctYnMtYm90dG9tLS0ta2F0ei10ZWQtc29yZW5zZW5fMTYzMjI4NjEwMzUxLmpwZyI7czo1OiJ3aWR0aCI7aTo1MDtzOjY6ImhlaWdodCI7aTo1MDtzOjY6InJhbmRvbSI7czoxOiIxIjt9.jpg".toHttpUrlOrNull()!!,
       article.imageUrl
@@ -918,7 +918,7 @@ class GoldenFilesTest {
       "http://www.thefrisky.com/2010-10-28/rachel-dratch-met-her-baby-daddy-in-a-bar/",
       "thefrisky.html"
     )
-    assertStartsWith("Rachel Dratch had been keeping the identity of her baby daddy ", article!!.document?.text())
+    assertStartsWith("Rachel Dratch had been keeping the identity of her baby daddy ", article.document?.text())
     assertEquals(
       "http://static.thefrisky.com/uploads/2010/10/28/rachel_dratch_102810_m.jpg".toHttpUrlOrNull()!!,
       article.imageUrl
@@ -932,7 +932,7 @@ class GoldenFilesTest {
       "http://thevacationgals.com/vacation-rental-homes-are-a-family-reunion-necessity/",
       "thevacationgals.html"
     )
-    assertStartsWith("Editors’ Note: We are huge proponents of vacation rental homes", article!!.document?.text())
+    assertStartsWith("Editors’ Note: We are huge proponents of vacation rental homes", article.document?.text())
     assertEquals(3, article.images?.size)
     // The first link is absolute, so the domain is correctly specified.
     assertEquals(
@@ -950,11 +950,11 @@ class GoldenFilesTest {
   @Test
   fun testTimeMagazine() {
     val article = extractFromTestFile("http://content.time.com/time/health/article/0,8599,2011497,00.html", "time.html")
-    assertStartsWith("This month, the federal government released", article?.document?.child(0)?.text())
+    assertStartsWith("This month, the federal government released", article.document?.child(0)?.text())
     assertEquals(
-      article?.document?.childNodes().toString(),
+      article.document?.childNodes().toString(),
       "http://img.timeinc.net/time/daily/2010/1008/360_bp_oil_spill_0817.jpg".toHttpUrlOrNull()!!,
-      article?.imageUrl
+      article.imageUrl
     )
   }
 
@@ -962,7 +962,7 @@ class GoldenFilesTest {
   fun testTraindom() {
     val article =
       extractFromTestFile("http://blog.traindom.com/places-where-to-submit-your-startup-for-coverage/", "traindom.html")
-    assertEquals("36 places where you can submit your startup for some coverage", article!!.title)
+    assertEquals("36 places where you can submit your startup for some coverage", article.title)
     assertArrayEquals(
       listOf("blog coverage", "get coverage", "startup review", "startups", "submit startup").toTypedArray(),
       article.keywords?.toTypedArray()
@@ -973,7 +973,7 @@ class GoldenFilesTest {
   @Test
   fun testTwitpic() {
     val article = extractFromTestFile("http://twitpic.com/4k1ku3", "twitpic.html")
-    assertEquals("It’s hard to be a dinosaur. on Twitpic", article!!.title)
+    assertEquals("It’s hard to be a dinosaur. on Twitpic", article.title)
     assertStartsWith(
       "Lazypicture from youtube made a video about this book! It cracked me up!!",
       article.document?.text()
@@ -983,7 +983,7 @@ class GoldenFilesTest {
   @Test
   fun testTwitpic2() {
     val article = extractFromTestFile("http://twitpic.com/4kuem8", "twitpic2.html")
-    assertEquals("*Not* what you want to see on the fetal monitor when your wif... on Twitpic", article!!.title)
+    assertEquals("*Not* what you want to see on the fetal monitor when your wif... on Twitpic", article.title)
     assertStartsWith(
       "*Not* what you want to see on the fetal monitor when your wife begins to push.",
       article.document?.text()
@@ -996,7 +996,7 @@ class GoldenFilesTest {
       "http://engineering.twitter.com/2011/04/twitter-search-is-now-3x-faster_1656.html",
       "twitter.html"
     )
-    assertEquals("Twitter Engineering: Twitter Search is Now 3x Faster", article!!.title)
+    assertEquals("Twitter Engineering: Twitter Search is Now 3x Faster", article.title)
     assertEquals(
       "http://4.bp.blogspot.com/-CmXJmr9UAbA/TZy6AsT72fI/AAAAAAAAAAs/aaF5AEzC-e4/s400/Blender_Tsunami.jpg".toHttpUrlOrNull()!!,
       article.images?.get(0)?.srcUrl
@@ -1013,7 +1013,7 @@ class GoldenFilesTest {
       "http://www.universetoday.com/76881/podcast-more-from-tony-colaprete-on-lcross/",
       "universetoday.html"
     )
-    assertStartsWith("I had the chance to interview LCROSS", article!!.document?.text())
+    assertStartsWith("I had the chance to interview LCROSS", article.document?.text())
     assertEquals(
       "http://www.universetoday.com/wp-content/uploads/2009/10/lcross-impact_01_01.jpg".toHttpUrlOrNull()!!,
       article.images?.get(0)?.srcUrl
@@ -1029,7 +1029,7 @@ class GoldenFilesTest {
     )
     assertStartsWith(
       "GM files for IPO, but are taxpayers still on the hook? General Motors just filed with the Securities and Exchange Commission",
-      article!!.document?.text()
+      article.document?.text()
     )
     assertEquals(
       "http://i.usatoday.net/communitymanager/_photos/drive-on/2010/08/18/cruzex-wide-community.jpg".toHttpUrlOrNull()!!,
@@ -1045,7 +1045,7 @@ class GoldenFilesTest {
     )
     assertStartsWith(
       "Brett Favre says he couldn't give up on one more chance to win the Super Bowl with Vikings Brett Favre couldn't get away from the \"what ifs.\"",
-      article!!.document?.text()
+      article.document?.text()
     )
     assertEquals(
       "http://i.usatoday.net/communitymanager/_photos/the-huddle/2010/08/18/favrespeaksx-inset-community.jpg".toHttpUrlOrNull()!!,
@@ -1059,7 +1059,7 @@ class GoldenFilesTest {
       "http://social.venturebeat.com/2010/08/18/facebook-reveals-the-details-behind-places/",
       "venturebeat.html"
     )
-    assertStartsWith("Facebook just confirmed the rumors", article!!.document?.text())
+    assertStartsWith("Facebook just confirmed the rumors", article.document?.text())
     assertEquals(
       "http://cdn.venturebeat.com/wp-content/uploads/2010/08/mark-zuckerberg-facebook-places.jpg".toHttpUrlOrNull()!!,
       article.images?.get(0)?.srcUrl
@@ -1072,7 +1072,7 @@ class GoldenFilesTest {
       extractFromTestFile("http://www.wsj.com/articles/SB10001424052748704532204575397061414483040", "wsj.html")
     assertStartsWith(
       "The Obama administration has paid out less than a third of the nearly $230 billion",
-      article!!.document?.text()
+      article.document?.text()
     )
     assertEquals(
       "https://si.wsj.net/public/resources/images/OB-JO759_0814st_D_20100814143158.jpg".toHttpUrlOrNull()!!,
@@ -1088,7 +1088,7 @@ class GoldenFilesTest {
     )
     assertEquals(
       "The nearly forgotten story of the black women who helped land a man on the moon - The Washington Post",
-      article!!.title
+      article.title
     )
     assertStartsWith(
       "In 2011, Mary Gainer was a historic preservationist for NASA, and she stumbled on a 1943 picture of a thousand people standing in a huge building.",
@@ -1105,7 +1105,7 @@ class GoldenFilesTest {
     val article = extractFromTestFile("http://en.wikipedia.org/wiki/Therapsids", "wikipedia.html")
     assertStartsWith(
       "Therapsida is a group of the most advanced reptile-grade synapsids, and the ancestors of mammals",
-      article!!.document?.text()
+      article.document?.text()
     )
     assertStartsWith(
       "<b>Therapsida</b> is a group of the most advanced reptile-grade <a href=\"/wiki/Synapsid\">synapsids</a>",
@@ -1121,7 +1121,7 @@ class GoldenFilesTest {
   @Test
   fun testWikipediaDarwin() {
     val article = extractFromTestFile("https://en.wikipedia.org/wiki/Charles_Darwin", "wikipedia_darwin.html")
-    assertEquals("Charles Darwin - Wikipedia", article!!.title)
+    assertEquals("Charles Darwin - Wikipedia", article.title)
     assertStartsWith(
       "For other people named Charles Darwin, see Charles Darwin (disambiguation).",
       article.document?.text()
@@ -1133,7 +1133,7 @@ class GoldenFilesTest {
     val article = extractFromTestFile("https://en.wikipedia.org/wiki/Galileo_Galilei", "wikipedia_galileo.html")
     assertStartsWith(
       "\"Galileo\" redirects here. For other uses, see Galileo (disambiguation) and Galileo Galilei (disambiguation).",
-      article!!.document?.text()
+      article.document?.text()
     )
   }
 
@@ -1142,14 +1142,14 @@ class GoldenFilesTest {
     val article = extractFromTestFile("https://de.m.wikipedia.org/wiki/Oktoberfest", "wikipedia_oktoberfest.html")
     assertStartsWith(
       "Das erste Oktoberfest Bearbeiten Anlässlich der Hochzeit zwischen Kronprinz Ludwig und Prinzessin Therese am 12. ",
-      article!!.document?.text()
+      article.document?.text()
     )
   }
 
   @Test
   fun testWired() {
     val article = extractFromTestFile("http://www.wired.com/playbook/2010/08/stress-hormones-boxing/", "wired.html")
-    assertStartsWith("On November 25, 1980, professional boxing", article!!.document?.text())
+    assertStartsWith("On November 25, 1980, professional boxing", article.document?.text())
     assertEquals("Stress Hormones Could Predict Boxing Dominance", article.title)
     assertEquals(
       "http://www.wired.com/playbook/wp-content/uploads/2010/08/fight_f-660x441.jpg".toHttpUrlOrNull()!!,
@@ -1162,7 +1162,7 @@ class GoldenFilesTest {
   fun testWiredBitcoin() {
     val article =
       extractFromTestFile("https://www.wired.com/story/bitcoin-will-burn-planet-down-how-fast/", "wired-bitcoin.html")
-    assertStartsWith("Max Krause was thinking of buying some bitcoin, as one does.", article!!.document?.text())
+    assertStartsWith("Max Krause was thinking of buying some bitcoin, as one does.", article.document?.text())
     assertEquals("Bitcoin Will Burn the Planet Down. The Question: How Fast?", article.title)
   }
 
@@ -1170,7 +1170,7 @@ class GoldenFilesTest {
   fun testWiredScience() {
     val article =
       extractFromTestFile("https://www.wired.com/2017/04/dangerous-volcano-can-tricky-thing-pin/", "wired-volcano.html")
-    assertEquals("The ‘Most Dangerous’ Volcano Can Be a Tricky Thing to Pin Down", article!!.title)
+    assertEquals("The ‘Most Dangerous’ Volcano Can Be a Tricky Thing to Pin Down", article.title)
     assertStartsWith(
       "I know you’ve all seen lists like this before: what is the “world’s most dangerous volcano“? Most of the time, that discuss devolves quickly into something about “supervolcanoes“, which is very exciting and all because they can generate massive eruptions. However, they are far from being the “most dangerous” volcano.",
       article.document?.text()
@@ -1181,14 +1181,14 @@ class GoldenFilesTest {
   @Test
   fun testWordpress() {
     val article = extractFromTestFile("http://karussell.wordpress.com/", "wordpress.html")
-    assertEquals("Twitter API and Me « Find Time for the Karussell", article!!.title)
+    assertEquals("Twitter API and Me « Find Time for the Karussell", article.title)
     assertStartsWith("I have a love hate relationship with Twitter. As a user I see ", article.document?.text())
   }
 
   @Test
   fun testYCombinator() {
     val article = extractFromTestFile("http://paulgraham.com/seesv.html", "ycombinator.html")
-    assertStartsWith("Want to start a startup? Get funded by Y Combinator.", article!!.document?.text())
+    assertStartsWith("Want to start a startup? Get funded by Y Combinator.", article.document?.text())
     assertStartsWith(
       "October 2010 • Silicon Valley proper is mostly suburban sprawl.",
       article.document?.child(1)?.text()
@@ -1208,7 +1208,7 @@ class GoldenFilesTest {
       "yomiuri.html",
       charset = "Shift_JIS"
     )
-    assertEquals("色とりどりのチューリップ : 岐阜 : 地域 : YOMIURI ONLINE（読売新聞）", article!!.title)
+    assertEquals("色とりどりのチューリップ : 岐阜 : 地域 : YOMIURI ONLINE（読売新聞）", article.title)
     assertEquals(
       "yomiuri:" + article.document?.text(),
       true,
@@ -1223,7 +1223,7 @@ class GoldenFilesTest {
     val article = extractFromTestFile("https://www.youtube.com/watch?v=wlupmjrfaB4", "youtube.html")
     assertStartsWith(
       "Master of the Puppets by Metallica. Converted to 8 bit with GSXCC. Original verson can be found us",
-      article!!.document?.text()
+      article.document?.text()
     )
     assertEquals("YouTube - Metallica - Master of the Puppets 8-bit", article.title)
     assertEquals("http://i4.ytimg.com/vi/wlupmjrfaB4/default.jpg".toHttpUrlOrNull()!!, article.imageUrl)
