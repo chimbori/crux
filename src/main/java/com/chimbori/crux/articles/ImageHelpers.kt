@@ -1,6 +1,7 @@
 package com.chimbori.crux.articles
 
 import com.chimbori.crux.common.Log
+import com.chimbori.crux.common.nullIfBlank
 import com.chimbori.crux.urls.isAdImage
 import java.util.Locale
 import kotlin.math.max
@@ -18,7 +19,7 @@ fun findLargestIcon(iconNodes: Elements): String? {
       largestIcon = iconNode
     }
   }
-  return largestIcon?.attr("href")
+  return largestIcon?.attr("href")?.nullIfBlank()
 }
 
 /**

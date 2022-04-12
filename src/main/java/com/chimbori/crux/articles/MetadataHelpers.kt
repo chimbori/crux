@@ -43,15 +43,11 @@ fun Document.extractKeywords(): List<String> =
     .split("\\s*,\\s*".toRegex())
     .filter { it.isNotBlank() }
 
-fun Document.extractFaviconUrl(baseUrl: HttpUrl) = try {
-  HeuristicString()
-    .or(findLargestIcon(select("head link[rel~=icon]")))
-    .or(findLargestIcon(select("head link[rel~=ICON]")))
-    .or(findLargestIcon(select("head link[rel^=apple-touch-icon]")))
-  null
-} catch (candidateFound: CandidateFound) {
-  candidateFound.candidate?.let { baseUrl.resolve(it) }
-}
+fun Document.extractFaviconUrl(baseUrl: HttpUrl): HttpUrl? = (
+    findLargestIcon(select("head link[rel~=icon]"))
+      ?: findLargestIcon(select("head link[rel~=ICON]"))
+      ?: findLargestIcon(select("head link[rel^=apple-touch-icon]"))
+    )?.let { baseUrl.resolve(it) }
 
 fun Document.extractImageUrl(baseUrl: HttpUrl) = try {
   HeuristicString() // Twitter Cards and Open Graph images are usually higher quality, so rank them first.
