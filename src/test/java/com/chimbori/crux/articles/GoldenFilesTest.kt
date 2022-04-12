@@ -236,100 +236,101 @@ class GoldenFilesTest {
 
   @Test
   fun testFolhaUolComBr() {
-    val article = fromFile(
+    fromFile(
       "http://m.folha.uol.com.br/ciencia/2017/01/1854055-no-futuro-as-pessoas-nao-morrerao-por-envelhecimento-diz-cientista.shtml?mobile",
       "folha_uol_com_br.html",
       charset = "windows-1252"
-    )
-    assertEquals(
-      "No futuro, as pessoas não morrerão por envelhecimento, diz cientista - 30/01/2017 - Ciência - Folha de S.Paulo",
-      article.title
-    )
-    assertStartsWith(
-      "Aubrey de Grey, 53, quer curar o envelhecimento. Sim, para esse pesquisador inglês, formado em ciências da computação na Universidade de Cambridge, envelhecer é uma doença tal como a malária –ou ainda pior, por vitimar muito mais pessoas– que pode ser perfeitamente evitável.",
-      article.document?.text()
-    )
-    assertStartsWith(
-      """
-  <p> Aubrey de Grey, 53, quer curar o envelhecimento. Sim, para esse pesquisador inglês, formado em ciências da computação na Universidade de Cambridge, envelhecer é uma doença tal como a malária –ou ainda pior, por vitimar muito mais pessoas– que pode ser perfeitamente evitável. </p>
-  <p> A seu ver, para pensar em uma solução é preciso entender o envelhecimento e a morte como resultado de um processo de acúmulo de danos e imperfeições no organismo. </p>
-  """.trimIndent(), article.document?.html()
-    )
+    ).run {
+      assertEquals(
+        "No futuro, as pessoas não morrerão por envelhecimento, diz cientista - 30/01/2017 - Ciência - Folha de S.Paulo",
+        title
+      )
+      assertStartsWith(
+        "Aubrey de Grey, 53, quer curar o envelhecimento. Sim, para esse pesquisador inglês, formado em ciências da computação na Universidade de Cambridge, envelhecer é uma doença tal como a malária –ou ainda pior, por vitimar muito mais pessoas– que pode ser perfeitamente evitável.",
+        document?.text()
+      )
+      assertStartsWith(
+        """|<p> Aubrey de Grey, 53, quer curar o envelhecimento. Sim, para esse pesquisador inglês, formado em ciências da computação na Universidade de Cambridge, envelhecer é uma doença tal como a malária –ou ainda pior, por vitimar muito mais pessoas– que pode ser perfeitamente evitável. </p>
+          |<p> A seu ver, para pensar em uma solução é preciso entender o envelhecimento e a morte como resultado de um processo de acúmulo de danos e imperfeições no organismo. </p>
+          |""".trimMargin(), document?.html()
+      )
+    }
   }
 
   @Test
   fun testFoxNews() {
-    val article = fromFile(
+    fromFile(
       "http://www.foxnews.com/politics/2010/08/14/russias-nuclear-help-iran-stirs-questions-improved-relations/",
       "foxnews.html"
-    )
-    assertStartsWith(
-      "Russia's announcement that it will help Iran get nuclear fuel is raising questions about what President Obama calls the \"better-than- ever\" relationship",
-      article.document?.text()
-    )
-    assertEquals(
-      "http://a57.foxnews.com/images.foxnews.com/content/fox-news/politics/2010/08/14/russias-nuclear-help-iran-stirs-questions-improved-relations/_jcr_content/par/featured-media/media-0.img.jpg/0/0/1446837847097.jpg?ve=1".toHttpUrl(),
-      article.imageUrl
-    )
+    ).run {
+      assertStartsWith(
+        "Russia's announcement that it will help Iran get nuclear fuel is raising questions about what President Obama calls the \"better-than- ever\" relationship",
+        document?.text()
+      )
+      assertEquals(
+        "http://a57.foxnews.com/images.foxnews.com/content/fox-news/politics/2010/08/14/russias-nuclear-help-iran-stirs-questions-improved-relations/_jcr_content/par/featured-media/media-0.img.jpg/0/0/1446837847097.jpg?ve=1".toHttpUrl(),
+        imageUrl
+      )
+    }
   }
 
   @Test
   fun testFoxSports() {
-    val article = fromFile(
+    fromFile(
       "http://msn.foxsports.com/nfl/story/Tom-Cable-fired-contract-option-Oakland-Raiders-coach-010411",
       "foxsports.html"
-    )
-    assertStartsWith("The Oakland Raiders informed coach Tom Cable", article.document?.text())
-    assertEquals("Oakland Raiders won't bring Tom Cable back as coach - NFL News", article.title)
+    ).run {
+      assertStartsWith("The Oakland Raiders informed coach Tom Cable", document?.text())
+      assertEquals("Oakland Raiders won't bring Tom Cable back as coach - NFL News", title)
+    }
   }
 
   @Test
   fun testGaltimeWhereUrlContainsSpaces() {
-    val article = fromFile(
+    fromFile(
       "http://galtime.com/article/entertainment/37/22938/kris-humphries-avoids-kim-talk-gma",
       "galtime.com.html"
-    )
-    assertEquals(
-      "http://vnetcdn.dtsph.com/files/vnet3/imagecache/opengraph_ogimage/story-images/Kris%20Humphries%20Top%20Bar.JPG".toHttpUrl(),
-      article.imageUrl
-    )
+    ).run {
+      assertEquals(
+        "http://vnetcdn.dtsph.com/files/vnet3/imagecache/opengraph_ogimage/story-images/Kris%20Humphries%20Top%20Bar.JPG".toHttpUrl(),
+        imageUrl
+      )
+    }
   }
 
   @Test
   fun testGigaOm() {
-    val article =
-      fromFile("http://gigaom.com/apple/apples-next-macbook-an-800-mac-for-the-masses/", "gigaom.html")
-    assertStartsWith("The MacBook Air is a bold move forward ", article.document?.text())
-    assertEquals(
-      "http://gigapple.files.wordpress.com/2010/10/macbook-feature.png?w=604".toHttpUrl(),
-      article.imageUrl
-    )
+    fromFile("http://gigaom.com/apple/apples-next-macbook-an-800-mac-for-the-masses/", "gigaom.html").run {
+      assertStartsWith("The MacBook Air is a bold move forward ", document?.text())
+      assertEquals("http://gigapple.files.wordpress.com/2010/10/macbook-feature.png?w=604".toHttpUrl(), imageUrl)
+    }
   }
 
   @Test
   fun testGizmodo() {
-    val article =
-      fromFile("http://www.gizmodo.com.au/2010/08/xbox-kinect-gets-its-fight-club/", "gizmodo.html")
-    assertEquals("Gizmodo Australia", article.siteName)
-    assertStartsWith("You love to punch your arms through the air", article.document?.text())
-    assertEquals(
-      "http://cache.gawkerassets.com/assets/images/9/2010/08/500x_fighters_uncaged__screenshot_3b__jawbreaker.jpg".toHttpUrl(),
-      article.images?.get(0)?.srcUrl
-    )
+    fromFile("http://www.gizmodo.com.au/2010/08/xbox-kinect-gets-its-fight-club/", "gizmodo.html").run {
+      assertEquals("Gizmodo Australia", siteName)
+      assertStartsWith("You love to punch your arms through the air", document?.text())
+      assertEquals(
+        "http://cache.gawkerassets.com/assets/images/9/2010/08/500x_fighters_uncaged__screenshot_3b__jawbreaker.jpg".toHttpUrl(),
+        images?.get(0)?.srcUrl
+      )
+    }
   }
 
   @Test
   fun testGolem() {
-    val article = fromFile("http://www.golem.de/1104/82797.html", "golem.html")
-    assertStartsWith(
-      "Unter dem Namen \"Aurora\" hat Firefox einen neuen Kanal mit Vorabversionen von Firefox eingerichtet.",
-      article.document?.text()
-    )
-    assertEquals(
-      "http://scr3.golem.de/screenshots/1104/Firefox-Aurora/thumb480/aurora-nighly-beta-logos.png".toHttpUrl(),
-      article.images?.get(0)?.srcUrl
-    )
-    assertEquals("Mozilla: Vorabversionen von Firefox 5 und 6 veröffentlicht - Golem.de", article.title)
+    fromFile("http://www.golem.de/1104/82797.html", "golem.html").run {
+      assertStartsWith(
+        "Unter dem Namen \"Aurora\" hat Firefox einen neuen Kanal mit Vorabversionen von Firefox eingerichtet.",
+        document?.text()
+      )
+      assertEquals(
+        "http://scr3.golem.de/screenshots/1104/Firefox-Aurora/thumb480/aurora-nighly-beta-logos.png".toHttpUrl(),
+        images?.get(0)?.srcUrl
+      )
+      assertEquals("Mozilla: Vorabversionen von Firefox 5 und 6 veröffentlicht - Golem.de", title)
+    }
   }
 
   @Test
@@ -344,82 +345,84 @@ class GoldenFilesTest {
 
   @Test
   fun testGuardianAmpPage() {
-    val article = fromFile(
+    fromFile(
       "https://cdn.ampproject.org/c/s/amp.theguardian.com/business/2016/nov/07/world-stock-markets-surge-clinton-us-election",
       "guardian-amp.html"
-    )
-    assertEquals("World stock markets surge amid confidence Clinton will win US election", article.title)
-    assertEquals(
-      "The three main US indices were almost 2% higher by noon, following strong gains in markets across the world ahead of the presidential election",
-      article.description
-    )
+    ).run {
+      assertEquals("World stock markets surge amid confidence Clinton will win US election", title)
+      assertEquals(
+        "The three main US indices were almost 2% higher by noon, following strong gains in markets across the world ahead of the presidential election",
+        description
+      )
+    }
   }
 
   @Test
   fun testHackerNews() {
-    val article = fromFile("https://news.ycombinator.com/", "hackernews.html")
-    assertEquals("Hacker News", article.title)
-    assertEquals(null, article.description)
+    fromFile("https://news.ycombinator.com/", "hackernews.html").run {
+      assertEquals("Hacker News", title)
+      assertEquals(null, description)
+    }
   }
 
   @Test
   fun testHackerNoon() {
-    val article = fromFile(
+    fromFile(
       "https://hackernoon.com/design-thinking-lessons-from-our-cats-9a43fd71457a",
       "hackernoon.html"
-    )
-    assertEquals("Design thinking lessons from our cats – Hacker Noon", article.title)
-    assertStartsWith(
-      "We can all agree that cats spend the vast majority of their time thinking through complex problems in innovative ways.",
-      article.document?.text()
-    )
-    assertContains(
-      "I’ve never known a cat that didn’t demonstrate a deep understanding of market economics.",
-      article.document?.text()
-    )
-    assertContains(
-      "Cats aren’t discouraged by the risk of looking dumb and being laughed at as they experiment and explore their environment…",
-      article.document?.text()
-    )
-    assertContains(
-      "*I did not actually do this but this is what I imagine would have happened if I had.",
-      article.document?.text()
-    )
-    assertContains(
-      "If you liked this article, be sure to recommend it and help spread good ideas as far and wide as tufts of cat hair caught in a warm summer’s breeze.",
-      article.document?.text()
-    )
+    ).run {
+      assertEquals("Design thinking lessons from our cats – Hacker Noon", title)
+      assertStartsWith(
+        "We can all agree that cats spend the vast majority of their time thinking through complex problems in innovative ways.",
+        document?.text()
+      )
+      assertContains(
+        "I’ve never known a cat that didn’t demonstrate a deep understanding of market economics.",
+        document?.text()
+      )
+      assertContains(
+        "Cats aren’t discouraged by the risk of looking dumb and being laughed at as they experiment and explore their environment…",
+        document?.text()
+      )
+      assertContains(
+        "*I did not actually do this but this is what I imagine would have happened if I had.",
+        document?.text()
+      )
+      assertContains(
+        "If you liked this article, be sure to recommend it and help spread good ideas as far and wide as tufts of cat hair caught in a warm summer’s breeze.",
+        document?.text()
+      )
+    }
   }
 
   @Test
   fun testHeise() {
-    val article = fromFile(
+    fromFile(
       "http://www.heise.de/newsticker/meldung/Internet-Explorer-9-jetzt-mit-schnellster-JavaScript-Engine-1138062.html",
       "heise.html"
-    )
-    assertEquals(
-      "http://m.f.ix.de/scale/geometry/250/q50/imgs/18/1/7/8/2/8/5/5/b6e69ac13bb564dcaba745f4b419e23f_edited_105951127_8168730ae9-255ed03a302fdb50.jpeg@jpg".toHttpUrl(),
-      article.images?.get(0)?.srcUrl
-    )
-    assertEquals("Internet Explorer 9 jetzt mit schnellster JavaScript-Engine", article.title)
-    assertStartsWith(
-      "Internet Explorer 9 jetzt mit schnellster JavaScript-Engine Microsoft hat heute eine siebte Platform Preview ",
-      article.document?.text()
-    )
+    ).run {
+      assertEquals(
+        "http://m.f.ix.de/scale/geometry/250/q50/imgs/18/1/7/8/2/8/5/5/b6e69ac13bb564dcaba745f4b419e23f_edited_105951127_8168730ae9-255ed03a302fdb50.jpeg@jpg".toHttpUrl(),
+        images?.get(0)?.srcUrl
+      )
+      assertEquals("Internet Explorer 9 jetzt mit schnellster JavaScript-Engine", title)
+      assertStartsWith(
+        "Internet Explorer 9 jetzt mit schnellster JavaScript-Engine Microsoft hat heute eine siebte Platform Preview ",
+        document?.text()
+      )
+    }
   }
 
   @Test
   fun testHuffingtonPost() {
-    val article = fromFile(
+    fromFile(
       "http://www.huffingtonpost.com/2010/08/13/federal-reserve-pursuing_n_681540.html",
       "huffingtonpost.html"
-    )
-    assertEquals(
-      "Federal Reserve's Low Rate Policy Is A 'Dangerous Gamble,' Says Top Central Bank Official",
-      article.title
-    )
-    assertStartsWith("A top regional Federal Reserve official sharply", article.document?.text())
-    assertEquals("http://i.huffpost.com/gen/157611/thumbs/s-FED-large.jpg".toHttpUrl(), article.imageUrl)
+    ).run {
+      assertEquals("Federal Reserve's Low Rate Policy Is A 'Dangerous Gamble,' Says Top Central Bank Official", title)
+      assertStartsWith("A top regional Federal Reserve official sharply", document?.text())
+      assertEquals("http://i.huffpost.com/gen/157611/thumbs/s-FED-large.jpg".toHttpUrl(), imageUrl)
+    }
   }
 
   @Test
