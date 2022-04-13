@@ -137,19 +137,25 @@ Crux uses semantic versioning. If the API changes, then the major version will b
 Upgrading from one minor version to the next minor version within the same major version should
 not require any client code to be modified.
 
+The latest release is available via [Maven Central](https://search.maven.org/artifact/com.chimbori.crux/crux) or [GitHub Releases](https://github.com/chimbori/crux/releases).
+
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.chimbori.crux/crux/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.chimbori.crux/crux)
+
 ## Get Crux via Maven
 
 ```xml
 <dependency>
   <groupId>com.chimbori.crux</groupId>
   <artifactId>crux</artifactId>
-  <version>0.0.0</version>   <!-- Get latest version number from https://github.com/chimbori/crux/releases -->
+  <version>0.0.0</version>   <!-- See the latest version number above. -->
 </dependency>
 ```
 
 ## Get Crux via Gradle
 
-Project/`build.gradle`:
+### Gradle Groovy DSL
+
+Project/`build.gradle`
 ```groovy
 allprojects {
   repositories {
@@ -159,14 +165,29 @@ allprojects {
 ```
 
 Module/`build.gradle`:
-
 ```groovy
 dependencies {
-  compile 'com.chimbori.crux:crux:0.0.0'  // See the latest version number below.
+  implementation 'com.chimbori.crux:crux:0.0.0'  // See the latest version number above.
 }
 ```
 
-The latest version is [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.chimbori.crux/crux/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.chimbori.crux/crux)
+### Gradle Kotlin DSL
+
+Project/`build.gradle.kts`
+```groovy
+allprojects {
+  repositories {
+    mavenCentral()
+  }
+}
+```
+
+Module/`build.gradle.kts`:
+```kotlin
+dependencies {
+  implementation("com.chimbori.crux:crux:0.0.0")  // See the latest version number above.
+}
+```
 
 # History
 
