@@ -20,9 +20,10 @@ class KotlinPublicAPITest {
     val url = "https://chimbori.com/".toHttpUrl()
     val content = "<html><title>Crux"  // Intentionally malformed.
     val httpURL = "https://chimbori.com/".toHttpUrl()
-    if (httpURL.isLikelyArticle() == true) {
-      val article = ArticleExtractor(url, content).extractMetadata().extractContent().article
-      assertEquals("Crux", article.title)
+    if (httpURL.isLikelyArticle()) {
+      ArticleExtractor(url, content).extractMetadata().extractContent().article.run {
+        assertEquals("Crux", title)
+      }
     }
     val directURL = httpURL.resolveRedirects()
     assertEquals("https://chimbori.com/", directURL.toString())

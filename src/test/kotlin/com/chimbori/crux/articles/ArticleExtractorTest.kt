@@ -36,7 +36,7 @@ class ArticleExtractorTest {
 
   @Test
   fun testThatHiddenTextIsNotExtracted() {
-    val article = ArticleExtractor(
+    ArticleExtractor(
       EXAMPLE_URL,
       """<div style="margin: 5px; display:none; padding: 5px;">
           |Hidden Text
@@ -46,16 +46,17 @@ class ArticleExtractorTest {
           |</div>
           |<div>Default Text</div>
           |""".trimMargin()
-    ).extractContent().article
-    assertEquals(
-      "Visible Text that has to be longer than X characters so it’s not stripped out for being too short.",
-      article.document?.text()
-    )
+    ).extractContent().article.run {
+      assertEquals(
+        "Visible Text that has to be longer than X characters so it’s not stripped out for being too short.",
+        document?.text()
+      )
+    }
   }
 
   @Test
   fun testThatLongerTextIsPreferred() {
-    val article = ArticleExtractor(
+    ArticleExtractor(
       EXAMPLE_URL,
       """<div style="margin: 5px; display:none; padding: 5px;">
           |Hidden Text
@@ -67,54 +68,51 @@ class ArticleExtractorTest {
           |Default Text but longer that’s still longer than our minimum text size limits
           |</div>
           |""".trimMargin()
-    ).extractContent().article
-    assertEquals(
-      "Default Text but longer that’s still longer than our minimum text size limits",
-      article.document?.text()
-    )
+    ).extractContent().article.run {
+      assertEquals("Default Text but longer that’s still longer than our minimum text size limits", document?.text())
+    }
   }
 
   @Test
   fun testThatShortTextIsDiscarded() {
-    val article = ArticleExtractor(
+    ArticleExtractor(
       EXAMPLE_URL,
       """<div>
           |Default Text but longer that’s still longer than our minimum text size limits
           |<div>short text</div>
           |</div>""".trimMargin()
-    ).extractContent().article
-    assertEquals(
-      "Default Text but longer that’s still longer than our minimum text size limits",
-      article.document?.text()
-    )
+    ).extractContent().article.run {
+      assertEquals("Default Text but longer that’s still longer than our minimum text size limits", document?.text())
+    }
   }
 
   @Test
   fun testThatImportantShortTextIsRetained() {
-    val article = ArticleExtractor(
+    ArticleExtractor(
       EXAMPLE_URL,
       """<div>
           |Default Text but longer that’s still longer than our minimum text size limits
           |<div crux-keep>short text</div>
           |</div>""".trimMargin()
-    ).extractContent().article
-    assertEquals(
-      "Default Text but longer that’s still longer than our minimum text size limits short text",
-      article.document?.text()
-    )
+    ).extractContent().article.run {
+      assertEquals(
+        "Default Text but longer that’s still longer than our minimum text size limits short text",
+        document?.text()
+      )
+    }
   }
 
   @Test
   fun testReadingTimeEstimates() {
-    val washingtonPostArticle = fromFile(
+    fromFile(
       "https://www.washingtonpost.com/lifestyle/style/the-nearly-forgotten-story-of-the-black-women-who-helped-land-a-man-on-the-moon/2016/09/12/95f2d356-7504-11e6-8149-b8d05321db62_story.html".toHttpUrl(),
       "washingtonpost.html"
-    )
-    assertEquals(8, washingtonPostArticle.estimatedReadingTimeMinutes)
-    val galileoArticle = fromFile(
-      "https://en.wikipedia.org/wiki/Galileo_Galilei".toHttpUrl(), "wikipedia_galileo.html"
-    )
-    assertEquals(53, galileoArticle.estimatedReadingTimeMinutes)
+    ).run {
+      assertEquals(8, estimatedReadingTimeMinutes)
+    }
+    fromFile("https://en.wikipedia.org/wiki/Galileo_Galilei".toHttpUrl(), "wikipedia_galileo.html").run {
+      assertEquals(53, estimatedReadingTimeMinutes)
+    }
   }
 
   companion object {
