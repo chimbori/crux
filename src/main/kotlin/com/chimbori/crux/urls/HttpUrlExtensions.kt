@@ -10,8 +10,13 @@ import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 
 fun HttpUrl.isAdImage(): Boolean = toString().countMatches("ad") >= 2
 
-fun HttpUrl.isLikelyArticle(): Boolean = !isLikelyImage() && !isLikelyVideo() && !isLikelyAudio() &&
-    !isLikelyBinaryDocument() && !isLikelyExecutable() && !isLikelyArchive()
+fun HttpUrl.isLikelyArticle(): Boolean =
+  !isLikelyImage()
+      && !isLikelyVideo()
+      && !isLikelyAudio()
+      && !isLikelyBinaryDocument()
+      && !isLikelyExecutable()
+      && !isLikelyArchive()
 
 fun HttpUrl.isLikelyVideo(): Boolean = when (encodedPath.substringAfterLast(".").lowercase()) {
   "3g2",
