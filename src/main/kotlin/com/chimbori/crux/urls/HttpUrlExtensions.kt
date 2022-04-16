@@ -14,68 +14,68 @@ fun HttpUrl.isLikelyArticle(): Boolean = !isLikelyImage() && !isLikelyVideo() &&
     !isLikelyBinaryDocument() && !isLikelyExecutable() && !isLikelyArchive()
 
 fun HttpUrl.isLikelyVideo(): Boolean = when (encodedPath.substringAfterLast(".")) {
-  "mp4",
-  "mpg",
-  "mpeg",
   "avi",
-  "mov",
-  "mpg4",
   "flv",
+  "mov",
+  "mp4",
+  "mpeg",
+  "mpg",
+  "mpg4",
   "wmv",
   -> true
   else -> false
 }
 
 fun HttpUrl.isLikelyAudio(): Boolean = when (encodedPath.substringAfterLast(".")) {
+  "m3u",
   "mp3",
   "ogg",
-  "m3u",
   "wav",
   -> true
   else -> false
 }
 
 fun HttpUrl.isLikelyBinaryDocument(): Boolean = when (encodedPath.substringAfterLast(".")) {
+  "doc",
   "pdf",
   "ppt",
-  "doc",
-  "swf",
   "rtf",
+  "swf",
   "xls",
   -> true
   else -> false
 }
 
 fun HttpUrl.isLikelyArchive(): Boolean = when (encodedPath.substringAfterLast(".")) {
+  "7z",
+  "deb",
   "gz",
+  "rar",
+  "rpm",
   "tgz",
   "zip",
-  "rar",
-  "deb",
-  "rpm",
-  "7z",
   -> true
   else -> false
 }
 
 fun HttpUrl.isLikelyExecutable(): Boolean = when (encodedPath.substringAfterLast(".")) {
-  "exe",
-  "bin",
   "bat",
+  "bin",
   "dmg",
+  "exe",
   -> true
   else -> false
 }
 
 
 fun HttpUrl.isLikelyImage(): Boolean = when (encodedPath.substringAfterLast(".")) {
-  "png",
-  "jpeg",
-  "gif",
-  "jpg",
   "bmp",
-  "ico",
   "eps",
+  "gif",
+  "ico",
+  "jpeg",
+  "jpg",
+  "png",
   -> true
   else -> false
 }
