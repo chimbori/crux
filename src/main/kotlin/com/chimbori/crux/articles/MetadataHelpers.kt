@@ -12,24 +12,24 @@ fun Document.extractTitle(): String? = (
       ?: select("head meta[name=title]").attr("content").nullIfBlank()
       ?: select("head meta[property=og:title]").attr("content").nullIfBlank()
       ?: select("head meta[name=twitter:title]").attr("content").nullIfBlank()
-    )?.cleanTitle()
+    )?.cleanTitle()?.nullIfBlank()
 
 fun Document.extractCanonicalUrl(): String? = (
     select("head link[rel=canonical]").attr("href").nullIfBlank()
       ?: select("head meta[property=og:url]").attr("content").nullIfBlank()
       ?: select("head meta[name=twitter:url]").attr("content").nullIfBlank()
-    )?.removeWhiteSpace()
+    )?.removeWhiteSpace()?.nullIfBlank()
 
 fun Document.extractDescription(): String? = (
     select("head meta[name=description]").attr("content").nullIfBlank()
       ?: select("head meta[property=og:description]").attr("content").nullIfBlank()
       ?: select("head meta[name=twitter:description]").attr("content").nullIfBlank()
-    )?.removeWhiteSpace()
+    )?.removeWhiteSpace()?.nullIfBlank()
 
 fun Document.extractSiteName(): String? = (
     select("head meta[property=og:site_name]").attr("content").nullIfBlank()
       ?: select("head meta[name=application-name]").attr("content").nullIfBlank()
-    )?.removeWhiteSpace()
+    )?.removeWhiteSpace()?.nullIfBlank()
 
 fun Document.extractThemeColor(): String? =
   select("meta[name=theme-color]").attr("content").nullIfBlank()
