@@ -35,6 +35,18 @@ fun HttpUrl.isLikelyAudio(): Boolean = when (encodedPath.substringAfterLast(".")
   else -> false
 }
 
+fun HttpUrl.isLikelyImage(): Boolean = when (encodedPath.substringAfterLast(".")) {
+  "bmp",
+  "eps",
+  "gif",
+  "ico",
+  "jpeg",
+  "jpg",
+  "png",
+  -> true
+  else -> false
+}
+
 fun HttpUrl.isLikelyBinaryDocument(): Boolean = when (encodedPath.substringAfterLast(".")) {
   "doc",
   "pdf",
@@ -63,19 +75,6 @@ fun HttpUrl.isLikelyExecutable(): Boolean = when (encodedPath.substringAfterLast
   "bin",
   "dmg",
   "exe",
-  -> true
-  else -> false
-}
-
-
-fun HttpUrl.isLikelyImage(): Boolean = when (encodedPath.substringAfterLast(".")) {
-  "bmp",
-  "eps",
-  "gif",
-  "ico",
-  "jpeg",
-  "jpg",
-  "png",
   -> true
   else -> false
 }
