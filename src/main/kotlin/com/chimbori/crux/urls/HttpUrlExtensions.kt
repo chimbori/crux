@@ -13,7 +13,7 @@ fun HttpUrl.isAdImage(): Boolean = toString().countMatches("ad") >= 2
 fun HttpUrl.isLikelyArticle(): Boolean = !isLikelyImage() && !isLikelyVideo() && !isLikelyAudio() &&
     !isLikelyBinaryDocument() && !isLikelyExecutable() && !isLikelyArchive()
 
-fun HttpUrl.isLikelyVideo(): Boolean = when (encodedPath.substringAfterLast(".")) {
+fun HttpUrl.isLikelyVideo(): Boolean = when (encodedPath.substringAfterLast(".").lowercase()) {
   "3g2",
   "3gp",
   "amv",
@@ -55,7 +55,7 @@ fun HttpUrl.isLikelyVideo(): Boolean = when (encodedPath.substringAfterLast(".")
   else -> false
 }
 
-fun HttpUrl.isLikelyAudio(): Boolean = when (encodedPath.substringAfterLast(".")) {
+fun HttpUrl.isLikelyAudio(): Boolean = when (encodedPath.substringAfterLast(".").lowercase()) {
   "3gp",
   "8svx",
   "aa",
@@ -102,7 +102,7 @@ fun HttpUrl.isLikelyAudio(): Boolean = when (encodedPath.substringAfterLast(".")
   else -> false
 }
 
-fun HttpUrl.isLikelyImage(): Boolean = when (encodedPath.substringAfterLast(".")) {
+fun HttpUrl.isLikelyImage(): Boolean = when (encodedPath.substringAfterLast(".").lowercase()) {
   "ai",
   "arw",
   "bmp",
@@ -143,7 +143,7 @@ fun HttpUrl.isLikelyImage(): Boolean = when (encodedPath.substringAfterLast(".")
   else -> false
 }
 
-fun HttpUrl.isLikelyBinaryDocument(): Boolean = when (encodedPath.substringAfterLast(".")) {
+fun HttpUrl.isLikelyBinaryDocument(): Boolean = when (encodedPath.substringAfterLast(".").lowercase()) {
   "doc",
   "pdf",
   "ppt",
@@ -154,7 +154,7 @@ fun HttpUrl.isLikelyBinaryDocument(): Boolean = when (encodedPath.substringAfter
   else -> false
 }
 
-fun HttpUrl.isLikelyArchive(): Boolean = when (encodedPath.substringAfterLast(".")) {
+fun HttpUrl.isLikelyArchive(): Boolean = when (encodedPath.substringAfterLast(".").lowercase()) {
   "7z",
   "deb",
   "gz",
@@ -166,7 +166,7 @@ fun HttpUrl.isLikelyArchive(): Boolean = when (encodedPath.substringAfterLast(".
   else -> false
 }
 
-fun HttpUrl.isLikelyExecutable(): Boolean = when (encodedPath.substringAfterLast(".")) {
+fun HttpUrl.isLikelyExecutable(): Boolean = when (encodedPath.substringAfterLast(".").lowercase()) {
   "bat",
   "bin",
   "dmg",
