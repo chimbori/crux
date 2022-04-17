@@ -1,4 +1,4 @@
-package com.chimbori.crux.links
+package com.chimbori.crux.extractors
 
 import com.chimbori.crux.common.anyChildTagWithAttr
 import com.chimbori.crux.common.nullIfBlank

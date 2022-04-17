@@ -5,7 +5,7 @@ import java.net.URL
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
-class StringUtilsTest {
+class StringExtensionsTest {
   @Test
   fun testInnerTrim() {
     assertEquals("", "   ".removeWhiteSpace())

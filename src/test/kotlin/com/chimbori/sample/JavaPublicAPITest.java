@@ -2,8 +2,8 @@ package com.chimbori.sample;
 
 import com.chimbori.crux.articles.Article;
 import com.chimbori.crux.articles.ArticleExtractor;
-import com.chimbori.crux.images.ImageUrlExtractor;
-import com.chimbori.crux.links.LinkUrlExtractor;
+import com.chimbori.crux.extractors.ImageUrlExtractor;
+import com.chimbori.crux.extractors.LinkUrlExtractor;
 import com.chimbori.crux.urls.HttpUrlExtensionsKt;
 import okhttp3.HttpUrl;
 import org.jsoup.Jsoup;

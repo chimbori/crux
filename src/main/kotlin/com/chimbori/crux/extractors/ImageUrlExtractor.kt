@@ -1,6 +1,6 @@
 @file:Suppress("DEPRECATION")
 
-package com.chimbori.crux.images
+package com.chimbori.crux.extractors
 
 import com.chimbori.crux.common.anyChildTagWithAttr
 import com.chimbori.crux.common.nullIfBlank

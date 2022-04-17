@@ -1,5 +1,6 @@
-package com.chimbori.crux.articles
+package com.chimbori.crux.extractors
 
+import com.chimbori.crux.articles.parseSize
 import org.junit.Assert.assertEquals
 import org.junit.Test
 

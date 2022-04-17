@@ -1,4 +1,4 @@
-package com.chimbori.crux.links
+package com.chimbori.crux.extractors
 
 import java.io.File
 import java.io.IOException

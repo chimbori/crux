@@ -1,4 +1,4 @@
-package com.chimbori.crux.articles
+package com.chimbori.crux.extractors
 
 import com.chimbori.crux.common.cleanTitle
 import org.junit.Assert.assertEquals

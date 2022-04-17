@@ -6,7 +6,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Test
 
-class RedirectorsTest {
+class HttpUrlExtensionsTest {
   @Test
   fun testIsLikelyType() {
     assertEquals(true, "http://example.com/video.mp4".toHttpUrl().isLikelyVideo())
