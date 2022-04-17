@@ -1,9 +1,9 @@
-package com.chimbori.crux.articles
+package com.chimbori.crux.extractors
 
-import com.chimbori.crux.articles.ExtractionHelpers.GRAVITY_SCORE_SELECTOR
 import com.chimbori.crux.common.Log
 import com.chimbori.crux.common.Log.printAndRemove
 import com.chimbori.crux.common.countLetters
+import com.chimbori.crux.extractors.ExtractionHelpers.GRAVITY_SCORE_SELECTOR
 import java.util.ArrayDeque
 import java.util.Collections
 import java.util.IdentityHashMap
@@ -171,7 +171,7 @@ internal class PostprocessHelpers private constructor(private val keepers: Set<N
      */
     private val RETAIN_TAGS_TOP_LEVEL = setOf("p", "h1", "h2", "h3", "h4", "h5", "h6", "blockquote", "li")
 
-    fun postprocess(topNode: Element?): Document {
+    internal fun postprocess(topNode: Element?): Document {
       Log.i("postprocess")
       val doc = Document("")
       if (topNode == null) {

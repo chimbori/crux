@@ -1,4 +1,4 @@
-package com.chimbori.crux.articles
+package com.chimbori.crux.extractors
 
 import com.chimbori.crux.common.countMatches
 import java.util.*

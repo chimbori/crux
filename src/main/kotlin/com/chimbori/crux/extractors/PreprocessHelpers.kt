@@ -1,14 +1,14 @@
-package com.chimbori.crux.articles
+package com.chimbori.crux.extractors
 
-import com.chimbori.crux.articles.ExtractionHelpers.NEGATIVE_CSS_CLASSES_AND_IDS
 import com.chimbori.crux.common.Log
+import com.chimbori.crux.extractors.ExtractionHelpers.NEGATIVE_CSS_CLASSES_AND_IDS
 import java.util.Locale
 import org.jsoup.nodes.Document
 import org.jsoup.nodes.Node
 
 /** Performs basic sanitization before starting the extraction process.  */
 internal object PreprocessHelpers {
-  fun preprocess(doc: Document) {
+  internal fun preprocess(doc: Document) {
     Log.i("preprocess")
     stripUnlikelyCandidates(doc)
     removeScriptsStyles(doc)
