@@ -3,7 +3,6 @@ package com.chimbori.crux.extractors
 import com.chimbori.crux.common.Log
 import com.chimbori.crux.common.Log.printAndRemove
 import com.chimbori.crux.common.countLetters
-import com.chimbori.crux.extractors.ExtractionHelpers.GRAVITY_SCORE_SELECTOR
 import java.util.ArrayDeque
 import java.util.Collections
 import java.util.IdentityHashMap
@@ -102,7 +101,7 @@ internal class PostprocessHelpers private constructor(private val keepers: Set<N
 
   private fun removeNodesWithNegativeScores(topNode: Element) {
     topNode.select(GRAVITY_SCORE_SELECTOR).forEach { element ->
-      val score = element.attr(ExtractionHelpers.GRAVITY_SCORE_ATTRIBUTE).toInt()
+      val score = element.attr(GRAVITY_SCORE_ATTRIBUTE).toInt()
       if (score < 0 || element.text().length < MIN_LENGTH_FOR_PARAGRAPHS) {
         if (!shouldKeep(element)) {
           printAndRemove("removeNodesWithNegativeScores", element)

@@ -1,9 +1,9 @@
 package com.chimbori.crux.articles
 
-import com.chimbori.crux.extractors.ExtractionHelpers.getNodes
-import com.chimbori.crux.extractors.ExtractionHelpers.getWeight
 import com.chimbori.crux.extractors.PostprocessHelpers
 import com.chimbori.crux.extractors.PreprocessHelpers
+import com.chimbori.crux.extractors.getNodes
+import com.chimbori.crux.extractors.getWeight
 import kotlin.math.ceil
 import okhttp3.HttpUrl
 import org.jsoup.Jsoup
