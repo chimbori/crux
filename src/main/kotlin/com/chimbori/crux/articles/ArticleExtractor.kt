@@ -1,10 +1,10 @@
 package com.chimbori.crux.articles
 
+import com.chimbori.crux.common.estimatedReadingTimeMinutes
 import com.chimbori.crux.extractors.PostprocessHelpers
 import com.chimbori.crux.extractors.PreprocessHelpers
 import com.chimbori.crux.extractors.getNodes
 import com.chimbori.crux.extractors.getWeight
-import kotlin.math.ceil
 import okhttp3.HttpUrl
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
@@ -71,14 +71,7 @@ constructor(public val url: HttpUrl, private val document: Document) {
    * must only be called after [.extractContent] has already been performed.
    */
   public fun estimateReadingTime(): ArticleExtractor {
-    // TODO: Consider handling badly-punctuated text such as missing spaces after periods.
-    val wordCount = document.text().split("\\s+".toRegex()).size
-    article.estimatedReadingTimeMinutes = ceil((wordCount / AVERAGE_WORDS_PER_MINUTE).toDouble()).toInt()
+    article.estimatedReadingTimeMinutes = document.estimatedReadingTimeMinutes()
     return this
-  }
-
-  public companion object {
-    /** Number of words that can be read by an average person in one minute. */
-    private const val AVERAGE_WORDS_PER_MINUTE = 275
   }
 }
