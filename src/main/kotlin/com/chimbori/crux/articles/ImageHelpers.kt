@@ -9,7 +9,7 @@ import okhttp3.HttpUrl
 import org.jsoup.nodes.Element
 import org.jsoup.select.Elements
 
-fun findLargestIcon(iconNodes: Elements): String? {
+internal fun findLargestIcon(iconNodes: Elements): String? {
   var largestIcon: Element? = null
   var maxSize: Long = -1
   for (iconNode in iconNodes) {
@@ -32,7 +32,7 @@ fun findLargestIcon(iconNodes: Elements): String? {
  * @param sizes String representing the sizes.
  * @return largest dimension, or 0 if input could not be parsed.
  */
-fun parseSize(sizeString: String?): Long {
+internal fun parseSize(sizeString: String?): Long {
   if (sizeString == null || sizeString.trim { it <= ' ' }.isEmpty()) {
     return 0
   }
@@ -61,7 +61,7 @@ fun parseSize(sizeString: String?): Long {
  * Extracts a set of images from the article content itself. This extraction must be run before
  * the postprocess step, because that step removes tags that are useful for image extraction.
  */
-fun extractImages(baseUrl: HttpUrl, topNode: Element?): List<Article.Image> {
+internal fun extractImages(baseUrl: HttpUrl, topNode: Element?): List<Article.Image> {
   val images = mutableListOf<Article.Image>()
   if (topNode == null) {
     return images

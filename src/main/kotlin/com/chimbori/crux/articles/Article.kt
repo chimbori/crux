@@ -6,7 +6,7 @@ import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
 
 /** Parsed result from a web page. */
-data class Article(
+public data class Article(
   var canonicalUrl: HttpUrl,
   var title: String? = null,
   var description: String? = null,
@@ -26,7 +26,7 @@ data class Article(
 ) {
 
   /** Encapsulates the data from an image found under an element */
-  data class Image(
+  public data class Image(
     var srcUrl: HttpUrl? = null,
     var weight: Int = 0,
     var title: String? = null,
@@ -36,8 +36,8 @@ data class Article(
     var noFollow: Boolean = false,
     var element: Element? = null
   ) {
-    companion object {
-      fun from(baseUrl: HttpUrl, imgElement: Element) = Image().apply {
+    public companion object {
+      public fun from(baseUrl: HttpUrl, imgElement: Element): Image = Image().apply {
         element = imgElement
         // Some sites use data-src to load images lazily, so prefer the data-src attribute if it exists.
         srcUrl = if (imgElement.attr("data-src").isNotEmpty()) {

@@ -8,9 +8,9 @@ import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 // resolve redirects such as when Facebook or Google show an interstitial page instead of redirecting the user to the
 // actual URL.
 
-fun HttpUrl.isAdImage(): Boolean = toString().countMatches("ad") >= 2
+public fun HttpUrl.isAdImage(): Boolean = toString().countMatches("ad") >= 2
 
-fun HttpUrl.isLikelyArticle(): Boolean =
+public fun HttpUrl.isLikelyArticle(): Boolean =
   !isLikelyImage()
       && !isLikelyVideo()
       && !isLikelyAudio()
@@ -18,7 +18,7 @@ fun HttpUrl.isLikelyArticle(): Boolean =
       && !isLikelyExecutable()
       && !isLikelyArchive()
 
-fun HttpUrl.isLikelyVideo(): Boolean = when (encodedPath.substringAfterLast(".").lowercase()) {
+public fun HttpUrl.isLikelyVideo(): Boolean = when (encodedPath.substringAfterLast(".").lowercase()) {
   "3g2",
   "3gp",
   "amv",
@@ -60,7 +60,7 @@ fun HttpUrl.isLikelyVideo(): Boolean = when (encodedPath.substringAfterLast(".")
   else -> false
 }
 
-fun HttpUrl.isLikelyAudio(): Boolean = when (encodedPath.substringAfterLast(".").lowercase()) {
+public fun HttpUrl.isLikelyAudio(): Boolean = when (encodedPath.substringAfterLast(".").lowercase()) {
   "3gp",
   "8svx",
   "aa",
@@ -107,7 +107,7 @@ fun HttpUrl.isLikelyAudio(): Boolean = when (encodedPath.substringAfterLast(".")
   else -> false
 }
 
-fun HttpUrl.isLikelyImage(): Boolean = when (encodedPath.substringAfterLast(".").lowercase()) {
+public fun HttpUrl.isLikelyImage(): Boolean = when (encodedPath.substringAfterLast(".").lowercase()) {
   "ai",
   "arw",
   "bmp",
@@ -148,7 +148,7 @@ fun HttpUrl.isLikelyImage(): Boolean = when (encodedPath.substringAfterLast(".")
   else -> false
 }
 
-fun HttpUrl.isLikelyBinaryDocument(): Boolean = when (encodedPath.substringAfterLast(".").lowercase()) {
+public fun HttpUrl.isLikelyBinaryDocument(): Boolean = when (encodedPath.substringAfterLast(".").lowercase()) {
   "doc",
   "pdf",
   "ppt",
@@ -159,7 +159,7 @@ fun HttpUrl.isLikelyBinaryDocument(): Boolean = when (encodedPath.substringAfter
   else -> false
 }
 
-fun HttpUrl.isLikelyArchive(): Boolean = when (encodedPath.substringAfterLast(".").lowercase()) {
+public fun HttpUrl.isLikelyArchive(): Boolean = when (encodedPath.substringAfterLast(".").lowercase()) {
   "7z",
   "deb",
   "gz",
@@ -171,7 +171,7 @@ fun HttpUrl.isLikelyArchive(): Boolean = when (encodedPath.substringAfterLast(".
   else -> false
 }
 
-fun HttpUrl.isLikelyExecutable(): Boolean = when (encodedPath.substringAfterLast(".").lowercase()) {
+public fun HttpUrl.isLikelyExecutable(): Boolean = when (encodedPath.substringAfterLast(".").lowercase()) {
   "bat",
   "bin",
   "dmg",
@@ -181,7 +181,7 @@ fun HttpUrl.isLikelyExecutable(): Boolean = when (encodedPath.substringAfterLast
 }
 
 @Suppress("unused")
-fun HttpUrl.resolveRedirects(): HttpUrl {
+public fun HttpUrl.resolveRedirects(): HttpUrl {
   var urlBeforeThisPass = this
   var urlAfterThisPass = this
   while (true) { // Go through redirectors multiple times while the URL is still being changed.

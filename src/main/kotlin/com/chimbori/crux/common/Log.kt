@@ -2,7 +2,7 @@ package com.chimbori.crux.common
 
 import org.jsoup.nodes.Node
 
-object Log {
+internal object Log {
   private const val DEBUG = false
 
   private const val TRUNCATE = true

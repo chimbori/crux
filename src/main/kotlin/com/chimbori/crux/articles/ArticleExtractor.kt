@@ -9,19 +9,19 @@ import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
 
 @Suppress("unused")
-class ArticleExtractor
+public class ArticleExtractor
 /**
  * Create an [ArticleExtractor] from an already-parsed JSoup document, to be used when a
  * JSoup document has already been parsed outside this library, and saves a second duplicate
  * re-parse of the same content.
  */
-constructor(val url: HttpUrl, private val document: Document) {
-  val article = Article(url)
+constructor(public val url: HttpUrl, private val document: Document) {
+  public val article: Article = Article(url)
 
   /** Create an [ArticleExtractor] from a raw HTML string. The HTML must exist and should be non-empty. */
-  constructor(url: HttpUrl, html: String) : this(url, Jsoup.parse(html))
+  public constructor(url: HttpUrl, html: String) : this(url, Jsoup.parse(html))
 
-  fun extractMetadata(): ArticleExtractor {
+  public fun extractMetadata(): ArticleExtractor {
     document.extractCanonicalUrl()?.let {
       article.canonicalUrl = url.resolve(it) ?: url
     }
@@ -41,7 +41,7 @@ constructor(val url: HttpUrl, private val document: Document) {
     return this
   }
 
-  fun extractContent(): ArticleExtractor {
+  public fun extractContent(): ArticleExtractor {
     PreprocessHelpers.preprocess(document)
     val nodes = document.getNodes()
     var maxWeight = 0
@@ -68,14 +68,14 @@ constructor(val url: HttpUrl, private val document: Document) {
    * Populates [Article.estimatedReadingTimeMinutes] based on the parsed content. This method
    * must only be called after [.extractContent] has already been performed.
    */
-  fun estimateReadingTime(): ArticleExtractor {
+  public fun estimateReadingTime(): ArticleExtractor {
     // TODO: Consider handling badly-punctuated text such as missing spaces after periods.
     val wordCount = document.text().split("\\s+".toRegex()).size
     article.estimatedReadingTimeMinutes = ceil((wordCount / AVERAGE_WORDS_PER_MINUTE).toDouble()).toInt()
     return this
   }
 
-  companion object {
+  public companion object {
     /** Number of words that can be read by an average person in one minute. */
     private const val AVERAGE_WORDS_PER_MINUTE = 275
   }

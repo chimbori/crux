@@ -42,3 +42,7 @@ tasks.withType<KotlinCompile>().configureEach {
     allWarningsAsErrors = true
   }
 }
+
+kotlin {
+  explicitApi = Strict
+}

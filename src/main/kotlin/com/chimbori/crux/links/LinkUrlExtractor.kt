@@ -11,7 +11,7 @@ import org.jsoup.nodes.Element
  * in a way that works without explicit CSS selector foo. Check out the test cases for markup that is supported.
  */
 @Suppress("unused")
-class LinkUrlExtractor(private val url: HttpUrl, private val root: Element) {
+internal class LinkUrlExtractor(private val url: HttpUrl, private val root: Element) {
   var linkUrl: HttpUrl? = null
     private set
 

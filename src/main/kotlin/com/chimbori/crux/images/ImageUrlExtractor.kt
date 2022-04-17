@@ -17,7 +17,7 @@ import org.jsoup.select.Elements
  * supported.
  */
 @Suppress("unused")
-class ImageUrlExtractor(private val url: HttpUrl, private val root: Element) {
+internal class ImageUrlExtractor(private val url: HttpUrl, private val root: Element) {
   var imageUrl: HttpUrl? = null
     private set
 
