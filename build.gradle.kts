@@ -1,3 +1,4 @@
+import org.jetbrains.kotlin.gradle.dsl.ExplicitApiMode.Strict
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
