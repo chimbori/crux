@@ -1,6 +1,6 @@
 package com.chimbori.crux.articles
 
-import com.chimbori.crux.fromFile
+import com.chimbori.crux.common.fromFile
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import org.junit.Assert.assertEquals
 import org.junit.Test

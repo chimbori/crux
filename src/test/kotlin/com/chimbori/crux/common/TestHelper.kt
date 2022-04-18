@@ -1,4 +1,4 @@
-package com.chimbori.crux
+package com.chimbori.crux.common
 
 import com.chimbori.crux.articles.Article
 import com.chimbori.crux.articles.ArticleExtractor
