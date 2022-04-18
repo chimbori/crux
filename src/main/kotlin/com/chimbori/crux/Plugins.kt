@@ -34,6 +34,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.HttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrl
+import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import okhttp3.OkHttpClient
 import org.jsoup.nodes.Element
 
@@ -42,6 +43,8 @@ import org.jsoup.nodes.Element
  * choose from the set of available default plugins to create their own configuration.
  */
 public val DEFAULT_PLUGINS: List<Plugin> = listOf(
+  GoogleStaticRedirectorPlugin(),
+  FacebookStaticRedirectorPlugin(),
   AmpPlugin(refetchContentFromCanonicalUrl = true),
   HtmlMetadataPlugin(),  // Fallback extractor that parses many standard HTML attributes.
   ArticleExtractorPlugin(),
@@ -128,5 +131,33 @@ public class AmpPlugin(
       )
     }
     return null
+  }
+}
+
+public class GoogleStaticRedirectorPlugin : Plugin {
+  override fun canHandle(url: HttpUrl): Boolean =
+    url.host.endsWith(".google.com") && url.encodedPath == "/url"
+
+  override suspend fun handle(request: Resource): Resource {
+    var outputUrl: HttpUrl = request.url ?: return request
+    do {
+      outputUrl = (outputUrl.queryParameter("q") ?: outputUrl.queryParameter("url"))
+        ?.toHttpUrlOrNull()
+        ?: outputUrl
+    } while (canHandle(outputUrl))
+    return Resource(outputUrl)
+  }
+}
+
+public class FacebookStaticRedirectorPlugin : Plugin {
+  override fun canHandle(url: HttpUrl): Boolean =
+    url.host.endsWith(".facebook.com") && url.encodedPath == "/l.php"
+
+  override suspend fun handle(request: Resource): Resource {
+    var outputUrl: HttpUrl = request.url ?: return request
+    do {
+      outputUrl = outputUrl.queryParameter("u")?.toHttpUrlOrNull() ?: outputUrl
+    } while (canHandle(outputUrl))
+    return Resource(outputUrl)
   }
 }
