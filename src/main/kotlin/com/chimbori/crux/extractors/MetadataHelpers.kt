@@ -4,7 +4,7 @@ import com.chimbori.crux.common.cleanTitle
 import com.chimbori.crux.common.nullIfBlank
 import com.chimbori.crux.common.removeWhiteSpace
 import okhttp3.HttpUrl
-import okhttp3.HttpUrl.Companion.toHttpUrl
+import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import org.jsoup.nodes.Document
 
 internal fun Document.extractTitle(): String? = (
@@ -47,7 +47,7 @@ internal fun Document.extractFaviconUrl(baseUrl: HttpUrl?): HttpUrl? = (
     findLargestIcon(select("head link[rel~=icon]"))
       ?: findLargestIcon(select("head link[rel~=ICON]"))
       ?: findLargestIcon(select("head link[rel^=apple-touch-icon]"))
-    )?.let { baseUrl?.resolve(it) ?: it.toHttpUrl() }
+    )?.let { baseUrl?.resolve(it) ?: it.toHttpUrlOrNull() }
 
 internal fun Document.extractImageUrl(baseUrl: HttpUrl?): HttpUrl? = (
     // Twitter Cards and Open Graph images are usually higher quality, so rank them first.
@@ -56,17 +56,17 @@ internal fun Document.extractImageUrl(baseUrl: HttpUrl?): HttpUrl? = (
       // image_src or thumbnails are usually low quality, so prioritize them *after* article images.
       ?: select("link[rel=image_src]").attr("href").nullIfBlank()
       ?: select("head meta[name=thumbnail]").attr("content").nullIfBlank()
-    )?.let { baseUrl?.resolve(it) ?: it.toHttpUrl() }
+    )?.let { baseUrl?.resolve(it) ?: it.toHttpUrlOrNull() }
 
 internal fun Document.extractFeedUrl(baseUrl: HttpUrl?): HttpUrl? = (
     select("link[rel=alternate]").select("link[type=application/rss+xml]").attr("href").nullIfBlank()
       ?: select("link[rel=alternate]").select("link[type=application/atom+xml]").attr("href").nullIfBlank()
-    )?.let { baseUrl?.resolve(it) ?: it.toHttpUrl() }
+    )?.let { baseUrl?.resolve(it) ?: it.toHttpUrlOrNull() }
 
 internal fun Document.extractAmpUrl(baseUrl: HttpUrl?): HttpUrl? =
   select("link[rel=amphtml]").attr("href").nullIfBlank()
-    ?.let { baseUrl?.resolve(it) ?: it.toHttpUrl() }
+    ?.let { baseUrl?.resolve(it) ?: it.toHttpUrlOrNull() }
 
 internal fun Document.extractVideoUrl(baseUrl: HttpUrl?): HttpUrl? =
   select("head meta[property=og:video]").attr("content").nullIfBlank()
-    ?.let { baseUrl?.resolve(it) ?: it.toHttpUrl() }
+    ?.let { baseUrl?.resolve(it) ?: it.toHttpUrlOrNull() }
