@@ -1,5 +1,6 @@
 package com.chimbori.crux.common
 
+import com.chimbori.crux.Resource
 import com.chimbori.crux.articles.Article
 import com.chimbori.crux.articles.ArticleExtractor
 import java.io.File
@@ -7,6 +8,7 @@ import java.io.FileNotFoundException
 import java.nio.charset.Charset
 import okhttp3.HttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrl
+import org.jsoup.Jsoup
 import org.junit.Assert.fail
 
 internal fun fromFile(baseUrl: String, testFile: String, charset: String? = "UTF-8") =
@@ -22,6 +24,11 @@ internal fun fromFile(baseUrl: HttpUrl, testFile: String, charset: String? = "UT
   fail(e.message)
   throw e
 }
+
+internal fun Resource.Companion.fromTestData(url: HttpUrl, filename: String) = Resource(
+  url = url,
+  document = Jsoup.parse(File("test_data/$filename").readText(), url.toString())
+)
 
 internal fun assertStartsWith(expected: String, actual: String?) {
   if (actual?.startsWith(expected) == false) {
