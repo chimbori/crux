@@ -3,9 +3,12 @@ package com.chimbori.crux
 import com.chimbori.crux.Fields.DESCRIPTION
 import com.chimbori.crux.Fields.TITLE
 import com.chimbori.crux.articles.extractTitle
+import com.chimbori.crux.common.assertStartsWith
 import com.chimbori.crux.common.cruxOkHttpClient
+import com.chimbori.crux.common.fromTestData
 import com.chimbori.crux.common.fromUrl
 import kotlinx.coroutines.runBlocking
+import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import okhttp3.mockwebserver.Dispatcher
@@ -16,6 +19,7 @@ import org.jsoup.Jsoup
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
+import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Before
@@ -64,6 +68,24 @@ class PluginsTest {
       assertNull(parsedResource.url)
       assertEquals("Crux Test", parsedResource[TITLE])
       assertFalse(parsedResource.fields.containsKey(DESCRIPTION))
+    }
+  }
+
+  @Test
+  fun testArticleExtractorPluginCanParseArticleContent() {
+    val wikipediaUrl = "https://en.wikipedia.org/wiki/Galileo_Galilei".toHttpUrl()
+    val articleExtractorPlugin = ArticleExtractorPlugin()
+    assertTrue(articleExtractorPlugin.canHandle(wikipediaUrl))
+
+    runBlocking {
+      articleExtractorPlugin.handle(Resource.fromTestData(wikipediaUrl, "wikipedia_galileo.html"))
+    }?.let {
+      val parsedArticle = it.document
+      assertNotNull(parsedArticle)
+      assertStartsWith(
+        """"Galileo" redirects here. For other uses, see Galileo (disambiguation) and Galileo Galilei (disambiguation).""",
+        parsedArticle?.text()
+      )
     }
   }
 

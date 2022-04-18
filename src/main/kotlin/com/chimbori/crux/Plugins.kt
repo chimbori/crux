@@ -25,12 +25,17 @@ import com.chimbori.crux.articles.extractVideoUrl
 import com.chimbori.crux.common.cruxOkHttpClient
 import com.chimbori.crux.common.fromUrl
 import com.chimbori.crux.common.nullIfBlank
+import com.chimbori.crux.extractors.PostprocessHelpers.Companion.postprocess
+import com.chimbori.crux.extractors.PreprocessHelpers.preprocess
+import com.chimbori.crux.extractors.getNodes
+import com.chimbori.crux.extractors.getWeight
 import com.chimbori.crux.urls.isLikelyArticle
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.HttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.OkHttpClient
+import org.jsoup.nodes.Element
 
 /**
  * An ordered list of default plugins configured in Crux. Callers can override and provide their own list, or pick and
@@ -38,7 +43,8 @@ import okhttp3.OkHttpClient
  */
 public val DEFAULT_PLUGINS: List<Plugin> = listOf(
   AmpPlugin(refetchContentFromCanonicalUrl = true),
-  HtmlMetadataPlugin()  // Fallback extractor that parses many standard HTML attributes.
+  HtmlMetadataPlugin(),  // Fallback extractor that parses many standard HTML attributes.
+  ArticleExtractorPlugin(),
 )
 
 /**
@@ -73,6 +79,32 @@ public class HtmlMetadataPlugin : Plugin {
         VIDEO_URL to request.document?.extractVideoUrl(canonicalUrl),
       )
     ).removeNullValues()
+  }
+}
+
+public class ArticleExtractorPlugin : Plugin {
+  override fun canHandle(url: HttpUrl): Boolean = url.isLikelyArticle()
+
+  override suspend fun handle(request: Resource): Resource? {
+    request.document
+      ?: return null
+
+    preprocess(request.document)
+    val nodes = request.document.getNodes()
+    var maxWeight = 0
+    var bestMatchElement: Element? = null
+    for (element in nodes) {
+      val currentWeight = element.getWeight()
+      if (currentWeight > maxWeight) {
+        maxWeight = currentWeight
+        bestMatchElement = element
+        if (maxWeight > 200) {
+          break
+        }
+      }
+    }
+
+    return Resource(document = postprocess(bestMatchElement))
   }
 }
 
