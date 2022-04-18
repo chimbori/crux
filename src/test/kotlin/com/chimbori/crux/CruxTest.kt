@@ -16,9 +16,9 @@ import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import okhttp3.mockwebserver.RecordedRequest
 import org.junit.After
-import org.junit.Assert
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
+import org.junit.Assert.assertNull
 import org.junit.Before
 import org.junit.Test
 
@@ -58,7 +58,7 @@ class CruxTest {
     assertEquals("Life, the Universe, and Everything", resource[TITLE])
     assertEquals("42", resource[DESCRIPTION])
     assertEquals("https://chimbori.com/".toHttpUrl(), resource.urls[CANONICAL_URL])
-    Assert.assertNull(resource.urls[BANNER_IMAGE_URL])
+    assertNull(resource.urls[BANNER_IMAGE_URL])
   }
 
   @Test
