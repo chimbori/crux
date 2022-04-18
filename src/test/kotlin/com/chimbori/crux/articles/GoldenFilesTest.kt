@@ -1,12 +1,13 @@
 package com.chimbori.crux.articles
 
+import com.chimbori.crux.common.assertContains
+import com.chimbori.crux.common.assertStartsWith
 import com.chimbori.crux.common.fromFile
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import org.junit.Assert.assertArrayEquals
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
-import org.junit.Assert.fail
 import org.junit.Test
 
 class GoldenFilesTest {
@@ -1246,20 +1247,6 @@ class GoldenFilesTest {
       assertEquals("http://i4.ytimg.com/vi/wlupmjrfaB4/default.jpg".toHttpUrl(), imageUrl)
       assertEquals("http://www.youtube.com/v/wlupmjrfaB4?version=3".toHttpUrl(), videoUrl)
       assertEquals("http://s.ytimg.com/yt/favicon-vflZlzSbU.ico".toHttpUrl(), faviconUrl)
-    }
-  }
-
-  companion object {
-    private fun assertStartsWith(expected: String, actual: String?) {
-      if (actual?.startsWith(expected) == false) {
-        fail("Expected \n[$expected]\n at start of \n[$actual]\n")
-      }
-    }
-
-    private fun assertContains(expected: String, actual: String?) {
-      if (actual?.contains(expected) == false) {
-        fail("Expected \n[$expected]\n in \n[$actual]\n")
-      }
     }
   }
 }

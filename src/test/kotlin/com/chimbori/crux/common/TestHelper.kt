@@ -22,3 +22,15 @@ fun fromFile(baseUrl: HttpUrl, testFile: String, charset: String? = "UTF-8"): Ar
   fail(e.message)
   throw e
 }
+
+internal fun assertStartsWith(expected: String, actual: String?) {
+  if (actual?.startsWith(expected) == false) {
+    fail("Expected \n[$expected]\n at start of \n[$actual]\n")
+  }
+}
+
+internal fun assertContains(expected: String, actual: String?) {
+  if (actual?.contains(expected) == false) {
+    fail("Expected \n[$expected]\n in \n[$actual]\n")
+  }
+}
