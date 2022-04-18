@@ -9,10 +9,10 @@ import okhttp3.HttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import org.junit.Assert.fail
 
-fun fromFile(baseUrl: String, testFile: String, charset: String? = "UTF-8") =
+internal fun fromFile(baseUrl: String, testFile: String, charset: String? = "UTF-8") =
   fromFile(baseUrl.toHttpUrl(), testFile, charset)
 
-fun fromFile(baseUrl: HttpUrl, testFile: String, charset: String? = "UTF-8"): Article = try {
+internal fun fromFile(baseUrl: HttpUrl, testFile: String, charset: String? = "UTF-8"): Article = try {
   ArticleExtractor(baseUrl, File("test_data/$testFile").readText(Charset.forName(charset)))
     .extractMetadata()
     .extractContent()
