@@ -41,7 +41,7 @@ public class Crux(
       }
 
       val downloadedDoc = httpResponse?.body?.string()?.let {
-        Jsoup.parse(it, httpResponse.request.url.toString())
+        Jsoup.parse(it, urlToUse.toString())
       } ?: Document(urlToUse.toString())  // Create an empty [Document] if none could be downloaded/parsed.
 
       Resource(url = urlToUse, document = downloadedDoc)
