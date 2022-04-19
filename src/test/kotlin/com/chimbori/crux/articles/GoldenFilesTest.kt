@@ -6,7 +6,6 @@ import com.chimbori.crux.common.fromFile
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import org.junit.Assert.assertArrayEquals
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
@@ -443,7 +442,7 @@ class GoldenFilesTest {
         document?.text()
       )
       assertStartsWith("Preview songs from 21 by ADELE", description)
-      assertNull(faviconUrl)
+      assertEquals("http://itunes.apple.com/favicon.ico".toHttpUrl(), faviconUrl)
     }
   }
 

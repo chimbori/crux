@@ -49,6 +49,7 @@ internal fun Document.extractFaviconUrl(baseUrl: HttpUrl?): HttpUrl? = (
       ?: findLargestIcon(select("link[rel~=apple-touch-icon]"))
       ?: findLargestIcon(select("link[rel~=apple-touch-icon-precomposed]"))
     )?.let { baseUrl?.resolve(it) ?: it.toHttpUrlOrNull() }
+  ?: baseUrl?.newBuilder()?.encodedPath("/favicon.ico")?.build()
 
 internal fun Document.extractImageUrl(baseUrl: HttpUrl?): HttpUrl? = (
     // Twitter Cards and Open Graph images are usually higher quality, so rank them first.
