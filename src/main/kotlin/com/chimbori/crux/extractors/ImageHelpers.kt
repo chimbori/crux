@@ -2,42 +2,10 @@ package com.chimbori.crux.extractors
 
 import com.chimbori.crux.articles.Article
 import com.chimbori.crux.common.Log
-import com.chimbori.crux.common.nullIfBlank
 import com.chimbori.crux.urls.isAdImage
-import java.util.Locale
 import okhttp3.HttpUrl
 import org.jsoup.nodes.Element
 import org.jsoup.select.Elements
-
-internal fun findLargestIcon(iconElements: Elements): String? =
-  iconElements.maxByOrNull { parseSize(it.attr("sizes")) }?.attr("href")?.nullIfBlank()
-
-/**
- * Given a size represented by "WidthxHeight" or "WidthxHeight ...", will return the largest dimension found.
- *
- * Examples: "128x128" will return 128.
- * "128x64" will return 64.
- * "24x24 48x48" will return 48.
- *
- * @param sizes String representing the sizes.
- * @return largest dimension, or 0 if input could not be parsed.
- */
-internal fun parseSize(sizeString: String?): Int {
-  if (sizeString.isNullOrBlank()) return 0
-
-  val sizes = sizeString.trim(' ').lowercase(Locale.getDefault())
-  return when {
-    // For multiple sizes in the same String, split and parse recursively.
-    sizes.contains(" ") -> sizes.split(" ").maxOfOrNull { parseSize(it) } ?: 0
-    // For handling sizes of format 128x128 etc.
-    sizes.contains("x") -> try {
-      sizes.split("x").maxOf { it.trim().toInt() }
-    } catch (e: NumberFormatException) {
-      0
-    }
-    else -> 0
-  }
-}
 
 /**
  * Extracts a set of images from the article content itself. This extraction must be run before
