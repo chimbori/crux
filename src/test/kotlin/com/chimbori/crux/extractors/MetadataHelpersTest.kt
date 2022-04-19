@@ -45,9 +45,25 @@ class MetadataHelpersTest {
           |<link rel="icon" sizes="72x72"   href="/72.png">
           |<link rel="icon" sizes="114x114" href="/114.png">
           |<link rel="icon" sizes="144x144" href="/144.png">
-          |<link rel="icon" href="/no-size.png">
+          |<link rel="icon"                 href="/no-size.png">
         """.trimMargin(), "https://example.org/"
-        ).select("link[rel~=icon]")
+        ).select("*")
+      )
+    )
+
+    assertEquals(
+      "/512.png",
+      findLargestIcon(
+        Jsoup.parse(
+          """
+          |<link rel="apple-touch-icon-precomposed" sizes="512x512" href="/512.png">
+          |<link rel="apple-touch-icon"             sizes="57x57"   href="/57.png">
+          |<link rel="icon"                         sizes="72x72"   href="/72.png">
+          |<link rel="icon"                         sizes="114x114" href="/114.png">
+          |<link rel="apple-touch-icon"             sizes="144x144" href="/144.png">
+
+        """.trimMargin(), "https://example.org/"
+        ).select("*")
       )
     )
   }

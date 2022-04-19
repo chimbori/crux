@@ -7,7 +7,7 @@ import java.util.Locale
 import okhttp3.HttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import org.jsoup.nodes.Document
-import org.jsoup.select.Elements
+import org.jsoup.nodes.Element
 
 internal fun Document.extractTitle(): String? = (
     title().nullIfBlank()
@@ -45,13 +45,17 @@ internal fun Document.extractKeywords(): List<String> =
     .split("\\s*,\\s*".toRegex())
     .filter { it.isNotBlank() }
 
-internal fun Document.extractFaviconUrl(baseUrl: HttpUrl?): HttpUrl? = (
-    findLargestIcon(select("link[rel~=icon]"))
-      ?: findLargestIcon(select("link[rel~=ICON]"))
-      ?: findLargestIcon(select("link[rel~=apple-touch-icon]"))
-      ?: findLargestIcon(select("link[rel~=apple-touch-icon-precomposed]"))
-    )?.let { baseUrl?.resolve(it) ?: it.toHttpUrlOrNull() }
-  ?: baseUrl?.newBuilder()?.encodedPath("/favicon.ico")?.build()
+internal fun Document.extractFaviconUrl(baseUrl: HttpUrl?): HttpUrl? {
+  val allPossibleIconElements = listOf(
+    select("link[rel~=apple-touch-icon]"),
+    select("link[rel~=apple-touch-icon-precomposed]"),
+    select("link[rel~=icon]"),
+    select("link[rel~=ICON]"),
+  )
+  return findLargestIcon(allPossibleIconElements.flatten())
+    ?.let { baseUrl?.resolve(it) ?: it.toHttpUrlOrNull() }
+    ?: baseUrl?.newBuilder()?.encodedPath("/favicon.ico")?.build()
+}
 
 internal fun Document.extractImageUrl(baseUrl: HttpUrl?): HttpUrl? = (
     // Twitter Cards and Open Graph images are usually higher quality, so rank them first.
@@ -75,7 +79,7 @@ internal fun Document.extractVideoUrl(baseUrl: HttpUrl?): HttpUrl? =
   select("meta[property=og:video]").attr("content").nullIfBlank()
     ?.let { baseUrl?.resolve(it) ?: it.toHttpUrlOrNull() }
 
-internal fun findLargestIcon(iconElements: Elements): String? =
+internal fun findLargestIcon(iconElements: List<Element>): String? =
   iconElements.maxByOrNull { parseSize(it.attr("sizes")) }?.attr("href")?.nullIfBlank()
 
 /**
