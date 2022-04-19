@@ -44,9 +44,10 @@ internal fun Document.extractKeywords(): List<String> =
     .filter { it.isNotBlank() }
 
 internal fun Document.extractFaviconUrl(baseUrl: HttpUrl?): HttpUrl? = (
-    findLargestIcon(select("head link[rel~=icon]"))
-      ?: findLargestIcon(select("head link[rel~=ICON]"))
-      ?: findLargestIcon(select("head link[rel^=apple-touch-icon]"))
+    findLargestIcon(select("link[rel~=icon]"))
+      ?: findLargestIcon(select("link[rel~=ICON]"))
+      ?: findLargestIcon(select("link[rel~=apple-touch-icon]"))
+      ?: findLargestIcon(select("link[rel~=apple-touch-icon-precomposed]"))
     )?.let { baseUrl?.resolve(it) ?: it.toHttpUrlOrNull() }
 
 internal fun Document.extractImageUrl(baseUrl: HttpUrl?): HttpUrl? = (
