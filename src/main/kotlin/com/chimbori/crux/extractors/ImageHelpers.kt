@@ -4,23 +4,12 @@ import com.chimbori.crux.common.Log
 import com.chimbori.crux.common.nullIfBlank
 import com.chimbori.crux.urls.isAdImage
 import java.util.Locale
-import kotlin.math.max
 import okhttp3.HttpUrl
 import org.jsoup.nodes.Element
 import org.jsoup.select.Elements
 
-internal fun findLargestIcon(iconNodes: Elements): String? {
-  var largestIcon: Element? = null
-  var maxSize: Long = -1
-  for (iconNode in iconNodes) {
-    val size = parseSize(iconNode.attr("sizes"))
-    if (size > maxSize) {
-      maxSize = size
-      largestIcon = iconNode
-    }
-  }
-  return largestIcon?.attr("href")?.nullIfBlank()
-}
+internal fun findLargestIcon(iconElements: Elements): String? =
+  iconElements.maxByOrNull { parseSize(it.attr("sizes")) }?.attr("href")?.nullIfBlank()
 
 /**
  * Given a size represented by "WidthxHeight" or "WidthxHeight ...", will return the largest dimension found.
@@ -32,29 +21,21 @@ internal fun findLargestIcon(iconNodes: Elements): String? {
  * @param sizes String representing the sizes.
  * @return largest dimension, or 0 if input could not be parsed.
  */
-internal fun parseSize(sizeString: String?): Long {
-  if (sizeString == null || sizeString.trim { it <= ' ' }.isEmpty()) {
-    return 0
-  }
+internal fun parseSize(sizeString: String?): Int {
+  if (sizeString.isNullOrBlank()) return 0
 
-  val sizes = sizeString.trim { it <= ' ' }.lowercase(Locale.getDefault())
-  if (sizes.contains(" ")) {
-    // For multiple sizes in the same String, split it and parse recursively.
-    return sizes.split(" ").map { parseSize(it) }.maxOrNull() ?: 0
-  } else if (sizes.contains("x")) {
+  val sizes = sizeString.trim(' ').lowercase(Locale.getDefault())
+  return when {
+    // For multiple sizes in the same String, split and parse recursively.
+    sizes.contains(" ") -> sizes.split(" ").maxOfOrNull { parseSize(it) } ?: 0
     // For handling sizes of format 128x128 etc.
-    val dimen = sizes.split("x")
-    if (dimen.size == 2) {
-      return try {
-        val width = dimen[0].trim { it <= ' ' }.toLong()
-        val height = dimen[1].trim { it <= ' ' }.toLong()
-        max(width, height)
-      } catch (e: NumberFormatException) {
-        0
-      }
+    sizes.contains("x") -> try {
+      sizes.split("x").maxOf { it.trim().toInt() }
+    } catch (e: NumberFormatException) {
+      0
     }
+    else -> 0
   }
-  return 0
 }
 
 /**

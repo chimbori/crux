@@ -1,6 +1,8 @@
 package com.chimbori.crux.extractors
 
+import com.chimbori.crux.articles.findLargestIcon
 import com.chimbori.crux.articles.parseSize
+import org.jsoup.Jsoup
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
@@ -22,5 +24,23 @@ class ImageHelpersTest {
     assertEquals(48, parseSize("16x16 24x48"))
     assertEquals(16, parseSize("16x16 24"))
     assertEquals(0, parseSize("Some string with a 'x' in between"))
+  }
+
+  @Test
+  fun testFindLargestIcon() {
+    assertEquals(
+      "/144.png",
+      findLargestIcon(
+        Jsoup.parse(
+          """
+          |<link rel="icon" sizes="57x57"   href="/57.png">
+          |<link rel="icon" sizes="72x72"   href="/72.png">
+          |<link rel="icon" sizes="114x114" href="/114.png">
+          |<link rel="icon" sizes="144x144" href="/144.png">
+          |<link rel="icon" href="/no-size.png">
+        """.trimMargin(), "https://example.org/"
+        ).select("link[rel~=icon]")
+      )
+    )
   }
 }
