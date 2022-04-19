@@ -2,7 +2,7 @@ package com.chimbori.crux
 
 import com.chimbori.crux.Fields.DESCRIPTION
 import com.chimbori.crux.Fields.TITLE
-import com.chimbori.crux.articles.extractTitle
+import com.chimbori.crux.extractors.extractTitle
 import com.chimbori.crux.common.assertStartsWith
 import com.chimbori.crux.common.cruxOkHttpClient
 import com.chimbori.crux.common.fromTestData
