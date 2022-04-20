@@ -17,7 +17,7 @@ internal fun String.removeWhiteSpace() = replace("\\s+".toRegex(), " ").trim { i
 
 internal fun String.countLetters() = count { isLetter(it) }
 
-internal fun String.nullIfBlank(): String? = ifBlank { null }
+public fun String.nullIfBlank(): String? = ifBlank { null }
 
 internal fun String.cleanTitle() = if (lastIndexOf("|") > length / 2) {
   substring(0, indexOf("|")).trim()
