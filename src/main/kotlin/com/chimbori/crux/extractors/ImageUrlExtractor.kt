@@ -17,11 +17,11 @@ import org.jsoup.select.Elements
  * supported.
  */
 @Suppress("unused")
-internal class ImageUrlExtractor(private val url: HttpUrl, private val root: Element) {
-  var imageUrl: HttpUrl? = null
+public class ImageUrlExtractor(private val url: HttpUrl, private val root: Element) {
+  public var imageUrl: HttpUrl? = null
     private set
 
-  fun findImage(): ImageUrlExtractor {
+  public fun findImage(): ImageUrlExtractor {
     (
         root.attr("src").nullIfBlank()
           ?: root.attr("data-src").nullIfBlank()
@@ -51,7 +51,7 @@ internal class ImageUrlExtractor(private val url: HttpUrl, private val root: Ele
     return null
   }
 
-  companion object {
+  public companion object {
     private val CSS_URL = Pattern.compile("url\\([\\\"']{0,1}(.+?)[\\\"']{0,1}\\)")
   }
 }

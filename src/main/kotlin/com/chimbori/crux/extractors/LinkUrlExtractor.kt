@@ -11,11 +11,11 @@ import org.jsoup.nodes.Element
  * in a way that works without explicit CSS selector foo. Check out the test cases for markup that is supported.
  */
 @Suppress("unused")
-internal class LinkUrlExtractor(private val url: HttpUrl, private val root: Element) {
-  var linkUrl: HttpUrl? = null
+public class LinkUrlExtractor(private val url: HttpUrl, private val root: Element) {
+  public var linkUrl: HttpUrl? = null
     private set
 
-  fun findLink(): LinkUrlExtractor {
+  public fun findLink(): LinkUrlExtractor {
     (
         root.attr("href").nullIfBlank()
           ?: root.select("*").anyChildTagWithAttr("href")
