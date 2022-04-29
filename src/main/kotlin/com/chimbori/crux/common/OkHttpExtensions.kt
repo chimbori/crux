@@ -13,6 +13,9 @@ import org.jsoup.Jsoup
 
 private const val DEFAULT_BROWSER_VERSION = "100.0.0.0"
 
+private const val CHROME_USER_AGENT = "Mozilla/5.0 (Linux; Android 11; Build/RQ2A.210505.003) AppleWebKit/537.36 " +
+    "(KHTML, like Gecko) Version/4.0 Chrome/$DEFAULT_BROWSER_VERSION Mobile Safari/537.36"
+
 private const val GOOGLEBOT_USER_AGENT =
   "Mozilla/5.0 (Linux; Android 6.0.1; Nexus 5X Build/MMB29P) AppleWebKit/537.36 " +
       "(KHTML, like Gecko) Chrome/$DEFAULT_BROWSER_VERSION Mobile Safari/537.36 " +
@@ -25,7 +28,7 @@ public val cruxOkHttpClient: OkHttpClient = OkHttpClient.Builder()
   .addNetworkInterceptor { chain ->
     chain.proceed(
       chain.request().newBuilder()
-        .header("User-Agent", GOOGLEBOT_USER_AGENT).build()
+        .header("User-Agent", CHROME_USER_AGENT).build()
     )
   }
   .build()
