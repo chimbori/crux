@@ -6,8 +6,8 @@ import com.chimbori.crux.common.anyChildTagWithAttr
 import com.chimbori.crux.common.nullIfBlank
 import java.util.regex.Pattern
 import okhttp3.HttpUrl
-import org.apache.commons.lang3.StringEscapeUtils.unescapeHtml4
 import org.jsoup.nodes.Element
+import org.jsoup.parser.Parser.unescapeEntities
 import org.jsoup.select.Elements
 
 /**
@@ -41,8 +41,7 @@ public class ImageUrlExtractor(private val url: HttpUrl, private val root: Eleme
       if (styleAttr.isNullOrEmpty()) {
         return@forEach
       }
-      @Suppress("DEPRECATION")
-      styleAttr = unescapeHtml4(styleAttr)
+      styleAttr = unescapeEntities(styleAttr, true)
       val cssUrlMatcher = CSS_URL.matcher(styleAttr)
       if (cssUrlMatcher.find()) {
         return cssUrlMatcher.group(1)
