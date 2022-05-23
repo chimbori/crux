@@ -33,7 +33,7 @@ import okhttp3.HttpUrl
  * - Open Graph Protocol: https://ogp.me/
  * - AMP Spec: https://amp.dev/documentation/guides-and-tutorials/learn/spec/amphtml/
  */
-public class HtmlMetadataPlugin : Plugin {
+public class HtmlMetadataExtractor : Plugin {
   /** Skip handling any file extensions that are unlikely to be HTML pages. */
   public override fun canHandle(url: HttpUrl): Boolean = url.isLikelyArticle()
 

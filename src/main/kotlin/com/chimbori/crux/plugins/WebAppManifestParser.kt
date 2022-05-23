@@ -24,7 +24,7 @@ import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
 
-public class WebAppManifestPlugin : Plugin {
+public class WebAppManifestParser : Plugin {
   override fun canHandle(url: HttpUrl): Boolean = url.isLikelyArticle()
 
   override suspend fun handle(request: Resource): Resource? {

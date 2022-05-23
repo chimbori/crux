@@ -5,7 +5,7 @@ import com.chimbori.crux.Resource
 import okhttp3.HttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 
-public class FacebookStaticRedirectorPlugin : Plugin {
+public class FacebookStaticRedirector : Plugin {
   override fun canHandle(url: HttpUrl): Boolean =
     url.host.endsWith(".facebook.com") && url.encodedPath == "/l.php"
 

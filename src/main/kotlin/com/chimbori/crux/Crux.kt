@@ -2,14 +2,14 @@ package com.chimbori.crux
 
 import com.chimbori.crux.common.cruxOkHttpClient
 import com.chimbori.crux.common.safeHttpGet
-import com.chimbori.crux.plugins.AmpPlugin
-import com.chimbori.crux.plugins.ArticleExtractorPlugin
-import com.chimbori.crux.plugins.FacebookStaticRedirectorPlugin
-import com.chimbori.crux.plugins.FaviconPlugin
-import com.chimbori.crux.plugins.GoogleStaticRedirectorPlugin
-import com.chimbori.crux.plugins.HtmlMetadataPlugin
+import com.chimbori.crux.plugins.AmpRedirector
+import com.chimbori.crux.plugins.ArticleExtractor
+import com.chimbori.crux.plugins.FacebookStaticRedirector
+import com.chimbori.crux.plugins.FaviconExtractor
+import com.chimbori.crux.plugins.GoogleStaticRedirector
+import com.chimbori.crux.plugins.HtmlMetadataExtractor
 import com.chimbori.crux.plugins.TrackingParameterRemover
-import com.chimbori.crux.plugins.WebAppManifestPlugin
+import com.chimbori.crux.plugins.WebAppManifestParser
 import okhttp3.HttpUrl
 import okhttp3.OkHttpClient
 import org.jsoup.Jsoup
@@ -21,20 +21,20 @@ import org.jsoup.nodes.Document
  */
 public val DEFAULT_PLUGINS: List<Plugin> = listOf(
   // Static redirectors go first, to avoid getting stuck into CAPTCHAs.
-  GoogleStaticRedirectorPlugin(),
-  FacebookStaticRedirectorPlugin(),
+  GoogleStaticRedirector(),
+  FacebookStaticRedirector(),
   // Remove any tracking parameters remaining.
   TrackingParameterRemover(),
   // Prefer canonical URLs over AMP URLs.
-  AmpPlugin(refetchContentFromCanonicalUrl = true),
+  AmpRedirector(refetchContentFromCanonicalUrl = true),
   // Parses many standard HTML metadata attributes.
-  HtmlMetadataPlugin(),
+  HtmlMetadataExtractor(),
   // Extracts the best possible favicon from all the markup available on the page itself.
-  FaviconPlugin(),
+  FaviconExtractor(),
   // Fetches and parses the Web Manifest. May replace existing favicon URL with one from the manifest.json.
-  WebAppManifestPlugin(),
+  WebAppManifestParser(),
   // Parses the content of the page to remove ads, navigation, and all the other fluff.
-  ArticleExtractorPlugin(),
+  ArticleExtractor(),
 )
 
 /**

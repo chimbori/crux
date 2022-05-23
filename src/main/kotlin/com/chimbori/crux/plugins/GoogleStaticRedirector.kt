@@ -5,7 +5,7 @@ import com.chimbori.crux.Resource
 import okhttp3.HttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 
-public class GoogleStaticRedirectorPlugin : Plugin {
+public class GoogleStaticRedirector : Plugin {
   override fun canHandle(url: HttpUrl): Boolean =
     url.host.endsWith(".google.com") && url.encodedPath == "/url"
 

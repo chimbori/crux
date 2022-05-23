@@ -25,14 +25,14 @@ import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 
-class WebAppManifestPluginTest {
+class WebAppManifestParserTest {
   private lateinit var mockWebServer: MockWebServer
-  private lateinit var webAppManifestPlugin: WebAppManifestPlugin
+  private lateinit var webAppManifestParser: WebAppManifestParser
 
   @Before
   fun setUp() {
     mockWebServer = MockWebServer().apply { start() }
-    webAppManifestPlugin = WebAppManifestPlugin()
+    webAppManifestParser = WebAppManifestParser()
   }
 
   @After
@@ -54,13 +54,16 @@ class WebAppManifestPluginTest {
     }
 
     val candidateUrl = mockWebServer.url("/")
-    assertTrue(webAppManifestPlugin.canHandle(candidateUrl))
+    assertTrue(webAppManifestParser.canHandle(candidateUrl))
 
     runBlocking {
-      val parsedResource = webAppManifestPlugin.handle(
+      val parsedResource = webAppManifestParser.handle(
         Resource.fromUrl(candidateUrl, shouldFetchContent = true)
       )
-      assertEquals(mockWebServer.url("/static/sub/directory/manifest.json"), parsedResource?.urls?.get(WEB_APP_MANIFEST_URL))
+      assertEquals(
+        mockWebServer.url("/static/sub/directory/manifest.json"),
+        parsedResource?.urls?.get(WEB_APP_MANIFEST_URL)
+      )
     }
   }
 
@@ -108,10 +111,10 @@ class WebAppManifestPluginTest {
     }
 
     val candidateUrl = mockWebServer.url("/")
-    assertTrue(webAppManifestPlugin.canHandle(candidateUrl))
+    assertTrue(webAppManifestParser.canHandle(candidateUrl))
 
     runBlocking {
-      val parsedResource: Resource? = webAppManifestPlugin.handle(
+      val parsedResource: Resource? = webAppManifestParser.handle(
         Resource.fromUrl(candidateUrl, shouldFetchContent = true)
       )
       assertNotNull(parsedResource)

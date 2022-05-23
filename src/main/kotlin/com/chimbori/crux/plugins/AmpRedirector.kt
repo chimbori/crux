@@ -11,10 +11,10 @@ import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.OkHttpClient
 
 /**
- * If the current page is an AMP page, then [AmpPlugin] extracts the canonical URL & replaces the DOM tree for the AMP
+ * If the current page is an AMP page, then [AmpRedirector] extracts the canonical URL & replaces the DOM tree for the AMP
  * page with the DOM tree for the canonical page.
  */
-public class AmpPlugin(
+public class AmpRedirector(
   private val refetchContentFromCanonicalUrl: Boolean,
   private val okHttpClient: OkHttpClient = cruxOkHttpClient
 ) : Plugin {

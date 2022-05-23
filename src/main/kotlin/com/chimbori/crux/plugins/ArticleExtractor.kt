@@ -10,7 +10,7 @@ import com.chimbori.crux.extractors.getWeight
 import okhttp3.HttpUrl
 import org.jsoup.nodes.Element
 
-public class ArticleExtractorPlugin : Plugin {
+public class ArticleExtractor : Plugin {
   override fun canHandle(url: HttpUrl): Boolean = url.isLikelyArticle()
 
   override suspend fun handle(request: Resource): Resource? {

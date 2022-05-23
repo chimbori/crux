@@ -10,7 +10,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.HttpUrl
 
-public class FaviconPlugin : Plugin {
+public class FaviconExtractor : Plugin {
   /** Skip handling any file extensions that are unlikely to be HTML pages. */
   public override fun canHandle(url: HttpUrl): Boolean = url.isLikelyArticle()
 

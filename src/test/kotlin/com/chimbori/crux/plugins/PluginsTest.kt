@@ -26,9 +26,9 @@ import org.junit.Test
 
 class PluginsTest {
   private lateinit var mockWebServer: MockWebServer
-  private lateinit var htmlMetadataPlugin: HtmlMetadataPlugin
-  private lateinit var faviconPlugin: FaviconPlugin
-  private lateinit var ampPlugin: AmpPlugin
+  private lateinit var htmlMetadataExtractor: HtmlMetadataExtractor
+  private lateinit var faviconExtractor: FaviconExtractor
+  private lateinit var ampRedirector: AmpRedirector
 
   @Before
   fun setUp() {
@@ -38,9 +38,9 @@ class PluginsTest {
       }
       start()
     }
-    htmlMetadataPlugin = HtmlMetadataPlugin()
-    faviconPlugin = FaviconPlugin()
-    ampPlugin = AmpPlugin(refetchContentFromCanonicalUrl = true)
+    htmlMetadataExtractor = HtmlMetadataExtractor()
+    faviconExtractor = FaviconExtractor()
+    ampRedirector = AmpRedirector(refetchContentFromCanonicalUrl = true)
   }
 
   @After
@@ -56,10 +56,10 @@ class PluginsTest {
     }
 
     val candidateUrl = mockWebServer.url("/")
-    assertTrue(htmlMetadataPlugin.canHandle(candidateUrl))
+    assertTrue(htmlMetadataExtractor.canHandle(candidateUrl))
 
     runBlocking {
-      val parsedResource = htmlMetadataPlugin.handle(
+      val parsedResource = htmlMetadataExtractor.handle(
         Resource.fromUrl(candidateUrl, shouldFetchContent = true)
       )
       assertNull(parsedResource.url)
@@ -84,10 +84,10 @@ class PluginsTest {
     }
 
     val candidateUrl = mockWebServer.url("/")
-    assertTrue(faviconPlugin.canHandle(candidateUrl))
+    assertTrue(faviconExtractor.canHandle(candidateUrl))
 
     runBlocking {
-      val parsedResource = faviconPlugin.handle(
+      val parsedResource = faviconExtractor.handle(
         Resource.fromUrl(candidateUrl, shouldFetchContent = true)
       )
       assertEquals(mockWebServer.url("/favicon.png"), parsedResource.urls[FAVICON_URL])
@@ -97,11 +97,11 @@ class PluginsTest {
   @Test
   fun testArticleExtractorPluginCanParseArticleContent() {
     val wikipediaUrl = "https://en.wikipedia.org/wiki/Galileo_Galilei".toHttpUrl()
-    val articleExtractorPlugin = ArticleExtractorPlugin()
-    assertTrue(articleExtractorPlugin.canHandle(wikipediaUrl))
+    val articleExtractor = ArticleExtractor()
+    assertTrue(articleExtractor.canHandle(wikipediaUrl))
 
     runBlocking {
-      articleExtractorPlugin.handle(Resource.fromTestData(wikipediaUrl, "wikipedia_galileo.html"))
+      articleExtractor.handle(Resource.fromTestData(wikipediaUrl, "wikipedia_galileo.html"))
     }?.let {
       val parsedArticle = it.document
       assertNotNull(parsedArticle)
@@ -133,7 +133,7 @@ class PluginsTest {
     }
 
     runBlocking {
-      val parsedResource = ampPlugin.handle(Resource(url = ampUrl, document = Jsoup.parse(ampHtml)))
+      val parsedResource = ampRedirector.handle(Resource(url = ampUrl, document = Jsoup.parse(ampHtml)))
       assertEquals(canonicalUrl, parsedResource?.url)
     }
   }
@@ -144,7 +144,8 @@ class PluginsTest {
     val ampHtmlWithNoCanonicalUrl = """<!doctype html><html amp><head></head></html>""".trimMargin()
 
     runBlocking {
-      val parsedResource = ampPlugin.handle(Resource(url = ampUrl, document = Jsoup.parse(ampHtmlWithNoCanonicalUrl)))
+      val parsedResource =
+        ampRedirector.handle(Resource(url = ampUrl, document = Jsoup.parse(ampHtmlWithNoCanonicalUrl)))
       assertNull(parsedResource?.url)
     }
   }
@@ -168,7 +169,7 @@ class PluginsTest {
     }
 
     runBlocking {
-      val parsedResource = ampPlugin.handle(
+      val parsedResource = ampRedirector.handle(
         Resource.fromUrl(url = ampUrl, shouldFetchContent = true)
       )
       assertEquals(canonicalUrl, parsedResource?.url)
@@ -178,7 +179,7 @@ class PluginsTest {
 
   @Test
   fun testFacebookRedirectorPlugin() {
-    val facebookPlugin = FacebookStaticRedirectorPlugin()
+    val facebookPlugin = FacebookStaticRedirector()
     mapOf(
       "http://example.com" to null,
       "http://www.facebook.com/l.php?u=http%3A%2F%2Fwww.bet.com%2Fcollegemarketingreps&h=42263"
@@ -198,7 +199,7 @@ class PluginsTest {
 
   @Test
   fun testGoogleRedirectorPlugin() {
-    val googleRedirectorPlugin = GoogleStaticRedirectorPlugin()
+    val googleRedirectorPlugin = GoogleStaticRedirector()
     mapOf(
       "http://example.com" to null,
       "https://plus.url.google.com/url?q=https://arstechnica.com/business/2017/01/before-the-760mph-hyperloop-dream-there-was-the-atmospheric-railway/&rct=j&ust=1485739059621000&usg=AFQjCNH6Cgp4iU0NB5OoDpT3OtOXds7HQg"
