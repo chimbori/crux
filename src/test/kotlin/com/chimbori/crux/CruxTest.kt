@@ -4,13 +4,9 @@ import com.chimbori.crux.Fields.BANNER_IMAGE_URL
 import com.chimbori.crux.Fields.CANONICAL_URL
 import com.chimbori.crux.Fields.DESCRIPTION
 import com.chimbori.crux.Fields.TITLE
-import com.chimbori.crux.common.cruxOkHttpClient
 import kotlinx.coroutines.runBlocking
 import okhttp3.HttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrl
-import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
-import okhttp3.logging.HttpLoggingInterceptor.Level.BASIC
 import okhttp3.mockwebserver.Dispatcher
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
@@ -24,13 +20,9 @@ import org.junit.Test
 
 class CruxTest {
   private lateinit var mockWebServer: MockWebServer
-  private lateinit var okHttpClientWithLogging: OkHttpClient
 
   @Before
   fun setUp() {
-    okHttpClientWithLogging = cruxOkHttpClient.newBuilder()
-      .addInterceptor(HttpLoggingInterceptor().apply { level = BASIC })
-      .build()
     mockWebServer = MockWebServer().apply {
       dispatcher = object : Dispatcher() {
         override fun dispatch(request: RecordedRequest) = MockResponse().setBody("${request.path}")
@@ -77,13 +69,13 @@ class CruxTest {
       )
     }
 
-    val cruxWithFooPlugin = Crux(plugins = listOf(fooHandlerPlugin), okHttpClientWithLogging)
+    val cruxWithFooPlugin = Crux(plugins = listOf(fooHandlerPlugin))
     val fooMetadata = runBlocking {
       cruxWithFooPlugin.extractFrom(mockWebServer.url("/foo"))
     }
     assertEquals("/rewritten-from-foo", fooMetadata.url?.encodedPath)
 
-    val cruxWithBarPlugin = Crux(plugins = listOf(barHandlerPlugin), okHttpClientWithLogging)
+    val cruxWithBarPlugin = Crux(plugins = listOf(barHandlerPlugin))
     val barMetadata = runBlocking {
       cruxWithBarPlugin.extractFrom(mockWebServer.url("/foo"))
     }
@@ -96,7 +88,7 @@ class CruxTest {
       override fun dispatch(request: RecordedRequest) = MockResponse().setBody("<title>Mock Title</title>")
     }
 
-    val crux = Crux(okHttpClient = okHttpClientWithLogging)
+    val crux = Crux()
     val metadata = runBlocking { crux.extractFrom(mockWebServer.url("/mock-title")) }
     assertNotNull(metadata)
     assertEquals("Mock Title", metadata[TITLE])
@@ -114,7 +106,7 @@ class CruxTest {
       }
     }
 
-    val metadata = runBlocking { Crux(okHttpClient = okHttpClientWithLogging).extractFrom(originalUrl) }
+    val metadata = runBlocking { Crux().extractFrom(originalUrl) }
     assertEquals(redirectedUrl, metadata.url)
   }
 
@@ -135,14 +127,14 @@ class CruxTest {
     }
 
     // Test Foo before Bar.
-    val fooBeforeBarCrux = Crux(listOf(rewriteFooToBarPlugin, generateTitleForBarPlugin), okHttpClientWithLogging)
+    val fooBeforeBarCrux = Crux(listOf(rewriteFooToBarPlugin, generateTitleForBarPlugin))
     val fooBeforeBar = runBlocking {
       fooBeforeBarCrux.extractFrom(mockWebServer.url("/foo"))
     }
     assertEquals("Bar Title", fooBeforeBar[TITLE])
 
     // Test Bar before Foo.
-    val barBeforeFooCrux = Crux(listOf(generateTitleForBarPlugin, rewriteFooToBarPlugin), okHttpClientWithLogging)
+    val barBeforeFooCrux = Crux(listOf(generateTitleForBarPlugin, rewriteFooToBarPlugin))
     val barBeforeFoo = runBlocking {
       barBeforeFooCrux.extractFrom(mockWebServer.url("/foo"))
     }

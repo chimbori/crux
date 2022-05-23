@@ -5,14 +5,11 @@ import com.chimbori.crux.Fields.FAVICON_URL
 import com.chimbori.crux.Fields.TITLE
 import com.chimbori.crux.Resource
 import com.chimbori.crux.common.assertStartsWith
-import com.chimbori.crux.common.cruxOkHttpClient
 import com.chimbori.crux.common.fromTestData
 import com.chimbori.crux.common.fromUrl
 import com.chimbori.crux.extractors.extractTitle
 import kotlinx.coroutines.runBlocking
 import okhttp3.HttpUrl.Companion.toHttpUrl
-import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
 import okhttp3.mockwebserver.Dispatcher
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
@@ -32,7 +29,6 @@ class PluginsTest {
   private lateinit var htmlMetadataPlugin: HtmlMetadataPlugin
   private lateinit var faviconPlugin: FaviconPlugin
   private lateinit var ampPlugin: AmpPlugin
-  private lateinit var okHttpClientWithLogging: OkHttpClient
 
   @Before
   fun setUp() {
@@ -42,12 +38,9 @@ class PluginsTest {
       }
       start()
     }
-    okHttpClientWithLogging = cruxOkHttpClient.newBuilder()
-      .addInterceptor(HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BASIC })
-      .build()
     htmlMetadataPlugin = HtmlMetadataPlugin()
     faviconPlugin = FaviconPlugin()
-    ampPlugin = AmpPlugin(refetchContentFromCanonicalUrl = true, okHttpClient = okHttpClientWithLogging)
+    ampPlugin = AmpPlugin(refetchContentFromCanonicalUrl = true)
   }
 
   @After
@@ -67,7 +60,7 @@ class PluginsTest {
 
     runBlocking {
       val parsedResource = htmlMetadataPlugin.handle(
-        Resource.fromUrl(candidateUrl, shouldFetchContent = true, okHttpClientWithLogging)
+        Resource.fromUrl(candidateUrl, shouldFetchContent = true)
       )
       assertNull(parsedResource.url)
       assertEquals("Crux Test", parsedResource[TITLE])
@@ -95,7 +88,7 @@ class PluginsTest {
 
     runBlocking {
       val parsedResource = faviconPlugin.handle(
-        Resource.fromUrl(candidateUrl, shouldFetchContent = true, okHttpClientWithLogging)
+        Resource.fromUrl(candidateUrl, shouldFetchContent = true)
       )
       assertEquals(mockWebServer.url("/favicon.png"), parsedResource.urls[FAVICON_URL])
     }
@@ -176,10 +169,7 @@ class PluginsTest {
 
     runBlocking {
       val parsedResource = ampPlugin.handle(
-        Resource.fromUrl(
-          url = ampUrl, shouldFetchContent = true,
-          okHttpClient = okHttpClientWithLogging
-        )
+        Resource.fromUrl(url = ampUrl, shouldFetchContent = true)
       )
       assertEquals(canonicalUrl, parsedResource?.url)
       assertEquals("CanonicalUrl", parsedResource?.document?.extractTitle())
