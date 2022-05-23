@@ -61,10 +61,7 @@ public class HtmlMetadataPlugin : Plugin {
   public override fun canHandle(url: HttpUrl): Boolean = url.isLikelyArticle()
 
   override suspend fun handle(request: Resource): Resource = withContext(Dispatchers.IO) {
-    val canonicalUrl: HttpUrl? = request.document?.extractCanonicalUrl()?.let {
-      request.url?.resolve(it)
-    } ?: request.url
-
+    val canonicalUrl = request.document?.extractCanonicalUrl()?.let { request.url?.resolve(it) } ?: request.url
     Resource(
       fields = mapOf(
         TITLE to request.document?.extractTitle(),
