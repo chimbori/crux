@@ -143,6 +143,7 @@ public object Fields {
   public const val BANNER_IMAGE_URL: String = "banner-image-url"
   public const val FEED_URL: String = "feed-url"
   public const val VIDEO_URL: String = "video-url"
+  public const val WEB_APP_MANIFEST_URL: String = "web-app-manifest-url"  // https://www.w3.org/TR/appmanifest/
 
   // For image or video resources only.
   public const val ALT_TEXT: String = "alt-text"
