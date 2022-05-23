@@ -161,6 +161,8 @@ public object Fields {
   public const val FEED_URL: String = "feed-url"
   public const val VIDEO_URL: String = "video-url"
   public const val WEB_APP_MANIFEST_URL: String = "web-app-manifest-url"  // https://www.w3.org/TR/appmanifest/
+  public const val NEXT_PAGE_URL: String = "next-page-url"
+  public const val PREVIOUS_PAGE_URL: String = "previous-page-url"
 
   // For image or video resources only.
   public const val ALT_TEXT: String = "alt-text"

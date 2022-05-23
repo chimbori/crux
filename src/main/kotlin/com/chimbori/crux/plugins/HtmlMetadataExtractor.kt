@@ -6,6 +6,8 @@ import com.chimbori.crux.Fields.CANONICAL_URL
 import com.chimbori.crux.Fields.DESCRIPTION
 import com.chimbori.crux.Fields.FEED_URL
 import com.chimbori.crux.Fields.KEYWORDS_CSV
+import com.chimbori.crux.Fields.NEXT_PAGE_URL
+import com.chimbori.crux.Fields.PREVIOUS_PAGE_URL
 import com.chimbori.crux.Fields.SITE_NAME
 import com.chimbori.crux.Fields.THEME_COLOR_HEX
 import com.chimbori.crux.Fields.TITLE
@@ -19,6 +21,7 @@ import com.chimbori.crux.extractors.extractDescription
 import com.chimbori.crux.extractors.extractFeedUrl
 import com.chimbori.crux.extractors.extractImageUrl
 import com.chimbori.crux.extractors.extractKeywords
+import com.chimbori.crux.extractors.extractPaginationUrl
 import com.chimbori.crux.extractors.extractSiteName
 import com.chimbori.crux.extractors.extractThemeColor
 import com.chimbori.crux.extractors.extractTitle
@@ -49,6 +52,8 @@ public class HtmlMetadataExtractor : Plugin {
       ),
       urls = mapOf(
         CANONICAL_URL to canonicalUrl,
+        NEXT_PAGE_URL to request.document?.extractPaginationUrl(request.url, "next"),
+        PREVIOUS_PAGE_URL to request.document?.extractPaginationUrl(request.url, "prev"),
         BANNER_IMAGE_URL to request.document?.extractImageUrl(canonicalUrl),
         FEED_URL to request.document?.extractFeedUrl(canonicalUrl),
         AMP_URL to request.document?.extractAmpUrl(canonicalUrl),

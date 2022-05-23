@@ -23,6 +23,11 @@ public fun Document.extractCanonicalUrl(): String? = (
       ?: select("meta[name=twitter:url]").attr("content").nullIfBlank()
     )?.removeWhiteSpace()?.nullIfBlank()
 
+public fun Document.extractPaginationUrl(baseUrl: HttpUrl?, nextOrPrev: String): HttpUrl? = (
+    select("link[rel=$nextOrPrev]").attr("href").nullIfBlank()
+    )?.removeWhiteSpace()?.nullIfBlank()
+  ?.let { relativeUrl -> baseUrl?.resolve(relativeUrl) ?: relativeUrl.toHttpUrlOrNull() }
+
 public fun Document.extractDescription(): String? = (
     select("meta[name=description]").attr("content").nullIfBlank()
       ?: select("meta[property=og:description]").attr("content").nullIfBlank()
