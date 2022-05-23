@@ -11,6 +11,11 @@ import com.chimbori.crux.Fields.SITE_NAME
 import com.chimbori.crux.Fields.THEME_COLOR_HEX
 import com.chimbori.crux.Fields.TITLE
 import com.chimbori.crux.Fields.VIDEO_URL
+import com.chimbori.crux.common.cruxOkHttpClient
+import com.chimbori.crux.common.fromUrl
+import com.chimbori.crux.common.nullIfBlank
+import com.chimbori.crux.extractors.PostprocessHelpers.Companion.postprocess
+import com.chimbori.crux.extractors.PreprocessHelpers.preprocess
 import com.chimbori.crux.extractors.extractAmpUrl
 import com.chimbori.crux.extractors.extractCanonicalUrl
 import com.chimbori.crux.extractors.extractDescription
@@ -22,11 +27,6 @@ import com.chimbori.crux.extractors.extractSiteName
 import com.chimbori.crux.extractors.extractThemeColor
 import com.chimbori.crux.extractors.extractTitle
 import com.chimbori.crux.extractors.extractVideoUrl
-import com.chimbori.crux.common.cruxOkHttpClient
-import com.chimbori.crux.common.fromUrl
-import com.chimbori.crux.common.nullIfBlank
-import com.chimbori.crux.extractors.PostprocessHelpers.Companion.postprocess
-import com.chimbori.crux.extractors.PreprocessHelpers.preprocess
 import com.chimbori.crux.extractors.getNodes
 import com.chimbori.crux.extractors.getWeight
 import com.chimbori.crux.urls.isLikelyArticle
