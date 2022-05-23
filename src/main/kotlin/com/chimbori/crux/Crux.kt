@@ -8,6 +8,8 @@ import com.chimbori.crux.plugins.FacebookStaticRedirectorPlugin
 import com.chimbori.crux.plugins.FaviconPlugin
 import com.chimbori.crux.plugins.GoogleStaticRedirectorPlugin
 import com.chimbori.crux.plugins.HtmlMetadataPlugin
+import com.chimbori.crux.plugins.TrackingParameterRemover
+import com.chimbori.crux.plugins.WebAppManifestPlugin
 import okhttp3.HttpUrl
 import okhttp3.OkHttpClient
 import org.jsoup.Jsoup
@@ -18,11 +20,20 @@ import org.jsoup.nodes.Document
  * choose from the set of available default plugins to create their own configuration.
  */
 public val DEFAULT_PLUGINS: List<Plugin> = listOf(
+  // Static redirectors go first, to avoid getting stuck into CAPTCHAs.
   GoogleStaticRedirectorPlugin(),
   FacebookStaticRedirectorPlugin(),
+  // Remove any tracking parameters remaining.
+  TrackingParameterRemover(),
+  // Prefer canonical URLs over AMP URLs.
   AmpPlugin(refetchContentFromCanonicalUrl = true),
-  HtmlMetadataPlugin(),  // Fallback extractor that parses many standard HTML attributes.
+  // Parses many standard HTML metadata attributes.
+  HtmlMetadataPlugin(),
+  // Extracts the best possible favicon from all the markup available on the page itself.
   FaviconPlugin(),
+  // Fetches and parses the Web Manifest. May replace existing favicon URL with one from the manifest.json.
+  WebAppManifestPlugin(),
+  // Parses the content of the page to remove ads, navigation, and all the other fluff.
   ArticleExtractorPlugin(),
 )
 
