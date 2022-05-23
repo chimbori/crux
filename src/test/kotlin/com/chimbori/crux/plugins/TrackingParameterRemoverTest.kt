@@ -8,9 +8,9 @@ import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
-class OptionalPluginsTest {
+class TrackingParameterRemoverTest {
   @Test
-  fun testTrackingParameterRemoverTest() {
+  fun testThatParametersAreRemoved() {
     val trackingRemover = TrackingParameterRemover()
     assertTrue(trackingRemover.canHandle("https://example.org?utm_source".toHttpUrl()))
     assertFalse(trackingRemover.canHandle("https://example.org?not_a_tracking_parameter".toHttpUrl()))

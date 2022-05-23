@@ -1,9 +1,10 @@
 package com.chimbori.crux.plugins
 
-import com.chimbori.crux.Fields
 import com.chimbori.crux.Fields.CANONICAL_URL
+import com.chimbori.crux.Fields.DESCRIPTION
 import com.chimbori.crux.Fields.NEXT_PAGE_URL
 import com.chimbori.crux.Fields.PREVIOUS_PAGE_URL
+import com.chimbori.crux.Fields.TITLE
 import com.chimbori.crux.Resource
 import com.chimbori.crux.common.fromUrl
 import kotlinx.coroutines.runBlocking
@@ -49,8 +50,8 @@ class HtmlMetadataExtractorTest {
         Resource.fromUrl(candidateUrl, shouldFetchContent = true)
       )
       assertNull(parsed.url)
-      assertEquals("Crux Test", parsed[Fields.TITLE])
-      assertFalse(parsed.fields.containsKey(Fields.DESCRIPTION))
+      assertEquals("Crux Test", parsed[TITLE])
+      assertFalse(parsed.fields.containsKey(DESCRIPTION))
     }
   }
 
