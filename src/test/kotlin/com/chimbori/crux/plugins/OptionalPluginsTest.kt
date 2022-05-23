@@ -1,5 +1,6 @@
-package com.chimbori.crux
+package com.chimbori.crux.plugins
 
+import com.chimbori.crux.Resource
 import kotlinx.coroutines.runBlocking
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import org.junit.Assert.assertEquals

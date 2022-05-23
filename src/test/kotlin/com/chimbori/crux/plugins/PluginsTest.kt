@@ -1,8 +1,9 @@
-package com.chimbori.crux
+package com.chimbori.crux.plugins
 
 import com.chimbori.crux.Fields.DESCRIPTION
 import com.chimbori.crux.Fields.FAVICON_URL
 import com.chimbori.crux.Fields.TITLE
+import com.chimbori.crux.Resource
 import com.chimbori.crux.common.assertStartsWith
 import com.chimbori.crux.common.cruxOkHttpClient
 import com.chimbori.crux.common.fromTestData

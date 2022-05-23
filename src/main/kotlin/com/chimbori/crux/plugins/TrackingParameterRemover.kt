@@ -1,5 +1,7 @@
-package com.chimbori.crux
+package com.chimbori.crux.plugins
 
+import com.chimbori.crux.Plugin
+import com.chimbori.crux.Resource
 import okhttp3.HttpUrl
 
 public class TrackingParameterRemover(private val trackingParameters: Array<String> = TRACKING_PARAMETERS) : Plugin {

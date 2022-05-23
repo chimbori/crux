@@ -2,10 +2,29 @@ package com.chimbori.crux
 
 import com.chimbori.crux.common.cruxOkHttpClient
 import com.chimbori.crux.common.safeHttpGet
+import com.chimbori.crux.plugins.AmpPlugin
+import com.chimbori.crux.plugins.ArticleExtractorPlugin
+import com.chimbori.crux.plugins.FacebookStaticRedirectorPlugin
+import com.chimbori.crux.plugins.FaviconPlugin
+import com.chimbori.crux.plugins.GoogleStaticRedirectorPlugin
+import com.chimbori.crux.plugins.HtmlMetadataPlugin
 import okhttp3.HttpUrl
 import okhttp3.OkHttpClient
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
+
+/**
+ * An ordered list of default plugins configured in Crux. Callers can override and provide their own list, or pick and
+ * choose from the set of available default plugins to create their own configuration.
+ */
+public val DEFAULT_PLUGINS: List<Plugin> = listOf(
+  GoogleStaticRedirectorPlugin(),
+  FacebookStaticRedirectorPlugin(),
+  AmpPlugin(refetchContentFromCanonicalUrl = true),
+  HtmlMetadataPlugin(),  // Fallback extractor that parses many standard HTML attributes.
+  FaviconPlugin(),
+  ArticleExtractorPlugin(),
+)
 
 /**
  * Crux can be configured with a set of plugins, including custom ones, in sequence. Each plugin can optionally process
