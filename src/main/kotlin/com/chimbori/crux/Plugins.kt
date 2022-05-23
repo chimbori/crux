@@ -47,6 +47,7 @@ public val DEFAULT_PLUGINS: List<Plugin> = listOf(
   FacebookStaticRedirectorPlugin(),
   AmpPlugin(refetchContentFromCanonicalUrl = true),
   HtmlMetadataPlugin(),  // Fallback extractor that parses many standard HTML attributes.
+  FaviconPlugin(),
   ArticleExtractorPlugin(),
 )
 
@@ -71,7 +72,6 @@ public class HtmlMetadataPlugin : Plugin {
         KEYWORDS_CSV to request.document?.extractKeywords()?.joinToString(separator = ","),
       ),
       urls = mapOf(
-        FAVICON_URL to request.document?.extractFaviconUrl(canonicalUrl),
         CANONICAL_URL to canonicalUrl,
         BANNER_IMAGE_URL to request.document?.extractImageUrl(canonicalUrl),
         FEED_URL to request.document?.extractFeedUrl(canonicalUrl),
@@ -79,6 +79,16 @@ public class HtmlMetadataPlugin : Plugin {
         VIDEO_URL to request.document?.extractVideoUrl(canonicalUrl),
       )
     ).removeNullValues()
+  }
+}
+
+public class FaviconPlugin : Plugin {
+  /** Skip handling any file extensions that are unlikely to be HTML pages. */
+  public override fun canHandle(url: HttpUrl): Boolean = url.isLikelyArticle()
+
+  override suspend fun handle(request: Resource): Resource = withContext(Dispatchers.IO) {
+    val canonicalUrl = request.document?.extractCanonicalUrl()?.let { request.url?.resolve(it) } ?: request.url
+    Resource(urls = mapOf(FAVICON_URL to request.document?.extractFaviconUrl(canonicalUrl))).removeNullValues()
   }
 }
 

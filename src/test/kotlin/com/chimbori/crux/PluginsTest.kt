@@ -1,12 +1,13 @@
 package com.chimbori.crux
 
 import com.chimbori.crux.Fields.DESCRIPTION
+import com.chimbori.crux.Fields.FAVICON_URL
 import com.chimbori.crux.Fields.TITLE
-import com.chimbori.crux.extractors.extractTitle
 import com.chimbori.crux.common.assertStartsWith
 import com.chimbori.crux.common.cruxOkHttpClient
 import com.chimbori.crux.common.fromTestData
 import com.chimbori.crux.common.fromUrl
+import com.chimbori.crux.extractors.extractTitle
 import kotlinx.coroutines.runBlocking
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.OkHttpClient
@@ -28,6 +29,7 @@ import org.junit.Test
 class PluginsTest {
   private lateinit var mockWebServer: MockWebServer
   private lateinit var htmlMetadataPlugin: HtmlMetadataPlugin
+  private lateinit var faviconPlugin: FaviconPlugin
   private lateinit var ampPlugin: AmpPlugin
   private lateinit var okHttpClientWithLogging: OkHttpClient
 
@@ -43,6 +45,7 @@ class PluginsTest {
       .addInterceptor(HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BASIC })
       .build()
     htmlMetadataPlugin = HtmlMetadataPlugin()
+    faviconPlugin = FaviconPlugin()
     ampPlugin = AmpPlugin(refetchContentFromCanonicalUrl = true, okHttpClient = okHttpClientWithLogging)
   }
 
@@ -68,6 +71,32 @@ class PluginsTest {
       assertNull(parsedResource.url)
       assertEquals("Crux Test", parsedResource[TITLE])
       assertFalse(parsedResource.fields.containsKey(DESCRIPTION))
+    }
+  }
+
+  @Test
+  fun testFaviconPlugin() {
+    mockWebServer.dispatcher = object : Dispatcher() {
+      override fun dispatch(request: RecordedRequest) = MockResponse().setBody(
+        """|
+          |<html>
+          |  <head>
+          |    <link rel="apple-touch-icon-precomposed" sizes="192x192" href="/favicon.png">
+          |    <link rel="apple-touch-icon-precomposed" sizes="48x48" href="/favicon-too-small.png">
+          |  </head>
+          |</html>
+          |""".trimMargin()
+      )
+    }
+
+    val candidateUrl = mockWebServer.url("/")
+    assertTrue(faviconPlugin.canHandle(candidateUrl))
+
+    runBlocking {
+      val parsedResource = faviconPlugin.handle(
+        Resource.fromUrl(candidateUrl, shouldFetchContent = true, okHttpClientWithLogging)
+      )
+      assertEquals(mockWebServer.url("/favicon.png"), parsedResource.urls[FAVICON_URL])
     }
   }
 
