@@ -9,7 +9,7 @@ import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
 
-internal fun Document.extractTitle(): String? = (
+public fun Document.extractTitle(): String? = (
     title().nullIfBlank()
       ?: select("title").text().nullIfBlank()
       ?: select("meta[name=title]").attr("content").nullIfBlank()
@@ -17,27 +17,27 @@ internal fun Document.extractTitle(): String? = (
       ?: select("meta[name=twitter:title]").attr("content").nullIfBlank()
     )?.cleanTitle()?.nullIfBlank()
 
-internal fun Document.extractCanonicalUrl(): String? = (
+public fun Document.extractCanonicalUrl(): String? = (
     select("link[rel=canonical]").attr("href").nullIfBlank()
       ?: select("meta[property=og:url]").attr("content").nullIfBlank()
       ?: select("meta[name=twitter:url]").attr("content").nullIfBlank()
     )?.removeWhiteSpace()?.nullIfBlank()
 
-internal fun Document.extractDescription(): String? = (
+public fun Document.extractDescription(): String? = (
     select("meta[name=description]").attr("content").nullIfBlank()
       ?: select("meta[property=og:description]").attr("content").nullIfBlank()
       ?: select("meta[name=twitter:description]").attr("content").nullIfBlank()
     )?.removeWhiteSpace()?.nullIfBlank()
 
-internal fun Document.extractSiteName(): String? = (
+public fun Document.extractSiteName(): String? = (
     select("meta[property=og:site_name]").attr("content").nullIfBlank()
       ?: select("meta[name=application-name]").attr("content").nullIfBlank()
     )?.removeWhiteSpace()?.nullIfBlank()
 
-internal fun Document.extractThemeColor(): String? =
+public fun Document.extractThemeColor(): String? =
   select("meta[name=theme-color]").attr("content").nullIfBlank()
 
-internal fun Document.extractKeywords(): List<String> =
+public fun Document.extractKeywords(): List<String> =
   select("meta[name=keywords]").attr("content")
     .removeWhiteSpace()
     .removePrefix("[")
@@ -45,7 +45,7 @@ internal fun Document.extractKeywords(): List<String> =
     .split("\\s*,\\s*".toRegex())
     .filter { it.isNotBlank() }
 
-internal fun Document.extractFaviconUrl(baseUrl: HttpUrl?): HttpUrl? {
+public fun Document.extractFaviconUrl(baseUrl: HttpUrl?): HttpUrl? {
   val allPossibleIconElements = listOf(
     select("link[rel~=apple-touch-icon]"),
     select("link[rel~=apple-touch-icon-precomposed]"),
@@ -57,7 +57,7 @@ internal fun Document.extractFaviconUrl(baseUrl: HttpUrl?): HttpUrl? {
     ?: baseUrl?.newBuilder()?.encodedPath("/favicon.ico")?.build()
 }
 
-internal fun Document.extractImageUrl(baseUrl: HttpUrl?): HttpUrl? = (
+public fun Document.extractImageUrl(baseUrl: HttpUrl?): HttpUrl? = (
     // Twitter Cards and Open Graph images are usually higher quality, so rank them first.
     select("meta[name=twitter:image]").attr("content").nullIfBlank()
       ?: select("meta[property=og:image]").attr("content").nullIfBlank()
@@ -66,16 +66,16 @@ internal fun Document.extractImageUrl(baseUrl: HttpUrl?): HttpUrl? = (
       ?: select("meta[name=thumbnail]").attr("content").nullIfBlank()
     )?.let { baseUrl?.resolve(it) ?: it.toHttpUrlOrNull() }
 
-internal fun Document.extractFeedUrl(baseUrl: HttpUrl?): HttpUrl? = (
+public fun Document.extractFeedUrl(baseUrl: HttpUrl?): HttpUrl? = (
     select("link[rel=alternate]").select("link[type=application/rss+xml]").attr("href").nullIfBlank()
       ?: select("link[rel=alternate]").select("link[type=application/atom+xml]").attr("href").nullIfBlank()
     )?.let { baseUrl?.resolve(it) ?: it.toHttpUrlOrNull() }
 
-internal fun Document.extractAmpUrl(baseUrl: HttpUrl?): HttpUrl? =
+public fun Document.extractAmpUrl(baseUrl: HttpUrl?): HttpUrl? =
   select("link[rel=amphtml]").attr("href").nullIfBlank()
     ?.let { baseUrl?.resolve(it) ?: it.toHttpUrlOrNull() }
 
-internal fun Document.extractVideoUrl(baseUrl: HttpUrl?): HttpUrl? =
+public fun Document.extractVideoUrl(baseUrl: HttpUrl?): HttpUrl? =
   select("meta[property=og:video]").attr("content").nullIfBlank()
     ?.let { baseUrl?.resolve(it) ?: it.toHttpUrlOrNull() }
 
