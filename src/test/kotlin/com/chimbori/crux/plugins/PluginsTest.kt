@@ -1,8 +1,6 @@
 package com.chimbori.crux.plugins
 
-import com.chimbori.crux.Fields.DESCRIPTION
 import com.chimbori.crux.Fields.FAVICON_URL
-import com.chimbori.crux.Fields.TITLE
 import com.chimbori.crux.Resource
 import com.chimbori.crux.common.assertStartsWith
 import com.chimbori.crux.common.fromTestData
@@ -17,7 +15,6 @@ import okhttp3.mockwebserver.RecordedRequest
 import org.jsoup.Jsoup
 import org.junit.After
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
@@ -46,26 +43,6 @@ class PluginsTest {
   @After
   fun tearDown() {
     mockWebServer.shutdown()
-  }
-
-  @Test
-  fun testHtmlPluginCanParseValidTitleAndBlankDescription() {
-    mockWebServer.dispatcher = object : Dispatcher() {
-      override fun dispatch(request: RecordedRequest) =
-        MockResponse().setBody("<title>Crux Test</title><description>\r\t\n </description>")
-    }
-
-    val candidateUrl = mockWebServer.url("/")
-    assertTrue(htmlMetadataExtractor.canHandle(candidateUrl))
-
-    runBlocking {
-      val parsedResource = htmlMetadataExtractor.handle(
-        Resource.fromUrl(candidateUrl, shouldFetchContent = true)
-      )
-      assertNull(parsedResource.url)
-      assertEquals("Crux Test", parsedResource[TITLE])
-      assertFalse(parsedResource.fields.containsKey(DESCRIPTION))
-    }
   }
 
   @Test

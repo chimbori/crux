@@ -1,5 +1,6 @@
 package com.chimbori.crux.plugins
 
+import com.chimbori.crux.Fields
 import com.chimbori.crux.Fields.CANONICAL_URL
 import com.chimbori.crux.Fields.NEXT_PAGE_URL
 import com.chimbori.crux.Fields.PREVIOUS_PAGE_URL
@@ -12,6 +13,8 @@ import okhttp3.mockwebserver.MockWebServer
 import okhttp3.mockwebserver.RecordedRequest
 import org.junit.After
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
@@ -29,6 +32,26 @@ class HtmlMetadataExtractorTest {
   @After
   fun tearDown() {
     mockWebServer.shutdown()
+  }
+
+  @Test
+  fun testParseValidTitleAndBlankDescription() {
+    mockWebServer.dispatcher = object : Dispatcher() {
+      override fun dispatch(request: RecordedRequest) =
+        MockResponse().setBody("<title>Crux Test</title><description>\r\t\n </description>")
+    }
+
+    val candidateUrl = mockWebServer.url("/")
+    assertTrue(htmlMetadataExtractor.canHandle(candidateUrl))
+
+    runBlocking {
+      val parsed = htmlMetadataExtractor.handle(
+        Resource.fromUrl(candidateUrl, shouldFetchContent = true)
+      )
+      assertNull(parsed.url)
+      assertEquals("Crux Test", parsed[Fields.TITLE])
+      assertFalse(parsed.fields.containsKey(Fields.DESCRIPTION))
+    }
   }
 
   @Test
