@@ -5,18 +5,15 @@ import com.chimbori.crux.Resource
 import com.chimbori.crux.common.assertStartsWith
 import com.chimbori.crux.common.fromTestData
 import com.chimbori.crux.common.fromUrl
-import com.chimbori.crux.extractors.extractTitle
 import kotlinx.coroutines.runBlocking
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.mockwebserver.Dispatcher
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import okhttp3.mockwebserver.RecordedRequest
-import org.jsoup.Jsoup
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
-import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
@@ -89,68 +86,4 @@ class PluginsTest {
     }
   }
 
-  @Test
-  fun testAmpRedirectorPlugin_extractsCanonicalUrl() {
-    val canonicalUrl = mockWebServer.url("/canonical-url")
-    val ampUrl = mockWebServer.url("/amp-url")
-    val ampHtml = """<!doctype html><html amp>
-      |<head>
-      |<link rel="canonical" href="$canonicalUrl"/>
-      |</head>
-      |</html>""".trimMargin()
-
-    mockWebServer.dispatcher = object : Dispatcher() {
-      override fun dispatch(request: RecordedRequest) = when (request.path) {
-        ampUrl.encodedPath -> MockResponse().setBody(
-          """<html amp><link rel="canonical" href="${mockWebServer.url("/canonical-url")}"/></html>"""
-        )
-        canonicalUrl.encodedPath -> MockResponse().setBody("<title>CanonicalUrl</title>")
-        else -> MockResponse().setResponseCode(404)
-      }
-    }
-
-    runBlocking {
-      val parsedResource = ampRedirector.handle(Resource(url = ampUrl, document = Jsoup.parse(ampHtml)))
-      assertEquals(canonicalUrl, parsedResource?.url)
-    }
-  }
-
-  @Test
-  fun testAmpRedirectorPlugin_returnsNullWhenCanonicalUrlIsAbsent() {
-    val ampUrl = mockWebServer.url("/amp-url")
-    val ampHtmlWithNoCanonicalUrl = """<!doctype html><html amp><head></head></html>""".trimMargin()
-
-    runBlocking {
-      val parsedResource =
-        ampRedirector.handle(Resource(url = ampUrl, document = Jsoup.parse(ampHtmlWithNoCanonicalUrl)))
-      assertNull(parsedResource?.url)
-    }
-  }
-
-  @Test
-  fun testAmpPlugin_fetchesContentFromCanonicalUrl() {
-    val canonicalUrl = mockWebServer.url("/canonical-url")
-    val ampUrl = mockWebServer.url("/amp-url")
-
-    mockWebServer.dispatcher = object : Dispatcher() {
-      override fun dispatch(request: RecordedRequest) = when (request.path) {
-        ampUrl.encodedPath -> MockResponse().setBody(
-          """<html amp>
-            |<title>AmpUrl</title>
-            |<link rel="canonical" href="${mockWebServer.url("/canonical-url")}"/>
-            |</html>""".trimMargin()
-        )
-        canonicalUrl.encodedPath -> MockResponse().setBody("<title>CanonicalUrl</title>")
-        else -> MockResponse().setResponseCode(404)
-      }
-    }
-
-    runBlocking {
-      val parsedResource = ampRedirector.handle(
-        Resource.fromUrl(url = ampUrl, shouldFetchContent = true)
-      )
-      assertEquals(canonicalUrl, parsedResource?.url)
-      assertEquals("CanonicalUrl", parsedResource?.document?.extractTitle())
-    }
-  }
 }
