@@ -134,8 +134,14 @@ public object Fields {
   public const val TITLE: String = "title"
   public const val DESCRIPTION: String = "description"
   public const val SITE_NAME: String = "site-name"
+  public const val LANGUAGE: String = "language"
+  public const val DISPLAY: String = "display"
+  public const val ORIENTATION: String = "orientation"
 
   public const val THEME_COLOR_HEX: String = "theme-color-hex"
+  public const val THEME_COLOR_HTML: String = "theme-color-html"  // Named colors like "aliceblue"
+  public const val BACKGROUND_COLOR_HEX: String = "background-color-hex"
+  public const val BACKGROUND_COLOR_HTML: String = "background-color-html"  // Named colors like "aliceblue"
 
   public const val CANONICAL_URL: String = "canonical-url"
   public const val AMP_URL: String = "amp-url"
