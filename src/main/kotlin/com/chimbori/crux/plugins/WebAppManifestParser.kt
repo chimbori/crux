@@ -1,5 +1,8 @@
 package com.chimbori.crux.plugins
 
+import com.beust.klaxon.JsonArray
+import com.beust.klaxon.JsonObject
+import com.beust.klaxon.Parser
 import com.chimbori.crux.Fields.BACKGROUND_COLOR_HEX
 import com.chimbori.crux.Fields.BACKGROUND_COLOR_HTML
 import com.chimbori.crux.Fields.DISPLAY
@@ -20,9 +23,6 @@ import com.chimbori.crux.extractors.extractCanonicalUrl
 import com.chimbori.crux.extractors.parseSize
 import okhttp3.HttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
-import org.json.JSONArray
-import org.json.JSONException
-import org.json.JSONObject
 
 public class WebAppManifestParser : Plugin {
   override fun canHandle(url: HttpUrl): Boolean = url.isLikelyArticle()
@@ -33,10 +33,10 @@ public class WebAppManifestParser : Plugin {
       ?.let { canonicalUrl?.resolve(it) ?: it.toHttpUrlOrNull() }
       ?: return null
 
-    val manifest: JSONObject? = cruxOkHttpClient.httpGetContent(webAppManifestUrl)?.let {
+    val manifest: JsonObject? = cruxOkHttpClient.httpGetContent(webAppManifestUrl)?.let { rawJSON ->
       try {
-        JSONObject(it)
-      } catch (e: JSONException) {
+        Parser.default().parse(StringBuilder(rawJSON)) as JsonObject
+      } catch (t: Throwable) {
         // Silently ignore all JSON errors, since they are not recoverable.
         null
       }
@@ -55,18 +55,18 @@ public class WebAppManifestParser : Plugin {
       ),
       urls = mapOf(
         WEB_APP_MANIFEST_URL to webAppManifestUrl,
-        FAVICON_URL to getLargestIconUrl(webAppManifestUrl, manifest?.optJSONArray("icons"))
+        FAVICON_URL to getLargestIconUrl(webAppManifestUrl, manifest?.array<JsonObject>("icons"))
       )
     ).removeNullValues()
   }
 
-  private fun getLargestIconUrl(baseUrl: HttpUrl?, icons: JSONArray?): HttpUrl? {
+  private fun getLargestIconUrl(baseUrl: HttpUrl?, icons: JsonArray<JsonObject>?): HttpUrl? {
     icons
-      ?.maxByOrNull { sizeElement -> parseSize((sizeElement as? JSONObject)?.optString("sizes")) }
-      .let { iconElement -> (iconElement as? JSONObject)?.optString("src") }
+      ?.maxByOrNull { sizeElement -> parseSize((sizeElement as? JsonObject)?.string("sizes")) }
+      .let { iconElement -> iconElement?.string("src") }
       ?.let { iconUrl -> return if (baseUrl != null) baseUrl.resolve(iconUrl) else iconUrl.toHttpUrlOrNull() }
       ?: return null
   }
 
-  private fun JSONObject?.element(name: String): String? = this?.opt(name)?.toString()?.trim()
+  private fun JsonObject?.element(name: String): String? = this?.string(name)?.trim()
 }
