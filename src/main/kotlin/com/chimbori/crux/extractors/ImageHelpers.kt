@@ -2,7 +2,7 @@ package com.chimbori.crux.extractors
 
 import com.chimbori.crux.articles.Article
 import com.chimbori.crux.common.Log
-import com.chimbori.crux.urls.isAdImage
+import com.chimbori.crux.common.isAdImage
 import okhttp3.HttpUrl
 import org.jsoup.nodes.Element
 import org.jsoup.select.Elements

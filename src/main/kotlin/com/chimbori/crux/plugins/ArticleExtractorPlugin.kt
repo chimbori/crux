@@ -2,11 +2,11 @@ package com.chimbori.crux.plugins
 
 import com.chimbori.crux.Plugin
 import com.chimbori.crux.Resource
+import com.chimbori.crux.common.isLikelyArticle
 import com.chimbori.crux.extractors.PostprocessHelpers
 import com.chimbori.crux.extractors.PreprocessHelpers
 import com.chimbori.crux.extractors.getNodes
 import com.chimbori.crux.extractors.getWeight
-import com.chimbori.crux.urls.isLikelyArticle
 import okhttp3.HttpUrl
 import org.jsoup.nodes.Element
 

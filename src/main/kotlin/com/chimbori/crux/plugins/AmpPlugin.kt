@@ -4,8 +4,8 @@ import com.chimbori.crux.Plugin
 import com.chimbori.crux.Resource
 import com.chimbori.crux.common.cruxOkHttpClient
 import com.chimbori.crux.common.fromUrl
+import com.chimbori.crux.common.isLikelyArticle
 import com.chimbori.crux.common.nullIfBlank
-import com.chimbori.crux.urls.isLikelyArticle
 import okhttp3.HttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.OkHttpClient

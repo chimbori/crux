@@ -12,6 +12,7 @@ import com.chimbori.crux.Fields.TITLE
 import com.chimbori.crux.Fields.VIDEO_URL
 import com.chimbori.crux.Plugin
 import com.chimbori.crux.Resource
+import com.chimbori.crux.common.isLikelyArticle
 import com.chimbori.crux.extractors.extractAmpUrl
 import com.chimbori.crux.extractors.extractCanonicalUrl
 import com.chimbori.crux.extractors.extractDescription
@@ -22,7 +23,6 @@ import com.chimbori.crux.extractors.extractSiteName
 import com.chimbori.crux.extractors.extractThemeColor
 import com.chimbori.crux.extractors.extractTitle
 import com.chimbori.crux.extractors.extractVideoUrl
-import com.chimbori.crux.urls.isLikelyArticle
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.HttpUrl

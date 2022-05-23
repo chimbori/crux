@@ -1,6 +1,5 @@
-package com.chimbori.crux.urls
+package com.chimbori.crux.common
 
-import com.chimbori.crux.common.countMatches
 import okhttp3.HttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 

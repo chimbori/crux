@@ -8,10 +8,10 @@ import com.chimbori.crux.Fields.TITLE
 import com.chimbori.crux.Plugin
 import com.chimbori.crux.Resource
 import com.chimbori.crux.articles.ArticleExtractor
+import com.chimbori.crux.common.isLikelyArticle
+import com.chimbori.crux.common.resolveRedirects
 import com.chimbori.crux.extractors.ImageUrlExtractor
 import com.chimbori.crux.extractors.LinkUrlExtractor
-import com.chimbori.crux.urls.isLikelyArticle
-import com.chimbori.crux.urls.resolveRedirects
 import kotlinx.coroutines.runBlocking
 import okhttp3.HttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrl

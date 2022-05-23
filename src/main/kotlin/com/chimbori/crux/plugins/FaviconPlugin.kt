@@ -3,9 +3,9 @@ package com.chimbori.crux.plugins
 import com.chimbori.crux.Fields.FAVICON_URL
 import com.chimbori.crux.Plugin
 import com.chimbori.crux.Resource
+import com.chimbori.crux.common.isLikelyArticle
 import com.chimbori.crux.extractors.extractCanonicalUrl
 import com.chimbori.crux.extractors.extractFaviconUrl
-import com.chimbori.crux.urls.isLikelyArticle
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.HttpUrl

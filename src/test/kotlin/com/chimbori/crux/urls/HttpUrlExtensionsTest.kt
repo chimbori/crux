@@ -1,5 +1,8 @@
 package com.chimbori.crux.urls
 
+import com.chimbori.crux.common.isLikelyArticle
+import com.chimbori.crux.common.isLikelyVideo
+import com.chimbori.crux.common.resolveRedirects
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import org.junit.Assert.assertEquals
