@@ -65,7 +65,6 @@ public class HtmlMetadataPlugin : Plugin {
     Resource(
       fields = mapOf(
         TITLE to request.document?.extractTitle(),
-        CANONICAL_URL to request.document?.extractCanonicalUrl(),
         DESCRIPTION to request.document?.extractDescription(),
         SITE_NAME to request.document?.extractSiteName(),
         THEME_COLOR_HEX to request.document?.extractThemeColor(),
@@ -73,6 +72,7 @@ public class HtmlMetadataPlugin : Plugin {
       ),
       urls = mapOf(
         FAVICON_URL to request.document?.extractFaviconUrl(canonicalUrl),
+        CANONICAL_URL to canonicalUrl,
         BANNER_IMAGE_URL to request.document?.extractImageUrl(canonicalUrl),
         FEED_URL to request.document?.extractFeedUrl(canonicalUrl),
         AMP_URL to request.document?.extractAmpUrl(canonicalUrl),
