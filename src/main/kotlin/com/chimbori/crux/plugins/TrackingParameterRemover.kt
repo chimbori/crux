@@ -1,19 +1,14 @@
 package com.chimbori.crux.plugins
 
-import com.chimbori.crux.api.Extractor
-import com.chimbori.crux.api.Resource
+import com.chimbori.crux.api.Rewriter
 import okhttp3.HttpUrl
 
-public class TrackingParameterRemover(private val trackingParameters: Array<String> = TRACKING_PARAMETERS) : Extractor {
-  override fun canExtract(url: HttpUrl): Boolean = url.queryParameterNames.any { it in trackingParameters }
-
-  override suspend fun extract(request: Resource): Resource = request.copy(
-    url = request.url?.newBuilder()?.apply {
-      request.url.queryParameterNames.filter { it in trackingParameters }.forEach {
-        removeAllQueryParameters(it)
-      }
-    }?.build()
-  )
+public class TrackingParameterRemover(private val trackingParameters: Array<String> = TRACKING_PARAMETERS) : Rewriter {
+  override fun rewrite(url: HttpUrl): HttpUrl = url.newBuilder().apply {
+    url.queryParameterNames.filter { it in trackingParameters }.forEach {
+      removeAllQueryParameters(it)
+    }
+  }.build()
 
   public companion object {
     public val TRACKING_PARAMETERS: Array<String> = arrayOf(
