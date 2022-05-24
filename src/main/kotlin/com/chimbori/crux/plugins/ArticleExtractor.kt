@@ -3,24 +3,37 @@ package com.chimbori.crux.plugins
 import com.chimbori.crux.api.Extractor
 import com.chimbori.crux.api.Fields.DURATION_MS
 import com.chimbori.crux.api.Resource
+import com.chimbori.crux.common.cruxOkHttpClient
 import com.chimbori.crux.common.estimatedReadingTimeMs
+import com.chimbori.crux.common.fromUrl
 import com.chimbori.crux.common.isLikelyArticle
 import com.chimbori.crux.extractors.PostprocessHelpers
 import com.chimbori.crux.extractors.PreprocessHelpers
 import com.chimbori.crux.extractors.getNodes
 import com.chimbori.crux.extractors.getWeight
 import okhttp3.HttpUrl
+import okhttp3.OkHttpClient
 import org.jsoup.nodes.Element
 
-public class ArticleExtractor : Extractor {
+public class ArticleExtractor(
+  private val okHttpClient: OkHttpClient = cruxOkHttpClient
+) : Extractor {
   override fun canExtract(url: HttpUrl): Boolean = url.isLikelyArticle()
 
   override suspend fun extract(request: Resource): Resource? {
-    request.document
+    val resourceToUse = if (request.document != null) {
+      request
+    } else if (request.url != null) {
+      Resource.fromUrl(request.url, shouldFetchContent = true, okHttpClient)
+    } else {
+      Resource()
+    }
+
+    resourceToUse.document
       ?: return null
 
-    PreprocessHelpers.preprocess(request.document)
-    val nodes = request.document.getNodes()
+    PreprocessHelpers.preprocess(resourceToUse.document)
+    val nodes = resourceToUse.document.getNodes()
     var maxWeight = 0
     var bestMatchElement: Element? = null
     for (element in nodes) {
