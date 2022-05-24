@@ -11,7 +11,10 @@ public data class Resource(
   /** Parsed DOM tree for this resource, if available. */
   val document: Document? = null,
 
-  /** Extracted and cleaned-up DOM tree for this resource, if available. */
+  /**
+   * Extracted and cleaned-up DOM tree for this resource, if available. If this is null, then article extraction has
+   * not been performed, or has failed.
+   */
   val article: Document? = null,
 
   /**
@@ -38,8 +41,7 @@ public data class Resource(
 
   /**
    * Merges non-null fields from another [Resource] with this object, and returns a new immutable object. Prefer to use
-   * this operator instead of manually merging the two objects, so that [fields] and [urls] are correctly merged and
-   * not clobbered.
+   * this operator instead of manually merging the two objects, so that all fields are correctly merged and not clobbered.
    */
   public operator fun plus(anotherResource: Resource?): Resource = Resource(
     url = anotherResource?.url ?: url,

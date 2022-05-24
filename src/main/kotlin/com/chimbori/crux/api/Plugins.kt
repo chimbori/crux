@@ -5,6 +5,14 @@ import okhttp3.HttpUrl
 public sealed interface Plugin
 
 /**
+ * Rewriters are plugins that can modify the URL before it’s processed by other plugins. They should not have access
+ * to the network, and should execute quickly on the main thread if necessary.
+ */
+public fun interface Rewriter : Plugin {
+  public fun rewrite(url: HttpUrl): HttpUrl
+}
+
+/**
  * Crux is designed as a chain of plugins, each of which can optionally handle URLs passed to it. Each plugin is
  * provided a fully-parsed HTML DOM to extract fields from, and can also make additional HTTP requests if necessary to
  * retrieve additional metadata or to follow redirects.
@@ -29,8 +37,4 @@ public interface Extractor : Plugin {
    * return `null`.
    */
   public suspend fun extract(request: Resource): Resource?
-}
-
-public fun interface Rewriter : Plugin {
-  public fun rewrite(url: HttpUrl): HttpUrl
 }
