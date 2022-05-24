@@ -37,7 +37,7 @@ public class ArticleExtractor : Plugin {
     val extractedDoc = PostprocessHelpers.postprocess(bestMatchElement)
     return Resource(
       objects = mapOf(DURATION_MS to extractedDoc.estimatedReadingTimeMs()),
-      document = extractedDoc
+      article = extractedDoc
     )
   }
 }

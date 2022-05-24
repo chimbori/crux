@@ -24,7 +24,7 @@ class ArticleExtractorTest {
       val readingTimeMinutes = (parsed.objects.get(DURATION_MS) as? Int)?.div(60_000)
       assertEquals(51, readingTimeMinutes)
 
-      val extractedArticle = parsed.document
+      val extractedArticle = parsed.article
       assertNotNull(extractedArticle)
       assertStartsWith(
         """"Galileo" redirects here. For other uses, see Galileo (disambiguation) and Galileo Galilei (disambiguation).""",

@@ -96,6 +96,9 @@ public data class Resource(
   /** Parsed DOM tree for this resource, if available. */
   val document: Document? = null,
 
+  /** Extracted and cleaned-up DOM tree for this resource, if available. */
+  val article: Document? = null,
+
   /**
    * Text fields extracted from this resource, stored as key-value pairs. It is recommended to use well-defined keys
    * from [com.chimbori.crux.Fields] for all standard fields. Custom fields are also supported, in case none of the
@@ -126,8 +129,10 @@ public data class Resource(
   public operator fun plus(anotherResource: Resource): Resource = Resource(
     url = anotherResource.url ?: url,
     document = anotherResource.document ?: document,
+    article = anotherResource.article ?: article,
     fields = fields + anotherResource.fields,
     urls = urls + anotherResource.urls,
+    objects = objects + anotherResource.objects,
   )
 
   /**
@@ -137,6 +142,7 @@ public data class Resource(
   public fun removeNullValues(): Resource = copy(
     fields = fields.filterValues { !it.isNullOrBlank() },
     urls = urls.filterValues { it != null },
+    objects = objects.filterValues { it != null },
   )
 
   /** For any potential extension functions to be defined on the companion object. */
