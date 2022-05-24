@@ -11,7 +11,7 @@ import com.chimbori.crux.api.Fields.THEME_COLOR_HTML
 import com.chimbori.crux.api.Fields.TITLE
 import com.chimbori.crux.api.Fields.WEB_APP_MANIFEST_URL
 import com.chimbori.crux.api.Resource
-import com.chimbori.crux.common.fromUrl
+import com.chimbori.crux.common.fetchFromUrl
 import kotlinx.coroutines.runBlocking
 import okhttp3.mockwebserver.Dispatcher
 import okhttp3.mockwebserver.MockResponse
@@ -58,7 +58,7 @@ class WebAppManifestParserTest {
 
     runBlocking {
       val parsedResource = webAppManifestParser.extract(
-        Resource.fromUrl(candidateUrl, shouldFetchContent = true)
+        Resource.fetchFromUrl(candidateUrl)
       )
       assertEquals(
         mockWebServer.url("/static/sub/directory/manifest.json"),
@@ -115,7 +115,7 @@ class WebAppManifestParserTest {
 
     runBlocking {
       val parsedResource: Resource? = webAppManifestParser.extract(
-        Resource.fromUrl(candidateUrl, shouldFetchContent = true)
+        Resource.fetchFromUrl(candidateUrl)
       )
       assertNotNull(parsedResource)
       assertEquals("Super Racer 3000", parsedResource?.get(TITLE))

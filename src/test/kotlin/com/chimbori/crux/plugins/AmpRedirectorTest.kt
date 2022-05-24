@@ -1,7 +1,7 @@
 package com.chimbori.crux.plugins
 
 import com.chimbori.crux.api.Resource
-import com.chimbori.crux.common.fromUrl
+import com.chimbori.crux.common.fetchFromUrl
 import com.chimbori.crux.extractors.extractTitle
 import kotlinx.coroutines.runBlocking
 import okhttp3.mockwebserver.Dispatcher
@@ -111,7 +111,7 @@ class AmpRedirectorTest {
 
     runBlocking {
       val parsed = ampRedirector.extract(
-        Resource.fromUrl(url = ampUrl, shouldFetchContent = true)
+        Resource.fetchFromUrl(url = ampUrl)
       )
       assertEquals(canonicalUrl, parsed?.url)
       assertEquals("CanonicalUrl", parsed?.document?.extractTitle())

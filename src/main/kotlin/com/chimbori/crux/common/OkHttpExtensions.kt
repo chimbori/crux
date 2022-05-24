@@ -71,26 +71,19 @@ public suspend fun OkHttpClient.httpGetContent(url: HttpUrl): String? = safeHttp
   } else null
 }
 
-public suspend fun Resource.Companion.fromUrl(
-  url: HttpUrl,
-  shouldFetchContent: Boolean,
-  okHttpClient: OkHttpClient = cruxOkHttpClient
-): Resource = withContext(Dispatchers.IO) {
+public suspend fun Resource.Companion.fetchFromUrl(url: HttpUrl, okHttpClient: OkHttpClient = cruxOkHttpClient)
+    : Resource = withContext(Dispatchers.IO) {
 
-  if (shouldFetchContent) {
-    val httpResponse = okHttpClient.safeHttpGet(url)
+  val httpResponse = okHttpClient.safeHttpGet(url)
 
-    // If the HTTP request resulted in an HTTP redirect, use the redirected URL.
-    val urlToUse = if (httpResponse?.isSuccessful == true && httpResponse.request.url != url) {
-      httpResponse.request.url
-    } else url
+  // If the HTTP request resulted in an HTTP redirect, use the redirected URL.
+  val urlToUse = if (httpResponse?.isSuccessful == true && httpResponse.request.url != url) {
+    httpResponse.request.url
+  } else url
 
-    val docToUse: Document? = httpResponse?.body?.let {
-      Jsoup.parse(it.byteStream(), "UTF-8", urlToUse.toString())
-    }
-
-    Resource(url = urlToUse, document = docToUse)
-  } else {
-    Resource(url = url)
+  val docToUse: Document? = httpResponse?.body?.let {
+    Jsoup.parse(it.byteStream(), "UTF-8", urlToUse.toString())
   }
+
+  Resource(url = urlToUse, document = docToUse)
 }

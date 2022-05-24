@@ -3,7 +3,7 @@ package com.chimbori.crux.plugins
 import com.chimbori.crux.api.Extractor
 import com.chimbori.crux.api.Resource
 import com.chimbori.crux.common.cruxOkHttpClient
-import com.chimbori.crux.common.fromUrl
+import com.chimbori.crux.common.fetchFromUrl
 import com.chimbori.crux.common.isLikelyArticle
 import com.chimbori.crux.common.nullIfBlank
 import okhttp3.HttpUrl
@@ -24,11 +24,11 @@ public class AmpRedirector(
   override suspend fun extract(request: Resource): Resource? {
     request.document?.select("link[rel=canonical]")?.attr("href")?.nullIfBlank()?.let {
       if (it.toHttpUrl() != request.url) {  // Only redirect if this is not already the canonical URL.
-        return Resource.fromUrl(
-          url = it.toHttpUrl(),
-          shouldFetchContent = refetchContentFromCanonicalUrl,
-          okHttpClient = okHttpClient
-        )
+        return if (refetchContentFromCanonicalUrl) {
+          Resource.fetchFromUrl(url = it.toHttpUrl(), okHttpClient = okHttpClient)
+        } else {
+          Resource(url = it.toHttpUrl())
+        }
       }
     }
     return null

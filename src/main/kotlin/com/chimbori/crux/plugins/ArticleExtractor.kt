@@ -5,7 +5,7 @@ import com.chimbori.crux.api.Fields.DURATION_MS
 import com.chimbori.crux.api.Resource
 import com.chimbori.crux.common.cruxOkHttpClient
 import com.chimbori.crux.common.estimatedReadingTimeMs
-import com.chimbori.crux.common.fromUrl
+import com.chimbori.crux.common.fetchFromUrl
 import com.chimbori.crux.common.isLikelyArticle
 import com.chimbori.crux.extractors.PostprocessHelpers
 import com.chimbori.crux.extractors.PreprocessHelpers
@@ -24,7 +24,7 @@ public class ArticleExtractor(
     val resourceToUse = if (request.document != null) {
       request
     } else if (request.url != null) {
-      Resource.fromUrl(request.url, shouldFetchContent = true, okHttpClient)
+      Resource.fetchFromUrl(request.url, okHttpClient)
     } else {
       Resource()
     }
