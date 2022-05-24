@@ -69,6 +69,29 @@ class AmpRedirectorTest {
   }
 
   @Test
+  fun testReturnsOriginalWhenAlreadyOnCanonicalUrl() {
+    val canonicalUrl = mockWebServer.url("/canonical-url")
+    val canonicalHtml = """<!doctype html><html amp>
+      |<head>
+      |<link rel="canonical" href="$canonicalUrl"/>
+      |</head>
+      |</html>""".trimMargin()
+
+    mockWebServer.dispatcher = object : Dispatcher() {
+      override fun dispatch(request: RecordedRequest) = when (request.path) {
+        canonicalUrl.encodedPath -> MockResponse().setBody(canonicalHtml)
+        else -> MockResponse().setResponseCode(404)
+      }
+    }
+
+    runBlocking {
+      val canonicalResource = Resource(url = canonicalUrl, document = Jsoup.parse(canonicalHtml))
+      val parsedResource = ampRedirector.handle(canonicalResource)
+      assertNull(parsedResource)
+    }
+  }
+
+  @Test
   fun testFetchesContentFromCanonicalUrl() {
     val canonicalUrl = mockWebServer.url("/canonical-url")
     val ampUrl = mockWebServer.url("/amp-url")

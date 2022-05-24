@@ -23,11 +23,13 @@ public class AmpRedirector(
 
   override suspend fun handle(request: Resource): Resource? {
     request.document?.select("link[rel=canonical]")?.attr("href")?.nullIfBlank()?.let {
-      return Resource.fromUrl(
-        url = it.toHttpUrl(),
-        shouldFetchContent = refetchContentFromCanonicalUrl,
-        okHttpClient = okHttpClient
-      )
+      if (it.toHttpUrl() != request.url) {  // Only redirect if this is not already the canonical URL.
+        return Resource.fromUrl(
+          url = it.toHttpUrl(),
+          shouldFetchContent = refetchContentFromCanonicalUrl,
+          okHttpClient = okHttpClient
+        )
+      }
     }
     return null
   }
