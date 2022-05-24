@@ -41,13 +41,13 @@ public data class Resource(
    * this operator instead of manually merging the two objects, so that [fields] and [urls] are correctly merged and
    * not clobbered.
    */
-  public operator fun plus(anotherResource: Resource): Resource = Resource(
-    url = anotherResource.url ?: url,
-    document = anotherResource.document ?: document,
-    article = anotherResource.article ?: article,
-    fields = fields + anotherResource.fields,
-    urls = urls + anotherResource.urls,
-    objects = objects + anotherResource.objects,
+  public operator fun plus(anotherResource: Resource?): Resource = Resource(
+    url = anotherResource?.url ?: url,
+    document = anotherResource?.document ?: document,
+    article = anotherResource?.article ?: article,
+    fields = if (anotherResource?.fields == null) fields else fields + anotherResource.fields,
+    urls = if (anotherResource?.urls == null) urls else urls + anotherResource.urls,
+    objects = if (anotherResource?.objects == null) objects else objects + anotherResource.objects,
   )
 
   /**

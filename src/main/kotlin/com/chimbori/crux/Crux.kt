@@ -66,15 +66,15 @@ public class Crux(
       .filterIsInstance<Rewriter>()
       .fold(originalUrl) { rewrittenUrl, rewriter -> rewriter.rewrite(rewrittenUrl) }
 
-    var resource = Resource(url = rewrittenUrl, document = parsedDoc)
-    for (plugin in activePlugins) {
-      if (plugin is Extractor && plugin.canExtract(resource.url ?: rewrittenUrl)) {
-        plugin.extract(resource)?.let {
-          resource += it
+    return activePlugins
+      .filterIsInstance<Extractor>()
+      .fold(Resource(url = rewrittenUrl, document = parsedDoc)) { resource, extractor ->
+        if (extractor.canExtract(resource.url ?: rewrittenUrl)) {
+          resource + extractor.extract(resource)
+        } else {
+          resource
         }
-      }
-    }
-    return resource.removeNullValues()
+      }.removeNullValues()
   }
 }
 
