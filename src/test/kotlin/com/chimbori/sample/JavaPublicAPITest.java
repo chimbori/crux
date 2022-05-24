@@ -4,11 +4,12 @@ import com.chimbori.crux.articles.Article;
 import com.chimbori.crux.articles.ArticleExtractor;
 import com.chimbori.crux.extractors.ImageUrlExtractor;
 import com.chimbori.crux.extractors.LinkUrlExtractor;
-import com.chimbori.crux.urls.HttpUrlExtensionsKt;
 import okhttp3.HttpUrl;
 import org.jsoup.Jsoup;
 import org.junit.Test;
 
+import static com.chimbori.crux.common.HttpUrlExtensionsKt.isLikelyArticle;
+import static com.chimbori.crux.common.HttpUrlExtensionsKt.resolveRedirects;
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -22,11 +23,11 @@ public class JavaPublicAPITest {
     String content = "<html><title>Crux";  // Intentionally malformed.
 
     assert url != null;
-    if (HttpUrlExtensionsKt.isLikelyArticle(url)) {
+    if (isLikelyArticle(url)) {
       Article article = new ArticleExtractor(url, content).extractMetadata().extractContent().getArticle();
       assertEquals("Crux", article.getTitle());
     }
-    HttpUrl directURL = HttpUrlExtensionsKt.resolveRedirects(url);
+    HttpUrl directURL = resolveRedirects(url);
     assertEquals("https://chimbori.com/", directURL.toString());
   }
 

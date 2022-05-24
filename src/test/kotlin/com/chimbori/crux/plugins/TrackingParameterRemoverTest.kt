@@ -12,8 +12,8 @@ class TrackingParameterRemoverTest {
   @Test
   fun testThatParametersAreRemoved() {
     val trackingRemover = TrackingParameterRemover()
-    assertTrue(trackingRemover.canHandle("https://example.org?utm_source".toHttpUrl()))
-    assertFalse(trackingRemover.canHandle("https://example.org?not_a_tracking_parameter".toHttpUrl()))
+    assertTrue(trackingRemover.canExtract("https://example.org?utm_source".toHttpUrl()))
+    assertFalse(trackingRemover.canExtract("https://example.org?not_a_tracking_parameter".toHttpUrl()))
 
     mapOf(
       "https://example.org/" to null,
@@ -25,10 +25,10 @@ class TrackingParameterRemoverTest {
       "https://www.example.com/?utm_source=tracker&non-tracking-parameter=dont-remove"
           to "https://www.example.com/?non-tracking-parameter=dont-remove",
     ).forEach { (key, value) ->
-      assertEquals(value != null, trackingRemover.canHandle(key.toHttpUrl()))
+      assertEquals(value != null, trackingRemover.canExtract(key.toHttpUrl()))
       assertEquals(
         value?.toHttpUrl() ?: key.toHttpUrl(),
-        runBlocking { trackingRemover.handle(Resource(url = key.toHttpUrl())).url }
+        runBlocking { trackingRemover.extract(Resource(url = key.toHttpUrl())).url }
       )
     }
   }

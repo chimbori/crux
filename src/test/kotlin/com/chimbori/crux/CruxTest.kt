@@ -55,16 +55,16 @@ class CruxTest {
 
   @Test
   fun testPluginsAreNotAskedToHandleUrlsTheyCannotHandle() {
-    val fooHandlerPlugin = object : Plugin {
-      override fun canHandle(url: HttpUrl) = url.encodedPath == "/foo"
-      override suspend fun handle(request: Resource) = Resource(
+    val fooHandlerPlugin = object : Extractor {
+      override fun canExtract(url: HttpUrl) = url.encodedPath == "/foo"
+      override suspend fun extract(request: Resource) = Resource(
         url = request.url?.newBuilder()?.encodedPath("/rewritten-from-foo")?.build()
       )
     }
 
-    val barHandlerPlugin = object : Plugin {
-      override fun canHandle(url: HttpUrl) = url.encodedPath == "/bar"
-      override suspend fun handle(request: Resource) = Resource(
+    val barHandlerPlugin = object : Extractor {
+      override fun canExtract(url: HttpUrl) = url.encodedPath == "/bar"
+      override suspend fun extract(request: Resource) = Resource(
         url = request.url?.newBuilder()?.encodedPath("/rewritten-from-bar")?.build()
       )
     }
@@ -112,18 +112,18 @@ class CruxTest {
 
   @Test
   fun testLaterPluginOperatesOnRewrittenUrlFromPreviousPlugin() {
-    val rewriteFooToBarPlugin = object : Plugin {
-      override fun canHandle(url: HttpUrl) = url.encodedPath == "/foo"
-      override suspend fun handle(request: Resource) =
+    val rewriteFooToBarPlugin = object : Extractor {
+      override fun canExtract(url: HttpUrl) = url.encodedPath == "/foo"
+      override suspend fun extract(request: Resource) =
         Resource(
           url = request.url?.newBuilder()?.encodedPath("/bar")?.build(),
           fields = mapOf(TITLE to "Foo Title")
         )
     }
 
-    val generateTitleForBarPlugin = object : Plugin {
-      override fun canHandle(url: HttpUrl) = url.encodedPath == "/bar"
-      override suspend fun handle(request: Resource) = Resource(fields = mapOf(TITLE to "Bar Title"))
+    val generateTitleForBarPlugin = object : Extractor {
+      override fun canExtract(url: HttpUrl) = url.encodedPath == "/bar"
+      override suspend fun extract(request: Resource) = Resource(fields = mapOf(TITLE to "Bar Title"))
     }
 
     // Test Foo before Bar.

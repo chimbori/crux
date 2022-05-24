@@ -51,7 +51,7 @@ class AmpRedirectorTest {
     }
 
     runBlocking {
-      val parsedResource = ampRedirector.handle(Resource(url = ampUrl, document = Jsoup.parse(ampHtml)))
+      val parsedResource = ampRedirector.extract(Resource(url = ampUrl, document = Jsoup.parse(ampHtml)))
       assertEquals(canonicalUrl, parsedResource?.url)
     }
   }
@@ -63,7 +63,7 @@ class AmpRedirectorTest {
 
     runBlocking {
       val parsedResource =
-        ampRedirector.handle(Resource(url = ampUrl, document = Jsoup.parse(ampHtmlWithNoCanonicalUrl)))
+        ampRedirector.extract(Resource(url = ampUrl, document = Jsoup.parse(ampHtmlWithNoCanonicalUrl)))
       assertNull(parsedResource?.url)
     }
   }
@@ -86,7 +86,7 @@ class AmpRedirectorTest {
 
     runBlocking {
       val canonicalResource = Resource(url = canonicalUrl, document = Jsoup.parse(canonicalHtml))
-      val parsedResource = ampRedirector.handle(canonicalResource)
+      val parsedResource = ampRedirector.extract(canonicalResource)
       assertNull(parsedResource)
     }
   }
@@ -110,7 +110,7 @@ class AmpRedirectorTest {
     }
 
     runBlocking {
-      val parsed = ampRedirector.handle(
+      val parsed = ampRedirector.extract(
         Resource.fromUrl(url = ampUrl, shouldFetchContent = true)
       )
       assertEquals(canonicalUrl, parsed?.url)

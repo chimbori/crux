@@ -19,7 +19,7 @@ import org.jsoup.nodes.Document
  * An ordered list of default plugins configured in Crux. Callers can override and provide their own list, or pick and
  * choose from the set of available default plugins to create their own configuration.
  */
-public val DEFAULT_PLUGINS: List<Plugin> = listOf(
+public val DEFAULT_PLUGINS: List<Extractor> = listOf(
   // Static redirectors go first, to avoid getting stuck into CAPTCHAs.
   GoogleStaticRedirector(),
   FacebookStaticRedirector(),
@@ -44,7 +44,7 @@ public val DEFAULT_PLUGINS: List<Plugin> = listOf(
  */
 public class Crux(
   /** Select from available plugins, or provide custom plugins for Crux to use. */
-  private val plugins: List<Plugin> = DEFAULT_PLUGINS,
+  private val plugins: List<Extractor> = DEFAULT_PLUGINS,
 
   /** If the calling app has its own instance of [OkHttpClient], use it, otherwise Crux can create and use its own. */
   private val okHttpClient: OkHttpClient = cruxOkHttpClient,
@@ -78,8 +78,8 @@ public class Crux(
     }
 
     for (plugin in plugins) {
-      if (plugin.canHandle(resource.url ?: originalUrl)) {
-        plugin.handle(resource)?.let {
+      if (plugin.canExtract(resource.url ?: originalUrl)) {
+        plugin.extract(resource)?.let {
           resource += it
         }
       }
@@ -195,13 +195,13 @@ public object Fields {
  * updated URL and DOM tree will be passed on to the next plugin in sequence, so the exact ordering of plugins is
  * important.
  */
-public interface Plugin {
+public interface Extractor {
   /**
    * @param url URL for the resource being processed by Crux.
    * @return true if this plugin can handle the URL, false otherwise. Plugins can only inspect the [HttpUrl], without
    * being able to peek at the content.
    */
-  public fun canHandle(url: HttpUrl): Boolean
+  public fun canExtract(url: HttpUrl): Boolean
 
   /**
    * @param request metadata & DOM content for the request being handled.
@@ -209,5 +209,5 @@ public interface Plugin {
    * set or updated; they will be merged with the set of previously-extracted fields. If no fields need to be updated,
    * return `null`.
    */
-  public suspend fun handle(request: Resource): Resource?
+  public suspend fun extract(request: Resource): Resource?
 }

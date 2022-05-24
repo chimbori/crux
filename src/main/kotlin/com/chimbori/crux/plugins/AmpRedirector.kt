@@ -1,6 +1,6 @@
 package com.chimbori.crux.plugins
 
-import com.chimbori.crux.Plugin
+import com.chimbori.crux.Extractor
 import com.chimbori.crux.Resource
 import com.chimbori.crux.common.cruxOkHttpClient
 import com.chimbori.crux.common.fromUrl
@@ -17,11 +17,11 @@ import okhttp3.OkHttpClient
 public class AmpRedirector(
   private val refetchContentFromCanonicalUrl: Boolean,
   private val okHttpClient: OkHttpClient = cruxOkHttpClient
-) : Plugin {
+) : Extractor {
   /** Skip handling any file extensions that are unlikely to be an HTML page. */
-  override fun canHandle(url: HttpUrl): Boolean = url.isLikelyArticle()
+  override fun canExtract(url: HttpUrl): Boolean = url.isLikelyArticle()
 
-  override suspend fun handle(request: Resource): Resource? {
+  override suspend fun extract(request: Resource): Resource? {
     request.document?.select("link[rel=canonical]")?.attr("href")?.nullIfBlank()?.let {
       if (it.toHttpUrl() != request.url) {  // Only redirect if this is not already the canonical URL.
         return Resource.fromUrl(

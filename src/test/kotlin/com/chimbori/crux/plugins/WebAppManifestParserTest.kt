@@ -54,10 +54,10 @@ class WebAppManifestParserTest {
     }
 
     val candidateUrl = mockWebServer.url("/")
-    assertTrue(webAppManifestParser.canHandle(candidateUrl))
+    assertTrue(webAppManifestParser.canExtract(candidateUrl))
 
     runBlocking {
-      val parsedResource = webAppManifestParser.handle(
+      val parsedResource = webAppManifestParser.extract(
         Resource.fromUrl(candidateUrl, shouldFetchContent = true)
       )
       assertEquals(
@@ -111,10 +111,10 @@ class WebAppManifestParserTest {
     }
 
     val candidateUrl = mockWebServer.url("/")
-    assertTrue(webAppManifestParser.canHandle(candidateUrl))
+    assertTrue(webAppManifestParser.canExtract(candidateUrl))
 
     runBlocking {
-      val parsedResource: Resource? = webAppManifestParser.handle(
+      val parsedResource: Resource? = webAppManifestParser.extract(
         Resource.fromUrl(candidateUrl, shouldFetchContent = true)
       )
       assertNotNull(parsedResource)

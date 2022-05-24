@@ -13,7 +13,7 @@ import com.chimbori.crux.Fields.THEME_COLOR_HEX
 import com.chimbori.crux.Fields.THEME_COLOR_HTML
 import com.chimbori.crux.Fields.TITLE
 import com.chimbori.crux.Fields.WEB_APP_MANIFEST_URL
-import com.chimbori.crux.Plugin
+import com.chimbori.crux.Extractor
 import com.chimbori.crux.Resource
 import com.chimbori.crux.common.cruxOkHttpClient
 import com.chimbori.crux.common.httpGetContent
@@ -24,10 +24,10 @@ import com.chimbori.crux.extractors.parseSize
 import okhttp3.HttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 
-public class WebAppManifestParser : Plugin {
-  override fun canHandle(url: HttpUrl): Boolean = url.isLikelyArticle()
+public class WebAppManifestParser : Extractor {
+  override fun canExtract(url: HttpUrl): Boolean = url.isLikelyArticle()
 
-  override suspend fun handle(request: Resource): Resource? {
+  override suspend fun extract(request: Resource): Resource? {
     val canonicalUrl = request.document?.extractCanonicalUrl()?.let { request.url?.resolve(it) } ?: request.url
     val webAppManifestUrl = request.document?.select("link[rel=manifest]")?.attr("href")?.nullIfBlank()
       ?.let { canonicalUrl?.resolve(it) ?: it.toHttpUrlOrNull() }

@@ -5,7 +5,7 @@ import com.chimbori.crux.DEFAULT_PLUGINS
 import com.chimbori.crux.Fields.BANNER_IMAGE_URL
 import com.chimbori.crux.Fields.FAVICON_URL
 import com.chimbori.crux.Fields.TITLE
-import com.chimbori.crux.Plugin
+import com.chimbori.crux.Extractor
 import com.chimbori.crux.Resource
 import com.chimbori.crux.articles.ArticleExtractor
 import com.chimbori.crux.common.isLikelyArticle
@@ -68,13 +68,13 @@ class KotlinPublicAPITest {
   fun testWithCustomPlugin() {
     // If you write a new plugin yourself, you can add any custom fields to the `Resource` object yourself,
     // and consume them in your own app.
-    val customerNumberExtractorPlugin = object : Plugin {
+    val customerNumberExtractorPlugin = object : Extractor {
       // Indicate that your plugin can handle all URLs on your site, but no others.
-      override fun canHandle(url: HttpUrl): Boolean = url.topPrivateDomain() == "your-website.com"
+      override fun canExtract(url: HttpUrl): Boolean = url.topPrivateDomain() == "your-website.com"
 
       // Fields in the returned [Resource] overwrite those in the input [request]. If no changes are to be made, then
       // return null from your plugin. Otherwise, only return those fields that are new or changed from the input.
-      override suspend fun handle(request: Resource) = Resource(
+      override suspend fun extract(request: Resource) = Resource(
         fields = mapOf(CUSTOMER_NUMBER_FIELD to request.url?.queryParameter("customer-number"))
       )
 

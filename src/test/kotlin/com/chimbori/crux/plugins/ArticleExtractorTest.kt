@@ -16,10 +16,10 @@ class ArticleExtractorTest {
   fun testCanParseArticleContent() {
     val wikipediaUrl = "https://en.wikipedia.org/wiki/Galileo_Galilei".toHttpUrl()
     val articleExtractor = ArticleExtractor()
-    assertTrue(articleExtractor.canHandle(wikipediaUrl))
+    assertTrue(articleExtractor.canExtract(wikipediaUrl))
 
     runBlocking {
-      articleExtractor.handle(Resource.fromTestData(wikipediaUrl, "wikipedia_galileo.html"))
+      articleExtractor.extract(Resource.fromTestData(wikipediaUrl, "wikipedia_galileo.html"))
     }?.let { parsed ->
       val readingTimeMinutes = (parsed.objects.get(DURATION_MS) as? Int)?.div(60_000)
       assertEquals(51, readingTimeMinutes)

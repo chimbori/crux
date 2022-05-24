@@ -1,7 +1,7 @@
 package com.chimbori.crux.plugins
 
 import com.chimbori.crux.Fields.DURATION_MS
-import com.chimbori.crux.Plugin
+import com.chimbori.crux.Extractor
 import com.chimbori.crux.Resource
 import com.chimbori.crux.common.estimatedReadingTimeMs
 import com.chimbori.crux.common.isLikelyArticle
@@ -12,10 +12,10 @@ import com.chimbori.crux.extractors.getWeight
 import okhttp3.HttpUrl
 import org.jsoup.nodes.Element
 
-public class ArticleExtractor : Plugin {
-  override fun canHandle(url: HttpUrl): Boolean = url.isLikelyArticle()
+public class ArticleExtractor : Extractor {
+  override fun canExtract(url: HttpUrl): Boolean = url.isLikelyArticle()
 
-  override suspend fun handle(request: Resource): Resource? {
+  override suspend fun extract(request: Resource): Resource? {
     request.document
       ?: return null
 

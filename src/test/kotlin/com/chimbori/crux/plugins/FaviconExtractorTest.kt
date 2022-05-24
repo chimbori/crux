@@ -45,10 +45,10 @@ class FaviconExtractorTest {
     }
 
     val candidateUrl = mockWebServer.url("/")
-    assertTrue(faviconExtractor.canHandle(candidateUrl))
+    assertTrue(faviconExtractor.canExtract(candidateUrl))
 
     runBlocking {
-      val parsed = faviconExtractor.handle(
+      val parsed = faviconExtractor.extract(
         Resource.fromUrl(candidateUrl, shouldFetchContent = true)
       )
       assertEquals(mockWebServer.url("/favicon.png"), parsed.urls[FAVICON_URL])

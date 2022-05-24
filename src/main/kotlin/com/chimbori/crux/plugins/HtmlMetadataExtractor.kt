@@ -12,7 +12,7 @@ import com.chimbori.crux.Fields.SITE_NAME
 import com.chimbori.crux.Fields.THEME_COLOR_HEX
 import com.chimbori.crux.Fields.TITLE
 import com.chimbori.crux.Fields.VIDEO_URL
-import com.chimbori.crux.Plugin
+import com.chimbori.crux.Extractor
 import com.chimbori.crux.Resource
 import com.chimbori.crux.common.isLikelyArticle
 import com.chimbori.crux.extractors.extractAmpUrl
@@ -36,11 +36,11 @@ import okhttp3.HttpUrl
  * - Open Graph Protocol: https://ogp.me/
  * - AMP Spec: https://amp.dev/documentation/guides-and-tutorials/learn/spec/amphtml/
  */
-public class HtmlMetadataExtractor : Plugin {
+public class HtmlMetadataExtractor : Extractor {
   /** Skip handling any file extensions that are unlikely to be HTML pages. */
-  public override fun canHandle(url: HttpUrl): Boolean = url.isLikelyArticle()
+  public override fun canExtract(url: HttpUrl): Boolean = url.isLikelyArticle()
 
-  override suspend fun handle(request: Resource): Resource = withContext(Dispatchers.IO) {
+  override suspend fun extract(request: Resource): Resource = withContext(Dispatchers.IO) {
     val canonicalUrl = request.document?.extractCanonicalUrl()?.let { request.url?.resolve(it) } ?: request.url
     Resource(
       fields = mapOf(

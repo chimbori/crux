@@ -43,10 +43,10 @@ class HtmlMetadataExtractorTest {
     }
 
     val candidateUrl = mockWebServer.url("/")
-    assertTrue(htmlMetadataExtractor.canHandle(candidateUrl))
+    assertTrue(htmlMetadataExtractor.canExtract(candidateUrl))
 
     runBlocking {
-      val parsed = htmlMetadataExtractor.handle(
+      val parsed = htmlMetadataExtractor.extract(
         Resource.fromUrl(candidateUrl, shouldFetchContent = true)
       )
       assertNull(parsed.url)
@@ -68,10 +68,10 @@ class HtmlMetadataExtractorTest {
     }
 
     val candidateUrl = mockWebServer.url("/")
-    assertTrue(htmlMetadataExtractor.canHandle(candidateUrl))
+    assertTrue(htmlMetadataExtractor.canExtract(candidateUrl))
 
     runBlocking {
-      val parsed = htmlMetadataExtractor.handle(
+      val parsed = htmlMetadataExtractor.extract(
         Resource.fromUrl(candidateUrl, shouldFetchContent = true)
       )
       assertEquals("http://www.example.com/page=2", parsed[CANONICAL_URL])
