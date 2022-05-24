@@ -108,6 +108,9 @@ public data class Resource(
    * URLs multiple times. URLs can also be retrieved as strings via the [get] indexed accessor.
    */
   val urls: Map<String, HttpUrl?> = emptyMap(),
+
+  /** A holder for any kind of custom objects that library users may want to use. */
+  val objects: Map<String, Any?> = emptyMap(),
 ) {
   /**
    * @return value of a named field. If there’s no named [String] field corresponding to this key in [Resource.fields],

@@ -1,5 +1,6 @@
 package com.chimbori.crux.common
 
+import java.util.concurrent.TimeUnit.MINUTES
 import kotlin.math.ceil
 import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
@@ -19,6 +20,12 @@ internal fun Document.estimatedReadingTimeMinutes(): Int {
   // TODO: Consider handling badly-punctuated text such as missing spaces after periods.
   val wordCount = text().split("\\s+".toRegex()).size
   return ceil((wordCount / AVERAGE_WORDS_PER_MINUTE).toDouble()).toInt()
+}
+
+internal fun Document.estimatedReadingTimeMs(): Int {
+  // TODO: Consider handling badly-punctuated text such as missing spaces after periods.
+  val wordCount = text().split("\\s+".toRegex()).size
+  return ((wordCount * MINUTES.toMillis(1)) / AVERAGE_WORDS_PER_MINUTE).toInt()
 }
 
 /** Number of words that can be read by an average person in one minute. */

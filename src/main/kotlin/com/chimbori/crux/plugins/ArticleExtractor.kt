@@ -1,7 +1,9 @@
 package com.chimbori.crux.plugins
 
+import com.chimbori.crux.Fields.DURATION_MS
 import com.chimbori.crux.Plugin
 import com.chimbori.crux.Resource
+import com.chimbori.crux.common.estimatedReadingTimeMs
 import com.chimbori.crux.common.isLikelyArticle
 import com.chimbori.crux.extractors.PostprocessHelpers
 import com.chimbori.crux.extractors.PreprocessHelpers
@@ -32,6 +34,10 @@ public class ArticleExtractor : Plugin {
       }
     }
 
-    return Resource(document = PostprocessHelpers.postprocess(bestMatchElement))
+    val extractedDoc = PostprocessHelpers.postprocess(bestMatchElement)
+    return Resource(
+      objects = mapOf(DURATION_MS to extractedDoc.estimatedReadingTimeMs()),
+      document = extractedDoc
+    )
   }
 }
