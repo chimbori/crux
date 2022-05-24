@@ -74,9 +74,11 @@ public suspend fun Resource.Companion.fromUrl(
   url: HttpUrl,
   shouldFetchContent: Boolean,
   okHttpClient: OkHttpClient = cruxOkHttpClient
-): Resource = Resource(
-  url = url,
-  document = if (shouldFetchContent) okHttpClient.safeHttpGet(url)?.body?.let {
-    Jsoup.parse(it.byteStream(), "UTF-8", url.toString())
-  } else null
-)
+): Resource = withContext(Dispatchers.IO) {
+  Resource(
+    url = url,
+    document = if (shouldFetchContent) okHttpClient.safeHttpGet(url)?.body?.let {
+      Jsoup.parse(it.byteStream(), "UTF-8", url.toString())
+    } else null
+  )
+}
