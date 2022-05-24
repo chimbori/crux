@@ -3,7 +3,6 @@ package com.chimbori.crux.plugins
 import com.chimbori.crux.api.Extractor
 import com.chimbori.crux.api.Fields.DURATION_MS
 import com.chimbori.crux.api.Resource
-import com.chimbori.crux.common.cruxOkHttpClient
 import com.chimbori.crux.common.estimatedReadingTimeMs
 import com.chimbori.crux.common.fetchFromUrl
 import com.chimbori.crux.common.isLikelyArticle
@@ -15,9 +14,7 @@ import okhttp3.HttpUrl
 import okhttp3.OkHttpClient
 import org.jsoup.nodes.Element
 
-public class ArticleExtractor(
-  private val okHttpClient: OkHttpClient = cruxOkHttpClient
-) : Extractor {
+public class ArticleExtractor(private val okHttpClient: OkHttpClient) : Extractor {
   override fun canExtract(url: HttpUrl): Boolean = url.isLikelyArticle()
 
   override suspend fun extract(request: Resource): Resource? {

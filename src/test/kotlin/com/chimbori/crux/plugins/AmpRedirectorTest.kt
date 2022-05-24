@@ -2,6 +2,7 @@ package com.chimbori.crux.plugins
 
 import com.chimbori.crux.api.Resource
 import com.chimbori.crux.common.fetchFromUrl
+import com.chimbori.crux.common.loggingOkHttpClient
 import com.chimbori.crux.extractors.extractTitle
 import kotlinx.coroutines.runBlocking
 import okhttp3.mockwebserver.Dispatcher
@@ -22,7 +23,7 @@ class AmpRedirectorTest {
   @Before
   fun setUp() {
     mockWebServer = MockWebServer().apply { start() }
-    ampRedirector = AmpRedirector(refetchContentFromCanonicalUrl = true)
+    ampRedirector = AmpRedirector(refetchContentFromCanonicalUrl = true, loggingOkHttpClient)
   }
 
   @After
@@ -111,7 +112,7 @@ class AmpRedirectorTest {
 
     runBlocking {
       val parsed = ampRedirector.extract(
-        Resource.fetchFromUrl(url = ampUrl)
+        Resource.fetchFromUrl(url = ampUrl, loggingOkHttpClient)
       )
       assertEquals(canonicalUrl, parsed?.url)
       assertEquals("CanonicalUrl", parsed?.document?.extractTitle())

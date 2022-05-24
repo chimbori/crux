@@ -3,6 +3,7 @@ package com.chimbori.crux.plugins
 import com.chimbori.crux.api.Fields.FAVICON_URL
 import com.chimbori.crux.api.Resource
 import com.chimbori.crux.common.fetchFromUrl
+import com.chimbori.crux.common.loggingOkHttpClient
 import kotlinx.coroutines.runBlocking
 import okhttp3.mockwebserver.Dispatcher
 import okhttp3.mockwebserver.MockResponse
@@ -49,7 +50,7 @@ class FaviconExtractorTest {
 
     runBlocking {
       val parsed = faviconExtractor.extract(
-        Resource.fetchFromUrl(candidateUrl)
+        Resource.fetchFromUrl(candidateUrl, loggingOkHttpClient)
       )
       assertEquals(mockWebServer.url("/favicon.png"), parsed.urls[FAVICON_URL])
     }

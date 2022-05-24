@@ -2,7 +2,6 @@ package com.chimbori.crux.plugins
 
 import com.chimbori.crux.api.Extractor
 import com.chimbori.crux.api.Resource
-import com.chimbori.crux.common.cruxOkHttpClient
 import com.chimbori.crux.common.fetchFromUrl
 import com.chimbori.crux.common.isLikelyArticle
 import com.chimbori.crux.common.nullIfBlank
@@ -16,7 +15,7 @@ import okhttp3.OkHttpClient
  */
 public class AmpRedirector(
   private val refetchContentFromCanonicalUrl: Boolean,
-  private val okHttpClient: OkHttpClient = cruxOkHttpClient
+  private val okHttpClient: OkHttpClient
 ) : Extractor {
   /** Skip handling any file extensions that are unlikely to be an HTML page. */
   override fun canExtract(url: HttpUrl): Boolean = url.isLikelyArticle()

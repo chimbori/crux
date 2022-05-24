@@ -15,7 +15,6 @@ import com.chimbori.crux.api.Fields.THEME_COLOR_HTML
 import com.chimbori.crux.api.Fields.TITLE
 import com.chimbori.crux.api.Fields.WEB_APP_MANIFEST_URL
 import com.chimbori.crux.api.Resource
-import com.chimbori.crux.common.cruxOkHttpClient
 import com.chimbori.crux.common.httpGetContent
 import com.chimbori.crux.common.isLikelyArticle
 import com.chimbori.crux.common.nullIfBlank
@@ -23,8 +22,9 @@ import com.chimbori.crux.extractors.extractCanonicalUrl
 import com.chimbori.crux.extractors.parseSize
 import okhttp3.HttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
+import okhttp3.OkHttpClient
 
-public class WebAppManifestParser : Extractor {
+public class WebAppManifestParser(private val okHttpClient: OkHttpClient) : Extractor {
   override fun canExtract(url: HttpUrl): Boolean = url.isLikelyArticle()
 
   override suspend fun extract(request: Resource): Resource? {
@@ -33,7 +33,7 @@ public class WebAppManifestParser : Extractor {
       ?.let { canonicalUrl?.resolve(it) ?: it.toHttpUrlOrNull() }
       ?: return null
 
-    val manifest: JsonObject? = cruxOkHttpClient.httpGetContent(webAppManifestUrl)?.let { rawJSON ->
+    val manifest: JsonObject? = okHttpClient.httpGetContent(webAppManifestUrl)?.let { rawJSON ->
       try {
         Parser.default().parse(StringBuilder(rawJSON)) as JsonObject
       } catch (t: Throwable) {

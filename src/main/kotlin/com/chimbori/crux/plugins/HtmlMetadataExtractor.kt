@@ -14,7 +14,6 @@ import com.chimbori.crux.api.Fields.THEME_COLOR_HEX
 import com.chimbori.crux.api.Fields.TITLE
 import com.chimbori.crux.api.Fields.VIDEO_URL
 import com.chimbori.crux.api.Resource
-import com.chimbori.crux.common.cruxOkHttpClient
 import com.chimbori.crux.common.fetchFromUrl
 import com.chimbori.crux.common.isLikelyArticle
 import com.chimbori.crux.extractors.extractAmpUrl
@@ -39,9 +38,7 @@ import okhttp3.OkHttpClient
  * - Open Graph Protocol: https://ogp.me/
  * - AMP Spec: https://amp.dev/documentation/guides-and-tutorials/learn/spec/amphtml/
  */
-public class HtmlMetadataExtractor(
-  private val okHttpClient: OkHttpClient = cruxOkHttpClient
-) : Extractor {
+public class HtmlMetadataExtractor(private val okHttpClient: OkHttpClient) : Extractor {
   /** Skip handling any file extensions that are unlikely to be HTML pages. */
   public override fun canExtract(url: HttpUrl): Boolean = url.isLikelyArticle()
 

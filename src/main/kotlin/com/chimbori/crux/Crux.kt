@@ -4,7 +4,7 @@ import com.chimbori.crux.api.Extractor
 import com.chimbori.crux.api.Plugin
 import com.chimbori.crux.api.Resource
 import com.chimbori.crux.api.Rewriter
-import com.chimbori.crux.common.cruxOkHttpClient
+import com.chimbori.crux.common.CHROME_USER_AGENT
 import com.chimbori.crux.plugins.AmpRedirector
 import com.chimbori.crux.plugins.ArticleExtractor
 import com.chimbori.crux.plugins.FacebookUrlRewriter
@@ -21,22 +21,22 @@ import org.jsoup.nodes.Document
  * An ordered list of default plugins configured in Crux. Callers can override and provide their own list, or pick and
  * choose from the set of available default plugins to create their own configuration.
  */
-public val DEFAULT_PLUGINS: List<Plugin> = listOf(
+private fun createDefaultPlugins(okHttpClient: OkHttpClient): List<Plugin> = listOf(
   // Static redirectors go first, to avoid getting stuck into CAPTCHAs.
   GoogleUrlRewriter(),
   FacebookUrlRewriter(),
   // Remove any tracking parameters remaining.
   TrackingParameterRemover(),
   // Prefer canonical URLs over AMP URLs.
-  AmpRedirector(refetchContentFromCanonicalUrl = true),
+  AmpRedirector(refetchContentFromCanonicalUrl = true, okHttpClient),
   // Parses many standard HTML metadata attributes.
-  HtmlMetadataExtractor(),
+  HtmlMetadataExtractor(okHttpClient),
   // Extracts the best possible favicon from all the markup available on the page itself.
   FaviconExtractor(),
   // Fetches and parses the Web Manifest. May replace existing favicon URL with one from the manifest.json.
-  WebAppManifestParser(),
+  WebAppManifestParser(okHttpClient),
   // Parses the content of the page to remove ads, navigation, and all the other fluff.
-  ArticleExtractor(),
+  ArticleExtractor(okHttpClient),
 )
 
 /**
@@ -46,11 +46,13 @@ public val DEFAULT_PLUGINS: List<Plugin> = listOf(
  */
 public class Crux(
   /** Select from available plugins, or provide custom plugins for Crux to use. */
-  private val plugins: List<Plugin> = DEFAULT_PLUGINS,
+  private val plugins: List<Plugin>? = null,
 
   /** If the calling app has its own instance of [OkHttpClient], use it, otherwise Crux can create and use its own. */
-  private val okHttpClient: OkHttpClient = cruxOkHttpClient,
+  okHttpClient: OkHttpClient = createCruxOkHttpClient(),
 ) {
+
+  private val activePlugins: List<Plugin> = plugins ?: createDefaultPlugins(okHttpClient)
 
   /**
    * Processes the provided URL, and returns a metadata object containing custom fields.
@@ -60,12 +62,12 @@ public class Crux(
    * HTTP redirects (but plugins may still optionally make additional HTTP requests themselves.)
    */
   public suspend fun extractFrom(originalUrl: HttpUrl, parsedDoc: Document? = null): Resource {
-    val rewrittenUrl = plugins
+    val rewrittenUrl = activePlugins
       .filterIsInstance<Rewriter>()
       .fold(originalUrl) { rewrittenUrl, rewriter -> rewriter.rewrite(rewrittenUrl) }
 
     var resource = Resource(url = rewrittenUrl, document = parsedDoc)
-    for (plugin in plugins) {
+    for (plugin in activePlugins) {
       if (plugin is Extractor && plugin.canExtract(resource.url ?: rewrittenUrl)) {
         plugin.extract(resource)?.let {
           resource += it
@@ -75,3 +77,15 @@ public class Crux(
     return resource.removeNullValues()
   }
 }
+
+private fun createCruxOkHttpClient(): OkHttpClient = OkHttpClient.Builder()
+  .followRedirects(true)
+  .followSslRedirects(true)
+  .retryOnConnectionFailure(true)
+  .addNetworkInterceptor { chain ->
+    chain.proceed(
+      chain.request().newBuilder()
+        .header("User-Agent", CHROME_USER_AGENT).build()
+    )
+  }
+  .build()

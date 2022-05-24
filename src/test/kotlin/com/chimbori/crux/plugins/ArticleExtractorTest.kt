@@ -4,6 +4,7 @@ import com.chimbori.crux.api.Fields.DURATION_MS
 import com.chimbori.crux.api.Resource
 import com.chimbori.crux.common.assertStartsWith
 import com.chimbori.crux.common.fromTestData
+import com.chimbori.crux.common.loggingOkHttpClient
 import kotlinx.coroutines.runBlocking
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import org.junit.Assert.assertEquals
@@ -15,7 +16,7 @@ class ArticleExtractorTest {
   @Test
   fun testCanParseArticleContent() {
     val wikipediaUrl = "https://en.wikipedia.org/wiki/Galileo_Galilei".toHttpUrl()
-    val articleExtractor = ArticleExtractor()
+    val articleExtractor = ArticleExtractor(loggingOkHttpClient)
     assertTrue(articleExtractor.canExtract(wikipediaUrl))
 
     runBlocking {

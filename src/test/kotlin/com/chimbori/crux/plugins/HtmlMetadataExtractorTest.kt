@@ -7,6 +7,7 @@ import com.chimbori.crux.api.Fields.PREVIOUS_PAGE_URL
 import com.chimbori.crux.api.Fields.TITLE
 import com.chimbori.crux.api.Resource
 import com.chimbori.crux.common.fetchFromUrl
+import com.chimbori.crux.common.loggingOkHttpClient
 import kotlinx.coroutines.runBlocking
 import okhttp3.mockwebserver.Dispatcher
 import okhttp3.mockwebserver.MockResponse
@@ -27,7 +28,7 @@ class HtmlMetadataExtractorTest {
   @Before
   fun setUp() {
     mockWebServer = MockWebServer().apply { start() }
-    htmlMetadataExtractor = HtmlMetadataExtractor()
+    htmlMetadataExtractor = HtmlMetadataExtractor(loggingOkHttpClient)
   }
 
   @After
@@ -47,7 +48,7 @@ class HtmlMetadataExtractorTest {
 
     runBlocking {
       val parsed = htmlMetadataExtractor.extract(
-        Resource.fetchFromUrl(candidateUrl)
+        Resource.fetchFromUrl(candidateUrl, loggingOkHttpClient)
       )
       assertNull(parsed.url)
       assertEquals("Crux Test", parsed[TITLE])
@@ -72,7 +73,7 @@ class HtmlMetadataExtractorTest {
 
     runBlocking {
       val parsed = htmlMetadataExtractor.extract(
-        Resource.fetchFromUrl(candidateUrl)
+        Resource.fetchFromUrl(candidateUrl, loggingOkHttpClient)
       )
       assertEquals("http://www.example.com/page=2", parsed[CANONICAL_URL])
       assertEquals("http://www.example.com/page=3", parsed[NEXT_PAGE_URL])

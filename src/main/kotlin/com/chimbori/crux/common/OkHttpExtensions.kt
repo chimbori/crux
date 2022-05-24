@@ -14,25 +14,8 @@ import org.jsoup.nodes.Document
 
 private const val DEFAULT_BROWSER_VERSION = "100.0.0.0"
 
-private const val CHROME_USER_AGENT = "Mozilla/5.0 (Linux; Android 11; Build/RQ2A.210505.003) AppleWebKit/537.36 " +
+internal const val CHROME_USER_AGENT = "Mozilla/5.0 (Linux; Android 11; Build/RQ2A.210505.003) AppleWebKit/537.36 " +
     "(KHTML, like Gecko) Version/4.0 Chrome/$DEFAULT_BROWSER_VERSION Mobile Safari/537.36"
-
-private const val GOOGLEBOT_USER_AGENT =
-  "Mozilla/5.0 (Linux; Android 6.0.1; Nexus 5X Build/MMB29P) AppleWebKit/537.36 " +
-      "(KHTML, like Gecko) Chrome/$DEFAULT_BROWSER_VERSION Mobile Safari/537.36 " +
-      "(compatible; Googlebot/2.1; +http://www.google.com/bot.html)"
-
-public val cruxOkHttpClient: OkHttpClient = OkHttpClient.Builder()
-  .followRedirects(true)
-  .followSslRedirects(true)
-  .retryOnConnectionFailure(true)
-  .addNetworkInterceptor { chain ->
-    chain.proceed(
-      chain.request().newBuilder()
-        .header("User-Agent", CHROME_USER_AGENT).build()
-    )
-  }
-  .build()
 
 public suspend fun OkHttpClient.safeCall(request: Request): Response? = withContext(Dispatchers.IO) {
   try {
@@ -71,7 +54,7 @@ public suspend fun OkHttpClient.httpGetContent(url: HttpUrl): String? = safeHttp
   } else null
 }
 
-public suspend fun Resource.Companion.fetchFromUrl(url: HttpUrl, okHttpClient: OkHttpClient = cruxOkHttpClient)
+public suspend fun Resource.Companion.fetchFromUrl(url: HttpUrl, okHttpClient: OkHttpClient)
     : Resource = withContext(Dispatchers.IO) {
 
   val httpResponse = okHttpClient.safeHttpGet(url)

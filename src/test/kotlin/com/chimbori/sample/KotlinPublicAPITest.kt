@@ -1,7 +1,6 @@
 package com.chimbori.sample
 
 import com.chimbori.crux.Crux
-import com.chimbori.crux.DEFAULT_PLUGINS
 import com.chimbori.crux.api.Extractor
 import com.chimbori.crux.api.Fields.BANNER_IMAGE_URL
 import com.chimbori.crux.api.Fields.FAVICON_URL
@@ -81,7 +80,7 @@ class KotlinPublicAPITest {
       val CUSTOMER_NUMBER_FIELD = "customer-number"
     }
 
-    val cruxWithCustomPlugin = Crux(DEFAULT_PLUGINS + customerNumberExtractorPlugin)
+    val cruxWithCustomPlugin = Crux(listOf(customerNumberExtractorPlugin))
     val orderDetailsUrl = "https://www.your-website.com/orders?customer-number=42".toHttpUrl()
 
     val metadata = runBlocking {

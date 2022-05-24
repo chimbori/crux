@@ -8,8 +8,24 @@ import java.io.FileNotFoundException
 import java.nio.charset.Charset
 import okhttp3.HttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrl
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
+import okhttp3.logging.HttpLoggingInterceptor.Level.BASIC
 import org.jsoup.Jsoup
 import org.junit.Assert.fail
+
+internal val loggingOkHttpClient: OkHttpClient = OkHttpClient.Builder()
+  .followRedirects(true)
+  .followSslRedirects(true)
+  .retryOnConnectionFailure(true)
+  .addNetworkInterceptor { chain ->
+    chain.proceed(
+      chain.request().newBuilder()
+        .header("User-Agent", CHROME_USER_AGENT).build()
+    )
+  }
+  .addInterceptor(HttpLoggingInterceptor().apply { level = BASIC })
+  .build()
 
 internal fun fromFile(baseUrl: String, testFile: String, charset: String? = "UTF-8") =
   fromFile(baseUrl.toHttpUrl(), testFile, charset)
