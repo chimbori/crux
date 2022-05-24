@@ -1,15 +1,13 @@
 package com.chimbori.crux.plugins
 
-import com.chimbori.crux.api.Resource
-import kotlinx.coroutines.runBlocking
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
-class FacebookStaticRedirectorTest {
+class FacebookUrlRewriterTest {
   @Test
   fun testFacebookRedirectorPlugin() {
-    val facebookPlugin = FacebookStaticRedirector()
+    val facebookPlugin = FacebookUrlRewriter()
     mapOf(
       "http://example.com" to null,
       "http://www.facebook.com/l.php?u=http%3A%2F%2Fwww.bet.com%2Fcollegemarketingreps&h=42263"
@@ -19,11 +17,7 @@ class FacebookStaticRedirectorTest {
       "http://lm.facebook.com/l.php?u=http%3A%2F%2Fwww.cnn.com%2F2017%2F01%2F25%2Fpolitics%2Fscientists-march-dc-trnd%2Findex.html&h=ATO7Ln_rl7DAjRcqSo8yfpOvrFlEmKZmgeYHsOforgXsUYPLDy3nC1KfCYE-hev5oJzz1zydvvzI4utABjHqU1ruwDfw49jiDGCTrjFF-EyE6xfcbWRmDacY_6_R-lSi9g&enc=AZP1hkQfMXuV0vOHa1VeY8kdip2N73EjbXMKx3Zf4Ytdb1MrGHL48by4cl9_DShGYj9nZXvNt9xad9_4jphO9QBpRJLNGoyrRMBHI09eoFyPmxxjw7hHBy5Ouez0q7psi1uvjiphzOKVxjxyYBWnTJKD7m8rvhFz0HespmfvCf-fUiCpi6NDpxwYEw7vZ99fcjOpkiQqaFM_Gvqeat7r0e8axnqM-pJGY0fkjgWvgwTyfiB4fNMRhH3IaAmyL7DXl0xeYMoYSHuITkjTY9aU5dkiETfDVwBABOO9FJi2nTnRMw92E-gMMbiHFoHENlaSVJc&s=1"
           to "http://www.cnn.com/2017/01/25/politics/scientists-march-dc-trnd/index.html",
     ).forEach { (key, value) ->
-      assertEquals(value != null, facebookPlugin.canExtract(key.toHttpUrl()))
-      assertEquals(
-        value?.toHttpUrl() ?: key.toHttpUrl(),
-        runBlocking { facebookPlugin.extract(Resource(url = key.toHttpUrl())).url }
-      )
+      assertEquals((value ?: key).toHttpUrl(), facebookPlugin.rewrite(key.toHttpUrl()))
     }
   }
 }

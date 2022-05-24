@@ -3,8 +3,10 @@ package com.chimbori.crux
 import com.chimbori.crux.api.Extractor
 import com.chimbori.crux.api.Fields.TITLE
 import com.chimbori.crux.api.Resource
+import com.chimbori.crux.plugins.GoogleUrlRewriter
 import kotlinx.coroutines.runBlocking
 import okhttp3.HttpUrl
+import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.mockwebserver.Dispatcher
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
@@ -31,6 +33,18 @@ class CruxTest {
   @After
   fun tearDown() {
     mockWebServer.shutdown()
+  }
+
+  @Test
+  fun testRewritersAreCompletedBeforeExtraction() {
+    val crux = Crux(plugins = listOf(GoogleUrlRewriter()))
+    val metadata = runBlocking {
+      crux.extractFrom(
+        "https://www.google.com/url?q=https://www.google.com/url?rct%3Dj%26sa%3Dt%26url%3Dhttps://example.com/permalink%253Fid%253D1234567890%26ct%3Dga%26cd%3DCAEYACoTOTQxMTQ5NzcyMzExMjAwMTEyMzIcZWNjZWI5M2YwM2E5ZDJiODpjb206ZW46VVM6TA%26usg%3DAFQjCNFSwGsQjcbeVCaSO2rg90RgBpQvzA&source=gmail&ust=1589164930980000&usg=AFQjCNF37pEGpMAz7azFCry-Ib-hwR0VVw".toHttpUrl()
+      )
+    }
+    assertNotNull(metadata)
+    assertEquals("https://example.com/permalink?id=1234567890".toHttpUrl(), metadata.url)
   }
 
   @Test

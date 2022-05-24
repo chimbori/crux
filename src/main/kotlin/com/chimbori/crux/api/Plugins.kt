@@ -30,3 +30,7 @@ public interface Extractor : Plugin {
    */
   public suspend fun extract(request: Resource): Resource?
 }
+
+public fun interface Rewriter : Plugin {
+  public fun rewrite(url: HttpUrl): HttpUrl
+}

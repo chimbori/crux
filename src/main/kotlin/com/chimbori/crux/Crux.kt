@@ -3,13 +3,14 @@ package com.chimbori.crux
 import com.chimbori.crux.api.Extractor
 import com.chimbori.crux.api.Plugin
 import com.chimbori.crux.api.Resource
+import com.chimbori.crux.api.Rewriter
 import com.chimbori.crux.common.cruxOkHttpClient
 import com.chimbori.crux.common.safeHttpGet
 import com.chimbori.crux.plugins.AmpRedirector
 import com.chimbori.crux.plugins.ArticleExtractor
-import com.chimbori.crux.plugins.FacebookStaticRedirector
+import com.chimbori.crux.plugins.FacebookUrlRewriter
 import com.chimbori.crux.plugins.FaviconExtractor
-import com.chimbori.crux.plugins.GoogleStaticRedirector
+import com.chimbori.crux.plugins.GoogleUrlRewriter
 import com.chimbori.crux.plugins.HtmlMetadataExtractor
 import com.chimbori.crux.plugins.TrackingParameterRemover
 import com.chimbori.crux.plugins.WebAppManifestParser
@@ -24,8 +25,8 @@ import org.jsoup.nodes.Document
  */
 public val DEFAULT_PLUGINS: List<Plugin> = listOf(
   // Static redirectors go first, to avoid getting stuck into CAPTCHAs.
-  GoogleStaticRedirector(),
-  FacebookStaticRedirector(),
+  GoogleUrlRewriter(),
+  FacebookUrlRewriter(),
   // Remove any tracking parameters remaining.
   TrackingParameterRemover(),
   // Prefer canonical URLs over AMP URLs.
@@ -61,16 +62,20 @@ public class Crux(
    * HTTP redirects (but plugins may still optionally make additional HTTP requests themselves.)
    */
   public suspend fun extractFrom(originalUrl: HttpUrl, parsedDoc: Document? = null): Resource {
+    val rewrittenUrl = plugins
+      .filterIsInstance<Rewriter>()
+      .fold(originalUrl) { rewrittenUrl, rewriter -> rewriter.rewrite(rewrittenUrl) }
+
     var resource: Resource = if (parsedDoc != null) {
       // If a [Document] is provided by the caller, then do not make any additional HTTP requests.
-      Resource(url = originalUrl, document = parsedDoc)
+      Resource(url = rewrittenUrl, document = parsedDoc)
     } else {
-      val httpResponse = okHttpClient.safeHttpGet(originalUrl)
+      val httpResponse = okHttpClient.safeHttpGet(rewrittenUrl)
       val urlToUse = if (httpResponse?.isSuccessful == true) {
         // If the HTTP request resulted in an HTTP redirect, use the redirected URL.
         httpResponse.request.url
       } else {
-        originalUrl
+        rewrittenUrl
       }
 
       val downloadedDoc = httpResponse?.body?.string()?.let {
@@ -81,7 +86,7 @@ public class Crux(
     }
 
     for (plugin in plugins) {
-      if (plugin is Extractor && plugin.canExtract(resource.url ?: originalUrl)) {
+      if (plugin is Extractor && plugin.canExtract(resource.url ?: rewrittenUrl)) {
         plugin.extract(resource)?.let {
           resource += it
         }
