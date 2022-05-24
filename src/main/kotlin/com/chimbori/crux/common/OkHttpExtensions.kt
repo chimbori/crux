@@ -10,6 +10,7 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.Response
 import org.jsoup.Jsoup
+import org.jsoup.nodes.Document
 
 private const val DEFAULT_BROWSER_VERSION = "100.0.0.0"
 
@@ -75,10 +76,21 @@ public suspend fun Resource.Companion.fromUrl(
   shouldFetchContent: Boolean,
   okHttpClient: OkHttpClient = cruxOkHttpClient
 ): Resource = withContext(Dispatchers.IO) {
-  Resource(
-    url = url,
-    document = if (shouldFetchContent) okHttpClient.safeHttpGet(url)?.body?.let {
-      Jsoup.parse(it.byteStream(), "UTF-8", url.toString())
-    } else null
-  )
+
+  if (shouldFetchContent) {
+    val httpResponse = okHttpClient.safeHttpGet(url)
+
+    // If the HTTP request resulted in an HTTP redirect, use the redirected URL.
+    val urlToUse = if (httpResponse?.isSuccessful == true && httpResponse.request.url != url) {
+      httpResponse.request.url
+    } else url
+
+    val docToUse: Document? = httpResponse?.body?.let {
+      Jsoup.parse(it.byteStream(), "UTF-8", urlToUse.toString())
+    }
+
+    Resource(url = urlToUse, document = docToUse)
+  } else {
+    Resource(url = url)
+  }
 }
