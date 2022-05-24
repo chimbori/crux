@@ -1,6 +1,6 @@
 package com.chimbori.crux.common
 
-import com.chimbori.crux.Resource
+import com.chimbori.crux.api.Resource
 import com.chimbori.crux.articles.Article
 import com.chimbori.crux.articles.ArticleExtractor
 import java.io.File

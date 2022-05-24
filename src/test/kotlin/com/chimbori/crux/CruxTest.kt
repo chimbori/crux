@@ -1,12 +1,10 @@
 package com.chimbori.crux
 
-import com.chimbori.crux.Fields.BANNER_IMAGE_URL
-import com.chimbori.crux.Fields.CANONICAL_URL
-import com.chimbori.crux.Fields.DESCRIPTION
-import com.chimbori.crux.Fields.TITLE
+import com.chimbori.crux.api.Extractor
+import com.chimbori.crux.api.Fields.TITLE
+import com.chimbori.crux.api.Resource
 import kotlinx.coroutines.runBlocking
 import okhttp3.HttpUrl
-import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.mockwebserver.Dispatcher
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
@@ -14,7 +12,6 @@ import okhttp3.mockwebserver.RecordedRequest
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
-import org.junit.Assert.assertNull
 import org.junit.Before
 import org.junit.Test
 
@@ -34,23 +31,6 @@ class CruxTest {
   @After
   fun tearDown() {
     mockWebServer.shutdown()
-  }
-
-  @Test
-  fun testResourceMetadataApiExamples() {
-    val resource = Resource(
-      url = "https://chimbori.com/".toHttpUrl(),
-      fields = mapOf(
-        TITLE to "Life, the Universe, and Everything",
-        DESCRIPTION to "42"
-      ), urls = mapOf(
-        CANONICAL_URL to "https://chimbori.com/".toHttpUrl()
-      )
-    )
-    assertEquals("Life, the Universe, and Everything", resource[TITLE])
-    assertEquals("42", resource[DESCRIPTION])
-    assertEquals("https://chimbori.com/".toHttpUrl(), resource.urls[CANONICAL_URL])
-    assertNull(resource.urls[BANNER_IMAGE_URL])
   }
 
   @Test

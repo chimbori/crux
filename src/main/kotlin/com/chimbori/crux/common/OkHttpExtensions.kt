@@ -1,6 +1,6 @@
 package com.chimbori.crux.common
 
-import com.chimbori.crux.Resource
+import com.chimbori.crux.api.Resource
 import java.io.IOException
 import java.net.UnknownHostException
 import kotlinx.coroutines.Dispatchers

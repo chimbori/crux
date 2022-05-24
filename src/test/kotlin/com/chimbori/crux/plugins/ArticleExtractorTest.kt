@@ -1,7 +1,7 @@
 package com.chimbori.crux.plugins
 
-import com.chimbori.crux.Fields.DURATION_MS
-import com.chimbori.crux.Resource
+import com.chimbori.crux.api.Fields.DURATION_MS
+import com.chimbori.crux.api.Resource
 import com.chimbori.crux.common.assertStartsWith
 import com.chimbori.crux.common.fromTestData
 import kotlinx.coroutines.runBlocking

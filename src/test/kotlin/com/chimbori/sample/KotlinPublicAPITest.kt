@@ -2,11 +2,11 @@ package com.chimbori.sample
 
 import com.chimbori.crux.Crux
 import com.chimbori.crux.DEFAULT_PLUGINS
-import com.chimbori.crux.Fields.BANNER_IMAGE_URL
-import com.chimbori.crux.Fields.FAVICON_URL
-import com.chimbori.crux.Fields.TITLE
-import com.chimbori.crux.Extractor
-import com.chimbori.crux.Resource
+import com.chimbori.crux.api.Extractor
+import com.chimbori.crux.api.Fields.BANNER_IMAGE_URL
+import com.chimbori.crux.api.Fields.FAVICON_URL
+import com.chimbori.crux.api.Fields.TITLE
+import com.chimbori.crux.api.Resource
 import com.chimbori.crux.articles.ArticleExtractor
 import com.chimbori.crux.common.isLikelyArticle
 import com.chimbori.crux.common.resolveRedirects

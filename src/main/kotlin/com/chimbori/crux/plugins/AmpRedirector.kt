@@ -1,7 +1,7 @@
 package com.chimbori.crux.plugins
 
-import com.chimbori.crux.Extractor
-import com.chimbori.crux.Resource
+import com.chimbori.crux.api.Extractor
+import com.chimbori.crux.api.Resource
 import com.chimbori.crux.common.cruxOkHttpClient
 import com.chimbori.crux.common.fromUrl
 import com.chimbori.crux.common.isLikelyArticle

@@ -1,6 +1,6 @@
 package com.chimbori.crux.plugins
 
-import com.chimbori.crux.Resource
+import com.chimbori.crux.api.Resource
 import com.chimbori.crux.common.fromUrl
 import com.chimbori.crux.extractors.extractTitle
 import kotlinx.coroutines.runBlocking

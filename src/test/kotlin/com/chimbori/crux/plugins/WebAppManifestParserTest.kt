@@ -1,16 +1,16 @@
 package com.chimbori.crux.plugins
 
-import com.chimbori.crux.Fields.BACKGROUND_COLOR_HEX
-import com.chimbori.crux.Fields.BACKGROUND_COLOR_HTML
-import com.chimbori.crux.Fields.DISPLAY
-import com.chimbori.crux.Fields.FAVICON_URL
-import com.chimbori.crux.Fields.LANGUAGE
-import com.chimbori.crux.Fields.ORIENTATION
-import com.chimbori.crux.Fields.THEME_COLOR_HEX
-import com.chimbori.crux.Fields.THEME_COLOR_HTML
-import com.chimbori.crux.Fields.TITLE
-import com.chimbori.crux.Fields.WEB_APP_MANIFEST_URL
-import com.chimbori.crux.Resource
+import com.chimbori.crux.api.Fields.BACKGROUND_COLOR_HEX
+import com.chimbori.crux.api.Fields.BACKGROUND_COLOR_HTML
+import com.chimbori.crux.api.Fields.DISPLAY
+import com.chimbori.crux.api.Fields.FAVICON_URL
+import com.chimbori.crux.api.Fields.LANGUAGE
+import com.chimbori.crux.api.Fields.ORIENTATION
+import com.chimbori.crux.api.Fields.THEME_COLOR_HEX
+import com.chimbori.crux.api.Fields.THEME_COLOR_HTML
+import com.chimbori.crux.api.Fields.TITLE
+import com.chimbori.crux.api.Fields.WEB_APP_MANIFEST_URL
+import com.chimbori.crux.api.Resource
 import com.chimbori.crux.common.fromUrl
 import kotlinx.coroutines.runBlocking
 import okhttp3.mockwebserver.Dispatcher

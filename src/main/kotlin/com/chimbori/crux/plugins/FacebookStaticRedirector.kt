@@ -1,7 +1,7 @@
 package com.chimbori.crux.plugins
 
-import com.chimbori.crux.Extractor
-import com.chimbori.crux.Resource
+import com.chimbori.crux.api.Extractor
+import com.chimbori.crux.api.Resource
 import okhttp3.HttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 

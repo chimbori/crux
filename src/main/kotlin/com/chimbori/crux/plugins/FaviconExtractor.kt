@@ -1,8 +1,8 @@
 package com.chimbori.crux.plugins
 
-import com.chimbori.crux.Fields.FAVICON_URL
-import com.chimbori.crux.Extractor
-import com.chimbori.crux.Resource
+import com.chimbori.crux.api.Extractor
+import com.chimbori.crux.api.Fields.FAVICON_URL
+import com.chimbori.crux.api.Resource
 import com.chimbori.crux.common.isLikelyArticle
 import com.chimbori.crux.extractors.extractCanonicalUrl
 import com.chimbori.crux.extractors.extractFaviconUrl

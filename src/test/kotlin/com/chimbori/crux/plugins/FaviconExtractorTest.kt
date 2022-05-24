@@ -1,7 +1,7 @@
 package com.chimbori.crux.plugins
 
-import com.chimbori.crux.Fields.FAVICON_URL
-import com.chimbori.crux.Resource
+import com.chimbori.crux.api.Fields.FAVICON_URL
+import com.chimbori.crux.api.Resource
 import com.chimbori.crux.common.fromUrl
 import kotlinx.coroutines.runBlocking
 import okhttp3.mockwebserver.Dispatcher
