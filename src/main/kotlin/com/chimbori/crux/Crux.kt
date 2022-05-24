@@ -1,6 +1,7 @@
 package com.chimbori.crux
 
 import com.chimbori.crux.api.Extractor
+import com.chimbori.crux.api.Plugin
 import com.chimbori.crux.api.Resource
 import com.chimbori.crux.common.cruxOkHttpClient
 import com.chimbori.crux.common.safeHttpGet
@@ -21,7 +22,7 @@ import org.jsoup.nodes.Document
  * An ordered list of default plugins configured in Crux. Callers can override and provide their own list, or pick and
  * choose from the set of available default plugins to create their own configuration.
  */
-public val DEFAULT_PLUGINS: List<Extractor> = listOf(
+public val DEFAULT_PLUGINS: List<Plugin> = listOf(
   // Static redirectors go first, to avoid getting stuck into CAPTCHAs.
   GoogleStaticRedirector(),
   FacebookStaticRedirector(),
@@ -46,7 +47,7 @@ public val DEFAULT_PLUGINS: List<Extractor> = listOf(
  */
 public class Crux(
   /** Select from available plugins, or provide custom plugins for Crux to use. */
-  private val plugins: List<Extractor> = DEFAULT_PLUGINS,
+  private val plugins: List<Plugin> = DEFAULT_PLUGINS,
 
   /** If the calling app has its own instance of [OkHttpClient], use it, otherwise Crux can create and use its own. */
   private val okHttpClient: OkHttpClient = cruxOkHttpClient,
@@ -80,7 +81,7 @@ public class Crux(
     }
 
     for (plugin in plugins) {
-      if (plugin.canExtract(resource.url ?: originalUrl)) {
+      if (plugin is Extractor && plugin.canExtract(resource.url ?: originalUrl)) {
         plugin.extract(resource)?.let {
           resource += it
         }

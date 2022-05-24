@@ -2,6 +2,8 @@ package com.chimbori.crux.api
 
 import okhttp3.HttpUrl
 
+public sealed interface Plugin
+
 /**
  * Crux is designed as a chain of plugins, each of which can optionally handle URLs passed to it. Each plugin is
  * provided a fully-parsed HTML DOM to extract fields from, and can also make additional HTTP requests if necessary to
@@ -12,7 +14,7 @@ import okhttp3.HttpUrl
  * updated URL and DOM tree will be passed on to the next plugin in sequence, so the exact ordering of plugins is
  * important.
  */
-public interface Extractor {
+public interface Extractor : Plugin {
   /**
    * @param url URL for the resource being processed by Crux.
    * @return true if this plugin can handle the URL, false otherwise. Plugins can only inspect the [HttpUrl], without
