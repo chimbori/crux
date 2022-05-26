@@ -30,6 +30,7 @@ public class TrackingParameterRemover(private val trackingParameters: Array<Stri
       "utm_campaign",
       "utm_cid",
       "utm_content",
+      "utm_id",
       "utm_medium",
       "utm_name",
       "utm_place",
