@@ -33,7 +33,7 @@ constructor(public val url: HttpUrl, private val document: Document) {
   public val article: Article = Article(url)
 
   /** Create an [ArticleExtractor] from a raw HTML string. The HTML must exist and should be non-empty. */
-  public constructor(url: HttpUrl, html: String) : this(url, Jsoup.parse(html))
+  public constructor(url: HttpUrl, html: String) : this(url, Jsoup.parse(html, url.toString()))
 
   public fun extractMetadata(): ArticleExtractor {
     document.extractCanonicalUrl()?.let {

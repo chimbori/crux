@@ -37,7 +37,7 @@ public class JavaPublicAPITest {
     String content = "<img src=\"test.jpg\">";  // Intentionally malformed.
 
     assert url != null;
-    HttpUrl imageUrl = new ImageUrlExtractor(url, Jsoup.parse(content).body()).findImage().getImageUrl();
+    HttpUrl imageUrl = new ImageUrlExtractor(url, Jsoup.parse(content, url.toString()).body()).findImage().getImageUrl();
     assertEquals(HttpUrl.parse("https://chimbori.com/test.jpg"), imageUrl);
   }
 
@@ -47,7 +47,7 @@ public class JavaPublicAPITest {
     String content = "<img href=\"/test\" src=\"test.jpg\">";  // Intentionally malformed.
 
     assert url != null;
-    HttpUrl linkUrl = new LinkUrlExtractor(url, Jsoup.parse(content).body()).findLink().getLinkUrl();
+    HttpUrl linkUrl = new LinkUrlExtractor(url, Jsoup.parse(content, url.toString()).body()).findLink().getLinkUrl();
     assertEquals(HttpUrl.parse("https://chimbori.com/test"), linkUrl);
   }
 }

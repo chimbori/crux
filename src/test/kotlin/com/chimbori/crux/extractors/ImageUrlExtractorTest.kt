@@ -36,7 +36,7 @@ class ImageUrlExtractorTest {
   }
 
   private fun extractFromTestFile(baseUrl: HttpUrl, testFile: String) = try {
-    val doc = Jsoup.parse(File("test_data/$testFile"), "UTF-8")
+    val doc = Jsoup.parse(File("test_data/$testFile"), "UTF-8", baseUrl.toString())
     ImageUrlExtractor(baseUrl, doc.body())
   } catch (e: IOException) {
     fail(e.message)

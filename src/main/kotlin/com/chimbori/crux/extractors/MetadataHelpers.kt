@@ -18,13 +18,13 @@ public fun Document.extractTitle(): String? = (
     )?.cleanTitle()?.nullIfBlank()
 
 public fun Document.extractCanonicalUrl(): String? = (
-    select("link[rel=canonical]").attr("href").nullIfBlank()
+    select("link[rel=canonical]").attr("abs:href").nullIfBlank()
       ?: select("meta[property=og:url]").attr("content").nullIfBlank()
       ?: select("meta[name=twitter:url]").attr("content").nullIfBlank()
     )?.removeWhiteSpace()?.nullIfBlank()
 
 public fun Document.extractPaginationUrl(baseUrl: HttpUrl?, nextOrPrev: String): HttpUrl? = (
-    select("link[rel=$nextOrPrev]").attr("href").nullIfBlank()
+    select("link[rel=$nextOrPrev]").attr("abs:href").nullIfBlank()
     )?.removeWhiteSpace()?.nullIfBlank()
   ?.let { relativeUrl -> baseUrl?.resolve(relativeUrl) ?: relativeUrl.toHttpUrlOrNull() }
 
@@ -85,7 +85,7 @@ public fun Document.extractVideoUrl(baseUrl: HttpUrl?): HttpUrl? =
     ?.let { baseUrl?.resolve(it) ?: it.toHttpUrlOrNull() }
 
 internal fun findLargestIcon(iconElements: List<Element>): String? =
-  iconElements.maxByOrNull { parseSize(it.attr("sizes")) }?.attr("href")?.nullIfBlank()
+  iconElements.maxByOrNull { parseSize(it.attr("sizes")) }?.attr("abs:href")?.nullIfBlank()
 
 /**
  * Given a size represented by "WidthxHeight" or "WidthxHeight ...", will return the largest dimension found.

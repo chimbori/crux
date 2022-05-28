@@ -37,7 +37,7 @@ class MetadataHelpersTest {
   @Test
   fun testFindLargestIcon() {
     assertEquals(
-      "/144.png",
+      "https://example.org/144.png",
       findLargestIcon(
         Jsoup.parse(
           """
@@ -52,7 +52,7 @@ class MetadataHelpersTest {
     )
 
     assertEquals(
-      "/512.png",
+      "https://example.org/512.png",
       findLargestIcon(
         Jsoup.parse(
           """

@@ -46,7 +46,7 @@ class KotlinPublicAPITest {
 
     // Crux runs inside a `suspend` function as a Kotlin Coroutine.
     val extractedMetadata = runBlocking {
-      crux.extractFrom(originalUrl = httpURL, parsedDoc = Jsoup.parse(htmlContent))
+      crux.extractFrom(originalUrl = httpURL, parsedDoc = Jsoup.parse(htmlContent, httpURL.toString()))
     }
 
     // Metadata fields such as the Title and Description are available from the
@@ -109,7 +109,7 @@ class KotlinPublicAPITest {
   fun testCallersCanAccessImageExtractorAPI() {
     val url = "https://chimbori.com/".toHttpUrl()
     val content = "<img src=\"test.jpg\">" // Intentionally malformed.
-    val imageUrl = ImageUrlExtractor(url, Jsoup.parse(content).body()).findImage().imageUrl
+    val imageUrl = ImageUrlExtractor(url, Jsoup.parse(content, url.toString()).body()).findImage().imageUrl
     assertEquals("https://chimbori.com/test.jpg".toHttpUrl(), imageUrl)
   }
 
@@ -117,7 +117,7 @@ class KotlinPublicAPITest {
   fun testCallersCanAccessLinkExtractorAPI() {
     val url = "https://chimbori.com/".toHttpUrl()
     val content = "<img href=\"/test\" src=\"test.jpg\">" // Intentionally malformed.
-    val linkUrl = LinkUrlExtractor(url, Jsoup.parse(content).body()).findLink().linkUrl
+    val linkUrl = LinkUrlExtractor(url, Jsoup.parse(content, url.toString()).body()).findLink().linkUrl
     assertEquals("https://chimbori.com/test".toHttpUrl(), linkUrl)
   }
 }

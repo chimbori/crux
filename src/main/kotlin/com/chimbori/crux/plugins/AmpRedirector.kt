@@ -1,6 +1,7 @@
 package com.chimbori.crux.plugins
 
 import com.chimbori.crux.api.Extractor
+import com.chimbori.crux.api.Fields.CANONICAL_URL
 import com.chimbori.crux.api.Resource
 import com.chimbori.crux.common.fetchFromUrl
 import com.chimbori.crux.common.isLikelyArticle
@@ -21,12 +22,16 @@ public class AmpRedirector(
   override fun canExtract(url: HttpUrl): Boolean = url.isLikelyArticle()
 
   override suspend fun extract(request: Resource): Resource? {
-    request.document?.select("link[rel=canonical]")?.attr("href")?.nullIfBlank()?.let {
+    request.document?.select("link[rel=canonical]")?.attr("abs:href")?.nullIfBlank()?.let {
       if (it.toHttpUrl() != request.url) {  // Only redirect if this is not already the canonical URL.
         return if (refetchContentFromCanonicalUrl) {
           Resource.fetchFromUrl(url = it.toHttpUrl(), okHttpClient = okHttpClient)
         } else {
-          Resource(url = it.toHttpUrl())
+          Resource(
+            url = it.toHttpUrl(), urls = mapOf(
+              CANONICAL_URL to it.toHttpUrl()
+            )
+          )
         }
       }
     }

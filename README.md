@@ -28,7 +28,7 @@ val htmlContent = """
 
 // Crux runs inside a `suspend` function as a Kotlin Coroutine.
 val extractedMetadata = runBlocking {
-  crux.extractFrom(originalUrl = httpURL, parsedDoc = Jsoup.parse(htmlContent))
+  crux.extractFrom(originalUrl = httpURL, parsedDoc = Jsoup.parse(htmlContent, httpURL.toString))
 }
 
 // Metadata fields such as the Title and Description are available from the

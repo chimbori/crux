@@ -52,7 +52,8 @@ class AmpRedirectorTest {
     }
 
     runBlocking {
-      val parsedResource = ampRedirector.extract(Resource(url = ampUrl, document = Jsoup.parse(ampHtml)))
+      val parsedResource =
+        ampRedirector.extract(Resource(url = ampUrl, document = Jsoup.parse(ampHtml, ampUrl.toString())))
       assertEquals(canonicalUrl, parsedResource?.url)
     }
   }
@@ -64,7 +65,12 @@ class AmpRedirectorTest {
 
     runBlocking {
       val parsedResource =
-        ampRedirector.extract(Resource(url = ampUrl, document = Jsoup.parse(ampHtmlWithNoCanonicalUrl)))
+        ampRedirector.extract(
+          Resource(
+            url = ampUrl,
+            document = Jsoup.parse(ampHtmlWithNoCanonicalUrl, ampUrl.toString())
+          )
+        )
       assertNull(parsedResource?.url)
     }
   }
@@ -86,9 +92,30 @@ class AmpRedirectorTest {
     }
 
     runBlocking {
-      val canonicalResource = Resource(url = canonicalUrl, document = Jsoup.parse(canonicalHtml))
+      val canonicalResource =
+        Resource(url = canonicalUrl, document = Jsoup.parse(canonicalHtml, canonicalUrl.toString()))
       val parsedResource = ampRedirector.extract(canonicalResource)
       assertNull(parsedResource)
+    }
+  }
+
+  @Test
+  fun testReturnsAbsoluteCanonicalUrl() {
+    val ampUrl = mockWebServer.url("/amp-url")
+    val canonicalUrl = mockWebServer.url("/canonical-url")
+    val ampHtml = """<link rel="canonical" href="/canonical-url"/>"""
+
+    mockWebServer.dispatcher = object : Dispatcher() {
+      override fun dispatch(request: RecordedRequest) = when (request.path) {
+        ampUrl.encodedPath -> MockResponse().setBody(ampHtml)
+        else -> MockResponse().setResponseCode(404)
+      }
+    }
+
+    runBlocking {
+      val ampResource = Resource(url = ampUrl, document = Jsoup.parse(ampHtml, ampUrl.toString()))
+      val parsedResource = ampRedirector.extract(ampResource)
+      assertEquals(canonicalUrl, parsedResource?.url)
     }
   }
 

@@ -17,7 +17,7 @@ public class LinkUrlExtractor(private val url: HttpUrl, private val root: Elemen
 
   public fun findLink(): LinkUrlExtractor {
     (
-        root.attr("href").nullIfBlank()
+        root.attr("abs:href").nullIfBlank()
           ?: root.select("*").anyChildTagWithAttr("href")
         )?.let {
         linkUrl = url.resolve(it)

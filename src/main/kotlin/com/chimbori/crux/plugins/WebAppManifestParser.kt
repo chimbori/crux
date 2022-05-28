@@ -29,7 +29,7 @@ public class WebAppManifestParser(private val okHttpClient: OkHttpClient) : Extr
 
   override suspend fun extract(request: Resource): Resource? {
     val canonicalUrl = request.document?.extractCanonicalUrl()?.let { request.url?.resolve(it) } ?: request.url
-    val webAppManifestUrl = request.document?.select("link[rel=manifest]")?.attr("href")?.nullIfBlank()
+    val webAppManifestUrl = request.document?.select("link[rel=manifest]")?.attr("abs:href")?.nullIfBlank()
       ?.let { canonicalUrl?.resolve(it) ?: it.toHttpUrlOrNull() }
       ?: return null
 
