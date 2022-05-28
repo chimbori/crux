@@ -7,7 +7,7 @@ import com.chimbori.crux.common.fetchFromUrl
 import com.chimbori.crux.common.isLikelyArticle
 import com.chimbori.crux.common.nullIfBlank
 import okhttp3.HttpUrl
-import okhttp3.HttpUrl.Companion.toHttpUrl
+import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import okhttp3.OkHttpClient
 
 /**
@@ -23,15 +23,12 @@ public class AmpRedirector(
 
   override suspend fun extract(request: Resource): Resource? {
     request.document?.select("link[rel=canonical]")?.attr("abs:href")?.nullIfBlank()?.let {
-      if (it.toHttpUrl() != request.url) {  // Only redirect if this is not already the canonical URL.
-        return if (refetchContentFromCanonicalUrl) {
-          Resource.fetchFromUrl(url = it.toHttpUrl(), okHttpClient = okHttpClient)
+      val canonicalUrl = it.toHttpUrlOrNull()
+      if (canonicalUrl != request.url) {  // Only redirect if this is not already the canonical URL.
+        return if (refetchContentFromCanonicalUrl && canonicalUrl != null) {
+          Resource.fetchFromUrl(url = canonicalUrl, okHttpClient = okHttpClient)
         } else {
-          Resource(
-            url = it.toHttpUrl(), urls = mapOf(
-              CANONICAL_URL to it.toHttpUrl()
-            )
-          )
+          Resource(url = canonicalUrl, urls = mapOf(CANONICAL_URL to canonicalUrl))
         }
       }
     }
