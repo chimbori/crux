@@ -21,7 +21,7 @@ import org.jsoup.nodes.Document
  * An ordered list of default plugins configured in Crux. Callers can override and provide their own list, or pick and
  * choose from the set of available default plugins to create their own configuration.
  */
-private fun createDefaultPlugins(okHttpClient: OkHttpClient): List<Plugin> = listOf(
+public fun createDefaultPlugins(okHttpClient: OkHttpClient): List<Plugin> = listOf(
   // Static redirectors go first, to avoid getting stuck into CAPTCHAs.
   GoogleUrlRewriter(),
   FacebookUrlRewriter(),
