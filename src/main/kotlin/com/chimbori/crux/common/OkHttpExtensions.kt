@@ -44,15 +44,19 @@ public suspend fun OkHttpClient.safeHttpGet(url: HttpUrl): Response? =
 public suspend fun OkHttpClient.safeHttpHead(url: HttpUrl): Response? =
   safeCall(Request.Builder().url(url).head().build())
 
-public suspend fun OkHttpClient.httpGetContent(url: HttpUrl): String? = safeHttpGet(url)?.use { response ->
-  if (response.isSuccessful && response.body != null) {
-    try {
-      response.body!!.string()
-    } catch (t: Throwable) {
-      null
+public suspend fun OkHttpClient.httpGetContent(url: HttpUrl, onError: ((t: Throwable) -> Unit)?): String? =
+  withContext(Dispatchers.IO) {
+    safeHttpGet(url)?.use { response ->
+      if (response.isSuccessful && response.body != null) {
+        try {
+          response.body!!.string()
+        } catch (t: Throwable) {
+          onError?.invoke(t)
+          null
+        }
+      } else null
     }
-  } else null
-}
+  }
 
 public suspend fun Resource.Companion.fetchFromUrl(url: HttpUrl, okHttpClient: OkHttpClient)
     : Resource = withContext(Dispatchers.IO) {
