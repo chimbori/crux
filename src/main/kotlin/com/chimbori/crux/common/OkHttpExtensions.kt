@@ -44,7 +44,7 @@ public suspend fun OkHttpClient.safeHttpGet(url: HttpUrl): Response? =
 public suspend fun OkHttpClient.safeHttpHead(url: HttpUrl): Response? =
   safeCall(Request.Builder().url(url).head().build())
 
-public suspend fun OkHttpClient.httpGetContent(url: HttpUrl, onError: ((t: Throwable) -> Unit)?): String? =
+public suspend fun OkHttpClient.httpGetContent(url: HttpUrl, onError: ((t: Throwable) -> Unit)? = null): String? =
   withContext(Dispatchers.IO) {
     safeHttpGet(url)?.use { response ->
       if (response.isSuccessful && response.body != null) {
