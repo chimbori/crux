@@ -64,8 +64,12 @@ public suspend fun Resource.Companion.fetchFromUrl(url: HttpUrl, okHttpClient: O
     httpResponse.request.url
   } else url
 
-  val docToUse: Document? = httpResponse?.body?.let {
-    Jsoup.parse(it.byteStream(), "UTF-8", urlToUse.toString())
+  val docToUse: Document? = try {
+    httpResponse?.body?.let {
+      Jsoup.parse(it.byteStream(), "UTF-8", urlToUse.toString())
+    }
+  } catch (t: Throwable) {
+    null
   }
 
   Resource(url = urlToUse, document = docToUse)
