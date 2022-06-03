@@ -27,7 +27,7 @@ dependencies {
   api("com.squareup.okhttp3:okhttp:4.9.3")
 
   implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.2")
-  implementation("com.beust:klaxon:5.5")
+  implementation("com.beust:klaxon:5.6")
 
   testImplementation("com.squareup.okhttp3:logging-interceptor:4.9.3")
   testImplementation("com.squareup.okhttp3:mockwebserver:4.9.3")
