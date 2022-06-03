@@ -27,8 +27,6 @@ import com.chimbori.crux.extractors.extractSiteName
 import com.chimbori.crux.extractors.extractThemeColor
 import com.chimbori.crux.extractors.extractTitle
 import com.chimbori.crux.extractors.extractVideoUrl
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import okhttp3.HttpUrl
 import okhttp3.OkHttpClient
 
@@ -42,7 +40,7 @@ public class HtmlMetadataExtractor(private val okHttpClient: OkHttpClient) : Ext
   /** Skip handling any file extensions that are unlikely to be HTML pages. */
   public override fun canExtract(url: HttpUrl): Boolean = url.isLikelyArticle()
 
-  override suspend fun extract(request: Resource): Resource = withContext(Dispatchers.IO) {
+  override suspend fun extract(request: Resource): Resource {
     val resourceToUse = if (request.document != null) {
       request
     } else if (request.url != null) {
@@ -55,7 +53,7 @@ public class HtmlMetadataExtractor(private val okHttpClient: OkHttpClient) : Ext
       ?.let { resourceToUse.url?.resolve(it) }
       ?: resourceToUse.url
 
-    Resource(
+    return Resource(
       url = if (resourceToUse.url != request.url) resourceToUse.url else null,
       document = resourceToUse.document,
       fields = mapOf(

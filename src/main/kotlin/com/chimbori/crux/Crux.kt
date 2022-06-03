@@ -13,6 +13,8 @@ import com.chimbori.crux.plugins.GoogleUrlRewriter
 import com.chimbori.crux.plugins.HtmlMetadataExtractor
 import com.chimbori.crux.plugins.TrackingParameterRemover
 import com.chimbori.crux.plugins.WebAppManifestParser
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import okhttp3.HttpUrl
 import okhttp3.OkHttpClient
 import org.jsoup.nodes.Document
@@ -61,21 +63,22 @@ public class Crux(
    * re-parsing it. If a custom [Document] is provided, Crux will not make any HTTP requests itself, and may not follow
    * HTTP redirects (but plugins may still optionally make additional HTTP requests themselves.)
    */
-  public suspend fun extractFrom(originalUrl: HttpUrl, parsedDoc: Document? = null): Resource {
-    val rewrittenUrl = activePlugins
-      .filterIsInstance<Rewriter>()
-      .fold(originalUrl) { rewrittenUrl, rewriter -> rewriter.rewrite(rewrittenUrl) }
+  public suspend fun extractFrom(originalUrl: HttpUrl, parsedDoc: Document? = null): Resource =
+    withContext(Dispatchers.IO) {
+      val rewrittenUrl = activePlugins
+        .filterIsInstance<Rewriter>()
+        .fold(originalUrl) { rewrittenUrl, rewriter -> rewriter.rewrite(rewrittenUrl) }
 
-    return activePlugins
-      .filterIsInstance<Extractor>()
-      .fold(Resource(url = rewrittenUrl, document = parsedDoc)) { resource, extractor ->
-        if (extractor.canExtract(resource.url ?: rewrittenUrl)) {
-          resource + extractor.extract(resource)
-        } else {
-          resource
-        }
-      }.removeNullValues()
-  }
+      activePlugins
+        .filterIsInstance<Extractor>()
+        .fold(Resource(url = rewrittenUrl, document = parsedDoc)) { resource, extractor ->
+          if (extractor.canExtract(resource.url ?: rewrittenUrl)) {
+            resource + extractor.extract(resource)
+          } else {
+            resource
+          }
+        }.removeNullValues()
+    }
 }
 
 private fun createCruxOkHttpClient(): OkHttpClient = OkHttpClient.Builder()
