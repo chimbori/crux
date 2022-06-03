@@ -23,7 +23,7 @@ buildscript {
 }
 
 dependencies {
-  api("org.jsoup:jsoup:1.14.3")
+  api("org.jsoup:jsoup:1.15.1")
   api("com.squareup.okhttp3:okhttp:4.9.3")
 
   implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1")
