@@ -52,3 +52,8 @@ tasks.withType<KotlinCompile>().configureEach {
 kotlin {
   explicitApi = Strict
 }
+
+mavenPublishing {
+  publishToMavenCentral()
+  signAllPublications()
+}
