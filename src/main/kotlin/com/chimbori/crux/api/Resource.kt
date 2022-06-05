@@ -2,6 +2,7 @@ package com.chimbori.crux.api
 
 import okhttp3.HttpUrl
 import org.jsoup.nodes.Document
+import org.jsoup.nodes.Element
 
 /** A [Resource] encapculates metadata and content related to an HTTP resource. */
 public data class Resource(
@@ -12,10 +13,10 @@ public data class Resource(
   val document: Document? = null,
 
   /**
-   * Extracted and cleaned-up DOM tree for this resource, if available. If this is null, then article extraction has
-   * not been performed, or has failed.
+   * Extracted and cleaned-up DOM tree for this resource, if available.
+   * If this is null, then article extraction has not been performed, or has failed.
    */
-  val article: Document? = null,
+  val article: Element? = null,
 
   /**
    * Text fields extracted from this resource, stored as key-value pairs. It is recommended to use well-defined keys
