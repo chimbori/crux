@@ -4,9 +4,11 @@ import com.chimbori.crux.api.Extractor
 import com.chimbori.crux.api.Fields.AMP_URL
 import com.chimbori.crux.api.Fields.BANNER_IMAGE_URL
 import com.chimbori.crux.api.Fields.CANONICAL_URL
+import com.chimbori.crux.api.Fields.CREATED
 import com.chimbori.crux.api.Fields.DESCRIPTION
 import com.chimbori.crux.api.Fields.FEED_URL
 import com.chimbori.crux.api.Fields.KEYWORDS_CSV
+import com.chimbori.crux.api.Fields.MODIFIED
 import com.chimbori.crux.api.Fields.NEXT_PAGE_URL
 import com.chimbori.crux.api.Fields.PREVIOUS_PAGE_URL
 import com.chimbori.crux.api.Fields.SITE_NAME
@@ -18,10 +20,12 @@ import com.chimbori.crux.common.fetchFromUrl
 import com.chimbori.crux.common.isLikelyArticle
 import com.chimbori.crux.extractors.extractAmpUrl
 import com.chimbori.crux.extractors.extractCanonicalUrl
+import com.chimbori.crux.extractors.extractCreated
 import com.chimbori.crux.extractors.extractDescription
 import com.chimbori.crux.extractors.extractFeedUrl
 import com.chimbori.crux.extractors.extractImageUrl
 import com.chimbori.crux.extractors.extractKeywords
+import com.chimbori.crux.extractors.extractModified
 import com.chimbori.crux.extractors.extractPaginationUrl
 import com.chimbori.crux.extractors.extractSiteName
 import com.chimbori.crux.extractors.extractThemeColor
@@ -61,6 +65,8 @@ public class HtmlMetadataExtractor(private val okHttpClient: OkHttpClient) : Ext
         DESCRIPTION to resourceToUse.document?.extractDescription(),
         SITE_NAME to resourceToUse.document?.extractSiteName(),
         THEME_COLOR_HEX to resourceToUse.document?.extractThemeColor(),
+        CREATED to resourceToUse.document?.extractCreated(),
+        MODIFIED to resourceToUse.document?.extractModified(),
         KEYWORDS_CSV to resourceToUse.document?.extractKeywords()?.joinToString(separator = ","),
       ),
       urls = mapOf(

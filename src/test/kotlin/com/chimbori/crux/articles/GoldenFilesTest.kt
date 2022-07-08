@@ -82,6 +82,8 @@ class GoldenFilesTest {
         "A Nigerian woman has given birth to a boy on board a rescue ship in the Mediterranean after being plucked from an overcrowded rubber dinghy.",
         document?.text()
       )
+      assertEquals("2016-09-12T14:31:25+00:00", created)
+      assertEquals("2016-09-12T14:31:25+00:00", modified)
     }
   }
 
@@ -131,6 +133,8 @@ class GoldenFilesTest {
         "Dr. Laura: criticism of me infringes my first amendment rights Dr. Laura Schlessinger is leaving radio to regain her \"first amendment\" rights on the internet.",
         document?.text()
       )
+      assertEquals("2010-08-18T01:57:27+00:00", created)
+      assertEquals("2010-08-18T09:43:25+00:00", modified)
     }
   }
 
@@ -530,6 +534,22 @@ class GoldenFilesTest {
         "https://i.amz.mshcdn.com/r831Qn9cn1G7A9q2F3-1PH1VIyw=/640x360/2015%2F04%2F24%2Fda%2Fscottkellyr.3f2af.jpg".toHttpUrl(),
         imageUrl
       )
+    }
+  }
+
+  @Test
+  fun testNbc() {
+    fromFile(
+      "https://www.nbcnews.com/health/health-news/us-monkeypox-vaccines-testing-rcna37097",
+      "nbc.html"
+    ).run {
+      assertEquals("U.S. to ship 144,000 more monkeypox shots and expand testing as cases top 700", title)
+      assertStartsWith(
+        "The U.S. is stepping up its efforts to address the snowballing monkeypox outbreak — the country's largest to date by far, with 700 confirmed cases.",
+        document?.text()
+      )
+      assertEquals("Fri Jul 08 2022 00:44:04 GMT+0000 (UTC)", created)
+      assertEquals("Fri Jul 08 2022 01:07:26 GMT+0000 (UTC)", modified)
     }
   }
 
@@ -1118,6 +1138,8 @@ class GoldenFilesTest {
         "https://si.wsj.net/public/resources/images/OB-JO759_0814st_D_20100814143158.jpg".toHttpUrl(),
         imageUrl
       )
+      assertEquals("2010-08-14T15:14:00.000Z", created)
+      assertEquals("2010-08-16T04:01:00.000Z", modified)
     }
   }
 
