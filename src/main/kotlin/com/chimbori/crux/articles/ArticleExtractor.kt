@@ -5,6 +5,7 @@ import com.chimbori.crux.extractors.PostprocessHelpers
 import com.chimbori.crux.extractors.PreprocessHelpers
 import com.chimbori.crux.extractors.extractAmpUrl
 import com.chimbori.crux.extractors.extractCanonicalUrl
+import com.chimbori.crux.extractors.extractCreated
 import com.chimbori.crux.extractors.extractDescription
 import com.chimbori.crux.extractors.extractFaviconUrl
 import com.chimbori.crux.extractors.extractFeedUrl
@@ -14,6 +15,7 @@ import com.chimbori.crux.extractors.extractKeywords
 import com.chimbori.crux.extractors.extractSiteName
 import com.chimbori.crux.extractors.extractThemeColor
 import com.chimbori.crux.extractors.extractTitle
+import com.chimbori.crux.extractors.extractModified
 import com.chimbori.crux.extractors.extractVideoUrl
 import com.chimbori.crux.extractors.getNodes
 import com.chimbori.crux.extractors.getWeight
@@ -44,6 +46,8 @@ constructor(public val url: HttpUrl, private val document: Document) {
     article.description = document.extractDescription()
     article.siteName = document.extractSiteName()
     article.themeColor = document.extractThemeColor()
+    article.created = document.extractCreated();
+    article.modified = document.extractModified();
 
     document.extractFaviconUrl(article.canonicalUrl)?.let { article.faviconUrl = it }
     document.extractImageUrl(article.canonicalUrl)?.let { article.imageUrl = it }

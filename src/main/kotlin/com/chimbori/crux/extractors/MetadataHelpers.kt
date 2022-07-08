@@ -42,6 +42,18 @@ public fun Document.extractSiteName(): String? = (
 public fun Document.extractThemeColor(): String? =
   select("meta[name=theme-color]").attr("content").nullIfBlank()
 
+public fun Document.extractCreated(): String? = (
+    select("meta[itemprop=dateCreated]").attr("content").nullIfBlank()
+      ?: select("meta[property=article:published_time]").attr("content").nullIfBlank()
+      ?: select("meta[property=article:published]").attr("content").nullIfBlank()
+    )?.removeWhiteSpace()?.nullIfBlank()
+
+public fun Document.extractModified(): String? = (
+    select("meta[itemprop=dateModified]").attr("content").nullIfBlank()
+      ?: select("meta[property=article:modified_time]").attr("content").nullIfBlank()
+      ?: select("meta[property=article:modified]").attr("content").nullIfBlank()
+    )?.removeWhiteSpace()?.nullIfBlank()
+
 public fun Document.extractKeywords(): List<String> =
   select("meta[name=keywords]").attr("content")
     .removeWhiteSpace()

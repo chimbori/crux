@@ -12,6 +12,8 @@ public data class Article(
   var description: String? = null,
   var siteName: String? = null,
   var themeColor: String? = null,
+  var created: String? = null,
+  var modified: String? = null,
   var ampUrl: HttpUrl? = null,
   var imageUrl: HttpUrl? = null,
   var videoUrl: HttpUrl? = null,
