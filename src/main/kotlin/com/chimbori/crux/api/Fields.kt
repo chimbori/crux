@@ -8,8 +8,8 @@ public object Fields {
   public const val LANGUAGE: String = "language"
   public const val DISPLAY: String = "display"
   public const val ORIENTATION: String = "orientation"
-  public const val CREATED: String = "created"
-  public const val MODIFIED: String = "modified"
+  public const val PUBLISHED_AT: String = "published_at"
+  public const val MODIFIED_AT: String = "modified_at"
 
   public const val THEME_COLOR_HEX: String = "theme-color-hex"
   public const val THEME_COLOR_HTML: String = "theme-color-html"  // Named colors like "aliceblue"
