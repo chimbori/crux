@@ -1,7 +1,12 @@
 package com.chimbori.crux.articles
 
+import com.chimbori.crux.api.Fields.AMP_URL
+import com.chimbori.crux.api.Fields.BANNER_IMAGE_URL
+import com.chimbori.crux.api.Fields.SITE_NAME
+import com.chimbori.crux.api.Fields.TITLE
 import com.chimbori.crux.common.assertContains
 import com.chimbori.crux.common.assertStartsWith
+import com.chimbori.crux.common.extractFromFile
 import com.chimbori.crux.common.fromFile
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import org.junit.Assert.assertArrayEquals
@@ -10,6 +15,24 @@ import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class GoldenFilesTest {
+  @Test
+  fun testBBC_resourceApi() {
+    extractFromFile("http://www.bbc.co.uk/news/world-latin-america-21226565".toHttpUrl(), "bbc.html").run {
+      assertEquals("BBC News", fields[SITE_NAME])
+      assertEquals("Baby born on Mediterranean rescue ship - BBC News", fields[TITLE])
+      assertEquals("http://www.bbc.co.uk/news/world-latin-america-21226565".toHttpUrl(), url)
+      assertEquals(
+        "http://ichef-1.bbci.co.uk/news/1024/cpsprodpb/146E6/production/_91168638_baby070012-9-20162-1photocreditalvawhitemsf.jpg".toHttpUrl(),
+        urls[BANNER_IMAGE_URL]
+      )
+      assertEquals("http://www.bbc.co.uk/news/amp/37341871".toHttpUrl(), urls[AMP_URL])
+      assertStartsWith(
+        "A Nigerian woman has given birth to a boy on board a rescue ship in the Mediterranean",
+        article?.text()
+      )
+    }
+  }
+
   @Test
   fun testAOLNews() {
     fromFile(
@@ -29,7 +52,7 @@ class GoldenFilesTest {
   }
 
   @Test
-  fun testBBC() {
+  fun testBBC_articleApi() {
     fromFile("http://www.bbc.co.uk/news/world-latin-america-21226565", "bbc.html").run {
       assertEquals("BBC News", siteName)
       assertEquals("Baby born on Mediterranean rescue ship - BBC News", title)
