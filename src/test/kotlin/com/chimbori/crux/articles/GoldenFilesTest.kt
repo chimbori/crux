@@ -2,6 +2,8 @@ package com.chimbori.crux.articles
 
 import com.chimbori.crux.api.Fields.AMP_URL
 import com.chimbori.crux.api.Fields.BANNER_IMAGE_URL
+import com.chimbori.crux.api.Fields.MODIFIED_AT
+import com.chimbori.crux.api.Fields.PUBLISHED_AT
 import com.chimbori.crux.api.Fields.SITE_NAME
 import com.chimbori.crux.api.Fields.TITLE
 import com.chimbori.crux.common.assertContains
@@ -70,7 +72,27 @@ class GoldenFilesTest {
   }
 
   @Test
-  fun testBBC_AMP() {
+  fun testBBC_AMP_resourceApi() {
+    extractFromFile("http://www.bbc.co.uk/news/amp/37341871".toHttpUrl(), "bbc-amp.html").run {
+      assertEquals("BBC News", fields[SITE_NAME])
+      assertEquals("Baby born on Mediterranean rescue ship", fields[TITLE])
+      assertEquals("http://www.bbc.co.uk/news/amp/37341871".toHttpUrl(), url)
+      assertEquals(
+        "http://ichef.bbci.co.uk/news/999/cpsprodpb/146E6/production/_91168638_baby070012-9-20162-1photocreditalvawhitemsf.jpg".toHttpUrl(),
+        urls[BANNER_IMAGE_URL]
+      )
+      assertStartsWith(
+        "A Nigerian woman has given birth to a boy on board a rescue ship in the Mediterranean after being plucked from an overcrowded rubber dinghy.",
+        article?.text()
+      )
+
+      assertEquals("2016-09-12T14:31:25+00:00", fields[PUBLISHED_AT])
+      assertEquals("2016-09-12T14:31:25+00:00", fields[MODIFIED_AT]);
+    }
+  }
+
+  @Test
+  fun testBBC_AMP_articleApi() {
     fromFile("http://www.bbc.co.uk/news/amp/37341871", "bbc-amp.html").run {
       assertEquals("BBC News", siteName)
       assertEquals("Baby born on Mediterranean rescue ship", title)
@@ -125,7 +147,19 @@ class GoldenFilesTest {
   }
 
   @Test
-  fun testBoingBoing() {
+  fun testBoingBoing_resourceApi() {
+    extractFromFile("http://www.boingboing.net/2010/08/18/dr-laura-criticism-o.html".toHttpUrl(), "boingboing.html").run {
+      assertStartsWith(
+        "Dr. Laura: criticism of me infringes my first amendment rights Dr. Laura Schlessinger is leaving radio to regain her \"first amendment\" rights on the internet.",
+        article?.text()
+      )
+      assertEquals("2010-08-18T01:57:27+00:00", fields[PUBLISHED_AT])
+      assertEquals("2010-08-18T09:43:25+00:00", fields[MODIFIED_AT]);
+    }
+  }
+
+  @Test
+  fun testBoingBoing_articleApi() {
     fromFile("http://www.boingboing.net/2010/08/18/dr-laura-criticism-o.html", "boingboing.html").run {
       assertStartsWith(
         "Dr. Laura: criticism of me infringes my first amendment rights Dr. Laura Schlessinger is leaving radio to regain her \"first amendment\" rights on the internet.",
@@ -1108,7 +1142,24 @@ class GoldenFilesTest {
   }
 
   @Test
-  fun testWallStreetJournal() {
+  fun testWallStreetJournal_resourceApi() {
+    extractFromFile("http://www.wsj.com/articles/SB10001424052748704532204575397061414483040".toHttpUrl(), "wsj.html").run {
+      assertEquals(
+        "https://si.wsj.net/public/resources/images/OB-JO759_0814st_D_20100814143158.jpg".toHttpUrl(),
+        urls[BANNER_IMAGE_URL]
+      )
+      assertStartsWith(
+        "The Obama administration has paid out less than a third of the nearly $230 billion",
+        article?.text()
+      )
+
+      assertEquals("2010-08-14T15:14:00.000Z", fields[PUBLISHED_AT])
+      assertEquals("2010-08-16T04:01:00.000Z", fields[MODIFIED_AT]);
+    }
+  }
+
+  @Test
+  fun testWallStreetJournal_articleApi() {
     fromFile("http://www.wsj.com/articles/SB10001424052748704532204575397061414483040", "wsj.html").run {
       assertStartsWith(
         "The Obama administration has paid out less than a third of the nearly $230 billion",
