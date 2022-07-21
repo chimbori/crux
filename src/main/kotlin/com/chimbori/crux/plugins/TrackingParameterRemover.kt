@@ -26,6 +26,7 @@ public class TrackingParameterRemover(private val trackingParameters: Array<Stri
       "ga_place",
       "ga_source",
       "ga_term",
+      "gclid",
       "gs_l",
       "utm_campaign",
       "utm_cid",
@@ -41,7 +42,7 @@ public class TrackingParameterRemover(private val trackingParameters: Array<Stri
       "utm_term",
       "utm_userid",
       "utm_viz_id",
-      "yclid"
+      "yclid",
     )
   }
 }
