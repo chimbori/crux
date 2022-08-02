@@ -31,12 +31,12 @@ public fun createDefaultPlugins(okHttpClient: OkHttpClient): List<Plugin> = list
   TrackingParameterRemover(),
   // Prefer canonical URLs over AMP URLs.
   AmpRedirector(refetchContentFromCanonicalUrl = true, okHttpClient),
+  // Fetches and parses the Web Manifest. May replace existing favicon URL with one from the manifest.json.
+  WebAppManifestParser(okHttpClient),
   // Parses many standard HTML metadata attributes.
   HtmlMetadataExtractor(okHttpClient),
   // Extracts the best possible favicon from all the markup available on the page itself.
   FaviconExtractor(),
-  // Fetches and parses the Web Manifest. May replace existing favicon URL with one from the manifest.json.
-  WebAppManifestParser(okHttpClient),
   // Parses the content of the page to remove ads, navigation, and all the other fluff.
   ArticleExtractor(okHttpClient),
 )
