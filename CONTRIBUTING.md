@@ -13,12 +13,12 @@ To maintain the integrity of the library, we have a few simple expectations from
 1. Crux is fully unit-tested, and we want to keep it that way. All new code should include unit
    tests.
 1. For parsing improvements, Crux’s rich suite of integration tests should be updated to reflect
-   the parsing changes. Authors may either choose to test their improvements within existing HTML
-   test files, or add new ones, as appropriate.
-1. All current tests should continue to pass. Either update the tests in the same CL, or modify the
-   new code, so that existing tests continue to pass.
-1. Changes should be self-contained, as far as possible. When implementing multiple independent
-   improvements, each one should be in its own pull request.
+   the parsing changes. Authors may either choose to test their improvements with existing HTML test
+   files, or add new ones, as appropriate.
+1. All current tests should continue to pass. Either update the tests in the same commit, or modify
+   new code so that existing tests continue to pass.
+1. Changes should be self-contained as far as possible. When implementing multiple independent
+   improvements, each one should be in its own commit.
 
 # Publish a New Release
 
