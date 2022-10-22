@@ -6,16 +6,10 @@ make parsing more accurate, or add new features & metadata detection.
 
 To maintain the integrity of the library, we have a few simple expectations from all code submitted.
 
-1. Crux follows the [Google Java Style Guide](https://google.github.io/styleguide/javaguide.html).
-All new code must adhere to this guide. Please note rules around indentation (2 spaces, no tabs)
-and that braces are required around single-line clauses, e.g.:
-
-    ```java
-        if (condition) {
-          x = 0;  // Braces are required around this line.
-        }
-    ```
-
+1. The expected style for code formatting is available in the repo using the
+   [EditorConfig](https://editorconfig.org/) standard. We recommend using a JetBrains IDE for
+   Kotlin, and configuring it to automatically use the `.editorconfig` file included in this
+   repository.
 1. Crux is fully unit-tested, and we want to keep it that way. All new code should include unit
    tests.
 1. For parsing improvements, Crux’s rich suite of integration tests should be updated to reflect
