@@ -308,8 +308,8 @@ class GoldenFilesTest {
         document?.text()
       )
       assertStartsWith(
-        """|<p> Aubrey de Grey, 53, quer curar o envelhecimento. Sim, para esse pesquisador inglês, formado em ciências da computação na Universidade de Cambridge, envelhecer é uma doença tal como a malária –ou ainda pior, por vitimar muito mais pessoas– que pode ser perfeitamente evitável. </p>
-          |<p> A seu ver, para pensar em uma solução é preciso entender o envelhecimento e a morte como resultado de um processo de acúmulo de danos e imperfeições no organismo. </p>
+        """|<p>Aubrey de Grey, 53, quer curar o envelhecimento. Sim, para esse pesquisador inglês, formado em ciências da computação na Universidade de Cambridge, envelhecer é uma doença tal como a malária –ou ainda pior, por vitimar muito mais pessoas– que pode ser perfeitamente evitável.</p>
+          |<p>A seu ver, para pensar em uma solução é preciso entender o envelhecimento e a morte como resultado de um processo de acúmulo de danos e imperfeições no organismo.</p>
           |""".trimMargin(), document?.html()
       )
     }

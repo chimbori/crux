@@ -16,21 +16,21 @@ class ArticleExtractorTest {
       .extractContent().article
     assertEquals(3, article.document?.childNodeSize())
     assertEquals(As, article.document?.childNode(0)?.outerHtml()?.trim { it <= ' ' })
-    assertEquals("<p> $Bs</p>", article.document?.childNode(1)?.outerHtml()?.trim { it <= ' ' })
+    assertEquals("<p>$Bs</p>", article.document?.childNode(1)?.outerHtml()?.trim { it <= ' ' })
     assertEquals(Cs, article.document?.childNode(2)?.outerHtml()?.trim { it <= ' ' })
 
     article = ArticleExtractor(EXAMPLE_URL, "<html><body><div> $As <p>$Bs </p>$Cs</div></body></html>")
       .extractContent().article
     assertEquals(3, article.document?.childNodeSize())
     assertEquals(As, article.document?.childNode(0)?.outerHtml()?.trim { it <= ' ' })
-    assertEquals("<p>$Bs </p>", article.document?.childNode(1)?.outerHtml()?.trim { it <= ' ' })
+    assertEquals("<p>$Bs</p>", article.document?.childNode(1)?.outerHtml()?.trim { it <= ' ' })
     assertEquals(Cs, article.document?.childNode(2)?.outerHtml()?.trim { it <= ' ' })
 
     article = ArticleExtractor(EXAMPLE_URL, "<html><body><div> $As <p> $Bs </p>$Cs</div></body></html>")
       .extractContent().article
     assertEquals(3, article.document?.childNodeSize())
     assertEquals(As, article.document?.childNode(0)?.outerHtml()?.trim { it <= ' ' })
-    assertEquals("<p> $Bs </p>", article.document?.childNode(1)?.outerHtml()?.trim { it <= ' ' })
+    assertEquals("<p>$Bs</p>", article.document?.childNode(1)?.outerHtml()?.trim { it <= ' ' })
     assertEquals(Cs, article.document?.childNode(2)?.outerHtml()?.trim { it <= ' ' })
   }
 
