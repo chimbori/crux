@@ -24,35 +24,30 @@ To maintain the integrity of the library, we have a few simple expectations from
 
 ## Create a New Release
 
-1. Update `version` in `build.gradle.kts`.
-1. Create a separate commit for the version number change, naming it `Bump version to x.y.z`.
-1. Push all pending commits to GitHub.
-1. Wait for CI to confirm green status.
-1. Tag that commit as a release at https://github.com/chimbori/crux/releases .
+1. Ensure all tests pass & CI indicates that the status is green.
+1. Update `VERSION_NAME` in `gradle.properties`.
+1. Create a new commit for the version number change, naming it `Bump version to x.y.z`.
+1. Tag that commit as `vx.y.z` (must match `v[0-9]+.[0-9]+.[0-9]+`).
+1. Push all commits & tags to GitHub.
 
 ## Publish to Maven Central
 
-Confirm that the `gradle.properties` file in the home directory (`~/.gradle/gradle.properties`) is present and [set up
-correctly](#set-up-key-signing-on-a-new-machine).
+Confirm that the `gradle.properties` file in the home directory (`~/.gradle/gradle.properties`) is
+present and [set up correctly](#set-up-key-signing-on-a-new-machine).
 
   ```shell
-  ./gradlew publish --no-daemon --no-parallel
+  ./gradlew publish
   ```
+## Close & Release Manually
 
-## Close & Release
-
-### Automatically
-
-After archives have been successfully uploaded, publish using:
-
-  ```shell
-  ./gradlew closeAndReleaseRepository
-  ```
 ### Manually
 
+Assuming `./gradlew publish` has been run after a new version has been released.
+
 - Go to https://oss.sonatype.org/#stagingRepositories, login as `chimbori`.
-- Select the `comchimboricrux-xxxx` repo, then click on `Close` from the top toolbar.
-- Wait for the `Close` step to complete, then click on `Release` from the top toolbar.
+- Select the `comchimboricrux-xxxx` repo
+- Click on `Close` from the top toolbar, wait for it to complete.
+- Click on `Release` from the top toolbar.
 
 ## Set Up Key Signing on a New Machine
 
