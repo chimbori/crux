@@ -2,7 +2,7 @@ import org.jetbrains.kotlin.gradle.dsl.ExplicitApiMode.Strict
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-  kotlin("jvm") version "1.6.20"
+  kotlin("jvm") version "1.7.20"
   id("com.vanniktech.maven.publish") version "0.21.0"
   id("com.github.ben-manes.versions") version "0.42.0"
 }
@@ -16,7 +16,7 @@ buildscript {
     mavenCentral()
   }
   dependencies {
-    classpath(kotlin("gradle-plugin", version = "1.6.20"))
+    classpath(kotlin("gradle-plugin", version = "1.7.20"))
     classpath("com.github.ben-manes:gradle-versions-plugin:0.42.0")
     classpath("com.vanniktech:gradle-maven-publish-plugin:0.21.0")
   }
