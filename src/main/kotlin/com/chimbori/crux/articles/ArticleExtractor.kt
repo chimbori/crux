@@ -83,7 +83,7 @@ constructor(public val url: HttpUrl, private val document: Document) {
    * must only be called after [.extractContent] has already been performed.
    */
   public fun estimateReadingTime(): ArticleExtractor {
-    article.estimatedReadingTimeMinutes = document.estimatedReadingTimeMinutes()
+    article.estimatedReadingTimeMinutes = document.text().estimatedReadingTimeMinutes()
     return this
   }
 }
