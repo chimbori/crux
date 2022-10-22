@@ -4,7 +4,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
   kotlin("jvm") version "1.7.20"
   id("com.github.ben-manes.versions") version "0.43.0"
-  id("com.vanniktech.maven.publish") version "0.21.0"
+  id("com.vanniktech.maven.publish") version "0.22.0"
 }
 
 repositories {
@@ -18,7 +18,7 @@ buildscript {
   dependencies {
     classpath(kotlin("gradle-plugin", version = "1.7.20"))
     classpath("com.github.ben-manes:gradle-versions-plugin:0.43.0")
-    classpath("com.vanniktech:gradle-maven-publish-plugin:0.21.0")
+    classpath("com.vanniktech:gradle-maven-publish-plugin:0.22.0")
   }
 }
 
