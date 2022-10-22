@@ -24,13 +24,13 @@ buildscript {
 
 dependencies {
   api("org.jsoup:jsoup:1.15.1")
-  api("com.squareup.okhttp3:okhttp:4.9.3")
+  api("com.squareup.okhttp3:okhttp:4.10.0")
 
   implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.2")
   implementation("com.beust:klaxon:5.6")
 
-  testImplementation("com.squareup.okhttp3:logging-interceptor:4.9.3")
-  testImplementation("com.squareup.okhttp3:mockwebserver:4.9.3")
+  testImplementation("com.squareup.okhttp3:logging-interceptor:4.10.0")
+  testImplementation("com.squareup.okhttp3:mockwebserver:4.10.0")
   testImplementation("junit:junit:4.13.2")
 }
 
