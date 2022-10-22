@@ -26,7 +26,7 @@ dependencies {
   api("org.jsoup:jsoup:1.15.1")
   api("com.squareup.okhttp3:okhttp:4.10.0")
 
-  implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.2")
+  implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
   implementation("com.beust:klaxon:5.6")
 
   testImplementation("com.squareup.okhttp3:logging-interceptor:4.10.0")
