@@ -54,6 +54,5 @@ kotlin {
 }
 
 mavenPublishing {
-  publishToMavenCentral()
   signAllPublications()
 }
