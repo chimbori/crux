@@ -111,13 +111,13 @@ class CruxTest {
       override suspend fun extract(request: Resource) =
         Resource(
           url = request.url?.newBuilder()?.encodedPath("/bar")?.build(),
-          fields = mapOf(TITLE to "Foo Title")
+          metadata = mapOf(TITLE to "Foo Title")
         )
     }
 
     val generateTitleForBarPlugin = object : Extractor {
       override fun canExtract(url: HttpUrl) = url.encodedPath == "/bar"
-      override suspend fun extract(request: Resource) = Resource(fields = mapOf(TITLE to "Bar Title"))
+      override suspend fun extract(request: Resource) = Resource(metadata = mapOf(TITLE to "Bar Title"))
     }
 
     // Test Foo before Bar.

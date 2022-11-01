@@ -17,10 +17,9 @@ public fun interface Rewriter : Plugin {
  * provided a fully-parsed HTML DOM to extract fields from, and can also make additional HTTP requests if necessary to
  * retrieve additional metadata or to follow redirects.
  *
- * Text fields can be set via the [Resource.fields] property, and URLs via the [Resource.urls] property. Plugins
- * can also rewrite the canonical URL, and can provide an updated DOM tree if the canonical URL is changed. The
- * updated URL and DOM tree will be passed on to the next plugin in sequence, so the exact ordering of plugins is
- * important.
+ * Metadata fields can be set via the [Resource.metadata] property. Plugins can also rewrite the canonical URL, and can
+ * provide an updated DOM tree if the canonical URL is changed. The updated URL and DOM tree will be passed on to the
+ * next plugin in sequence, so the exact ordering of plugins is important.
  */
 public interface Extractor : Plugin {
   /**

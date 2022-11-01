@@ -60,7 +60,8 @@ public class HtmlMetadataExtractor(private val okHttpClient: OkHttpClient) : Ext
     return Resource(
       url = if (resourceToUse.url != request.url) resourceToUse.url else null,
       document = resourceToUse.document,
-      fields = mapOf(
+      metadata = mapOf(
+        CANONICAL_URL to canonicalUrl,
         TITLE to resourceToUse.document?.extractTitle(),
         DESCRIPTION to resourceToUse.document?.extractDescription(),
         SITE_NAME to resourceToUse.document?.extractSiteName(),
@@ -68,9 +69,6 @@ public class HtmlMetadataExtractor(private val okHttpClient: OkHttpClient) : Ext
         PUBLISHED_AT to resourceToUse.document?.extractPublishedAt(),
         MODIFIED_AT to resourceToUse.document?.extractModifiedAt(),
         KEYWORDS_CSV to resourceToUse.document?.extractKeywords()?.joinToString(separator = ","),
-      ),
-      urls = mapOf(
-        CANONICAL_URL to canonicalUrl,
         NEXT_PAGE_URL to resourceToUse.document?.extractPaginationUrl(resourceToUse.url, "next"),
         PREVIOUS_PAGE_URL to resourceToUse.document?.extractPaginationUrl(resourceToUse.url, "prev"),
         BANNER_IMAGE_URL to resourceToUse.document?.extractImageUrl(canonicalUrl),

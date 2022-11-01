@@ -14,16 +14,15 @@ class ResourceTest {
   fun testResourceMetadataApiExamples() {
     val resource = Resource(
       url = "https://chimbori.com/".toHttpUrl(),
-      fields = mapOf(
+      metadata = mapOf(
         TITLE to "Life, the Universe, and Everything",
-        DESCRIPTION to "42"
-      ), urls = mapOf(
+        DESCRIPTION to "42",
         CANONICAL_URL to "https://chimbori.com/".toHttpUrl()
       )
     )
     assertEquals("Life, the Universe, and Everything", resource[TITLE])
     assertEquals("42", resource[DESCRIPTION])
-    assertEquals("https://chimbori.com/".toHttpUrl(), resource.urls[CANONICAL_URL])
-    assertNull(resource.urls[BANNER_IMAGE_URL])
+    assertEquals("https://chimbori.com/".toHttpUrl(), resource[CANONICAL_URL])
+    assertNull(resource[BANNER_IMAGE_URL])
   }
 }

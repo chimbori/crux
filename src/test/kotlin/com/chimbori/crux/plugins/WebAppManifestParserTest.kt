@@ -63,7 +63,7 @@ class WebAppManifestParserTest {
       )
       assertEquals(
         mockWebServer.url("/static/sub/directory/manifest.json"),
-        parsedResource?.urls?.get(WEB_APP_MANIFEST_URL)
+        parsedResource?.get(WEB_APP_MANIFEST_URL)
       )
     }
   }
@@ -127,8 +127,8 @@ class WebAppManifestParserTest {
       assertEquals("red", parsedResource?.get(BACKGROUND_COLOR_HTML))
       assertNull(parsedResource?.get(THEME_COLOR_HEX))
       assertNull(parsedResource?.get(BACKGROUND_COLOR_HEX))
-      assertEquals(mockWebServer.url("/static/manifest.json"), parsedResource?.urls?.get(WEB_APP_MANIFEST_URL))
-      assertEquals(mockWebServer.url("/static/icon/hd_hi.svg"), parsedResource?.urls?.get(FAVICON_URL))
+      assertEquals(mockWebServer.url("/static/manifest.json"), parsedResource?.get(WEB_APP_MANIFEST_URL))
+      assertEquals(mockWebServer.url("/static/icon/hd_hi.svg"), parsedResource?.get(FAVICON_URL))
     }
   }
 }

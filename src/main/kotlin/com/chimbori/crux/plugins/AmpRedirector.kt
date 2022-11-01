@@ -28,7 +28,7 @@ public class AmpRedirector(
         return if (refetchContentFromCanonicalUrl && canonicalUrl != null) {
           Resource.fetchFromUrl(url = canonicalUrl, okHttpClient = okHttpClient)
         } else {
-          Resource(url = canonicalUrl, urls = mapOf(CANONICAL_URL to canonicalUrl))
+          Resource(url = canonicalUrl, metadata = mapOf(CANONICAL_URL to canonicalUrl))
         }
       }
     }

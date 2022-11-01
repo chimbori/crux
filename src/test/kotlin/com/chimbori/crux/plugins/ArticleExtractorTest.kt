@@ -22,7 +22,7 @@ class ArticleExtractorTest {
     runBlocking {
       articleExtractor.extract(Resource.fromTestData(wikipediaUrl, "wikipedia_galileo.html"))
     }?.let { parsed ->
-      val readingTimeMinutes = (parsed.objects.get(DURATION_MS) as? Int)?.div(60_000)
+      val readingTimeMinutes = (parsed[DURATION_MS] as? Int)?.div(60_000)
       assertEquals(51, readingTimeMinutes)
 
       val extractedArticle = parsed.article

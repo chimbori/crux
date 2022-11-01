@@ -18,27 +18,11 @@ public data class Resource(
    */
   val article: Element? = null,
 
-  /**
-   * Text fields extracted from this resource, stored as key-value pairs. It is recommended to use well-defined keys
-   * from [com.chimbori.crux.Fields] for all standard fields. Custom fields are also supported, in case none of the
-   * pre-defined keys are applicable.
-   */
-  val fields: Map<String, String?> = emptyMap(),
-
-  /**
-   * URL fields extracted from this resource. Storing these as key-value pairs of [HttpUrl]s avoids re-parsing the same
-   * URLs multiple times. URLs can also be retrieved as strings via the [get] indexed accessor.
-   */
-  val urls: Map<String, HttpUrl?> = emptyMap(),
-
   /** A holder for any kind of custom objects that library users may want to use. */
-  val objects: Map<String, Any?> = emptyMap(),
+  val metadata: Map<String, Any?> = emptyMap(),
 ) {
-  /**
-   * @return value of a named field. If there’s no named [String] field corresponding to this key in [Resource.fields],
-   * but a [HttpUrl] exists in [Resource.urls], the latter will be stringified and returned instead.
-   */
-  public operator fun get(key: String): String? = fields[key] ?: urls[key]?.toString()
+  /** @return value of a named field in [Resource.metadata]. */
+  public operator fun get(key: String): Any? = metadata[key]
 
   /**
    * Merges non-null fields from another [Resource] with this object, and returns a new immutable object. Prefer to use
@@ -48,19 +32,12 @@ public data class Resource(
     url = anotherResource?.url ?: url,
     document = anotherResource?.document ?: document,
     article = anotherResource?.article ?: article,
-    fields = if (anotherResource?.fields == null) fields else fields + anotherResource.fields,
-    urls = if (anotherResource?.urls == null) urls else urls + anotherResource.urls,
-    objects = if (anotherResource?.objects == null) objects else objects + anotherResource.objects,
+    metadata = if (anotherResource?.metadata == null) metadata else metadata + anotherResource.metadata,
   )
 
-  /**
-   * Removes an immutable copy of this [Resource] that only contains non-null values for each key in both [fields]
-   * and [urls].
-   */
+  /** Removes an immutable copy of this [Resource] that only contains non-null values for each key in [metadata]. */
   public fun removeNullValues(): Resource = copy(
-    fields = fields.filterValues { !it.isNullOrBlank() },
-    urls = urls.filterValues { it != null },
-    objects = objects.filterValues { it != null },
+    metadata = metadata.filterValues { it != null },
   )
 
   /** For any potential extension functions to be defined on the companion object. */

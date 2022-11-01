@@ -31,8 +31,7 @@ class KotlinPublicAPITest {
 
     val httpURL = "https://chimbori.com/".toHttpUrl()
 
-    // You can provide prefetched raw HTML content yourself, or have Crux fetch
-    // it for you.
+    // You can provide prefetched raw HTML content yourself, or have Crux fetch it for you.
     val htmlContent = """
       |<html>
       |  <head>
@@ -49,18 +48,14 @@ class KotlinPublicAPITest {
       crux.extractFrom(originalUrl = httpURL, parsedDoc = Jsoup.parse(htmlContent, httpURL.toString()))
     }
 
-    // Metadata fields such as the Title and Description are available from the
-    // returned [Resource] object as an indexed collection.
+    // Metadata fields such as the Title and Description are available from the returned [Resource] object.
     assertEquals("Chimbori", extractedMetadata[TITLE])
 
-    // Well-known URLs related to this page are available either as strings or
-    // OkHttp [HttpUrl]s.
-    assertEquals("https://chimbori.com/media/favicon.png", extractedMetadata[FAVICON_URL])
-    assertEquals("https://chimbori.com/media/favicon.png".toHttpUrl(), extractedMetadata.urls[FAVICON_URL])
+    // Well-known URLs related to this page are available either as strings or OkHttp [HttpUrl]s.
+    assertEquals("https://chimbori.com/media/favicon.png".toHttpUrl(), extractedMetadata[FAVICON_URL])
 
-    // Extra markup fields like Twitter Cards metadata or Open Graph metadata are
-    // available as metadata fields as well.
-    assertEquals("https://chimbori.com/media/cover-photo.png", extractedMetadata[BANNER_IMAGE_URL])
+    // Extra markup fields like Twitter Cards metadata or Open Graph metadata are available as metadata fields as well.
+    assertEquals("https://chimbori.com/media/cover-photo.png".toHttpUrl(), extractedMetadata[BANNER_IMAGE_URL])
   }
 
   @Test
@@ -74,7 +69,7 @@ class KotlinPublicAPITest {
       // Fields in the returned [Resource] overwrite those in the input [request]. If no changes are to be made, then
       // return null from your plugin. Otherwise, only return those fields that are new or changed from the input.
       override suspend fun extract(request: Resource) = Resource(
-        fields = mapOf(CUSTOMER_NUMBER_FIELD to request.url?.queryParameter("customer-number"))
+        metadata = mapOf(CUSTOMER_NUMBER_FIELD to request.url?.queryParameter("customer-number"))
       )
 
       val CUSTOMER_NUMBER_FIELD = "customer-number"

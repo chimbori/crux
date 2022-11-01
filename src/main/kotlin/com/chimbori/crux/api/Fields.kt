@@ -1,6 +1,6 @@
 package com.chimbori.crux.api
 
-/** Well-known keys to use in [Resource.fields] & [Resource.urls]. */
+/** Well-known keys to use in [Resource.metadata]. */
 public object Fields {
   public const val TITLE: String = "title"
   public const val DESCRIPTION: String = "description"

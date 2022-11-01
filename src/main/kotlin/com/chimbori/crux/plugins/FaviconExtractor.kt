@@ -14,6 +14,6 @@ public class FaviconExtractor : Extractor {
 
   override suspend fun extract(request: Resource): Resource {
     val canonicalUrl = request.document?.extractCanonicalUrl()?.let { request.url?.resolve(it) } ?: request.url
-    return Resource(urls = mapOf(FAVICON_URL to request.document?.extractFaviconUrl(canonicalUrl))).removeNullValues()
+    return Resource(metadata = mapOf(FAVICON_URL to request.document?.extractFaviconUrl(canonicalUrl))).removeNullValues()
   }
 }

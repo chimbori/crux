@@ -9,6 +9,7 @@ import com.chimbori.crux.api.Resource
 import com.chimbori.crux.common.fetchFromUrl
 import com.chimbori.crux.common.loggingOkHttpClient
 import kotlinx.coroutines.runBlocking
+import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.mockwebserver.Dispatcher
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
@@ -52,7 +53,7 @@ class HtmlMetadataExtractorTest {
       )
       assertNull(parsed.url)
       assertEquals("Crux Test", parsed[TITLE])
-      assertFalse(parsed.fields.containsKey(DESCRIPTION))
+      assertFalse(parsed.metadata.containsKey(DESCRIPTION))
     }
   }
 
@@ -75,9 +76,9 @@ class HtmlMetadataExtractorTest {
       val parsed = htmlMetadataExtractor.extract(
         Resource.fetchFromUrl(candidateUrl, loggingOkHttpClient)
       )
-      assertEquals("http://www.example.com/page=2", parsed[CANONICAL_URL])
-      assertEquals("http://www.example.com/page=3", parsed[NEXT_PAGE_URL])
-      assertEquals("http://www.example.com/page=1", parsed[PREVIOUS_PAGE_URL])
+      assertEquals("http://www.example.com/page=2".toHttpUrl(), parsed[CANONICAL_URL])
+      assertEquals("http://www.example.com/page=3".toHttpUrl(), parsed[NEXT_PAGE_URL])
+      assertEquals("http://www.example.com/page=1".toHttpUrl(), parsed[PREVIOUS_PAGE_URL])
     }
   }
 }

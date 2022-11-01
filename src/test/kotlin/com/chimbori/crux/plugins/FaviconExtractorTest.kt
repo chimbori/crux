@@ -52,7 +52,7 @@ class FaviconExtractorTest {
       val parsed = faviconExtractor.extract(
         Resource.fetchFromUrl(candidateUrl, loggingOkHttpClient)
       )
-      assertEquals(mockWebServer.url("/favicon.png"), parsed.urls[FAVICON_URL])
+      assertEquals(mockWebServer.url("/favicon.png"), parsed[FAVICON_URL])
     }
   }
 }

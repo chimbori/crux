@@ -45,17 +45,15 @@ public class WebAppManifestParser(private val okHttpClient: OkHttpClient) : Extr
     val themeColorHtml = manifest.element("theme_color")
     val backgroundColorHtml = manifest.element("background_color")
     return Resource(
-      fields = mapOf(
+      metadata = mapOf(
+        WEB_APP_MANIFEST_URL to webAppManifestUrl,
         TITLE to manifest.element("name"),
         LANGUAGE to manifest.element("lang"),
         DISPLAY to manifest.element("display"),
         ORIENTATION to manifest.element("orientation"),
+        FAVICON_URL to getLargestIconUrl(webAppManifestUrl, manifest?.array<JsonObject>("icons")),
         (if (themeColorHtml?.startsWith("#") == true) THEME_COLOR_HEX else THEME_COLOR_HTML) to themeColorHtml,
         (if (backgroundColorHtml?.startsWith("#") == true) BACKGROUND_COLOR_HEX else BACKGROUND_COLOR_HTML) to backgroundColorHtml,
-      ),
-      urls = mapOf(
-        WEB_APP_MANIFEST_URL to webAppManifestUrl,
-        FAVICON_URL to getLargestIconUrl(webAppManifestUrl, manifest?.array<JsonObject>("icons"))
       )
     ).removeNullValues()
   }

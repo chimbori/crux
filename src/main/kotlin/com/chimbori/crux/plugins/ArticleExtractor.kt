@@ -46,7 +46,7 @@ public class ArticleExtractor(private val okHttpClient: OkHttpClient) : Extracto
 
     val extractedDoc = PostprocessHelpers.postprocess(bestMatchElement)
     return Resource(
-      objects = mapOf(DURATION_MS to extractedDoc.text().estimatedReadingTimeMs()),
+      metadata = mapOf(DURATION_MS to extractedDoc.text().estimatedReadingTimeMs()),
       article = extractedDoc
     )
   }
