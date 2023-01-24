@@ -77,6 +77,7 @@ public class TrackingParameterRemover(private val trackingParameters: Array<Stri
       "stm_source",
       "stm_term",
       "twclid",
+      "utm_brand",
       "utm_campaign",
       "utm_cid",
       "utm_content",
