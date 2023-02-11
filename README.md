@@ -106,7 +106,6 @@ assertEquals("https://chimbori.com/media/favicon.png", extractedMetadata.get(Fie
 assertEquals("https://chimbori.com/media/cover-photo.png", extractedMetadata.get(Fields.BANNER_IMAGE_URL).toString())
 ```
 
-
 # Default Plugins
 
 ## HtmlMetadataPlugin
