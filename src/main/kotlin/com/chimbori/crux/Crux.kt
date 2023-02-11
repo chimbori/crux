@@ -86,7 +86,7 @@ public class Crux(
     }
 }
 
-private fun createCruxOkHttpClient(): OkHttpClient = OkHttpClient.Builder()
+internal fun createCruxOkHttpClient(): OkHttpClient = OkHttpClient.Builder()
   .followRedirects(true)
   .followSslRedirects(true)
   .retryOnConnectionFailure(true)
