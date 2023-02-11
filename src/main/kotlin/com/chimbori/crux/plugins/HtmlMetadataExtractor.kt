@@ -58,7 +58,7 @@ public class HtmlMetadataExtractor(private val okHttpClient: OkHttpClient) : Ext
       ?: resourceToUse.url
 
     return Resource(
-      url = if (resourceToUse.url != request.url) resourceToUse.url else null,
+      url = canonicalUrl,
       document = resourceToUse.document,
       metadata = mapOf(
         CANONICAL_URL to canonicalUrl,
