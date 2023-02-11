@@ -5,6 +5,8 @@ Web pages.
 
 ## Sample Code
 
+### Kotlin
+
 ```kotlin
 // Create a reusable object configured with the default set of plugins.
 val crux = Crux()
@@ -45,6 +47,65 @@ assertEquals("https://chimbori.com/media/favicon.png".toHttpUrl(),
 // available as metadata fields as well.
 assertEquals("https://chimbori.com/media/cover-photo.png", extractedMetadata[BANNER_IMAGE_URL])
 ```
+
+### Java
+
+```java
+import com.chimbori.crux.Crux;
+import com.chimbori.crux.api.Resource;
+import kotlin.coroutines.Continuation;
+import kotlin.coroutines.CoroutineContext;
+import kotlin.coroutines.EmptyCoroutineContext;
+import okhttp3.HttpUrl;
+import java.util.concurrent.CompletableFuture;
+// Other imports here...
+
+// Create a reusable object configured with the default set of plugins.
+var crux = Crux();
+
+var httpURL = HttpUrl.get("https://chimbori.com/");
+
+var htmlContent = """
+  <html>
+    <head>
+      <title>Chimbori</title>
+      <meta name="twitter:image" property="og:image"
+          content="https://chimbori.com/media/cover-photo.png">
+      <meta name="twitter:site" content="ChimboriApps">
+      <link rel="apple-touch-icon-precomposed" sizes="192x192"
+          href="https://chimbori.com/media/favicon.png">
+    </head>
+  </html>""";
+
+// Scrape page text, if you please
+final CompletableFuture<Resource> extractedMetadataFuture = new CompletableFuture<>();
+crux.extractFrom(httpURL, Jsoup.parse(htmlContent, httpURL.toString()), new Continuation<Resource>() {
+  @Override
+  public CoroutineContext getContext() {
+    return EmptyCoroutineContext.INSTANCE;
+  }
+
+  @Override
+  public void resumeWith(Object value) {
+    Resource extractedMetadata = (Resource) value;
+    extractedMetadataFuture.complete(extractedMetadata);
+  }
+});
+
+Resource extractedMetadata = extractedMetadataFuture.get();
+
+// Metadata fields such as the Title and Description are available from the
+// returned [Resource] object as an indexed collection.
+assertEquals("Chimbori", extractedMetadata.get(Fields.TITLE).toString());
+
+// Well-known URLs related to this page are available either as strings.
+assertEquals("https://chimbori.com/media/favicon.png", extractedMetadata.get(Fields.FAVICON_URL).toString());
+
+// Extra markup fields like Twitter Cards metadata or Open Graph metadata are
+// available as metadata fields as well.
+assertEquals("https://chimbori.com/media/cover-photo.png", extractedMetadata.get(Fields.BANNER_IMAGE_URL).toString())
+```
+
 
 # Default Plugins
 
