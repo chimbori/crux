@@ -51,7 +51,7 @@ class HtmlMetadataExtractorTest {
       val parsed = htmlMetadataExtractor.extract(
         Resource.fetchFromUrl(candidateUrl, loggingOkHttpClient)
       )
-      assertNull(parsed.url)
+      assertEquals(candidateUrl, parsed.url)
       assertEquals("Crux Test", parsed[TITLE])
       assertFalse(parsed.metadata.containsKey(DESCRIPTION))
     }

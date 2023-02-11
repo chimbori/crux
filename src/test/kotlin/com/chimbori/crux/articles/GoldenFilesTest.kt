@@ -19,10 +19,10 @@ import org.junit.Test
 class GoldenFilesTest {
   @Test
   fun testBBC_resourceApi() {
-    extractFromFile("http://www.bbc.co.uk/news/world-latin-america-21226565".toHttpUrl(), "bbc.html").run {
+    extractFromFile("http://www.bbc.com/news/world-africa-37341871".toHttpUrl(), "bbc.html").run {
       assertEquals("BBC News", metadata[SITE_NAME])
       assertEquals("Baby born on Mediterranean rescue ship - BBC News", metadata[TITLE])
-      assertEquals("http://www.bbc.co.uk/news/world-latin-america-21226565".toHttpUrl(), url)
+      assertEquals("http://www.bbc.com/news/world-africa-37341871".toHttpUrl(), url)
       assertEquals(
         "http://ichef-1.bbci.co.uk/news/1024/cpsprodpb/146E6/production/_91168638_baby070012-9-20162-1photocreditalvawhitemsf.jpg".toHttpUrl(),
         metadata[BANNER_IMAGE_URL]
@@ -55,7 +55,7 @@ class GoldenFilesTest {
 
   @Test
   fun testBBC_articleApi() {
-    fromFile("http://www.bbc.co.uk/news/world-latin-america-21226565", "bbc.html").run {
+    fromFile("http://www.bbc.com/news/world-africa-37341871", "bbc.html").run {
       assertEquals("BBC News", siteName)
       assertEquals("Baby born on Mediterranean rescue ship - BBC News", title)
       assertEquals("http://www.bbc.com/news/world-africa-37341871".toHttpUrl(), canonicalUrl)
@@ -76,7 +76,7 @@ class GoldenFilesTest {
     extractFromFile("http://www.bbc.co.uk/news/amp/37341871".toHttpUrl(), "bbc-amp.html").run {
       assertEquals("BBC News", metadata[SITE_NAME])
       assertEquals("Baby born on Mediterranean rescue ship", metadata[TITLE])
-      assertEquals("http://www.bbc.co.uk/news/amp/37341871".toHttpUrl(), url)
+      assertEquals("http://www.bbc.co.uk/news/world-africa-37341871".toHttpUrl(), url)
       assertEquals(
         "http://ichef.bbci.co.uk/news/999/cpsprodpb/146E6/production/_91168638_baby070012-9-20162-1photocreditalvawhitemsf.jpg".toHttpUrl(),
         metadata[BANNER_IMAGE_URL]
