@@ -51,6 +51,9 @@ tasks.withType<KotlinCompile>().configureEach {
 
 kotlin {
   explicitApi = Strict
+  jvmToolchain {
+    languageVersion.set(JavaLanguageVersion.of("11"))
+  }
 }
 
 mavenPublishing {
