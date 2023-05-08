@@ -18,7 +18,7 @@ buildscript {
   dependencies {
     classpath(kotlin("gradle-plugin", version = "1.8.21"))
     classpath("com.github.ben-manes:gradle-versions-plugin:0.45.0")
-    classpath("com.vanniktech:gradle-maven-publish-plugin:0.24.0")
+    classpath("com.vanniktech:gradle-maven-publish-plugin:0.25.2")
   }
 }
 
