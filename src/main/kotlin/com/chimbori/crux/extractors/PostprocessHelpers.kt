@@ -15,7 +15,11 @@ import org.jsoup.nodes.Node
 import org.jsoup.nodes.TextNode
 
 /** Cleans up the best-match Element after one has been picked, in order to provide a sanitized output tree to the caller. */
-internal class PostprocessHelpers private constructor(private val keepers: Set<Node>) {
+internal class PostprocessHelpers private constructor(
+
+  private val keepers: Set<Node>? = null,
+
+  ) {
   private fun replaceLineBreaksWithSpaces(topNode: Element) {
     topNode.select("br + br").forEach { brNextToBrElement ->
       brNextToBrElement.remove()
@@ -133,7 +137,12 @@ internal class PostprocessHelpers private constructor(private val keepers: Set<N
     }
   }
 
-  private fun shouldKeep(node: Node) = keepers.contains(node)
+  private fun shouldKeep(node: Node) : Boolean {
+    keepers?.let {
+      return it.contains(node)
+    }
+    return false
+  }
 
   companion object {
     /** If a string is shorter than this limit, it is not considered a paragraph. */
@@ -169,6 +178,14 @@ internal class PostprocessHelpers private constructor(private val keepers: Set<N
      * top-level children.
      */
     private val RETAIN_TAGS_TOP_LEVEL = setOf("p", "h1", "h2", "h3", "h4", "h5", "h6", "blockquote", "li")
+
+    /**
+     * Tag attributes that are resolved to absolute URIs
+     */
+    private val RESOLVE_URI_TAG_ATTRIBUTES = mapOf(
+      "img" to "src",
+      "a" to "href"
+    )
 
     internal fun postprocess(topNode: Element?): Document {
       Log.i("postprocess")
@@ -215,6 +232,22 @@ internal class PostprocessHelpers private constructor(private val keepers: Set<N
         }
       }
       return result
+    }
+
+    internal fun toAbsoluteUri(element: Element) : Element {
+      RESOLVE_URI_TAG_ATTRIBUTES.forEach { (tag, attr) ->
+        element.getElementsByTag(tag).forEach { e ->
+          val absUrl = e.absUrl(attr)
+
+          if (absUrl != "") {
+            Log.i("toAbsoluteUri[$e]: resolving ${e.attr(attr)} to $absUrl")
+            e.attr(attr, absUrl)
+          } else {
+            Log.i("toAbsoluteUri: failed to set uri for $e")
+          }
+        }
+      }
+      return element
     }
   }
 }
