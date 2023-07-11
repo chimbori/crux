@@ -6,6 +6,9 @@ make parsing more accurate, or add new features & metadata detection.
 
 To maintain the integrity of the library, we have a few simple expectations from all code submitted.
 
+1. Before sending a pull request, please open an issue to discuss your changes. Maintainers
+   will offer feedback and help validate your idea as well as overall design before you spend any
+   time writing code.
 1. The expected style for code formatting is available in the repo using the
    [EditorConfig](https://editorconfig.org/) standard. We recommend using a JetBrains IDE for
    Kotlin, and configuring it to automatically use the `.editorconfig` file included in this
