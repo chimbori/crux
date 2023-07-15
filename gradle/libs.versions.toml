@@ -15,5 +15,5 @@ okhttp-mockwebserver = { module = "com.squareup.okhttp3:mockwebserver", version.
 
 [plugins]
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
-ben-manes-versions = { id = "com.github.ben-manes.versions", version = "0.45.0" }
+ben-manes-versions = { id = "com.github.ben-manes.versions", version = "0.47.0" }
 maven-publish = { id = "com.vanniktech.maven.publish", version = "0.24.0" }
