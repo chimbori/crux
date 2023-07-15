@@ -1,0 +1,19 @@
+[versions]
+kotlin = "1.8.21"
+coroutines = "1.7.2"
+okhttp = "4.10.0"
+
+[libraries]
+kotlin-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
+jsoup = "org.jsoup:jsoup:1.16.1"
+klaxon = "com.beust:klaxon:5.6"
+okhttp = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp" }
+junit = "junit:junit:4.13.2"
+okhttp-logging = { module = "com.squareup.okhttp3:logging-interceptor", version.ref = "okhttp" }
+okhttp-mockwebserver = { module = "com.squareup.okhttp3:mockwebserver", version.ref = "okhttp" }
+
+[plugins]
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+ben-manes-versions = { id = "com.github.ben-manes.versions", version = "0.45.0" }
+maven-publish = { id = "com.vanniktech.maven.publish", version = "0.24.0" }
