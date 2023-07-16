@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package com.chimbori.crux.articles
 
 import com.chimbori.crux.common.fromFile

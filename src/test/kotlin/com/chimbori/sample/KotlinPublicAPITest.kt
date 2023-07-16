@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package com.chimbori.sample
 
 import com.chimbori.crux.Crux

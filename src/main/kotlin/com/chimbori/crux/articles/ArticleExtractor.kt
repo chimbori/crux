@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package com.chimbori.crux.articles
 
 import com.chimbori.crux.common.estimatedReadingTimeMinutes
@@ -17,7 +19,7 @@ import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
 
-@Suppress("unused")
+@Deprecated("Use [com.chimbori.crux.plugins.ArticleExtractor] instead. See README.md for examples.")
 public class ArticleExtractor
 /**
  * Create an [ArticleExtractor] from an already-parsed JSoup document, to be used when a

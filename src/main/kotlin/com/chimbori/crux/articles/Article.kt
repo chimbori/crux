@@ -6,6 +6,7 @@ import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
 
 /** Parsed result from a web page. */
+@Deprecated("Use [com.chimbori.crux.api.Resource] instead. See README.md for examples.")
 public data class Article(
   var canonicalUrl: HttpUrl,
   var title: String? = null,
