@@ -1,5 +1,3 @@
-@file:Suppress("DEPRECATION")
-
 package com.chimbori.sample
 
 import com.chimbori.crux.Crux
@@ -8,9 +6,6 @@ import com.chimbori.crux.api.Fields.BANNER_IMAGE_URL
 import com.chimbori.crux.api.Fields.FAVICON_URL
 import com.chimbori.crux.api.Fields.TITLE
 import com.chimbori.crux.api.Resource
-import com.chimbori.crux.articles.ArticleExtractor
-import com.chimbori.crux.common.isLikelyArticle
-import com.chimbori.crux.common.resolveRedirects
 import com.chimbori.crux.extractors.ImageUrlExtractor
 import com.chimbori.crux.extractors.LinkUrlExtractor
 import kotlinx.coroutines.runBlocking
@@ -87,19 +82,6 @@ class KotlinPublicAPITest {
     assertEquals(orderDetailsUrl, metadata.url)
     // Data extracted by the custom plugin is available as a custom field.
     assertEquals("42", metadata[customerNumberExtractorPlugin.CUSTOMER_NUMBER_FIELD])
-  }
-
-  @Test
-  fun testCallersCanAccessArticleExtractorAPI() {
-    val httpURL = "https://chimbori.com/".toHttpUrl()
-    val content = "<html><title>Crux"  // Intentionally malformed.
-    if (httpURL.isLikelyArticle()) {
-      ArticleExtractor(httpURL, content).extractMetadata().extractContent().article.run {
-        assertEquals("Crux", title)
-      }
-    }
-    val directURL = httpURL.resolveRedirects()
-    assertEquals("https://chimbori.com/", directURL.toString())
   }
 
   @Test

@@ -6,7 +6,6 @@ import com.chimbori.crux.api.Resource
 import com.chimbori.crux.api.Rewriter
 import com.chimbori.crux.common.CHROME_USER_AGENT
 import com.chimbori.crux.plugins.AmpRedirector
-import com.chimbori.crux.plugins.ArticleExtractor
 import com.chimbori.crux.plugins.FacebookUrlRewriter
 import com.chimbori.crux.plugins.FaviconExtractor
 import com.chimbori.crux.plugins.GoogleUrlRewriter
@@ -42,8 +41,6 @@ public fun createDefaultPlugins(okHttpClient: OkHttpClient): List<Plugin> = list
   WebAppManifestParser(okHttpClient),
   // Extracts the best possible favicon from all the markup available on the page itself.
   FaviconExtractor(),
-  // Parses the content of the page to remove ads, navigation, and all the other fluff.
-  ArticleExtractor(okHttpClient),
 )
 
 /**
