@@ -1,4 +1,4 @@
-package com.chimbori.crux.extractors
+package com.chimbori.crux.articles
 
 import com.chimbori.crux.common.Log
 import java.util.Locale

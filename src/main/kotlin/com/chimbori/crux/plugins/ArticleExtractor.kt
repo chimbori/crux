@@ -6,10 +6,10 @@ import com.chimbori.crux.api.Resource
 import com.chimbori.crux.common.estimatedReadingTimeMs
 import com.chimbori.crux.common.fetchFromUrl
 import com.chimbori.crux.common.isLikelyArticle
-import com.chimbori.crux.extractors.PostprocessHelpers
-import com.chimbori.crux.extractors.PreprocessHelpers
-import com.chimbori.crux.extractors.getNodes
-import com.chimbori.crux.extractors.getWeight
+import com.chimbori.crux.articles.PostprocessHelpers
+import com.chimbori.crux.articles.PreprocessHelpers
+import com.chimbori.crux.articles.getNodes
+import com.chimbori.crux.articles.getWeight
 import okhttp3.HttpUrl
 import okhttp3.OkHttpClient
 import org.jsoup.nodes.Element

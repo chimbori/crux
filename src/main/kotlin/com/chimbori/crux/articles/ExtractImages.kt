@@ -1,6 +1,6 @@
-package com.chimbori.crux.extractors
 
-import com.chimbori.crux.articles.Article
+package com.chimbori.crux.articles
+
 import com.chimbori.crux.common.Log
 import com.chimbori.crux.common.isAdImage
 import okhttp3.HttpUrl
