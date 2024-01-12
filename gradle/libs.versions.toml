@@ -9,7 +9,7 @@ espressoCore = "3.0.2"
 appcompatV7 = "28.0.0"
 ksoup = "0.0.6"
 ktor = "2.3.6"
-klaxon = "5.6"
+klaxon = "5.5"
 
 [libraries]
 kotlin-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
