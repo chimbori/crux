@@ -16,6 +16,3 @@ dependencyResolutionManagement {
 rootProject.name = "crux"
 include(":crux")
 include(":crux-kmp")
-include(":crux-kmp")
-include(":crux-kmp")
-include(":crux-kmp")

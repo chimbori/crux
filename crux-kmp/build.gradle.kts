@@ -11,7 +11,7 @@ kotlin {
             }
         }
     }
-    
+
     listOf(
         iosX64(),
         iosArm64(),
@@ -24,13 +24,12 @@ kotlin {
     }
 
     sourceSets {
-        commonMain.dependencies {
+        commonMain{
+          dependencies {
             implementation(libs.ktor.client.core)
             implementation(libs.ksoup)
             implementation(libs.klaxon)
-        }
-        commonTest.dependencies {
-            implementation(libs.kotlin.test)
+          }
         }
     }
 }
