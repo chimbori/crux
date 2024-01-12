@@ -5,6 +5,8 @@ plugins {
   alias(libs.plugins.kotlin.jvm)
   alias(libs.plugins.ben.manes.versions)
   alias(libs.plugins.maven.publish)
+  alias(libs.plugins.androidLibrary) apply false
+  alias(libs.plugins.jetbrainsKotlinAndroid) apply false
 }
 
 repositories {
