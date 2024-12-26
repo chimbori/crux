@@ -1,10 +1,10 @@
 package com.chimbori.crux.extractors
 
-import java.io.File
+import com.chimbori.crux.api.Resource
+import com.chimbori.crux.common.fromTestData
 import java.io.IOException
 import okhttp3.HttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrl
-import org.jsoup.Jsoup
 import org.junit.Assert.assertEquals
 import org.junit.Assert.fail
 import org.junit.Test
@@ -36,8 +36,8 @@ class ImageUrlExtractorTest {
   }
 
   private fun extractFromTestFile(baseUrl: HttpUrl, testFile: String) = try {
-    val doc = Jsoup.parse(File("test_data/$testFile"), "UTF-8", baseUrl.toString())
-    ImageUrlExtractor(baseUrl, doc.body())
+    val resource = Resource.fromTestData(baseUrl, testFile)
+    ImageUrlExtractor(baseUrl, resource.document!!.body())
   } catch (e: IOException) {
     fail(e.message)
     null

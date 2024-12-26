@@ -22,9 +22,9 @@ internal val loggingOkHttpClient: OkHttpClient = OkHttpClient.Builder()
   .addInterceptor(HttpLoggingInterceptor().apply { level = BASIC })
   .build()
 
-internal fun Resource.Companion.fromTestData(url: HttpUrl, filename: String) = Resource(
+internal fun Resource.Companion.fromTestData(url: HttpUrl, testFile: String) = Resource(
   url = url,
-  document = Jsoup.parse(File("test_data/$filename").readText(), url.toString())
+  document = Jsoup.parse(File("test_data/$testFile"), "UTF-8", url.toString()),
 )
 
 internal fun assertStartsWith(expected: String, actual: String?) {
