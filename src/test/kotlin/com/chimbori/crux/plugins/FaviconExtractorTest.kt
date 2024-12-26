@@ -3,8 +3,10 @@ package com.chimbori.crux.plugins
 import com.chimbori.crux.api.Fields.FAVICON_URL
 import com.chimbori.crux.api.Resource
 import com.chimbori.crux.common.fetchFromUrl
+import com.chimbori.crux.common.fromTestData
 import com.chimbori.crux.common.loggingOkHttpClient
 import kotlinx.coroutines.runBlocking
+import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.mockwebserver.Dispatcher
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
@@ -53,6 +55,19 @@ class FaviconExtractorTest {
         Resource.fetchFromUrl(candidateUrl, loggingOkHttpClient)
       )
       assertEquals(mockWebServer.url("/favicon.png"), parsed[FAVICON_URL])
+    }
+  }
+
+  @Test
+  fun testYouTubeFavicon() {
+    val candidateUrl = "https://youtube.com".toHttpUrl()
+    assertTrue(faviconExtractor.canExtract(candidateUrl))
+    runBlocking {
+      val parsed = faviconExtractor.extract(Resource.fromTestData(candidateUrl, "youtube.html"))
+      assertEquals(
+        "https://www.youtube.com/s/desktop/c01ea7e3/img/logos/favicon_144x144.png".toHttpUrl(),
+        parsed[FAVICON_URL]
+      )
     }
   }
 }
