@@ -28,7 +28,7 @@ class HtmlMetadataExtractorTest {
   @Before
   fun setUp() {
     mockWebServer = MockWebServer().apply { start() }
-    htmlMetadataExtractor = HtmlMetadataExtractor(loggingOkHttpClient)
+    htmlMetadataExtractor = HtmlMetadataExtractor()
   }
 
   @After

@@ -16,7 +16,6 @@ import com.chimbori.crux.api.Fields.THEME_COLOR_HEX
 import com.chimbori.crux.api.Fields.TITLE
 import com.chimbori.crux.api.Fields.VIDEO_URL
 import com.chimbori.crux.api.Resource
-import com.chimbori.crux.common.fetchFromUrl
 import com.chimbori.crux.common.isLikelyArticle
 import com.chimbori.crux.extractors.extractAmpUrl
 import com.chimbori.crux.extractors.extractCanonicalUrl
@@ -32,7 +31,6 @@ import com.chimbori.crux.extractors.extractThemeColor
 import com.chimbori.crux.extractors.extractTitle
 import com.chimbori.crux.extractors.extractVideoUrl
 import okhttp3.HttpUrl
-import okhttp3.OkHttpClient
 
 /**
  * Extracts common well-defined metadata fields from an HTML DOM tree. Includes support for:
@@ -40,41 +38,33 @@ import okhttp3.OkHttpClient
  * - Open Graph Protocol: https://ogp.me/
  * - AMP Spec: https://amp.dev/documentation/guides-and-tutorials/learn/spec/amphtml/
  */
-public class HtmlMetadataExtractor(private val okHttpClient: OkHttpClient) : Extractor {
+public class HtmlMetadataExtractor : Extractor {
   /** Skip handling any file extensions that are unlikely to be HTML pages. */
   public override fun canExtract(url: HttpUrl): Boolean = url.isLikelyArticle()
 
   override suspend fun extract(request: Resource): Resource {
-    val resourceToUse = if (request.document != null) {
-      request
-    } else if (request.url != null) {
-      Resource.fetchFromUrl(request.url, okHttpClient)
-    } else {
-      Resource()
-    }
-
-    val canonicalUrl = resourceToUse.document?.extractCanonicalUrl()
-      ?.let { resourceToUse.url?.resolve(it) }
-      ?: resourceToUse.url
+    val canonicalUrl = request.document?.extractCanonicalUrl()
+      ?.let { request.url?.resolve(it) }
+      ?: request.url
 
     return Resource(
       url = canonicalUrl,
-      document = resourceToUse.document,
+      document = request.document,
       metadata = mapOf(
         CANONICAL_URL to canonicalUrl,
-        TITLE to resourceToUse.document?.extractTitle(),
-        DESCRIPTION to resourceToUse.document?.extractDescription(),
-        SITE_NAME to resourceToUse.document?.extractSiteName(),
-        THEME_COLOR_HEX to resourceToUse.document?.extractThemeColor(),
-        PUBLISHED_AT to resourceToUse.document?.extractPublishedAt(),
-        MODIFIED_AT to resourceToUse.document?.extractModifiedAt(),
-        KEYWORDS_CSV to resourceToUse.document?.extractKeywords()?.joinToString(separator = ","),
-        NEXT_PAGE_URL to resourceToUse.document?.extractPaginationUrl(resourceToUse.url, "next"),
-        PREVIOUS_PAGE_URL to resourceToUse.document?.extractPaginationUrl(resourceToUse.url, "prev"),
-        BANNER_IMAGE_URL to resourceToUse.document?.extractImageUrl(canonicalUrl),
-        FEED_URL to resourceToUse.document?.extractFeedUrl(canonicalUrl),
-        AMP_URL to resourceToUse.document?.extractAmpUrl(canonicalUrl),
-        VIDEO_URL to resourceToUse.document?.extractVideoUrl(canonicalUrl),
+        TITLE to request.document?.extractTitle(),
+        DESCRIPTION to request.document?.extractDescription(),
+        SITE_NAME to request.document?.extractSiteName(),
+        THEME_COLOR_HEX to request.document?.extractThemeColor(),
+        PUBLISHED_AT to request.document?.extractPublishedAt(),
+        MODIFIED_AT to request.document?.extractModifiedAt(),
+        KEYWORDS_CSV to request.document?.extractKeywords()?.joinToString(separator = ","),
+        NEXT_PAGE_URL to request.document?.extractPaginationUrl(request.url, "next"),
+        PREVIOUS_PAGE_URL to request.document?.extractPaginationUrl(request.url, "prev"),
+        BANNER_IMAGE_URL to request.document?.extractImageUrl(canonicalUrl),
+        FEED_URL to request.document?.extractFeedUrl(canonicalUrl),
+        AMP_URL to request.document?.extractAmpUrl(canonicalUrl),
+        VIDEO_URL to request.document?.extractVideoUrl(canonicalUrl),
       )
     ).removeNullValues()
   }

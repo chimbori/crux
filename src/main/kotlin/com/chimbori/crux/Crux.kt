@@ -6,6 +6,7 @@ import com.chimbori.crux.api.Resource
 import com.chimbori.crux.api.Rewriter
 import com.chimbori.crux.common.CHROME_USER_AGENT
 import com.chimbori.crux.plugins.AmpRedirector
+import com.chimbori.crux.plugins.DocumentFetcher
 import com.chimbori.crux.plugins.FacebookUrlRewriter
 import com.chimbori.crux.plugins.FaviconExtractor
 import com.chimbori.crux.plugins.GoogleUrlRewriter
@@ -23,7 +24,7 @@ import org.jsoup.nodes.Document
  * choose from the set of available default plugins to create their own configuration.
  */
 public fun createDefaultPlugins(okHttpClient: OkHttpClient): List<Plugin> = listOf(
-  // Rewriters
+  // Rewriters ----------------------------------------------------------------
 
   // Static redirectors go first, to avoid getting stuck into CAPTCHAs.
   GoogleUrlRewriter(),
@@ -31,10 +32,14 @@ public fun createDefaultPlugins(okHttpClient: OkHttpClient): List<Plugin> = list
   // Remove any tracking parameters remaining.
   TrackingParameterRemover(),
 
-  // Extractors
+  // Fetcher ------------------------------------------------------------------
+  // Fetches the Web page, so this must be the first [Extractor].
+  DocumentFetcher(okHttpClient),
 
-  // Parses many standard HTML metadata attributes. Fetches the Web page, so this must be the first [Extractor].
-  HtmlMetadataExtractor(okHttpClient),
+  // Extractors ---------------------------------------------------------------
+
+  // Parses many standard HTML metadata attributes.
+  HtmlMetadataExtractor(),
   // Prefer canonical URLs over AMP URLs.
   AmpRedirector(refetchContentFromCanonicalUrl = true, okHttpClient),
   // Fetches and parses the Web Manifest. May replace existing favicon URL with one from the manifest.json.
