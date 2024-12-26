@@ -12,10 +12,10 @@ import okhttp3.Response
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 
-private const val DEFAULT_BROWSER_VERSION = "100.0.0.0"
+private const val LATEST_KNOWN_CHROME_MAJOR_VERSION = 131
 
-internal const val CHROME_USER_AGENT = "Mozilla/5.0 (Linux; Android 11; Build/RQ2A.210505.003) AppleWebKit/537.36 " +
-    "(KHTML, like Gecko) Version/4.0 Chrome/$DEFAULT_BROWSER_VERSION Mobile Safari/537.36"
+internal const val CHROME_USER_AGENT =
+  "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/$LATEST_KNOWN_CHROME_MAJOR_VERSION.0.0.0 Mobile Safari/537.36"
 
 public suspend fun OkHttpClient.safeCall(request: Request): Response? = withContext(Dispatchers.IO) {
   try {
